@@ -1,0 +1,179 @@
+'use client';
+
+import { FormEvent, useState } from 'react';
+import { useStore } from '@/store';
+import { Contact, LeadSource } from '@/types';
+
+interface AddDealFormProps {
+  contacts: Contact[];
+  onClose: () => void;
+}
+
+const LEAD_SOURCES: { value: LeadSource; label: string }[] = [
+  { value: 'existing_customer', label: 'Existing Customer' },
+  { value: 'reactivation', label: 'Reactivation' },
+  { value: 'cross_sell', label: 'Cross-Sell' },
+  { value: 'referral', label: 'Referral' },
+  { value: 'review', label: 'Review' },
+  { value: 'neighborhood', label: 'Neighborhood' },
+  { value: 'google_lsa', label: 'Google LSA' },
+  { value: 'seo', label: 'SEO' },
+  { value: 'gbp', label: 'Google Business' },
+];
+
+export function AddDealForm({ contacts, onClose }: AddDealFormProps) {
+  const [formData, setFormData] = useState({
+    contactId: contacts[0]?.id || '',
+    title: '',
+    value: '',
+    source: 'referral' as LeadSource,
+    assignedTo: 'Team',
+    notes: '',
+  });
+
+  const { addDeal } = useStore();
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.contactId || !formData.title || !formData.value) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    addDeal({
+      contactId: formData.contactId,
+      title: formData.title,
+      value: parseInt(formData.value),
+      stage: 'new_lead',
+      source: formData.source,
+      assignedTo: formData.assignedTo,
+      notes: formData.notes,
+    });
+
+    onClose();
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Contact *
+        </label>
+        <select
+          value={formData.contactId}
+          onChange={(e) =>
+            setFormData({ ...formData, contactId: e.target.value })
+          }
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {contacts.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Deal Title *
+        </label>
+        <input
+          type="text"
+          value={formData.title}
+          onChange={(e) =>
+            setFormData({ ...formData, title: e.target.value })
+          }
+          placeholder="e.g., Water Heater Replacement"
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Value ($) *
+        </label>
+        <input
+          type="number"
+          value={formData.value}
+          onChange={(e) =>
+            setFormData({ ...formData, value: e.target.value })
+          }
+          placeholder="1000"
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Lead Source
+        </label>
+        <select
+          value={formData.source}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              source: e.target.value as LeadSource,
+            })
+          }
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {LEAD_SOURCES.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Assigned To
+        </label>
+        <select
+          value={formData.assignedTo}
+          onChange={(e) =>
+            setFormData({ ...formData, assignedTo: e.target.value })
+          }
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="Team">Team</option>
+          <option value="Marcus">Marcus</option>
+          <option value="James">James</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Notes
+        </label>
+        <textarea
+          value={formData.notes}
+          onChange={(e) =>
+            setFormData({ ...formData, notes: e.target.value })
+          }
+          placeholder="Add any notes about this deal..."
+          rows={3}
+          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="flex gap-3 pt-4">
+        <button
+          type="submit"
+          className="flex-1 bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Create Deal
+        </button>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex-1 bg-slate-200 text-slate-900 font-medium py-2 rounded-lg hover:bg-slate-300 transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  );
+}
