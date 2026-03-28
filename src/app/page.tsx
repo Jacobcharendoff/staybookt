@@ -520,6 +520,189 @@ function AutopilotSection() {
   );
 }
 
+// ─── Growth Advisor Demo (Animated Chat) ────────────────────
+function AdvisorDemo() {
+  const [visibleMessages, setVisibleMessages] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  const conversation = [
+    { sender: 'advisor' as const, text: "Hey Mike 👋 Quick morning update — you closed 8 jobs this month for $34,200. That's 18% up from last month." },
+    { sender: 'advisor' as const, text: "One thing to watch: 3 estimates over $5K haven't been touched in 2 weeks. That's $23K sitting on the table." },
+    { sender: 'user' as const, text: "Which ones?" },
+    { sender: 'advisor' as const, text: "Patel kitchen reno ($12K), Chen HVAC install ($6,200), Rodriguez bathroom ($4,800). Want me to send follow-ups?" },
+    { sender: 'user' as const, text: "Yeah do it" },
+    { sender: 'advisor' as const, text: "Done. Sent personalized follow-ups to all 3. You'll get notified when they reply. 👍" },
+  ];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          setHasStarted(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    const el = document.getElementById('advisor-demo');
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasStarted]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    if (visibleMessages >= conversation.length) return;
+
+    const currentMsg = conversation[visibleMessages];
+    const typingDelay = currentMsg.sender === 'advisor' ? 1200 : 600;
+    const readDelay = Math.min(currentMsg.text.length * 20, 2000);
+
+    const typingTimer = setTimeout(() => {
+      setIsTyping(true);
+    }, readDelay);
+
+    const messageTimer = setTimeout(() => {
+      setIsTyping(false);
+      setVisibleMessages(prev => prev + 1);
+    }, readDelay + typingDelay);
+
+    return () => {
+      clearTimeout(typingTimer);
+      clearTimeout(messageTimer);
+    };
+  }, [hasStarted, visibleMessages, conversation.length]);
+
+  return (
+    <section id="advisor-demo" className="py-24 lg:py-32 bg-gradient-to-b from-slate-50 to-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left: Copy */}
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 mb-6">
+              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+              <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Growth Advisor</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
+              Like texting your{" "}
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                smartest business partner.
+              </span>
+            </h2>
+            <p className="mt-6 text-lg text-gray-500 leading-relaxed">
+              Your Growth Advisor knows your numbers, your pipeline, and your customers.
+              It flags problems before they cost you money, and tells you exactly what to do about them.
+            </p>
+            <div className="mt-8 space-y-4">
+              {[
+                { text: "Spots stale estimates before they go cold", icon: DollarSign },
+                { text: "Tracks revenue trends and flags slowdowns", icon: TrendingUp },
+                { text: "Gives you a game plan — not just data", icon: Target },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.text} className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <span className="text-gray-700 font-medium">{item.text}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-10">
+              <Link
+                href="/advisor"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg shadow-purple-600/20"
+              >
+                Try Growth Advisor <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: Animated Chat */}
+          <div className="relative">
+            {/* Phone frame */}
+            <div className="mx-auto max-w-[340px] bg-white rounded-[2.5rem] shadow-2xl shadow-slate-900/10 border border-gray-200 overflow-hidden">
+              {/* Status bar */}
+              <div className="bg-white px-6 pt-4 pb-0">
+                <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                  <span>9:41 AM</span>
+                  <div className="flex gap-1">
+                    <div className="w-4 h-2.5 border border-gray-400 rounded-sm relative">
+                      <div className="absolute inset-0.5 bg-gray-400 rounded-sm" style={{ width: '75%' }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat header */}
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-gray-100">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <Sparkles className="w-4.5 h-4.5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">Growth Advisor</p>
+                  <p className="text-[11px] text-emerald-600">Online</p>
+                </div>
+              </div>
+
+              {/* Messages area */}
+              <div className="px-4 py-4 space-y-2.5 min-h-[380px] bg-white">
+                {/* Date pill */}
+                <div className="flex justify-center mb-3">
+                  <span className="text-[10px] text-gray-400 bg-gray-100 px-2.5 py-0.5 rounded-full">Today</span>
+                </div>
+
+                {conversation.slice(0, visibleMessages).map((msg, i) => (
+                  <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-[fadeSlideUp_0.3s_ease-out]`}>
+                    <div
+                      className={`rounded-2xl px-3.5 py-2 max-w-[80%] ${
+                        msg.sender === 'user'
+                          ? 'bg-[#0071E3] text-white rounded-br-md'
+                          : 'bg-[#E9E9EB] text-gray-900 rounded-bl-md'
+                      }`}
+                    >
+                      <p className="text-[13px] leading-relaxed">{msg.text}</p>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Typing indicator */}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="bg-[#E9E9EB] rounded-2xl rounded-bl-md px-3.5 py-2.5">
+                      <div className="flex gap-1 items-center h-4">
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Input bar */}
+              <div className="px-4 py-3 border-t border-gray-100 bg-white">
+                <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3.5 py-2">
+                  <span className="flex-1 text-[13px] text-gray-400">Ask about your business...</span>
+                  <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center">
+                    <ArrowRight className="w-3 h-3 text-white" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Home indicator */}
+              <div className="flex justify-center pb-2 pt-1">
+                <div className="w-32 h-1 rounded-full bg-gray-300" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── Stats Banner ─────────────────────────────────────────────
 function StatsBanner() {
   return (
@@ -988,6 +1171,7 @@ export default function LandingPage() {
       <HowItWorks />
       <Features />
       <AutopilotSection />
+      <AdvisorDemo />
       <StatsBanner />
       <Testimonials />
       <CompetitorComparison />
