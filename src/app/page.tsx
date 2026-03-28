@@ -722,632 +722,383 @@ function InteractiveExplorer() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
 
   const tabs = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'pipeline', label: 'Pipeline' },
-    { id: 'estimates', label: 'Estimates' },
-    { id: 'advisor', label: 'Growth Advisor' },
-    { id: 'autopilot', label: 'Autopilot' },
-    { id: 'invoicing', label: 'Invoicing' },
+    { id: 'dashboard', icon: <BarChart3 className="w-5 h-5" />, label: 'Dashboard', description: 'See leads, revenue, pipeline, and team activity — all in one view.', url: 'app.growthos.com/dashboard' },
+    { id: 'pipeline', icon: <Layers className="w-5 h-5" />, label: 'Pipeline', description: 'Drag jobs from quote to complete. Every crew member sees what\'s next.', url: 'app.growthos.com/pipeline' },
+    { id: 'estimates', icon: <FileText className="w-5 h-5" />, label: 'Estimates', description: 'Good/Better/Best pricing closes 30% more deals. Track every quote.', url: 'app.growthos.com/estimates' },
+    { id: 'advisor', icon: <Bot className="w-5 h-5" />, label: 'Growth Advisor', description: 'Like texting your smartest business partner. Get instant insights.', url: 'app.growthos.com/advisor' },
+    { id: 'autopilot', icon: <Zap className="w-5 h-5" />, label: 'Autopilot', description: '8 automations running while you sleep. Leads, follow-ups, reviews.', url: 'app.growthos.com/automations' },
+    { id: 'invoicing', icon: <Receipt className="w-5 h-5" />, label: 'Invoicing', description: 'Send invoices instantly. Canadian taxes calculated automatically.', url: 'app.growthos.com/invoices' },
   ];
 
-  const tabInfo: { [key: string]: { title: string; description: string } } = {
-    dashboard: {
-      title: 'Your Command Center',
-      description: 'See leads, revenue, pipeline, and team activity — all in one view. Real-time metrics guide your decisions.',
-    },
-    pipeline: {
-      title: 'Drag & Drop Pipeline',
-      description: 'Drag jobs from quote to complete. Every crew member sees what\'s next and when it\'s due.',
-    },
-    estimates: {
-      title: 'Tiered Pricing',
-      description: 'Good/Better/Best tiers close 30% more deals. Customers pick the option that fits. You win either way.',
-    },
-    advisor: {
-      title: 'Growth Advisor',
-      description: 'Like texting your smartest business partner. Ask anything about your numbers and get instant insights.',
-    },
-    autopilot: {
-      title: 'Automations',
-      description: '8 automations running while you sleep. Speed to Lead, Follow-ups, Reviews — all on without lifting a finger.',
-    },
-    invoicing: {
-      title: 'Smart Invoicing',
-      description: 'Send invoices the minute a job is done. Canadian taxes calculated automatically. Get paid faster.',
-    },
-  };
-
-  // ─── Smooth easing constant ───
-  const smooth = 'cubic-bezier(0.16, 1, 0.3, 1)';
-
-  // ─── Dashboard Tab Content
-  const DashboardContent = () => {
-    const [phase, setPhase] = useState(0);
-
-    useEffect(() => {
-      const t1 = setTimeout(() => setPhase(1), 100);   // KPIs fade in
-      const t2 = setTimeout(() => setPhase(2), 800);   // Chart bars rise
-      const t3 = setTimeout(() => setPhase(3), 1600);  // Pipeline bars fill
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-    }, []);
-
-    const chartHeights = [40, 55, 45, 65, 75, 85, 70, 90, 95, 80, 88, 100];
-    const pipelineWidths = [80, 55, 40, 30];
-
-    return (
-      <div className="w-full">
-        <div className="bg-slate-800 rounded-t-xl px-4 py-2.5 flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-400" />
-            <div className="w-3 h-3 rounded-full bg-yellow-400" />
-            <div className="w-3 h-3 rounded-full bg-green-400" style={{ opacity: phase >= 1 ? 1 : 0.3, transition: `opacity 1.5s ${smooth}` }} />
+  // ─── Static mockup content for each tab (no animation, clean and final-state) ───
+  const DashboardMockup = () => (
+    <div className="bg-slate-50 p-4 sm:p-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        {[
+          { label: 'New Leads', value: '23', trend: '+12%' },
+          { label: 'Active Jobs', value: '14', trend: '+24%' },
+          { label: 'Revenue', value: '$87.4K', trend: '+18%' },
+          { label: 'Conversion', value: '68%', trend: '+5%' },
+        ].map((kpi) => (
+          <div key={kpi.label} className="bg-white rounded-xl p-3 sm:p-4 border border-gray-100 shadow-sm">
+            <p className="text-[10px] sm:text-xs text-gray-500 uppercase font-semibold">{kpi.label}</p>
+            <p className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">{kpi.value}</p>
+            <p className="text-[10px] sm:text-xs text-emerald-500 font-semibold">{kpi.trend} vs last month</p>
           </div>
-          <div className="flex-1 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-700/50 rounded-lg">
-              <div className="w-2 h-2 rounded-full bg-green-400" style={{ opacity: phase >= 1 ? 1 : 0.3, transition: `opacity 1.5s ${smooth}` }} />
-              <span className="text-xs text-slate-400 font-mono">app.growthos.com/dashboard</span>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-50 rounded-b-xl p-4 sm:p-6 lg:p-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-            {[
-              { label: 'New Leads', value: '23', trend: '+12%' },
-              { label: 'Active Jobs', value: '14', trend: '+24%' },
-              { label: 'Revenue', value: '$87.4K', trend: '+18%' },
-              { label: 'Conversion', value: '68%', trend: '+5%' },
-            ].map((kpi, i) => (
-              <div key={kpi.label} className="bg-white rounded-xl p-3 sm:p-4 border border-gray-100 shadow-sm" style={{
-                opacity: phase >= 1 ? 1 : 0,
-                transform: phase >= 1 ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
-                transition: `all 1s ${smooth}`,
-                transitionDelay: `${i * 120}ms`,
-              }}>
-                <p className="text-[10px] sm:text-xs text-gray-500 uppercase font-semibold">{kpi.label}</p>
-                <p className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">{phase >= 1 ? kpi.value : '—'}</p>
-                <p className="text-[10px] sm:text-xs text-emerald-500 font-semibold">{kpi.trend} vs last month</p>
-              </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl p-4 sm:p-5 border border-gray-100 shadow-sm">
+          <p className="text-xs font-semibold text-gray-700 mb-4">Revenue Trend</p>
+          <div className="flex items-end gap-1.5 h-24 sm:h-32">
+            {[40, 55, 45, 65, 75, 85, 70, 90, 95, 80, 88, 100].map((h, i) => (
+              <div key={i} className="flex-1 rounded-t-md bg-gradient-to-t from-blue-600 to-blue-400" style={{ height: `${h}%` }} />
             ))}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-white rounded-xl p-4 sm:p-5 border border-gray-100 shadow-sm">
-              <p className="text-xs font-semibold text-gray-700 mb-4">Revenue Trend</p>
-              <div className="flex items-end gap-1.5 h-24 sm:h-32">
-                {chartHeights.map((h, i) => (
-                  <div key={i} className="flex-1 rounded-t-md bg-gradient-to-t from-blue-600 to-blue-400" style={{
-                    height: phase >= 2 ? `${h}%` : '2%',
-                    transition: `height 1.2s ${smooth}`,
-                    transitionDelay: `${i * 80}ms`,
-                  }} />
-                ))}
+        </div>
+        <div className="bg-white rounded-xl p-4 sm:p-5 border border-gray-100 shadow-sm">
+          <p className="text-xs font-semibold text-gray-700 mb-4">Pipeline</p>
+          {[{ stage: 'New Leads', w: 80 }, { stage: 'Quoted', w: 55 }, { stage: 'Booked', w: 40 }, { stage: 'In Progress', w: 30 }].map((s) => (
+            <div key={s.stage} className="flex items-center gap-2 mb-3">
+              <span className="text-[10px] sm:text-xs text-gray-500 w-16 sm:w-20 shrink-0">{s.stage}</span>
+              <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" style={{ width: `${s.w}%` }} />
               </div>
             </div>
-            <div className="bg-white rounded-xl p-4 sm:p-5 border border-gray-100 shadow-sm">
-              <p className="text-xs font-semibold text-gray-700 mb-4">Pipeline</p>
-              {['New Leads', 'Quoted', 'Booked', 'In Progress'].map((stage, i) => (
-                <div key={stage} className="flex items-center gap-2 mb-3">
-                  <span className="text-[10px] sm:text-xs text-gray-500 w-16 sm:w-20 shrink-0">{stage}</span>
-                  <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" style={{
-                      width: phase >= 3 ? `${pipelineWidths[i]}%` : '0%',
-                      transition: `width 1.4s ${smooth}`,
-                      transitionDelay: `${i * 200}ms`,
-                    }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const PipelineMockup = () => {
+    const stages = [
+      { name: 'New Lead', color: 'border-blue-500', dot: 'bg-blue-500', cards: [{ n: 'Water Heater Inspection', v: '$1,200' }, { n: 'Pipe Insulation Install', v: '$1,800' }, { n: 'Drain Cleaning Service', v: '$550' }] },
+      { name: 'Contacted', color: 'border-purple-500', dot: 'bg-purple-500', cards: [{ n: 'Bathroom Remodel', v: '$5,600' }, { n: 'Outdoor Faucet Repair', v: '$450' }] },
+      { name: 'Est. Scheduled', color: 'border-emerald-500', dot: 'bg-emerald-500', cards: [{ n: 'Kitchen Faucet Install', v: '$850' }, { n: 'Sump Pump Install', v: '$4,500' }] },
+      { name: 'Booked', color: 'border-amber-500', dot: 'bg-amber-500', cards: [{ n: 'Sewer Line Replace', v: '$8,900' }, { n: 'Whole House Repipe', v: '$12,500' }] },
+    ];
+    return (
+      <div className="bg-slate-50 p-4 sm:p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="text-sm font-bold text-gray-900">$55,800 across 15 deals</p>
+          </div>
+          <div className="flex gap-1">
+            <span className="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-lg">Board</span>
+            <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg">List</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {stages.map((stage) => (
+            <div key={stage.name} className="bg-white rounded-xl p-3 border border-gray-200 min-h-[200px]">
+              <div className="flex items-center gap-2 mb-3">
+                <div className={`w-2 h-2 rounded-full ${stage.dot}`} />
+                <p className="text-[10px] sm:text-xs font-bold text-gray-600 uppercase">{stage.name}</p>
+              </div>
+              <div className="space-y-2">
+                {stage.cards.map((card) => (
+                  <div key={card.n} className={`bg-slate-50 rounded-lg p-2.5 border-l-4 ${stage.color}`}>
+                    <p className="text-xs font-semibold text-gray-900 truncate">{card.n}</p>
+                    <p className="text-[10px] text-gray-500 mt-0.5">{card.v}</p>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     );
   };
 
-  // ─── Pipeline Tab Content
-  const PipelineContent = () => {
-    const [phase, setPhase] = useState(0);
-
-    useEffect(() => {
-      const t1 = setTimeout(() => setPhase(1), 600);
-      const t2 = setTimeout(() => setPhase(2), 1800);
-      const t3 = setTimeout(() => setPhase(3), 3000);
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-    }, []);
-
-    const stages = ['New Leads', 'Quoted', 'Booked', 'In Progress'];
-    const dotColors = ['bg-blue-500', 'bg-purple-500', 'bg-emerald-500', 'bg-amber-500'];
-    const borderColors = ['border-blue-500', 'border-purple-500', 'border-emerald-500', 'border-amber-500'];
-
-    // Static cards per column — they fade in/out based on phase
-    const columns: { name: string; value: string; showAt: number; hideAt?: number }[][] = [
-      // New Leads — starts full, cards leave over time
-      [
-        { name: 'Patel Kitchen Reno', value: '$12,400', showAt: 0 },
-        { name: 'Chen HVAC Install', value: '$6,200', showAt: 0 },
-        { name: 'Rodriguez Bath', value: '$4,800', showAt: 0, hideAt: 1 },
-        { name: 'Lee Electrical', value: '$8,900', showAt: 0, hideAt: 2 },
-        { name: 'Smith Plumbing', value: '$3,100', showAt: 0, hideAt: 3 },
-      ],
-      // Quoted — cards arrive
-      [
-        { name: 'Rodriguez Bath', value: '$4,800', showAt: 1 },
-      ],
-      // Booked
-      [
-        { name: 'Lee Electrical', value: '$8,900', showAt: 2 },
-      ],
-      // In Progress
-      [
-        { name: 'Smith Plumbing', value: '$3,100', showAt: 3 },
-      ],
-    ];
-
-    return (
-      <div className="w-full">
-        <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-lg">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {stages.map((stage, si) => (
-              <div key={stage} className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-gray-200 min-h-[220px]">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className={`w-2 h-2 rounded-full ${dotColors[si]}`} />
-                  <p className="text-[10px] sm:text-xs font-bold text-gray-600 uppercase">{stage}</p>
-                </div>
-                <div className="space-y-2.5">
-                  {columns[si].map((card, ci) => {
-                    const visible = phase >= card.showAt && (card.hideAt === undefined || phase < card.hideAt);
-                    return (
-                      <div
-                        key={`${si}-${ci}`}
-                        className={`bg-white rounded-lg p-3 border-l-4 shadow-sm ${borderColors[si]}`}
-                        style={{
-                          opacity: visible ? 1 : 0,
-                          maxHeight: visible ? '80px' : '0px',
-                          padding: visible ? '12px' : '0px 12px',
-                          marginBottom: visible ? '10px' : '0px',
-                          overflow: 'hidden',
-                          transition: `opacity 0.6s ${smooth}, max-height 0.6s ${smooth}, padding 0.6s ${smooth}, margin 0.6s ${smooth}`,
-                        }}
-                      >
-                        <p className="text-xs sm:text-sm font-semibold text-gray-900">{card.name}</p>
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{card.value}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+  const EstimatesMockup = () => (
+    <div className="bg-slate-50 p-4 sm:p-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        {[{ l: 'Total Estimates', v: '10' }, { l: 'Pending', v: '4' }, { l: 'Approved', v: '5' }, { l: 'Conversion', v: '50%' }].map((k) => (
+          <div key={k.l} className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <p className="text-[10px] text-gray-500 uppercase font-semibold">{k.l}</p>
+            <p className="text-xl font-bold text-gray-900 mt-1">{k.v}</p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <table className="w-full text-xs sm:text-sm">
+          <thead>
+            <tr className="bg-gray-50 border-b border-gray-100">
+              <th className="text-left py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Estimate #</th>
+              <th className="text-left py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Customer</th>
+              <th className="text-left py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px] hidden sm:table-cell">Service</th>
+              <th className="text-right py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Amount</th>
+              <th className="text-center py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { id: 'EST-001', cust: 'John Martinez', svc: 'Main Line Repair', amt: '$3,500', status: 'Approved', color: 'bg-emerald-100 text-emerald-700' },
+              { id: 'EST-002', cust: 'Sarah Chen', svc: 'Kitchen Faucet', amt: '$850', status: 'Sent', color: 'bg-blue-100 text-blue-700' },
+              { id: 'EST-003', cust: 'Michael O\'Brien', svc: 'Water Heater', amt: '$1,540', status: 'Approved', color: 'bg-emerald-100 text-emerald-700' },
+              { id: 'EST-004', cust: 'Jennifer Williams', svc: 'Bathroom Remodel', amt: '$5,600', status: 'Draft', color: 'bg-gray-100 text-gray-600' },
+              { id: 'EST-005', cust: 'David Rodriguez', svc: 'Fixture Install', amt: '$4,480', status: 'Approved', color: 'bg-emerald-100 text-emerald-700' },
+            ].map((r) => (
+              <tr key={r.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                <td className="py-2.5 px-3 font-medium text-gray-900">{r.id}</td>
+                <td className="py-2.5 px-3 text-gray-700">{r.cust}</td>
+                <td className="py-2.5 px-3 text-gray-500 hidden sm:table-cell">{r.svc}</td>
+                <td className="py-2.5 px-3 text-right font-semibold text-gray-900">{r.amt}</td>
+                <td className="py-2.5 px-3 text-center"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${r.color}`}>{r.status}</span></td>
+              </tr>
             ))}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
-    );
-  };
+    </div>
+  );
 
-  // ─── Estimates Tab Content
-  const EstimatesContent = () => {
-    const [phase, setPhase] = useState(0);
-
-    useEffect(() => {
-      const t1 = setTimeout(() => setPhase(1), 200);   // Cards appear
-      const t2 = setTimeout(() => setPhase(2), 1000);  // Prices + features reveal
-      const t3 = setTimeout(() => setPhase(3), 2000);  // Badge glow
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-    }, []);
-
-    const tiers = [
-      { tier: 'Good', price: '$800', features: ['Bathroom Fixture Replacement', 'Caulking & Sealant', 'Basic Tile Work'], badge: null },
-      { tier: 'Better', price: '$1,200', features: ['Everything in Good', 'Tile Removal & Prep', 'Grout Installation', 'Full Renovations'], badge: 'Recommended' },
-      { tier: 'Best', price: '$1,800', features: ['Everything in Better', 'Premium Fixtures', 'Heated Floors', 'Custom Lighting'], badge: null },
-    ];
-
-    return (
-      <div className="w-full">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-          {tiers.map((t, i) => (
-            <div
-              key={t.tier}
-              className={`rounded-2xl p-5 sm:p-6 border-2 ${
-                t.badge
-                  ? 'bg-gradient-to-br from-blue-50 to-blue-100 border-blue-400 ring-2 ring-blue-500/30 shadow-xl shadow-blue-500/10'
-                  : 'bg-white border-gray-200 shadow-lg'
-              }`}
-              style={{
-                opacity: phase >= 1 ? 1 : 0,
-                transform: phase >= 1 ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.92)',
-                transition: `all 1s ${smooth}`,
-                transitionDelay: `${i * 150}ms`,
-              }}
-            >
-              {t.badge && (
-                <div className="inline-block px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-semibold mb-4" style={{
-                  opacity: phase >= 3 ? 1 : 0.7,
-                  boxShadow: phase >= 3 ? '0 0 20px rgba(59,130,246,0.5)' : 'none',
-                  transition: `all 1.5s ${smooth}`,
-                }}>
-                  {t.badge}
-                </div>
-              )}
-              <p className="font-semibold text-gray-900 text-base sm:text-lg">{t.tier}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2 mb-5" style={{
-                opacity: phase >= 2 ? 1 : 0,
-                transform: phase >= 2 ? 'translateY(0)' : 'translateY(10px)',
-                transition: `all 0.8s ${smooth}`,
-                transitionDelay: `${i * 100 + 100}ms`,
-              }}>
-                {t.price}
-              </p>
-              <ul className="space-y-2.5">
-                {t.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-gray-700" style={{
-                    opacity: phase >= 2 ? 1 : 0,
-                    transform: phase >= 2 ? 'translateX(0)' : 'translateX(-12px)',
-                    transition: `all 0.8s ${smooth}`,
-                    transitionDelay: `${i * 100 + idx * 80 + 200}ms`,
-                  }}>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+  const AdvisorMockup = () => (
+    <div className="bg-slate-50 p-4 sm:p-6">
+      <div className="bg-white rounded-2xl p-5 sm:p-7 border border-gray-100 shadow-sm">
+        <div className="space-y-4">
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div>
+            <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-sm">
+              <p className="text-sm text-gray-900 leading-relaxed">Morning Mike. You closed 8 jobs this month for $34,200. Up 18% from last month.</p>
             </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  // ─── Growth Advisor Tab Content
-  const AdvisorContent = () => {
-    const [phase, setPhase] = useState(0);
-
-    useEffect(() => {
-      const delays = [600, 2200, 3400, 4200, 5600, 7000];
-      const timers = delays.map((d, i) => setTimeout(() => setPhase(i + 1), d));
-      return () => timers.forEach(clearTimeout);
-    }, []);
-
-    const Dots = () => (
-      <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
-        <div className="flex gap-1.5">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="w-2 h-2 rounded-full bg-gray-400" style={{
-              animation: 'pulse 1.2s ease-in-out infinite',
-              animationDelay: `${i * 200}ms`,
-            }} />
-          ))}
-        </div>
-      </div>
-    );
-
-    const Bubble = ({ advisor, text, show }: { advisor: boolean; text: string; show: boolean }) => (
-      <div className={`flex gap-3 ${advisor ? '' : 'justify-end'}`} style={{
-        opacity: show ? 1 : 0,
-        transform: show ? 'translateY(0)' : `translateY(16px)`,
-        transition: `all 0.8s ${smooth}`,
-      }}>
-        {advisor && (
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">
-            AI
           </div>
-        )}
-        <div className={`rounded-2xl px-4 py-2.5 max-w-sm ${advisor ? 'bg-gray-100 rounded-tl-sm' : 'bg-blue-500 text-white rounded-tr-sm shadow-md shadow-blue-500/20'}`}>
-          <p className={`text-sm leading-relaxed ${advisor ? 'text-gray-900' : 'text-white'}`}>{text}</p>
-        </div>
-        {!advisor && (
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-xs font-bold">
-            M
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div>
+            <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-sm">
+              <p className="text-sm text-gray-900 leading-relaxed">3 estimates over $5K are going stale. That&apos;s $23K sitting on the table.</p>
+            </div>
           </div>
-        )}
+          <div className="flex gap-3 justify-end">
+            <div className="bg-blue-500 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-sm shadow-md shadow-blue-500/20">
+              <p className="text-sm leading-relaxed">Which ones?</p>
+            </div>
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-xs font-bold">M</div>
+          </div>
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div>
+            <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-sm">
+              <p className="text-sm text-gray-900 leading-relaxed">Patel kitchen reno ($12K), Chen HVAC ($6.2K), Rodriguez bathroom ($4.8K). Want me to follow up?</p>
+            </div>
+          </div>
+          <div className="flex gap-3 justify-end">
+            <div className="bg-blue-500 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-sm shadow-md shadow-blue-500/20">
+              <p className="text-sm leading-relaxed">Yes, follow up today</p>
+            </div>
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-xs font-bold">M</div>
+          </div>
+          <div className="flex gap-3">
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div>
+            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-sm">
+              <p className="text-sm text-emerald-800 font-medium">Done. Follow-up emails sent to all 3 customers with personalized quotes attached.</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-2 mt-5 pt-4 border-t border-gray-100">
+          <div className="flex-1 px-4 py-2.5 bg-gray-50 rounded-full text-sm text-gray-400 border border-gray-200">Ask anything about your business...</div>
+          <div className="p-2.5 bg-blue-500 text-white rounded-full shadow-md shadow-blue-500/20">
+            <Send className="w-4 h-4" />
+          </div>
+        </div>
       </div>
-    );
+    </div>
+  );
 
-    return (
-      <div className="w-full max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl p-5 sm:p-7 border border-gray-200 shadow-lg">
-          <div className="space-y-4 min-h-[280px]">
-            {phase >= 1 ? (
-              <Bubble advisor text="Morning Mike 👋 You closed 8 jobs this month for $34,200. Up 18% from last month." show={phase >= 1} />
-            ) : (
-              <div className="flex gap-3"><div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div><Dots /></div>
-            )}
-
-            {phase >= 2 ? (
-              <Bubble advisor text="3 estimates over $5K are going stale. That's $23K sitting on the table." show={phase >= 2} />
-            ) : phase >= 1 ? (
-              <div className="flex gap-3" style={{ opacity: 1, transition: `opacity 0.6s ${smooth}` }}><div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div><Dots /></div>
-            ) : null}
-
-            {phase >= 3 && <Bubble advisor={false} text="Which ones?" show={phase >= 3} />}
-
-            {phase >= 4 ? (
-              <Bubble advisor text="Patel kitchen reno ($12K), Chen HVAC ($6.2K), Rodriguez bathroom ($4.8K). Want me to follow up?" show={phase >= 4} />
-            ) : phase >= 3 ? (
-              <div className="flex gap-3" style={{ opacity: 1, transition: `opacity 0.6s ${smooth}` }}><div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div><Dots /></div>
-            ) : null}
-
-            {phase >= 5 && <Bubble advisor={false} text="Yes, follow up today" show={phase >= 5} />}
-
-            {phase >= 6 && (
-              <div className="flex gap-3" style={{ opacity: phase >= 6 ? 1 : 0, transform: phase >= 6 ? 'translateY(0)' : 'translateY(16px)', transition: `all 0.8s ${smooth}` }}>
-                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-blue-500/30">AI</div>
-                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-sm">
-                  <p className="text-sm text-emerald-800 font-medium">✓ Done. Follow-up emails sent to all 3 customers with personalized quotes attached.</p>
-                </div>
+  const AutopilotMockup = () => (
+    <div className="bg-slate-50 p-4 sm:p-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        {[{ l: 'Emails/month', v: '~240' }, { l: 'Texts/month', v: '~180' }, { l: 'Hours saved', v: '47' }, { l: 'Revenue impact', v: '+$19.4K' }].map((k) => (
+          <div key={k.l} className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <p className="text-[10px] text-gray-500 uppercase font-semibold">{k.l}</p>
+            <p className="text-xl font-bold text-gray-900 mt-1">{k.v}</p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-50">
+        {[
+          { name: 'Speed to Lead', desc: 'Responds in 60 seconds', sent: '247 sent' },
+          { name: 'Estimate Follow-Up', desc: 'Days 1, 3, 7', sent: '1,204 sent' },
+          { name: '5-Star Reviews', desc: 'Auto-requests after job', sent: '892 sent' },
+          { name: 'Payment Reminders', desc: 'Days 3, 7, 14', sent: '541 sent' },
+          { name: 'Reactivation', desc: '60-day dormant customers', sent: '365 sent' },
+          { name: 'Seasonal Campaigns', desc: 'Fall furnace tune-ups', sent: '128 sent' },
+        ].map((auto) => (
+          <div key={auto.name} className="flex items-center justify-between p-3 sm:p-4">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-gray-900">{auto.name}</p>
+              <p className="text-xs text-gray-500 mt-0.5">{auto.desc}</p>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="relative w-11 h-6 rounded-full bg-emerald-500 shadow-md shadow-emerald-500/30">
+                <div className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm" style={{ left: 'calc(100% - 22px)' }} />
               </div>
-            )}
+              <span className="text-xs font-medium text-emerald-600 w-20 text-right">{auto.sent}</span>
+            </div>
           </div>
-          <div className="flex gap-2 mt-5 pt-4 border-t border-gray-100">
-            <input type="text" placeholder="Ask anything about your business..." className="flex-1 px-4 py-2.5 bg-gray-50 rounded-full text-sm text-gray-900 placeholder-gray-400 border border-gray-200 cursor-default" />
-            <button className="p-2.5 bg-blue-500 text-white rounded-full shadow-md shadow-blue-500/20">
-              <Send className="w-4 h-4" />
-            </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const InvoicingMockup = () => (
+    <div className="bg-slate-50 p-4 sm:p-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+        {[{ l: 'Invoices', v: '3' }, { l: 'Outstanding', v: '$3,107' }, { l: 'Paid', v: '$3,955' }, { l: 'Collection', v: '56%' }].map((k) => (
+          <div key={k.l} className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+            <p className="text-[10px] text-gray-500 uppercase font-semibold">{k.l}</p>
+            <p className="text-xl font-bold text-gray-900 mt-1">{k.v}</p>
           </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm mb-4">
+        <div className="flex justify-between items-center mb-2">
+          <p className="text-sm font-semibold text-gray-900">Payment Collection</p>
+          <p className="text-sm font-bold text-emerald-600">56%</p>
+        </div>
+        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '56%' }} />
+        </div>
+        <div className="flex justify-between mt-2 text-xs text-gray-500">
+          <span>Collected: $3,955</span>
+          <span>Outstanding: $3,107</span>
         </div>
       </div>
-    );
-  };
-
-  // ─── Autopilot Tab Content
-  const AutopilotContent = () => {
-    const [phase, setPhase] = useState(0);
-    const [toggles, setToggles] = useState([false, false, false, false, false, false]);
-
-    const automations = [
-      { name: 'Speed to Lead', status: 'Responds in 60 seconds', sent: '247 sent' },
-      { name: 'Estimate Follow-Up', status: 'Days 1, 3, 7', sent: '1,204 sent' },
-      { name: '5-Star Reviews', status: 'Auto-requests after job', sent: '892 sent' },
-      { name: 'Payment Reminders', status: 'Days 3, 7, 14', sent: '541 sent' },
-      { name: 'Reactivation', status: '60-day dormant customers', sent: '365 sent' },
-      { name: 'Seasonal Campaigns', status: 'Fall furnace tune-ups', sent: '128 sent' },
-    ];
-
-    useEffect(() => {
-      // Stagger row reveals
-      automations.forEach((_, i) => {
-        setTimeout(() => setPhase(i + 1), 200 + i * 250);
-        setTimeout(() => setToggles(prev => { const n = [...prev]; n[i] = true; return n; }), 600 + i * 250);
-      });
-    }, []);
-
-    return (
-      <div className="w-full max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200 shadow-lg space-y-3">
-          {automations.map((auto, i) => (
-            <div
-              key={auto.name}
-              className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-xl border border-gray-100"
-              style={{
-                opacity: phase > i ? 1 : 0,
-                transform: phase > i ? 'translateX(0)' : 'translateX(-30px)',
-                transition: `all 0.8s ${smooth}`,
-                transitionDelay: `${i * 80}ms`,
-              }}
-            >
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-900">{auto.name}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{auto.status}</p>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
-                <div className={`relative w-11 h-6 rounded-full cursor-pointer ${toggles[i] ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-gray-300'}`}
-                  style={{ transition: `all 0.6s ${smooth}` }}
-                >
-                  <div className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm"
-                    style={{
-                      left: toggles[i] ? 'calc(100% - 22px)' : '2px',
-                      transition: `left 0.5s ${smooth}`,
-                    }}
-                  />
-                </div>
-                <span className="text-xs font-medium w-20 text-right" style={{
-                  color: toggles[i] ? '#059669' : '#9ca3af',
-                  transition: `color 0.6s ${smooth}`,
-                }}>
-                  {toggles[i] ? auto.sent : 'Paused'}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <table className="w-full text-xs sm:text-sm">
+          <thead>
+            <tr className="bg-gray-50 border-b border-gray-100">
+              <th className="text-left py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Invoice</th>
+              <th className="text-left py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Customer</th>
+              <th className="text-right py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Total</th>
+              <th className="text-center py-2.5 px-3 font-semibold text-gray-500 uppercase text-[10px]">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { id: 'INV-001', cust: 'John Martinez', amt: '$3,955', status: 'Paid', color: 'bg-emerald-100 text-emerald-700' },
+              { id: 'INV-002', cust: 'Patricia King', amt: '$734.50', status: 'Sent', color: 'bg-blue-100 text-blue-700' },
+              { id: 'INV-003', cust: 'Sarah Chen', amt: '$2,373', status: 'Sent', color: 'bg-blue-100 text-blue-700' },
+            ].map((r) => (
+              <tr key={r.id} className="border-b border-gray-50">
+                <td className="py-2.5 px-3 font-medium text-gray-900">{r.id}</td>
+                <td className="py-2.5 px-3 text-gray-700">{r.cust}</td>
+                <td className="py-2.5 px-3 text-right font-semibold text-gray-900">{r.amt}</td>
+                <td className="py-2.5 px-3 text-center"><span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${r.color}`}>{r.status}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    );
-  };
+    </div>
+  );
 
-  // ─── Invoicing Tab Content
-  const InvoicingContent = () => {
-    const [phase, setPhase] = useState(0);
-
-    useEffect(() => {
-      const t1 = setTimeout(() => setPhase(1), 200);   // Header
-      const t2 = setTimeout(() => setPhase(2), 700);   // Line items
-      const t3 = setTimeout(() => setPhase(3), 1800);  // Totals
-      const t4 = setTimeout(() => setPhase(4), 2600);  // Progress bar
-      const t5 = setTimeout(() => setPhase(5), 3200);  // Buttons
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); };
-    }, []);
-
-    const items = [
-      { desc: 'Bathroom Reno Labour', amount: '$2,400.00' },
-      { desc: 'Materials & Fixtures', amount: '$1,800.00' },
-      { desc: 'Permits & Inspection', amount: '$300.00' },
-    ];
-
-    return (
-      <div className="w-full max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-lg">
-          {/* Header */}
-          <div className="mb-8 pb-8 border-b border-gray-200" style={{
-            opacity: phase >= 1 ? 1 : 0,
-            transform: phase >= 1 ? 'translateY(0)' : 'translateY(-15px)',
-            transition: `all 0.8s ${smooth}`,
-          }}>
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">Invoice</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">INV-2026-047</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-semibold text-gray-700">Patel Residence</p>
-                <p className="text-xs text-gray-500 mt-1">123 Oak Street, Toronto ON</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Line items */}
-          <div className="mb-8">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
-                  <th className="text-right py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item, i) => (
-                  <tr key={i} className="border-b border-gray-50" style={{
-                    opacity: phase >= 2 ? 1 : 0,
-                    transform: phase >= 2 ? 'translateY(0)' : 'translateY(-8px)',
-                    transition: `all 0.7s ${smooth}`,
-                    transitionDelay: `${i * 150}ms`,
-                  }}>
-                    <td className="py-3 text-gray-900">{item.desc}</td>
-                    <td className="text-right text-gray-900 font-medium">{item.amount}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Totals */}
-          <div className="space-y-2 mb-6 pb-6 border-b border-gray-200" style={{
-            opacity: phase >= 3 ? 1 : 0,
-            transition: `all 0.8s ${smooth}`,
-          }}>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Subtotal</span>
-              <span className="font-semibold text-gray-900">$4,500.00</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">HST 13% (Ontario)</span>
-              <span className="font-semibold text-gray-900">$585.00</span>
-            </div>
-            <div className="flex justify-between pt-2">
-              <span className="font-bold text-gray-900">Total</span>
-              <span className="text-xl font-bold text-gray-900">$5,085.00</span>
-            </div>
-          </div>
-
-          {/* Payment Progress */}
-          <div className="mb-6" style={{
-            opacity: phase >= 4 ? 1 : 0,
-            transition: `all 0.8s ${smooth}`,
-          }}>
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-xs text-gray-500 font-semibold">Payment Progress</p>
-              <p className="text-xs text-gray-500">$3,051.00 of $5,085.00</p>
-            </div>
-            <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{
-                width: phase >= 4 ? '60%' : '0%',
-                transition: `width 1.6s ${smooth}`,
-              }} />
-            </div>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-3" style={{
-            opacity: phase >= 5 ? 1 : 0,
-            transform: phase >= 5 ? 'translateY(0)' : 'translateY(8px)',
-            transition: `all 0.8s ${smooth}`,
-          }}>
-            <button className="flex-1 px-4 py-2.5 bg-blue-500 text-white rounded-xl text-sm font-semibold shadow-md shadow-blue-500/20">
-              Send Reminder
-            </button>
-            <button className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-900 rounded-xl text-sm font-semibold">
-              Record Payment
-            </button>
-          </div>
-        </div>
-
-        <style>{`
-          @keyframes glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
-          }
-        `}</style>
-      </div>
-    );
-  };
-
-  const renderTabContent = () => {
+  const renderMockup = () => {
     switch (activeTab) {
-      case 'dashboard':
-        return <DashboardContent key="dashboard" />;
-      case 'pipeline':
-        return <PipelineContent key="pipeline" />;
-      case 'estimates':
-        return <EstimatesContent key="estimates" />;
-      case 'advisor':
-        return <AdvisorContent key="advisor" />;
-      case 'autopilot':
-        return <AutopilotContent key="autopilot" />;
-      case 'invoicing':
-        return <InvoicingContent key="invoicing" />;
-      default:
-        return <DashboardContent key="dashboard" />;
+      case 'dashboard': return <DashboardMockup />;
+      case 'pipeline': return <PipelineMockup />;
+      case 'estimates': return <EstimatesMockup />;
+      case 'advisor': return <AdvisorMockup />;
+      case 'autopilot': return <AutopilotMockup />;
+      case 'invoicing': return <InvoicingMockup />;
+      default: return <DashboardMockup />;
     }
   };
 
-  const parallaxOffset = useParallax(0.08);
+  const currentTab = tabs.find(t => t.id === activeTab)!;
 
   return (
-    <section className="relative bg-slate-950 py-0 overflow-hidden">
-      {/* Parallax background glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
-      >
+    <section className="relative bg-slate-950 py-20 sm:py-28 overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Section header with description */}
-      <div className="relative text-center pt-24 sm:pt-32 pb-8 px-6">
-        <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tight">
-          Take a closer look.
-        </h2>
-        <p className="mt-4 text-sm sm:text-base text-slate-400 max-w-lg mx-auto">
-          {tabInfo[activeTab].description}
-        </p>
-      </div>
-
-      {/* Tab navigation — horizontal, centered */}
       <div className="relative max-w-7xl mx-auto px-6">
-        <div className="flex gap-1 sm:gap-2 overflow-x-auto pb-4 justify-start sm:justify-center scrollbar-hide">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-shrink-0 px-4 sm:px-6 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'bg-white text-slate-900 shadow-lg shadow-white/10'
-                  : 'text-slate-400 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Section header */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
+            Take a closer look.
+          </h2>
+          <p className="mt-4 text-base text-slate-400 max-w-lg mx-auto">
+            Everything you need to run and grow your business. No extra tools, no spreadsheets.
+          </p>
         </div>
-      </div>
 
-      {/* Full-width visual area — large */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pb-24 sm:pb-32">
-        <div
-          className="relative bg-slate-900/60 rounded-2xl sm:rounded-3xl border border-slate-700/50 overflow-hidden backdrop-blur-sm"
-          style={{ minHeight: '520px' }}
-        >
-          {/* Product view area — centered, full width */}
-          <div className="flex items-center justify-center w-full p-6 sm:p-10 lg:p-14">
-            <div className="w-full max-w-5xl transition-opacity duration-300" key={activeTab}>
-              {renderTabContent()}
+        {/* Left tabs + Right mockup layout */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+
+          {/* Left side: vertical tabs */}
+          <div className="lg:w-72 xl:w-80 shrink-0">
+            {/* Mobile: horizontal scroll */}
+            <div className="flex lg:hidden gap-2 overflow-x-auto pb-3 scrollbar-hide">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
+                    activeTab === tab.id
+                      ? 'bg-white text-slate-900 shadow-lg'
+                      : 'text-slate-400 hover:text-white bg-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  {tab.icon}
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Desktop: vertical tabs with descriptions */}
+            <div className="hidden lg:flex flex-col gap-1.5">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`text-left w-full px-4 py-4 rounded-xl transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? 'bg-white/10 border border-white/20'
+                      : 'hover:bg-white/5 border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`${activeTab === tab.id ? 'text-blue-400' : 'text-slate-500'} transition-colors`}>
+                      {tab.icon}
+                    </div>
+                    <span className={`font-semibold text-sm ${activeTab === tab.id ? 'text-white' : 'text-slate-400'} transition-colors`}>
+                      {tab.label}
+                    </span>
+                  </div>
+                  <p className={`mt-1.5 text-xs leading-relaxed pl-8 ${activeTab === tab.id ? 'text-slate-300' : 'text-slate-600'} transition-colors`}>
+                    {tab.description}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Right side: browser frame + mockup */}
+          <div className="flex-1 min-w-0">
+            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl shadow-black/30">
+              {/* Browser chrome */}
+              <div className="bg-slate-800 px-4 py-2.5 flex items-center gap-3">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-400/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-400/80" />
+                </div>
+                <div className="flex-1 flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-700/50 rounded-lg max-w-sm">
+                    <div className="w-2 h-2 rounded-full bg-green-400" />
+                    <span className="text-xs text-slate-400 font-mono truncate">{currentTab.url}</span>
+                  </div>
+                </div>
+                <div className="w-14" />
+              </div>
+
+              {/* Mockup content */}
+              <div className="bg-slate-100 min-h-[400px] sm:min-h-[480px]">
+                {renderMockup()}
+              </div>
             </div>
           </div>
         </div>
