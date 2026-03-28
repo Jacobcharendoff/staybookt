@@ -14,7 +14,6 @@ import {
   Zap,
   MessageSquare,
   Bell,
-  Workflow,
 } from 'lucide-react';
 
 export function Sidebar() {
@@ -27,7 +26,7 @@ export function Sidebar() {
     { href: '/contacts', label: 'Contacts', icon: Users },
     { href: '/estimates', label: 'Estimates', icon: FileText },
     { href: '/invoices', label: 'Invoices', icon: Receipt },
-    { href: '/automations', label: 'Automations', icon: Workflow },
+    { href: '/automations', label: 'Autopilot', icon: Zap },
     { href: '/messages', label: 'Messages', icon: MessageSquare },
     { href: '/notifications', label: 'Notifications', icon: Bell },
     { href: '/activity', label: 'Activity', icon: ActivitySquare },
@@ -97,7 +96,7 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-slate-700 text-center">
-        <p className="text-xs text-slate-500">v2.1.0 Beta</p>
+        <p className="text-xs text-slate-500">v2.2.0 Beta</p>
       </div>
     </aside>
   );

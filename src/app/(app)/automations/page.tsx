@@ -1,451 +1,725 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  Star,
-  Clock,
-  UserPlus,
-  Bell,
-  RefreshCcw,
-  AlertCircle,
-  Plus,
-  ToggleLeft,
-  ChevronDown,
-  X,
-  Check,
+  Zap, Play, Pause, Clock, Mail, MessageSquare, Star, DollarSign,
+  Users, Calendar, ChevronRight, CheckCircle2, ArrowRight, Shield,
+  Sparkles, TrendingUp, RotateCcw, Sun, Snowflake, Bell, Settings,
+  Copy, Eye, ToggleLeft, Lightbulb, Target, Heart, Phone
 } from 'lucide-react';
 
-interface Automation {
-  id: string;
-  name: string;
-  trigger: string;
-  lastTriggered: string;
-  timesRun: number;
-  isActive: boolean;
+// ============================================================
+// TYPES
+// ============================================================
+
+type PlaybookCategory = 'all' | 'lead_capture' | 'follow_up' | 'retention' | 'revenue';
+
+interface AutomationStep {
+  type: 'email' | 'sms' | 'wait' | 'condition' | 'action';
+  label: string;
+  detail: string;
+  icon: 'mail' | 'sms' | 'clock' | 'check' | 'zap' | 'phone';
 }
 
-const AUTOMATION_TEMPLATES = [
-  {
-    id: 'review-request',
-    icon: Star,
-    title: 'Review Request',
-    description: 'Request a Google review 24 hours after job completion',
-    trigger: 'Deal moves to Completed',
-    action: 'Send SMS + Email',
-  },
-  {
-    id: 'estimate-followup',
-    icon: Clock,
-    title: 'Estimate Follow-Up',
-    description: 'Follow up on unseen estimates after 48 hours',
-    trigger: 'Estimate not viewed in 48hrs',
-    action: 'Send SMS reminder',
-  },
-  {
-    id: 'new-lead-welcome',
-    icon: UserPlus,
-    title: 'New Lead Welcome',
-    description: 'Send welcome message when a new lead enters pipeline',
-    trigger: 'New deal created',
-    action: 'Send Email',
-  },
-  {
-    id: 'appointment-reminder',
-    icon: Bell,
-    title: 'Appointment Reminder',
-    description: 'Remind customer 24hrs before scheduled job',
-    trigger: '24hrs before scheduled date',
-    action: 'Send SMS',
-  },
-  {
-    id: 'seasonal-reactivation',
-    icon: RefreshCcw,
-    title: 'Seasonal Reactivation',
-    description: 'Re-engage customers with no activity in 6 months',
-    trigger: 'No activity for 180 days',
-    action: 'Send Email campaign',
-  },
-  {
-    id: 'invoice-reminder',
-    icon: AlertCircle,
-    title: 'Invoice Reminder',
-    description: 'Send payment reminder for overdue invoices',
-    trigger: 'Invoice overdue by 7 days',
-    action: 'Send Email + SMS',
-  },
-];
+interface Playbook {
+  id: string;
+  name: string;
+  description: string;
+  category: PlaybookCategory;
+  impact: string;
+  impactColor: string;
+  steps: AutomationStep[];
+  stats: { label: string; value: string }[];
+  isActive: boolean;
+  isPremium: boolean;
+  ring: 1 | 2 | 3;
+  templates: TemplatePreview[];
+}
 
-const ACTIVE_AUTOMATIONS: Automation[] = [
+interface TemplatePreview {
+  type: 'email' | 'sms';
+  name: string;
+  subject?: string;
+  body: string;
+}
+
+// ============================================================
+// PLAYBOOK DATA — The out-of-the-box automations
+// ============================================================
+
+const PLAYBOOKS: Playbook[] = [
   {
-    id: '1',
-    name: 'Review Request Follow-up',
-    trigger: 'Job completed',
-    lastTriggered: '2 hours ago',
-    timesRun: 847,
-    isActive: true,
-  },
-  {
-    id: '2',
-    name: 'New Lead Welcome',
-    trigger: 'New deal created',
-    lastTriggered: '30 mins ago',
-    timesRun: 1203,
-    isActive: true,
-  },
-  {
-    id: '3',
-    name: 'Estimate Follow-up',
-    trigger: 'Estimate not viewed',
-    lastTriggered: '4 hours ago',
-    timesRun: 562,
-    isActive: true,
-  },
-  {
-    id: '4',
-    name: 'Payment Reminder',
-    trigger: 'Invoice overdue 7 days',
-    lastTriggered: '1 day ago',
-    timesRun: 341,
-    isActive: true,
-  },
-  {
-    id: '5',
-    name: 'Appointment Reminder',
-    trigger: '24hrs before appointment',
-    lastTriggered: '6 hours ago',
-    timesRun: 1450,
+    id: 'speed-to-lead',
+    name: 'Speed to Lead',
+    description: 'Respond to new leads within 60 seconds. The first business to respond wins the job 78% of the time.',
+    category: 'lead_capture',
+    impact: '+78% conversion',
+    impactColor: 'text-emerald-600 bg-emerald-50',
+    ring: 1,
+    isPremium: false,
     isActive: false,
+    stats: [
+      { label: 'Avg response time', value: '<60s' },
+      { label: 'Industry avg', value: '4.2 hrs' },
+      { label: 'Win rate lift', value: '+78%' },
+    ],
+    steps: [
+      { type: 'action', label: 'New lead enters pipeline', detail: 'Any source: call, form, ad, referral', icon: 'zap' },
+      { type: 'sms', label: 'Instant SMS to customer', detail: '"Hi {first_name}, thanks for reaching out to {company}! We got your request and someone will call you within the hour."', icon: 'sms' },
+      { type: 'email', label: 'Detailed email follow-up', detail: 'Professional intro email with services, reviews link, and booking calendar', icon: 'mail' },
+      { type: 'action', label: 'Notify assigned tech', detail: 'Push notification + SMS to the assigned technician with lead details', icon: 'phone' },
+      { type: 'wait', label: 'Wait 2 hours', detail: 'If no response from the customer...', icon: 'clock' },
+      { type: 'sms', label: 'Gentle follow-up SMS', detail: '"Hey {first_name}, just making sure you got our message. Would you like to schedule a time for us to come take a look?"', icon: 'sms' },
+    ],
+    templates: [
+      {
+        type: 'sms',
+        name: 'Instant Lead Response',
+        body: 'Hi {first_name}! Thanks for reaching out to {company_name}. We received your request for {service_type} and a team member will call you within the hour. Reply STOP to opt out.',
+      },
+      {
+        type: 'email',
+        name: 'New Lead Welcome',
+        subject: '{company_name} — We Got Your Request!',
+        body: 'Hi {first_name},\n\nThank you for contacting {company_name}! We received your request for {service_type} and we\'re excited to help.\n\nHere\'s what happens next:\n1. A team member will call you within the hour to discuss your needs\n2. We\'ll schedule a convenient time to come assess the job\n3. You\'ll receive a detailed estimate with Good/Better/Best options\n\nIn the meantime, check out what our customers say about us: {reviews_link}\n\nNeed us sooner? Call us directly: {company_phone}\n\nBest,\n{company_name} Team',
+      },
+    ],
+  },
+  {
+    id: 'estimate-follow-up',
+    name: 'Estimate Follow-Up Machine',
+    description: 'Automatically follow up on sent estimates at 24hrs, 72hrs, and 7 days. Most jobs are lost to silence, not competition.',
+    category: 'follow_up',
+    impact: '+35% close rate',
+    impactColor: 'text-blue-600 bg-blue-50',
+    ring: 1,
+    isPremium: false,
+    isActive: false,
+    stats: [
+      { label: 'Estimates recovered', value: '35%' },
+      { label: 'Avg time to close', value: '-2.1 days' },
+      { label: 'Revenue impact', value: '+$4,200/mo' },
+    ],
+    steps: [
+      { type: 'action', label: 'Estimate sent to customer', detail: 'Triggers when estimate status changes to "Sent"', icon: 'zap' },
+      { type: 'wait', label: 'Wait 24 hours', detail: 'Give them time to review', icon: 'clock' },
+      { type: 'sms', label: 'Friendly check-in SMS', detail: '"Hey {first_name}, just checking in — did you get a chance to look over the estimate we sent? Happy to answer any questions!"', icon: 'sms' },
+      { type: 'condition', label: 'If no response...', detail: 'Check if estimate status is still "Sent"', icon: 'check' },
+      { type: 'wait', label: 'Wait 48 more hours', detail: '72 hours total since estimate sent', icon: 'clock' },
+      { type: 'email', label: 'Value-add follow-up email', detail: 'Highlight the "Better" option, include testimonial, create gentle urgency', icon: 'mail' },
+      { type: 'wait', label: 'Wait 4 more days', detail: '7 days total since estimate sent', icon: 'clock' },
+      { type: 'sms', label: 'Final follow-up', detail: '"Hi {first_name}, our estimate for your {service_type} is still available. Would you like to move forward or have any questions? We\'re here to help!"', icon: 'sms' },
+    ],
+    templates: [
+      {
+        type: 'sms',
+        name: '24hr Estimate Check-in',
+        body: 'Hey {first_name}, just checking in — did you get a chance to look over the estimate we sent for {service_type}? Happy to answer any questions! - {tech_name} at {company_name}',
+      },
+      {
+        type: 'email',
+        name: '72hr Estimate Follow-up',
+        subject: 'Quick question about your {service_type} estimate',
+        body: 'Hi {first_name},\n\nI wanted to follow up on the estimate we sent for {service_type} at {address}.\n\nA lot of our customers choose the "Better" option because it includes {better_highlight} — which saves money long-term.\n\nHere\'s what {recent_customer} said after their project:\n"{testimonial_text}"\n\nWe\'re booking up for {current_month}, so let me know if you\'d like to get on the schedule. Happy to answer any questions!\n\nBest,\n{tech_name}\n{company_name}',
+      },
+      {
+        type: 'sms',
+        name: '7-Day Final Follow-up',
+        body: 'Hi {first_name}, our estimate for your {service_type} is still available. Would you like to move forward or have any questions? We\'d love to help! - {company_name}',
+      },
+    ],
+  },
+  {
+    id: 'review-machine',
+    name: '5-Star Review Machine',
+    description: 'Automatically request Google reviews after every completed job. Builds your reputation on autopilot.',
+    category: 'retention',
+    impact: '+12 reviews/mo',
+    impactColor: 'text-amber-600 bg-amber-50',
+    ring: 2,
+    isPremium: false,
+    isActive: false,
+    stats: [
+      { label: 'Review request rate', value: '100%' },
+      { label: 'Conversion to review', value: '22%' },
+      { label: 'Avg rating', value: '4.8★' },
+    ],
+    steps: [
+      { type: 'action', label: 'Job marked as complete', detail: 'Triggers when deal stage moves to "Completed"', icon: 'zap' },
+      { type: 'wait', label: 'Wait 2 hours', detail: 'Let them enjoy the finished work first', icon: 'clock' },
+      { type: 'sms', label: 'Personal thank-you + review ask', detail: '"Thanks for choosing {company}! If {tech_name} did a great job, would you mind leaving us a quick Google review? {review_link}"', icon: 'sms' },
+      { type: 'condition', label: 'If no review after 3 days...', detail: 'Check if Google review was posted', icon: 'check' },
+      { type: 'email', label: 'Gentle email reminder', detail: 'Thank-you email with one-click review link and photos of completed work', icon: 'mail' },
+    ],
+    templates: [
+      {
+        type: 'sms',
+        name: 'Post-Job Review Request',
+        body: 'Hi {first_name}! Thanks for choosing {company_name} for your {service_type}. If {tech_name} did a great job today, we\'d really appreciate a quick Google review — it helps other homeowners find us! {review_link}',
+      },
+      {
+        type: 'email',
+        name: 'Review Reminder Email',
+        subject: 'How did we do, {first_name}?',
+        body: 'Hi {first_name},\n\nThank you for trusting {company_name} with your {service_type}! We hope everything is working perfectly.\n\nIf you have 30 seconds, a Google review would mean the world to us. It\'s the #1 way homeowners find great service companies, and your experience helps others make the right choice.\n\nLeave a review: {review_link}\n\nThank you for your support!\n\n{company_name} Team',
+      },
+    ],
+  },
+  {
+    id: 'payment-chaser',
+    name: 'Payment Chaser',
+    description: 'Automated invoice reminders at 7, 14, and 30 days. Stop chasing payments manually — let the system do it.',
+    category: 'revenue',
+    impact: '-15 days DSO',
+    impactColor: 'text-emerald-600 bg-emerald-50',
+    ring: 1,
+    isPremium: false,
+    isActive: false,
+    stats: [
+      { label: 'Days Sales Outstanding', value: '-15 days' },
+      { label: 'Collection rate', value: '94%' },
+      { label: 'Cash flow impact', value: '+$8K/mo' },
+    ],
+    steps: [
+      { type: 'action', label: 'Invoice sent to customer', detail: 'Triggers when invoice is created and sent', icon: 'zap' },
+      { type: 'wait', label: 'Wait 7 days', detail: 'If payment not received...', icon: 'clock' },
+      { type: 'sms', label: 'Friendly payment reminder', detail: '"Hey {first_name}, friendly reminder that invoice #{invoice_number} for ${amount} is due. Pay online here: {payment_link}"', icon: 'sms' },
+      { type: 'wait', label: 'Wait 7 more days', detail: '14 days total — if still unpaid...', icon: 'clock' },
+      { type: 'email', label: 'Formal payment reminder', detail: 'Professional email with invoice attached, payment link, and due date reminder', icon: 'mail' },
+      { type: 'wait', label: 'Wait 16 more days', detail: '30 days total — final notice', icon: 'clock' },
+      { type: 'email', label: 'Final notice email', detail: 'Firm but professional final reminder with late fee warning', icon: 'mail' },
+      { type: 'action', label: 'Flag for manual follow-up', detail: 'Adds to "Collections" queue for office manager to call', icon: 'phone' },
+    ],
+    templates: [
+      {
+        type: 'sms',
+        name: '7-Day Payment Reminder',
+        body: 'Hi {first_name}, friendly reminder that your invoice #{invoice_number} for ${amount} is due. You can pay securely online: {payment_link} — Thanks, {company_name}',
+      },
+      {
+        type: 'email',
+        name: '14-Day Payment Reminder',
+        subject: 'Payment reminder — Invoice #{invoice_number}',
+        body: 'Hi {first_name},\n\nThis is a friendly reminder that invoice #{invoice_number} for ${amount} is now 14 days past due.\n\nJob: {service_type} at {address}\nAmount due: ${amount}\nDue date: {due_date}\n\nPay securely online: {payment_link}\n\nIf you\'ve already sent payment, please disregard this message. If you have questions about the invoice, just reply to this email.\n\nThank you,\n{company_name}',
+      },
+      {
+        type: 'email',
+        name: '30-Day Final Notice',
+        subject: 'Final notice — Invoice #{invoice_number} is 30 days past due',
+        body: 'Hi {first_name},\n\nOur records show that invoice #{invoice_number} for ${amount} is now 30 days past due.\n\nTo avoid a late fee, please process payment by {final_date}.\n\nPay now: {payment_link}\n\nIf there\'s an issue with the invoice or you need to set up a payment plan, please call us at {company_phone}. We\'re happy to work with you.\n\nThank you,\n{company_name}',
+      },
+    ],
+  },
+  {
+    id: 'appointment-reminders',
+    name: 'Appointment Reminders',
+    description: 'Reduce no-shows with automatic reminders at 24hrs, 2hrs, and an "on my way" text. Customers love the communication.',
+    category: 'follow_up',
+    impact: '-60% no-shows',
+    impactColor: 'text-blue-600 bg-blue-50',
+    ring: 1,
+    isPremium: false,
+    isActive: false,
+    stats: [
+      { label: 'No-show reduction', value: '60%' },
+      { label: 'Customer satisfaction', value: '+40%' },
+      { label: 'Time saved/week', value: '3.5 hrs' },
+    ],
+    steps: [
+      { type: 'action', label: 'Job scheduled on calendar', detail: 'Triggers when deal moves to "Booked" stage', icon: 'zap' },
+      { type: 'email', label: 'Booking confirmation email', detail: 'Confirms date, time window, technician name, what to expect', icon: 'mail' },
+      { type: 'wait', label: '24 hours before appointment', detail: 'Timed reminder', icon: 'clock' },
+      { type: 'sms', label: 'Day-before reminder', detail: '"Hi {first_name}, reminder that {tech_name} will be at {address} tomorrow between {time_window}. Reply C to confirm or R to reschedule."', icon: 'sms' },
+      { type: 'wait', label: '2 hours before appointment', detail: 'Final heads up', icon: 'clock' },
+      { type: 'sms', label: '"On my way" text', detail: '"Hi {first_name}, {tech_name} is headed your way and should arrive by {eta}. See you soon!"', icon: 'sms' },
+    ],
+    templates: [
+      {
+        type: 'email',
+        name: 'Booking Confirmation',
+        subject: 'Your appointment with {company_name} is confirmed!',
+        body: 'Hi {first_name},\n\nYour appointment is confirmed!\n\nDate: {appointment_date}\nTime window: {time_window}\nTechnician: {tech_name}\nService: {service_type}\nAddress: {address}\n\nWhat to expect:\n- {tech_name} will call when they\'re 15 minutes away\n- The visit typically takes {duration}\n- You\'ll receive a detailed estimate before any work begins\n\nNeed to reschedule? Reply to this email or call {company_phone}.\n\nSee you soon!\n{company_name}',
+      },
+      {
+        type: 'sms',
+        name: 'Day-Before Reminder',
+        body: 'Hi {first_name}! Reminder: {tech_name} from {company_name} will be at {address} tomorrow between {time_window} for {service_type}. Reply C to confirm or R to reschedule.',
+      },
+      {
+        type: 'sms',
+        name: 'On My Way',
+        body: '{first_name}, {tech_name} from {company_name} is headed your way! ETA: {eta}. See you soon!',
+      },
+    ],
+  },
+  {
+    id: 'reactivation-engine',
+    name: 'Customer Reactivation Engine',
+    description: 'Re-engage customers who haven\'t booked in 6+ months. Past customers are 5x more likely to book than cold leads.',
+    category: 'retention',
+    impact: '+$6,800/mo revenue',
+    impactColor: 'text-emerald-600 bg-emerald-50',
+    ring: 1,
+    isPremium: false,
+    isActive: false,
+    stats: [
+      { label: 'Reactivation rate', value: '18%' },
+      { label: 'Avg ticket (reactivated)', value: '$1,850' },
+      { label: 'Cost per reactivation', value: '$0.12' },
+    ],
+    steps: [
+      { type: 'condition', label: 'Customer inactive 6+ months', detail: 'Automatically detects dormant customers', icon: 'check' },
+      { type: 'email', label: '"We miss you" email', detail: 'Personal check-in with seasonal maintenance offer', icon: 'mail' },
+      { type: 'wait', label: 'Wait 5 days', detail: 'If no response...', icon: 'clock' },
+      { type: 'sms', label: 'Exclusive offer SMS', detail: '"Hey {first_name}, as a past customer you get 10% off your next service. Book here: {booking_link}"', icon: 'sms' },
+      { type: 'wait', label: 'Wait 14 days', detail: 'If still no response...', icon: 'clock' },
+      { type: 'email', label: 'Seasonal maintenance reminder', detail: 'Helpful content about seasonal maintenance with soft CTA', icon: 'mail' },
+    ],
+    templates: [
+      {
+        type: 'email',
+        name: 'We Miss You',
+        subject: 'It\'s been a while, {first_name}!',
+        body: 'Hi {first_name},\n\nIt\'s been {months_since} months since we last worked together on your {last_service} at {address}, and we just wanted to check in!\n\nWith {season} coming up, now is a great time to think about:\n- {seasonal_service_1}\n- {seasonal_service_2}\n- {seasonal_service_3}\n\nAs a valued past customer, we\'d love to offer you 10% off your next service.\n\nBook online: {booking_link}\nOr call us: {company_phone}\n\nHope to see you again soon!\n{tech_name}\n{company_name}',
+      },
+      {
+        type: 'sms',
+        name: 'Reactivation Offer',
+        body: 'Hey {first_name}! It\'s {tech_name} from {company_name}. As a past customer, you get 10% off your next service. {season} is a great time for {seasonal_service}. Book here: {booking_link}',
+      },
+    ],
+  },
+  {
+    id: 'referral-program',
+    name: 'Referral Request System',
+    description: 'Ask happy customers for referrals after 5-star reviews. Referred customers have 37% higher retention.',
+    category: 'retention',
+    impact: '+3 referrals/mo',
+    impactColor: 'text-purple-600 bg-purple-50',
+    ring: 2,
+    isPremium: false,
+    isActive: false,
+    stats: [
+      { label: 'Referral ask rate', value: '100%' },
+      { label: 'Conversion rate', value: '15%' },
+      { label: 'Avg referral value', value: '$2,400' },
+    ],
+    steps: [
+      { type: 'condition', label: 'Customer leaves 4-5 star review', detail: 'Triggers after positive review detected', icon: 'check' },
+      { type: 'wait', label: 'Wait 24 hours', detail: 'Strike while the iron is warm', icon: 'clock' },
+      { type: 'sms', label: 'Thank you + referral ask', detail: '"Thank you for the amazing review! Know anyone who needs {service}? Send them our way and you both get $50 off."', icon: 'sms' },
+      { type: 'email', label: 'Referral card email', detail: 'Shareable referral link/code with incentive details', icon: 'mail' },
+    ],
+    templates: [
+      {
+        type: 'sms',
+        name: 'Referral Request',
+        body: 'Thanks for the awesome review, {first_name}! Know any neighbors or friends who need {service_type}? Send them our way and you BOTH get $50 off. Share this link: {referral_link}',
+      },
+      {
+        type: 'email',
+        name: 'Referral Program Email',
+        subject: 'You earned $50 off — share it with a friend!',
+        body: 'Hi {first_name},\n\nThank you for the wonderful review! We\'re so glad you\'re happy with your {service_type}.\n\nAs a thank you, we\'d like to offer you and a friend $50 off:\n\nYour referral link: {referral_link}\n\nHow it works:\n1. Share your link with a friend or neighbor\n2. When they book a service, you BOTH get $50 off\n3. There\'s no limit — refer as many people as you like!\n\nThank you for helping us grow!\n{company_name}',
+      },
+    ],
+  },
+  {
+    id: 'seasonal-campaigns',
+    name: 'Seasonal Campaign Engine',
+    description: 'Automatically run seasonal marketing campaigns — AC tune-ups in spring, furnace checks in fall, pipe winterization, and more.',
+    category: 'lead_capture',
+    impact: '+22% seasonal bookings',
+    impactColor: 'text-blue-600 bg-blue-50',
+    ring: 3,
+    isPremium: true,
+    isActive: false,
+    stats: [
+      { label: 'Campaign open rate', value: '34%' },
+      { label: 'Booking conversion', value: '8%' },
+      { label: 'Revenue per campaign', value: '$12,400' },
+    ],
+    steps: [
+      { type: 'condition', label: 'Season trigger date reached', detail: 'March 15 (Spring), June 1 (Summer), Sept 15 (Fall), Nov 15 (Winter)', icon: 'check' },
+      { type: 'email', label: 'Seasonal campaign email', detail: 'Targeted email to all customers with seasonal service offer', icon: 'mail' },
+      { type: 'wait', label: 'Wait 3 days', detail: 'For non-openers...', icon: 'clock' },
+      { type: 'sms', label: 'SMS follow-up to non-openers', detail: 'Short text with seasonal service offer and booking link', icon: 'sms' },
+      { type: 'wait', label: 'Wait 7 days', detail: 'For non-bookers...', icon: 'clock' },
+      { type: 'email', label: 'Urgency email', detail: '"Spots are filling up for {season} — book now to guarantee your preferred date"', icon: 'mail' },
+    ],
+    templates: [
+      {
+        type: 'email',
+        name: 'Spring AC Tune-Up',
+        subject: 'Beat the heat — schedule your AC tune-up before summer hits',
+        body: 'Hi {first_name},\n\nSpring is here, which means summer is right around the corner. Now is the perfect time to schedule your annual AC tune-up.\n\nWhy now?\n- Catch small issues before they become expensive emergency repairs\n- Ensure peak efficiency (saves you money on energy bills)\n- Preferred scheduling — summer slots fill fast!\n\nSpring Special: $89 AC Tune-Up (regularly $129)\n\nBook online: {booking_link}\nCall: {company_phone}\n\nStay cool this summer!\n{company_name}',
+      },
+      {
+        type: 'sms',
+        name: 'Seasonal SMS Follow-up',
+        body: 'Hey {first_name}! Don\'t forget — our {season} special on {seasonal_service} ends soon. Book your $89 tune-up: {booking_link} - {company_name}',
+      },
+    ],
   },
 ];
 
-export default function AutomationsPage() {
-  const [activeAutomations, setActiveAutomations] = useState<Automation[]>(ACTIVE_AUTOMATIONS);
-  const [showBuilder, setShowBuilder] = useState(false);
-  const [builderState, setBuilderState] = useState({
-    whenTrigger: 'Deal stage changes',
-    ifCondition: 'Stage equals',
-    thenAction: 'Send SMS',
-  });
-  const [expandedTemplate, setExpandedTemplate] = useState<string | null>(null);
+// ============================================================
+// STEP ICON HELPER
+// ============================================================
 
-  const toggleAutomationStatus = (id: string) => {
-    setActiveAutomations((prev) =>
-      prev.map((auto) => (auto.id === id ? { ...auto, isActive: !auto.isActive } : auto))
-    );
+const StepIcon = ({ icon, type }: { icon: string; type: string }) => {
+  const colorMap: Record<string, string> = {
+    email: 'bg-blue-100 text-blue-600',
+    sms: 'bg-emerald-100 text-emerald-600',
+    wait: 'bg-slate-100 text-slate-500',
+    condition: 'bg-amber-100 text-amber-600',
+    action: 'bg-purple-100 text-purple-600',
   };
-
-  const activateTemplate = (templateId: string) => {
-    const template = AUTOMATION_TEMPLATES.find((t) => t.id === templateId);
-    if (template) {
-      const newAutomation: Automation = {
-        id: Date.now().toString(),
-        name: template.title,
-        trigger: template.trigger,
-        lastTriggered: 'Just activated',
-        timesRun: 0,
-        isActive: true,
-      };
-      setActiveAutomations((prev) => [newAutomation, ...prev]);
-      setExpandedTemplate(null);
-    }
+  const iconMap: Record<string, React.ReactNode> = {
+    mail: <Mail className="w-4 h-4" />,
+    sms: <MessageSquare className="w-4 h-4" />,
+    clock: <Clock className="w-4 h-4" />,
+    check: <CheckCircle2 className="w-4 h-4" />,
+    zap: <Zap className="w-4 h-4" />,
+    phone: <Phone className="w-4 h-4" />,
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${colorMap[type] || 'bg-slate-100 text-slate-500'}`}>
+      {iconMap[icon] || <Zap className="w-4 h-4" />}
+    </div>
+  );
+};
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+
+export default function AutomationsPage() {
+  const [mounted, setMounted] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<PlaybookCategory>('all');
+  const [playbooks, setPlaybooks] = useState<Playbook[]>(PLAYBOOKS);
+  const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
+  const [previewTemplate, setPreviewTemplate] = useState<TemplatePreview | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <div className="p-8">Loading...</div>;
+
+  const categories: { id: PlaybookCategory; label: string; icon: React.ReactNode }[] = [
+    { id: 'all', label: 'All Playbooks', icon: <Sparkles className="w-4 h-4" /> },
+    { id: 'lead_capture', label: 'Lead Capture', icon: <Target className="w-4 h-4" /> },
+    { id: 'follow_up', label: 'Follow-Up', icon: <RotateCcw className="w-4 h-4" /> },
+    { id: 'retention', label: 'Retention', icon: <Heart className="w-4 h-4" /> },
+    { id: 'revenue', label: 'Revenue', icon: <DollarSign className="w-4 h-4" /> },
+  ];
+
+  const filtered = activeCategory === 'all'
+    ? playbooks
+    : playbooks.filter((p) => p.category === activeCategory);
+
+  const activeCount = playbooks.filter((p) => p.isActive).length;
+  const totalImpact = playbooks.filter((p) => p.isActive).length > 0
+    ? '+$19,400/mo potential'
+    : 'Activate playbooks to see impact';
+
+  const togglePlaybook = (id: string) => {
+    setPlaybooks((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, isActive: !p.isActive } : p))
+    );
+  };
+
+  const activateAll = () => {
+    setPlaybooks((prev) => prev.map((p) => ({ ...p, isActive: !p.isPremium ? true : p.isActive })));
+  };
+
+  return (
+    <div className="p-8 bg-slate-50 min-h-screen">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+            <Zap className="w-5 h-5 text-white" />
+          </div>
           <div>
-            <h1 className="text-4xl font-bold text-slate-900">Automations</h1>
-            <p className="text-slate-600 mt-2">
-              Set it and forget it. Let Growth OS handle the follow-ups.
+            <h1 className="text-3xl font-bold text-slate-900">Autopilot</h1>
+            <p className="text-slate-600">Pre-built playbooks that run your business on autopilot. Activate with one click.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Impact Banner */}
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-8 mb-8 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="relative">
+          <div className="flex items-center justify-between flex-wrap gap-6">
+            <div>
+              <p className="text-slate-400 text-sm font-medium mb-1">AUTOPILOT STATUS</p>
+              <div className="flex items-center gap-4">
+                <div className="text-4xl font-bold">{activeCount} / {playbooks.length}</div>
+                <div className="text-slate-400">
+                  <p className="text-sm">playbooks active</p>
+                  <p className="text-emerald-400 text-sm font-medium">{totalImpact}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={activateAll}
+                className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-semibold transition-all hover:shadow-lg hover:shadow-emerald-500/25"
+              >
+                <Play className="w-4 h-4" />
+                Activate All Free Playbooks
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+            {[
+              { label: 'Emails/month', value: '~240', icon: <Mail className="w-4 h-4" /> },
+              { label: 'Texts/month', value: '~180', icon: <MessageSquare className="w-4 h-4" /> },
+              { label: 'Hours saved/month', value: '47', icon: <Clock className="w-4 h-4" /> },
+              { label: 'Est. revenue impact', value: '+$19.4K', icon: <TrendingUp className="w-4 h-4" /> },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center gap-2 text-slate-400 text-xs mb-2">
+                  {stat.icon}
+                  {stat.label}
+                </div>
+                <div className="text-xl font-bold">{stat.value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* How It Works */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+        <div className="flex items-start gap-3">
+          <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
+          <div>
+            <h3 className="font-semibold text-slate-900 mb-1">How Autopilot Works</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">
+              Each playbook is a proven sequence of emails and texts that trigger automatically based on what happens in your pipeline.
+              Activate a playbook and it starts working immediately — no setup required. Every template uses your company name, technician names,
+              and customer details automatically. You can customize any template, or just use the defaults. They&apos;re written by people who know the trades.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Category Filter */}
+      <div className="flex gap-2 mb-8 flex-wrap">
+        {categories.map((cat) => (
           <button
-            onClick={() => setShowBuilder(!showBuilder)}
-            className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm hover:shadow-md"
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.id)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+              activeCategory === cat.id
+                ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
           >
-            <Plus className="w-5 h-5" />
-            Create Automation
+            {cat.icon}
+            {cat.label}
           </button>
-        </div>
+        ))}
       </div>
 
-      {/* Stats Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-          <p className="text-sm font-medium text-slate-600 mb-2">Active Automations</p>
-          <p className="text-3xl font-bold text-slate-900">
-            {activeAutomations.filter((a) => a.isActive).length}
-          </p>
-        </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-          <p className="text-sm font-medium text-slate-600 mb-2">Triggered This Month</p>
-          <p className="text-3xl font-bold text-slate-900">147</p>
-        </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-          <p className="text-sm font-medium text-slate-600 mb-2">Messages Sent</p>
-          <p className="text-3xl font-bold text-slate-900">312</p>
-        </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
-          <p className="text-sm font-medium text-slate-600 mb-2">Conversion Lift</p>
-          <p className="text-3xl font-bold text-green-600">+23%</p>
-        </div>
-      </div>
-
-      {/* Custom Builder Section - Collapsible */}
-      {showBuilder && (
-        <div className="bg-white rounded-xl shadow-sm p-8 border border-slate-100 mb-8 animate-in fade-in slide-in-from-top-2">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-slate-900">Custom Automation Builder</h2>
-            <button
-              onClick={() => setShowBuilder(false)}
-              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+      {/* Playbooks Grid */}
+      <div className="space-y-4">
+        {filtered.map((playbook) => {
+          const isExpanded = expandedPlaybook === playbook.id;
+          return (
+            <div
+              key={playbook.id}
+              className={`bg-white rounded-2xl border transition-all ${
+                playbook.isActive
+                  ? 'border-emerald-300 shadow-md shadow-emerald-100'
+                  : 'border-slate-200 shadow-sm hover:shadow-md'
+              }`}
             >
-              <X className="w-5 h-5 text-slate-600" />
-            </button>
-          </div>
-
-          <div className="space-y-6">
-            {/* WHEN Section */}
-            <div className="bg-gradient-to-r from-blue-50 to-blue-50 rounded-lg p-6 border border-blue-100">
-              <h3 className="text-sm font-bold text-blue-900 mb-4 flex items-center gap-2">
-                <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-600 text-white rounded-full text-xs font-bold">
-                  1
-                </span>
-                WHEN
-              </h3>
-              <select
-                value={builderState.whenTrigger}
-                onChange={(e) => setBuilderState({ ...builderState, whenTrigger: e.target.value })}
-                className="w-full px-4 py-2 border border-blue-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900"
-              >
-                <option>Deal stage changes</option>
-                <option>New contact added</option>
-                <option>Invoice becomes overdue</option>
-                <option>No activity for X days</option>
-                <option>Scheduled date approaching</option>
-              </select>
-            </div>
-
-            {/* IF Section */}
-            <div className="bg-gradient-to-r from-purple-50 to-purple-50 rounded-lg p-6 border border-purple-100">
-              <h3 className="text-sm font-bold text-purple-900 mb-4 flex items-center gap-2">
-                <span className="inline-flex items-center justify-center w-6 h-6 bg-purple-600 text-white rounded-full text-xs font-bold">
-                  2
-                </span>
-                IF
-              </h3>
-              <div className="space-y-3">
-                <select
-                  value={builderState.ifCondition}
-                  onChange={(e) =>
-                    setBuilderState({ ...builderState, ifCondition: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-purple-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-900"
-                >
-                  <option>Stage equals</option>
-                  <option>Contact type is</option>
-                  <option>Deal value greater than</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="Enter condition value..."
-                  className="w-full px-4 py-2 border border-purple-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-slate-900"
-                />
-                <button className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1">
-                  <Plus className="w-4 h-4" />
-                  Add condition
-                </button>
-              </div>
-            </div>
-
-            {/* THEN Section */}
-            <div className="bg-gradient-to-r from-green-50 to-green-50 rounded-lg p-6 border border-green-100">
-              <h3 className="text-sm font-bold text-green-900 mb-4 flex items-center gap-2">
-                <span className="inline-flex items-center justify-center w-6 h-6 bg-green-600 text-white rounded-full text-xs font-bold">
-                  3
-                </span>
-                THEN
-              </h3>
-              <div className="space-y-3">
-                <select
-                  value={builderState.thenAction}
-                  onChange={(e) =>
-                    setBuilderState({ ...builderState, thenAction: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-green-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500 text-slate-900"
-                >
-                  <option>Send SMS</option>
-                  <option>Send Email</option>
-                  <option>Create activity</option>
-                  <option>Assign to team member</option>
-                  <option>Move to stage</option>
-                </select>
-                <button className="text-sm text-green-600 hover:text-green-700 font-medium flex items-center gap-1">
-                  <Plus className="w-4 h-4" />
-                  Add action
-                </button>
-              </div>
-            </div>
-
-            {/* Preview */}
-            <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
-              <p className="text-sm font-medium text-slate-700 mb-2">Preview</p>
-              <p className="text-slate-600">
-                When <span className="font-semibold text-slate-900">{builderState.whenTrigger}</span>{' '}
-                and <span className="font-semibold text-slate-900">{builderState.ifCondition}</span>{' '}
-                then <span className="font-semibold text-slate-900">{builderState.thenAction}</span>.
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-4 pt-4">
-              <button className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                Save Automation
-              </button>
-              <button
-                onClick={() => setShowBuilder(false)}
-                className="flex-1 px-6 py-3 bg-white text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Automation Templates Grid */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-900 mb-6">Pre-built Automation Templates</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {AUTOMATION_TEMPLATES.map((template) => {
-            const IconComponent = template.icon;
-            const isExpanded = expandedTemplate === template.id;
-
-            return (
-              <div
-                key={template.id}
-                className={`bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md ${
-                  isExpanded ? 'ring-2 ring-blue-500' : ''
-                }`}
-              >
-                {/* Card Header */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="p-3 bg-blue-100 rounded-lg">
-                      <IconComponent className="w-6 h-6 text-blue-600" />
+              {/* Playbook Header */}
+              <div className="p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <h3 className="text-lg font-bold text-slate-900">{playbook.name}</h3>
+                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${playbook.impactColor}`}>
+                        {playbook.impact}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-500">
+                        Ring {playbook.ring}
+                      </span>
+                      {playbook.isPremium && (
+                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700">
+                          Pro
+                        </span>
+                      )}
+                      {playbook.isActive && (
+                        <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                          Active
+                        </span>
+                      )}
                     </div>
-                    <ToggleLeft className="w-5 h-5 text-slate-400" />
+                    <p className="text-sm text-slate-600 leading-relaxed">{playbook.description}</p>
+
+                    {/* Stats Row */}
+                    <div className="flex gap-6 mt-4">
+                      {playbook.stats.map((stat) => (
+                        <div key={stat.label}>
+                          <div className="text-xs text-slate-500">{stat.label}</div>
+                          <div className="text-sm font-bold text-slate-900">{stat.value}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{template.title}</h3>
-                  <p className="text-sm text-slate-600 mb-4">{template.description}</p>
 
-                  {/* Collapsible Details */}
-                  <button
-                    onClick={() =>
-                      setExpandedTemplate(isExpanded ? null : template.id)
-                    }
-                    className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 mb-4"
-                  >
-                    <span>Details</span>
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-
-                  {isExpanded && (
-                    <div className="space-y-3 py-3 border-t border-slate-200 mt-4">
-                      <div>
-                        <p className="text-xs font-semibold text-slate-600 uppercase">Trigger</p>
-                        <p className="text-sm text-slate-900 mt-1">{template.trigger}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-slate-600 uppercase">Action</p>
-                        <p className="text-sm text-slate-900 mt-1">{template.action}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Card Footer - Activation Button */}
-                <div className="bg-slate-50 px-6 py-4 border-t border-slate-100">
-                  <button
-                    onClick={() => activateTemplate(template.id)}
-                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
-                  >
-                    Activate
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Active Automations Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900">Active Automations</h2>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700">Trigger</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700">
-                  Last Triggered
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-semibold text-slate-700">
-                  Times Run
-                </th>
-                <th className="px-6 py-3 text-center text-xs font-semibold text-slate-700">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activeAutomations.map((automation, idx) => (
-                <tr
-                  key={automation.id}
-                  className={`border-b border-slate-100 hover:bg-slate-50 transition-colors ${
-                    idx === activeAutomations.length - 1 ? 'border-b-0' : ''
-                  }`}
-                >
-                  <td className="px-6 py-4 text-sm font-medium text-slate-900">
-                    {automation.name}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{automation.trigger}</td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{automation.lastTriggered}</td>
-                  <td className="px-6 py-4 text-sm text-right text-slate-900 font-medium">
-                    {automation.timesRun.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 text-center">
+                  {/* Toggle + Expand */}
+                  <div className="flex items-center gap-3 shrink-0">
                     <button
-                      onClick={() => toggleAutomationStatus(automation.id)}
-                      className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors ${
-                        automation.isActive ? 'bg-green-600' : 'bg-slate-300'
+                      onClick={() => setExpandedPlaybook(isExpanded ? null : playbook.id)}
+                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition"
+                    >
+                      <Eye className="w-4 h-4" />
+                      {isExpanded ? 'Collapse' : 'Preview'}
+                    </button>
+                    <button
+                      onClick={() => togglePlaybook(playbook.id)}
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                        playbook.isActive
+                          ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+                          : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/20'
                       }`}
                     >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          automation.isActive ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                      />
+                      {playbook.isActive ? (
+                        <>
+                          <Pause className="w-4 h-4" />
+                          Pause
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-4 h-4" />
+                          Activate
+                        </>
+                      )}
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </div>
+                </div>
+              </div>
 
-        {activeAutomations.length === 0 && (
-          <div className="px-6 py-12 text-center">
-            <AlertCircle className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600">No automations yet. Create one to get started!</p>
+              {/* Expanded: Workflow Steps + Templates */}
+              {isExpanded && (
+                <div className="border-t border-slate-100">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
+                    {/* Workflow Steps */}
+                    <div className="p-6">
+                      <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-blue-600" />
+                        Workflow Steps
+                      </h4>
+                      <div className="space-y-1">
+                        {playbook.steps.map((step, i) => (
+                          <div key={i} className="flex items-start gap-3 relative">
+                            {/* Connector Line */}
+                            {i < playbook.steps.length - 1 && (
+                              <div className="absolute left-4 top-8 w-px h-full bg-slate-200" style={{ transform: 'translateX(-0.5px)' }} />
+                            )}
+                            <StepIcon icon={step.icon} type={step.type} />
+                            <div className="pb-4 min-w-0">
+                              <div className="text-sm font-medium text-slate-900">{step.label}</div>
+                              <div className="text-xs text-slate-500 mt-0.5 leading-relaxed">{step.detail}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Templates */}
+                    <div className="p-6 bg-slate-50/50">
+                      <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-blue-600" />
+                        Pre-Built Templates ({playbook.templates.length})
+                      </h4>
+                      <div className="space-y-3">
+                        {playbook.templates.map((template, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setPreviewTemplate(previewTemplate?.name === template.name ? null : template)}
+                            className={`w-full text-left p-4 rounded-xl border transition-all ${
+                              previewTemplate?.name === template.name
+                                ? 'border-blue-300 bg-blue-50'
+                                : 'border-slate-200 bg-white hover:border-blue-200 hover:bg-blue-50/50'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="flex items-center gap-2">
+                                {template.type === 'email' ? (
+                                  <Mail className="w-3.5 h-3.5 text-blue-500" />
+                                ) : (
+                                  <MessageSquare className="w-3.5 h-3.5 text-emerald-500" />
+                                )}
+                                <span className="text-sm font-medium text-slate-900">{template.name}</span>
+                              </div>
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                                template.type === 'email' ? 'bg-blue-100 text-blue-600' : 'bg-emerald-100 text-emerald-600'
+                              }`}>
+                                {template.type.toUpperCase()}
+                              </span>
+                            </div>
+                            {template.subject && (
+                              <div className="text-xs text-slate-500 mt-1">Subject: {template.subject}</div>
+                            )}
+
+                            {/* Template Preview */}
+                            {previewTemplate?.name === template.name && (
+                              <div className="mt-3 pt-3 border-t border-slate-200">
+                                <pre className="text-xs text-slate-600 whitespace-pre-wrap font-sans leading-relaxed">
+                                  {template.body}
+                                </pre>
+                                <div className="flex gap-2 mt-3">
+                                  <button className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                    <Settings className="w-3 h-3" />
+                                    Customize
+                                  </button>
+                                  <button className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition">
+                                    <Copy className="w-3 h-3" />
+                                    Duplicate
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="mt-12 text-center">
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 max-w-2xl mx-auto">
+          <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <Lightbulb className="w-6 h-6 text-blue-600" />
           </div>
-        )}
+          <h3 className="text-xl font-bold text-slate-900 mb-2">Want a custom playbook?</h3>
+          <p className="text-sm text-slate-600 mb-6">
+            Build your own automation from scratch using our visual workflow builder.
+            Combine triggers, conditions, and actions to create the perfect sequence for your business.
+          </p>
+          <button className="px-6 py-3 bg-slate-900 text-white rounded-xl font-semibold hover:bg-slate-800 transition-all hover:shadow-lg">
+            Build Custom Playbook
+          </button>
+        </div>
       </div>
     </div>
   );
