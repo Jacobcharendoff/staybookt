@@ -5,8 +5,12 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   Kanban,
+  Calendar,
   Users,
+  FileText,
+  Receipt,
   ActivitySquare,
+  Settings,
   Zap,
 } from 'lucide-react';
 
@@ -16,9 +20,14 @@ export function Sidebar() {
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/pipeline', label: 'Pipeline', icon: Kanban },
+    { href: '/schedule', label: 'Schedule', icon: Calendar },
     { href: '/contacts', label: 'Contacts', icon: Users },
+    { href: '/estimates', label: 'Estimates', icon: FileText },
+    { href: '/invoices', label: 'Invoices', icon: Receipt },
     { href: '/activity', label: 'Activity', icon: ActivitySquare },
   ];
+
+  const settingsItem = { href: '/settings', label: 'Settings', icon: Settings };
 
   return (
     <aside className="w-64 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-r border-slate-700 flex flex-col h-full">
@@ -58,9 +67,31 @@ export function Sidebar() {
         })}
       </nav>
 
+      {/* Settings Section - Bottom */}
+      <div className="px-4 py-4 border-t border-slate-700">
+        {(() => {
+          const Icon = settingsItem.icon;
+          const isActive = pathname === settingsItem.href;
+
+          return (
+            <Link
+              href={settingsItem.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                isActive
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                  : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'
+              }`}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="font-medium text-sm">{settingsItem.label}</span>
+            </Link>
+          );
+        })()}
+      </div>
+
       {/* Footer */}
       <div className="px-6 py-4 border-t border-slate-700 text-center">
-        <p className="text-xs text-slate-500">v1.0.0 MVP</p>
+        <p className="text-xs text-slate-500">v2.0.0 Beta</p>
       </div>
     </aside>
   );
