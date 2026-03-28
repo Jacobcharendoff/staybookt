@@ -2,97 +2,155 @@
 
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store';
-import { Plus, ChevronLeft, ChevronRight, Calendar, AlertCircle } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  Clock,
+  DollarSign,
+  User,
+  GripVertical,
+  Filter,
+} from 'lucide-react';
 
-const HOURS = Array.from({ length: 13 }, (_, i) => 7 + i);
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const TECHNICIANS = ['Marcus', 'James', 'Team'];
-const TECH_COLORS: Record<string, string> = {
-  Marcus: 'bg-blue-100 border-blue-300 text-blue-900',
-  James: 'bg-emerald-100 border-emerald-300 text-emerald-900',
-  Team: 'bg-amber-100 border-amber-300 text-amber-900',
+const TIME_SLOTS = Array.from({ length: 12 }, (_, i) => 7 + i);
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DAY_ABBREVIATIONS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const TECH_COLORS: Record<string, { bg: string; border: string; text: string; badge: string }> = {
+  Marcus: {
+    bg: 'bg-blue-50',
+    border: 'border-blue-200',
+    text: 'text-blue-900',
+    badge: 'bg-blue-100 text-blue-700',
+  },
+  James: {
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    text: 'text-emerald-900',
+    badge: 'bg-emerald-100 text-emerald-700',
+  },
+  Team: {
+    bg: 'bg-purple-50',
+    border: 'border-purple-200',
+    text: 'text-purple-900',
+    badge: 'bg-purple-100 text-purple-700',
+  },
 };
 
 interface ScheduledJob {
-  id: string;
-  title: string;
-  customer: string;
-  address: string;
-  startHour: number;
-  endHour: number;
-  day: number;
-  technician: string;
-  isEmergency: boolean;
+  dealId: string;
+  day: string;
+  timeSlot: string;
 }
 
-interface UnscheduledJob {
+interface DealWithContact {
   id: string;
   title: string;
-  customer: string;
-  address: string;
+  customerName: string;
   value: number;
+  assignedTo: string;
 }
 
 export default function SchedulePage() {
   const { deals, contacts, initializeSeedData } = useStore();
   const [mounted, setMounted] = useState(false);
   const [weekOffset, setWeekOffset] = useState(0);
-  const [viewMode, setViewMode] = useState<'week' | 'day' | 'month'>('week');
-  const [scheduledJobs, setScheduledJobs] = useState<ScheduledJob[]>([]);
-  const [unscheduledJobs, setUnscheduledJobs] = useState<UnscheduledJob[]>([]);
+  const [scheduledJobs, setScheduledJobs] = useState<Record<string, ScheduledJob>>({});
+  const [selectedTechs, setSelectedTechs] = useState<Set<string>>(new Set(['Marcus', 'James', 'Team']));
 
   useEffect(() => {
     setMounted(true);
     initializeSeedData();
   }, []);
 
-  useEffect(() => {
-    if (!mounted || deals.length === 0) return;
-
-    // Create mock scheduled jobs from deals
-    const scheduled: ScheduledJob[] = [];
-    const unscheduled: UnscheduledJob[] = [];
-
-    deals.forEach((deal, index) => {
-      const contact = contacts.find((c) => c.id === deal.contactId);
-      if (!contact) return;
-
-      // Book some deals (30% of them)
-      if (deal.stage === 'booked' || deal.stage === 'in_progress' || deal.stage === 'completed') {
-        const day = (index * 2) % 7;
-        const startHour = 7 + (index % 5);
-        const duration = 1 + (index % 3);
-        scheduled.push({
+  // Get schedulable deals (filter by stage)
+  const getSchedulableDeals = (): DealWithContact[] => {
+    const schedulableStages = ['booked', 'in_progress', 'estimate_scheduled'];
+    return deals
+      .filter((deal) => schedulableStages.includes(deal.stage))
+      .map((deal) => {
+        const contact = contacts.find((c) => c.id === deal.contactId);
+        return {
           id: deal.id,
           title: deal.title,
-          customer: contact.name,
-          address: contact.address.split(',')[0],
-          startHour,
-          endHour: startHour + duration,
-          day,
-          technician: (deal.assignedTo as string) || 'Team',
-          isEmergency: index % 8 === 0,
-        });
-      } else if (
-        deal.stage === 'estimate_sent' ||
-        deal.stage === 'estimate_scheduled' ||
-        deal.stage === 'new_lead'
-      ) {
-        unscheduled.push({
-          id: deal.id,
-          title: deal.title,
-          customer: contact.name,
-          address: contact.address.split(',')[0],
+          customerName: contact?.name || 'Unknown',
           value: deal.value,
+          assignedTo: deal.assignedTo || 'Team',
+        };
+      });
+  };
+
+  const allSchedulableDealIds = new Set(getSchedulableDeals().map((d) => d.id));
+
+  // Unscheduled jobs = schedulable deals not in scheduledJobs
+  const getUnscheduledJobs = (): DealWithContact[] => {
+    return getSchedulableDeals().filter(
+      (deal) => !Object.values(scheduledJobs).some((job) => job.dealId === deal.id)
+    );
+  };
+
+  // Get scheduled jobs for a specific day/slot
+  const getJobsForSlot = (day: string, slot: string): DealWithContact[] => {
+    const dealIds = Object.values(scheduledJobs)
+      .filter((job) => job.day === day && job.timeSlot === slot)
+      .map((job) => job.dealId);
+
+    return getSchedulableDeals().filter((deal) => dealIds.includes(deal.id));
+  };
+
+  // Handle drag and drop
+  const handleDragEnd = (result: DropResult) => {
+    const { source, destination, draggableId } = result;
+
+    // If dropped outside a valid zone
+    if (!destination) {
+      return;
+    }
+
+    // If dropped in the same place
+    if (source.droppableId === destination.droppableId) {
+      return;
+    }
+
+    // If dropped in unscheduled area, remove from schedule
+    if (destination.droppableId === 'unscheduled') {
+      setScheduledJobs((prev) => {
+        const newScheduled = { ...prev };
+        Object.keys(newScheduled).forEach((key) => {
+          if (newScheduled[key].dealId === draggableId) {
+            delete newScheduled[key];
+          }
         });
-      }
+        return newScheduled;
+      });
+      return;
+    }
+
+    // Parse destination (format: "day-timeSlot")
+    const [destDay, destSlot] = destination.droppableId.split('-');
+
+    if (!destDay || !destSlot) return;
+
+    setScheduledJobs((prev) => {
+      const newScheduled = { ...prev };
+      // Remove from previous location if already scheduled
+      Object.keys(newScheduled).forEach((key) => {
+        if (newScheduled[key].dealId === draggableId) {
+          delete newScheduled[key];
+        }
+      });
+      // Add to new location
+      const newId = `${destDay}-${destSlot}-${draggableId}`;
+      newScheduled[newId] = {
+        dealId: draggableId,
+        day: destDay,
+        timeSlot: destSlot,
+      };
+      return newScheduled;
     });
-
-    setScheduledJobs(scheduled);
-    setUnscheduledJobs(unscheduled.slice(0, 4));
-  }, [mounted, deals, contacts]);
-
-  if (!mounted) return <div className="p-8">Loading...</div>;
+  };
 
   const getWeekDates = () => {
     const today = new Date();
@@ -106,236 +164,300 @@ export default function SchedulePage() {
     });
   };
 
+  const formatDateRange = () => {
+    const dates = getWeekDates();
+    if (dates.length === 0) return '';
+    const start = dates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const end = dates[dates.length - 1].toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    return `${start} - ${end}`;
+  };
+
   const weekDates = getWeekDates();
-  const today = new Date();
-  const todayDayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
-  const isCurrentWeek = weekOffset === 0;
+  const unscheduledJobs = getUnscheduledJobs();
+
+  const countJobsForDay = (day: string): number => {
+    return Object.values(scheduledJobs).filter((job) => job.day === day).length;
+  };
+
+  const toggleTech = (tech: string) => {
+    setSelectedTechs((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(tech)) {
+        newSet.delete(tech);
+      } else {
+        newSet.add(tech);
+      }
+      return newSet;
+    });
+  };
+
+  const filterUnscheduledByTech = (jobs: DealWithContact[]) => {
+    return jobs.filter((job) => selectedTechs.has(job.assignedTo));
+  };
+
+  if (!mounted) {
+    return <div className="p-8 bg-slate-50 min-h-screen flex items-center justify-center">Loading...</div>;
+  }
 
   return (
-    <div className="p-8 bg-slate-50 min-h-screen">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">Schedule</h1>
-        <p className="text-slate-600">Manage and dispatch technicians to jobs</p>
-      </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="p-8 bg-slate-50 min-h-screen">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Schedule</h1>
+          <p className="text-slate-600">Drag and drop jobs to schedule them for technicians</p>
+        </div>
 
-      {/* Controls */}
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
-        <div className="flex items-center justify-between mb-6">
-          {/* Week Navigation */}
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setWeekOffset(weekOffset - 1)}
-              className="p-2 hover:bg-slate-100 rounded-lg transition"
-            >
-              <ChevronLeft className="w-5 h-5 text-slate-600" />
-            </button>
-            <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg border border-blue-200">
-              <Calendar className="w-4 h-4 text-blue-600" />
-              <span className="font-semibold text-slate-900">
-                {weekOffset === 0
-                  ? 'This Week'
-                  : `Week of ${weekDates[0].toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                    })}`}
-              </span>
-            </div>
-            <button
-              onClick={() => setWeekOffset(weekOffset + 1)}
-              className="p-2 hover:bg-slate-100 rounded-lg transition"
-            >
-              <ChevronRight className="w-5 h-5 text-slate-600" />
-            </button>
-          </div>
-
-          {/* View Toggle */}
-          <div className="flex gap-2">
-            {(['day', 'week', 'month'] as const).map((mode) => (
+        {/* Week Navigation */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
               <button
-                key={mode}
-                onClick={() => setViewMode(mode)}
-                className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
-                  viewMode === mode
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                onClick={() => setWeekOffset(weekOffset - 1)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600 hover:text-slate-900"
               >
-                {mode}
+                <ChevronLeft className="w-5 h-5" />
               </button>
-            ))}
-          </div>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
-            <Plus className="w-4 h-4" />
-            Schedule Job
-          </button>
-          <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition">
-            Bulk Schedule
-          </button>
-        </div>
-      </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg border border-blue-200">
+                <Calendar className="w-4 h-4 text-blue-600" />
+                <span className="font-semibold text-slate-900">{formatDateRange()}</span>
+              </div>
 
-      {/* Calendar Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
-        {/* Schedule */}
-        <div className="lg:col-span-3">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            {/* Days Header */}
-            <div className="grid grid-cols-8 bg-slate-50 border-b border-slate-200">
-              <div className="p-4 font-semibold text-xs text-slate-600">Time</div>
-              {DAYS.map((day, i) => {
-                const date = weekDates[i];
-                const isTodayCol = isCurrentWeek && i === todayDayIndex;
-                return (
-                  <div
-                    key={day}
-                    className={`p-4 text-center font-semibold text-sm ${
-                      isTodayCol ? 'bg-blue-50 border-l-4 border-blue-500' : ''
-                    }`}
-                  >
-                    <div className="text-slate-600">{day}</div>
-                    <div className={`text-xs mt-1 ${isTodayCol ? 'text-blue-600' : 'text-slate-500'}`}>
-                      {date.getDate()}
-                    </div>
-                  </div>
-                );
-              })}
+              <button
+                onClick={() => setWeekOffset(weekOffset + 1)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600 hover:text-slate-900"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={() => setWeekOffset(0)}
+                className="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition"
+              >
+                Today
+              </button>
             </div>
 
-            {/* Time Grid */}
-            <div className="divide-y divide-slate-200">
-              {HOURS.map((hour) => (
-                <div
-                  key={hour}
-                  className="grid grid-cols-8 divide-x divide-slate-200"
+            {/* Technician Filter */}
+            <div className="flex items-center gap-3">
+              <Filter className="w-4 h-4 text-slate-600" />
+              {Object.keys(TECH_COLORS).map((tech) => (
+                <button
+                  key={tech}
+                  onClick={() => toggleTech(tech)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                    selectedTechs.has(tech)
+                      ? `${TECH_COLORS[tech].badge} border border-current`
+                      : 'bg-slate-200 text-slate-500 border border-slate-300'
+                  }`}
                 >
-                  {/* Hour Label */}
-                  <div className="p-4 bg-slate-50 text-xs font-semibold text-slate-600">
-                    {hour}:00
-                  </div>
-
-                  {/* Day Cells */}
-                  {DAYS.map((_, dayIndex) => {
-                    const cellJobs = scheduledJobs.filter(
-                      (job) =>
-                        job.day === dayIndex &&
-                        job.startHour === hour
-                    );
-
-                    return (
-                      <div
-                        key={`${dayIndex}-${hour}`}
-                        className="p-2 relative h-20 bg-white hover:bg-slate-50 transition"
-                      >
-                        {cellJobs.map((job) => {
-                          const height = (job.endHour - job.startHour) * 80;
-                          return (
-                            <div
-                              key={job.id}
-                              style={{ minHeight: `${height}px` }}
-                              className={`p-2 rounded-lg border-l-4 cursor-pointer hover:shadow-md transition text-xs ${
-                                TECH_COLORS[job.technician] || TECH_COLORS.Team
-                              } ${job.isEmergency ? 'ring-2 ring-rose-500 ring-offset-1' : ''}`}
-                            >
-                              <div className="font-semibold truncate">
-                                {job.title}
-                              </div>
-                              <div className="text-xs opacity-75 truncate">
-                                {job.customer}
-                              </div>
-                              <div className="text-xs opacity-75">
-                                {job.startHour}:00 - {job.endHour}:00
-                              </div>
-                              {job.isEmergency && (
-                                <div className="mt-1 flex items-center gap-1">
-                                  <AlertCircle className="w-3 h-3" />
-                                  Emergency
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
+                  {tech}
+                </button>
               ))}
             </div>
           </div>
-
-          {/* Legend */}
-          <div className="mt-6 flex flex-wrap gap-4 text-sm">
-            {TECHNICIANS.map((tech) => (
-              <div key={tech} className="flex items-center gap-2">
-                <div className={`w-4 h-4 rounded ${TECH_COLORS[tech].split(' ')[0]}`} />
-                <span className="text-slate-700">{tech}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Unscheduled Jobs Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-8">
-            <h3 className="text-lg font-semibold text-slate-900 mb-6">
-              Unscheduled Jobs
-            </h3>
+        {/* Main Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Calendar */}
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+              {/* Day Headers */}
+              <div className="grid grid-cols-7 bg-slate-50 border-b border-slate-200">
+                <div className="col-span-1 p-4" />
+                {DAYS.map((day, idx) => {
+                  const date = weekDates[idx];
+                  const jobCount = countJobsForDay(day);
+                  return (
+                    <div key={day} className="col-span-1 p-4 text-center border-l border-slate-200">
+                      <div className="text-sm font-semibold text-slate-600">{DAY_ABBREVIATIONS[idx]}</div>
+                      <div className="text-lg font-bold text-slate-900 mt-1">{date.getDate()}</div>
+                      <div className="text-xs text-slate-500 mt-2">
+                        {jobCount} {jobCount === 1 ? 'job' : 'jobs'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-            {unscheduledJobs.length > 0 ? (
-              <div className="space-y-4">
-                {unscheduledJobs.map((job) => (
-                  <div
-                    key={job.id}
-                    className="p-4 border border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition group cursor-move"
-                  >
-                    <div className="font-semibold text-sm text-slate-900 group-hover:text-blue-900 truncate">
-                      {job.title}
+              {/* Time Slots */}
+              <div className="divide-y divide-slate-200">
+                {TIME_SLOTS.map((hour) => (
+                  <div key={hour} className="grid grid-cols-7">
+                    {/* Hour Label */}
+                    <div className="col-span-1 p-4 bg-slate-50 border-r border-slate-200 text-xs font-semibold text-slate-600 flex items-start">
+                      {hour}:00
                     </div>
-                    <div className="text-xs text-slate-600 mt-1 truncate">
-                      {job.customer}
-                    </div>
-                    <div className="text-xs text-slate-500 mt-1 truncate">
-                      {job.address}
-                    </div>
-                    <div className="mt-3 flex items-center justify-between">
-                      <span className="text-sm font-semibold text-emerald-600">
-                        ${job.value.toLocaleString()}
-                      </span>
-                      <button className="text-xs px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition">
-                        Schedule
-                      </button>
-                    </div>
+
+                    {/* Day Columns */}
+                    {DAYS.map((day) => (
+                      <Droppable key={`${day}-${hour}`} droppableId={`${day}-${hour}`} type="JOB">
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={`col-span-1 p-2 border-l border-slate-200 min-h-24 transition ${
+                              snapshot.isDraggingOver
+                                ? 'bg-blue-50 border-l-4 border-l-blue-400'
+                                : 'bg-white hover:bg-slate-50'
+                            }`}
+                          >
+                            {getJobsForSlot(day, String(hour)).map((job, index) => (
+                              <Draggable key={job.id} draggableId={job.id} index={index}>
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={`p-2 rounded-lg border-l-4 mb-2 cursor-grab active:cursor-grabbing transition ${
+                                      TECH_COLORS[job.assignedTo].bg
+                                    } border ${
+                                      TECH_COLORS[job.assignedTo].border
+                                    } ${
+                                      snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-400' : 'shadow-sm'
+                                    }`}
+                                    style={{
+                                      borderLeftColor: snapshot.isDragging ? '' : '',
+                                      ...provided.draggableProps.style,
+                                    }}
+                                  >
+                                    <div className="flex items-start gap-2">
+                                      <GripVertical className="w-3 h-3 mt-0.5 flex-shrink-0 text-slate-400" />
+                                      <div className="flex-1 min-w-0">
+                                        <div className={`text-xs font-semibold truncate ${TECH_COLORS[job.assignedTo].text}`}>
+                                          {job.title}
+                                        </div>
+                                        <div className="text-xs text-slate-600 truncate">{job.customerName}</div>
+                                        <div className="mt-1 flex items-center gap-1">
+                                          <DollarSign className="w-2.5 h-2.5 text-slate-500" />
+                                          <span className="text-xs font-semibold text-slate-700">
+                                            {(job.value / 1000).toFixed(1)}k
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className={`mt-2 inline-block px-2 py-0.5 rounded text-xs font-medium ${TECH_COLORS[job.assignedTo].badge}`}>
+                                      {job.assignedTo}
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    ))}
                   </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-sm text-slate-500">
-                All jobs are scheduled!
-              </p>
-            )}
-
-            {/* Summary Cards */}
-            <div className="mt-8 pt-6 border-t border-slate-200 space-y-4">
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <div className="text-xs text-slate-600 mb-1">Total Scheduled</div>
-                <div className="text-2xl font-bold text-slate-900">
-                  {scheduledJobs.length}
-                </div>
-              </div>
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <div className="text-xs text-slate-600 mb-1">Pending Schedule</div>
-                <div className="text-2xl font-bold text-slate-900">
-                  {unscheduledJobs.length}
-                </div>
-              </div>
             </div>
+          </div>
+
+          {/* Unscheduled Sidebar */}
+          <div className="lg:col-span-1">
+            <Droppable droppableId="unscheduled" type="JOB">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={`bg-white rounded-xl border-2 border-dashed shadow-sm p-6 sticky top-8 transition ${
+                    snapshot.isDraggingOver
+                      ? 'border-slate-400 bg-slate-50'
+                      : 'border-slate-200'
+                  }`}
+                >
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Unscheduled</h2>
+                  <p className="text-sm text-slate-600 mb-6">{unscheduledJobs.length} jobs ready to schedule</p>
+
+                  <div className="space-y-3">
+                    {filterUnscheduledByTech(unscheduledJobs).length > 0 ? (
+                      filterUnscheduledByTech(unscheduledJobs).map((job, index) => (
+                        <Draggable key={job.id} draggableId={job.id} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className={`p-3 rounded-lg border-l-4 transition ${
+                                TECH_COLORS[job.assignedTo].bg
+                              } border ${
+                                TECH_COLORS[job.assignedTo].border
+                              } ${
+                                snapshot.isDragging
+                                  ? 'shadow-lg ring-2 ring-blue-400 opacity-50'
+                                  : 'shadow-sm hover:shadow-md'
+                              }`}
+                              style={provided.draggableProps.style}
+                            >
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex-1 min-w-0">
+                                  <div className={`text-sm font-semibold truncate ${TECH_COLORS[job.assignedTo].text}`}>
+                                    {job.title}
+                                  </div>
+                                  <div className="text-xs text-slate-600 truncate mt-1">{job.customerName}</div>
+                                  <div className={`inline-block px-2 py-0.5 rounded text-xs font-medium mt-2 ${TECH_COLORS[job.assignedTo].badge}`}>
+                                    {job.assignedTo}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="mt-2 text-sm font-semibold text-emerald-600">
+                                ${job.value.toLocaleString()}
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))
+                    ) : unscheduledJobs.length > 0 ? (
+                      <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center">
+                        <Filter className="w-4 h-4 text-slate-400 mx-auto mb-2" />
+                        <p className="text-sm text-slate-500">No jobs match selected technicians</p>
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200 text-center">
+                        <p className="text-sm font-medium text-emerald-700">All jobs scheduled!</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {provided.placeholder}
+
+                  {/* Summary Stats */}
+                  <div className="mt-8 pt-6 border-t border-slate-200 space-y-3">
+                    <div className="p-3 bg-slate-50 rounded-lg">
+                      <div className="text-xs text-slate-600 font-medium">Scheduled</div>
+                      <div className="text-2xl font-bold text-slate-900 mt-1">
+                        {Object.keys(scheduledJobs).length}
+                      </div>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-lg">
+                      <div className="text-xs text-slate-600 font-medium">Unscheduled</div>
+                      <div className="text-2xl font-bold text-slate-900 mt-1">
+                        {unscheduledJobs.length}
+                      </div>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-lg">
+                      <div className="text-xs text-slate-600 font-medium">Total Value</div>
+                      <div className="text-lg font-bold text-emerald-600 mt-1">
+                        ${Object.values(scheduledJobs).reduce((sum, job) => {
+                          const deal = getSchedulableDeals().find((d) => d.id === job.dealId);
+                          return sum + (deal?.value || 0);
+                        }, 0).toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Droppable>
           </div>
         </div>
       </div>
-    </div>
+    </DragDropContext>
   );
 }

@@ -1,134 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useStore } from '@/store';
+import { Estimate, EstimateStatus, EstimateTier } from '@/types';
 import {
   Plus,
   Search,
   Eye,
-  Edit2,
   Send,
   Trash2,
   TrendingUp,
   FileText,
   Clock,
+  X,
+  ChevronDown,
+  DollarSign,
 } from 'lucide-react';
-
-type EstimateStatus = 'draft' | 'sent' | 'viewed' | 'approved' | 'rejected' | 'expired';
-
-interface Estimate {
-  id: string;
-  number: string;
-  customerName: string;
-  service: string;
-  amount: number;
-  status: EstimateStatus;
-  sentDate: Date;
-  daysOld: number;
-}
-
-const MOCK_ESTIMATES: Estimate[] = [
-  {
-    id: '1',
-    number: 'EST-2026-001',
-    customerName: 'John Martinez',
-    service: 'Main Line Repair',
-    amount: 3500,
-    status: 'approved',
-    sentDate: new Date('2026-03-20'),
-    daysOld: 8,
-  },
-  {
-    id: '2',
-    number: 'EST-2026-002',
-    customerName: 'Sarah Chen',
-    service: 'Kitchen Faucet Installation',
-    amount: 850,
-    status: 'viewed',
-    sentDate: new Date('2026-03-25'),
-    daysOld: 3,
-  },
-  {
-    id: '3',
-    number: 'EST-2026-003',
-    customerName: 'Michael O\'Brien',
-    service: 'Water Heater Replacement',
-    amount: 2200,
-    status: 'sent',
-    sentDate: new Date('2026-03-27'),
-    daysOld: 1,
-  },
-  {
-    id: '4',
-    number: 'EST-2026-004',
-    customerName: 'Jennifer Williams',
-    service: 'Bathroom Remodel Rough-In',
-    amount: 5600,
-    status: 'draft',
-    sentDate: new Date('2026-03-28'),
-    daysOld: 0,
-  },
-  {
-    id: '5',
-    number: 'EST-2026-005',
-    customerName: 'David Rodriguez',
-    service: 'Bathroom Fixture Installation',
-    amount: 3200,
-    status: 'approved',
-    sentDate: new Date('2026-03-22'),
-    daysOld: 6,
-  },
-  {
-    id: '6',
-    number: 'EST-2026-006',
-    customerName: 'Lisa Anderson',
-    service: 'Water Heater Inspection',
-    amount: 1200,
-    status: 'rejected',
-    sentDate: new Date('2026-03-15'),
-    daysOld: 13,
-  },
-  {
-    id: '7',
-    number: 'EST-2026-007',
-    customerName: 'Robert Thompson',
-    service: 'Sewer Line Replacement',
-    amount: 8900,
-    status: 'sent',
-    sentDate: new Date('2026-03-26'),
-    daysOld: 2,
-  },
-  {
-    id: '8',
-    number: 'EST-2026-008',
-    customerName: 'Patricia King',
-    service: 'Toilet Replacement',
-    amount: 650,
-    status: 'expired',
-    sentDate: new Date('2026-02-28'),
-    daysOld: 29,
-  },
-  {
-    id: '9',
-    number: 'EST-2026-009',
-    customerName: 'James Davis',
-    service: 'Leak Repair and Inspection',
-    amount: 2100,
-    status: 'viewed',
-    sentDate: new Date('2026-03-24'),
-    daysOld: 4,
-  },
-  {
-    id: '10',
-    number: 'EST-2026-010',
-    customerName: 'Michelle Jackson',
-    service: 'Pipe Insulation Installation',
-    amount: 1800,
-    status: 'approved',
-    sentDate: new Date('2026-03-19'),
-    daysOld: 9,
-  },
-];
 
 const STATUS_COLORS: Record<EstimateStatus, string> = {
   draft: 'bg-slate-100 text-slate-800 border-slate-300',
@@ -139,20 +27,62 @@ const STATUS_COLORS: Record<EstimateStatus, string> = {
   expired: 'bg-slate-200 text-slate-800 border-slate-400',
 };
 
+interface CreateEstimateForm {
+  contactId: string;
+  service: string;
+  description: string;
+  tiers: EstimateTier[];
+  notes: string;
+  validDays: number;
+}
+
+interface CreateFeatureState {
+  [tierIndex: number]: string;
+}
+
 export default function EstimatesPage() {
-  const { initializeSeedData } = useStore();
+  const { estimates, contacts, addEstimate, updateEstimateStatus, deleteEstimate, initializeSeedData } = useStore();
   const [mounted, setMounted] = useState(false);
-  const [estimates, setEstimates] = useState<Estimate[]>(MOCK_ESTIMATES);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<EstimateStatus | 'all'>('all');
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [newFeatureInputs, setNewFeatureInputs] = useState<CreateFeatureState>({});
+
+  const [formData, setFormData] = useState<CreateEstimateForm>({
+    contactId: '',
+    service: '',
+    description: '',
+    tiers: [
+      { name: 'Good', description: '', price: 0, features: [] },
+      { name: 'Better', description: '', price: 0, features: [] },
+      { name: 'Best', description: '', price: 0, features: [] },
+    ],
+    notes: '',
+    validDays: 30,
+  });
 
   useEffect(() => {
     setMounted(true);
     initializeSeedData();
-  }, []);
+  }, [initializeSeedData]);
 
   if (!mounted) return <div className="p-8">Loading...</div>;
+
+  // Calculate stats
+  const totalEstimates = estimates.length;
+  const pendingApproval = estimates.filter(
+    (e) => e.status === 'sent' || e.status === 'viewed'
+  ).length;
+  const currentMonth = new Date();
+  const approvedThisMonth = estimates.filter(
+    (e) =>
+      e.status === 'approved' &&
+      e.createdAt >= new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getTime()
+  ).length;
+  const totalApproved = estimates.filter((e) => e.status === 'approved').length;
+  const conversionRate = totalEstimates > 0 ? Math.round((totalApproved / totalEstimates) * 100) : 0;
 
   const filteredEstimates = estimates.filter((est) => {
     const matchesSearch =
@@ -160,27 +90,99 @@ export default function EstimatesPage() {
       est.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       est.service.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus =
-      filterStatus === 'all' || est.status === filterStatus;
+    const matchesStatus = filterStatus === 'all' || est.status === filterStatus;
 
     return matchesSearch && matchesStatus;
   });
 
-  // Calculate stats
-  const totalEstimates = estimates.length;
-  const pendingApproval = estimates.filter(
-    (e) => e.status === 'sent' || e.status === 'viewed'
-  ).length;
-  const approvedThisMonth = estimates.filter(
-    (e) =>
-      e.status === 'approved' &&
-      e.sentDate >= new Date(2026, 2, 1)
-  ).length;
-  const totalApproved = estimates.filter((e) => e.status === 'approved').length;
-  const conversionRate =
-    totalEstimates > 0
-      ? Math.round((totalApproved / totalEstimates) * 100)
-      : 0;
+  const handleCreateEstimate = () => {
+    if (!formData.contactId || !formData.service) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const contact = contacts.find((c) => c.id === formData.contactId);
+    if (!contact) {
+      alert('Contact not found');
+      return;
+    }
+
+    addEstimate({
+      contactId: formData.contactId,
+      customerName: contact.name,
+      customerEmail: contact.email,
+      customerPhone: contact.phone,
+      service: formData.service,
+      description: formData.description,
+      tiers: formData.tiers,
+      status: 'draft',
+      notes: formData.notes,
+      validDays: formData.validDays,
+    });
+
+    // Show success state
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowCreateModal(false);
+      setShowSuccessMessage(false);
+      resetForm();
+    }, 1200);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      contactId: '',
+      service: '',
+      description: '',
+      tiers: [
+        { name: 'Good', description: '', price: 0, features: [] },
+        { name: 'Better', description: '', price: 0, features: [] },
+        { name: 'Best', description: '', price: 0, features: [] },
+      ],
+      notes: '',
+      validDays: 30,
+    });
+    setNewFeatureInputs({});
+  };
+
+  const handleTierChange = (tierIndex: number, field: string, value: any) => {
+    setFormData((prev) => {
+      const newTiers = [...prev.tiers];
+      newTiers[tierIndex] = { ...newTiers[tierIndex], [field]: value };
+      return { ...prev, tiers: newTiers };
+    });
+  };
+
+  const addFeatureToTier = (tierIndex: number) => {
+    const featureText = newFeatureInputs[tierIndex]?.trim() || '';
+    if (!featureText) return;
+
+    setFormData((prev) => {
+      const newTiers = [...prev.tiers];
+      newTiers[tierIndex].features = [...(newTiers[tierIndex].features || []), featureText];
+      return { ...prev, tiers: newTiers };
+    });
+
+    setNewFeatureInputs((prev) => ({ ...prev, [tierIndex]: '' }));
+  };
+
+  const removeFeatureFromTier = (tierIndex: number, featureIndex: number) => {
+    setFormData((prev) => {
+      const newTiers = [...prev.tiers];
+      newTiers[tierIndex].features = newTiers[tierIndex].features.filter(
+        (_, i) => i !== featureIndex
+      );
+      return { ...prev, tiers: newTiers };
+    });
+  };
+
+  const getDisplayAmount = (estimate: Estimate): number => {
+    if (estimate.selectedTier) {
+      const tier = estimate.tiers.find((t) => t.name === estimate.selectedTier);
+      return tier?.price || estimate.tiers[1]?.price || 0;
+    }
+    return estimate.tiers[1]?.price || 0;
+  };
 
   return (
     <div className="p-8 bg-slate-50 min-h-screen">
@@ -195,12 +197,8 @@ export default function EstimatesPage() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">
-                Total Estimates
-              </p>
-              <p className="text-3xl font-bold text-slate-900">
-                {totalEstimates}
-              </p>
+              <p className="text-sm text-slate-600 font-medium mb-1">Total Estimates</p>
+              <p className="text-3xl font-bold text-slate-900">{totalEstimates}</p>
             </div>
             <FileText className="w-12 h-12 text-blue-100" />
           </div>
@@ -209,12 +207,8 @@ export default function EstimatesPage() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">
-                Pending Approval
-              </p>
-              <p className="text-3xl font-bold text-slate-900">
-                {pendingApproval}
-              </p>
+              <p className="text-sm text-slate-600 font-medium mb-1">Pending Approval</p>
+              <p className="text-3xl font-bold text-slate-900">{pendingApproval}</p>
             </div>
             <Clock className="w-12 h-12 text-amber-100" />
           </div>
@@ -223,12 +217,8 @@ export default function EstimatesPage() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">
-                Approved This Month
-              </p>
-              <p className="text-3xl font-bold text-slate-900">
-                {approvedThisMonth}
-              </p>
+              <p className="text-sm text-slate-600 font-medium mb-1">Approved This Month</p>
+              <p className="text-3xl font-bold text-slate-900">{approvedThisMonth}</p>
             </div>
             <TrendingUp className="w-12 h-12 text-emerald-100" />
           </div>
@@ -237,12 +227,8 @@ export default function EstimatesPage() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">
-                Conversion Rate
-              </p>
-              <p className="text-3xl font-bold text-slate-900">
-                {conversionRate}%
-              </p>
+              <p className="text-sm text-slate-600 font-medium mb-1">Conversion Rate</p>
+              <p className="text-3xl font-bold text-slate-900">{conversionRate}%</p>
             </div>
             <div className="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center">
               <span className="text-xl font-bold text-rose-600">↗</span>
@@ -267,7 +253,10 @@ export default function EstimatesPage() {
           </div>
 
           {/* Create Button */}
-          <button className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap"
+          >
             <Plus className="w-4 h-4" />
             Create Estimate
           </button>
@@ -277,9 +266,7 @@ export default function EstimatesPage() {
         <div className="flex flex-wrap gap-2">
           {(['all', 'draft', 'sent', 'viewed', 'approved', 'rejected'] as const).map((status) => {
             const count =
-              status === 'all'
-                ? totalEstimates
-                : estimates.filter((e) => e.status === status).length;
+              status === 'all' ? totalEstimates : estimates.filter((e) => e.status === status).length;
 
             return (
               <button
@@ -320,7 +307,7 @@ export default function EstimatesPage() {
                   Status
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
-                  Sent Date
+                  Created
                 </th>
                 <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wide">
                   Actions
@@ -334,12 +321,12 @@ export default function EstimatesPage() {
                     key={estimate.id}
                     onMouseEnter={() => setHoveredRow(estimate.id)}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className={`transition ${
-                      hoveredRow === estimate.id ? 'bg-blue-50' : ''
-                    }`}
+                    className={`transition ${hoveredRow === estimate.id ? 'bg-blue-50' : ''}`}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
-                      {estimate.number}
+                      <Link href={`/estimates/${estimate.id}`} className="hover:text-blue-600">
+                        {estimate.number}
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
                       {estimate.customerName}
@@ -348,7 +335,7 @@ export default function EstimatesPage() {
                       {estimate.service}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
-                      ${estimate.amount.toLocaleString()}
+                      ${getDisplayAmount(estimate).toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
@@ -360,30 +347,34 @@ export default function EstimatesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-                      {estimate.sentDate.toLocaleDateString('en-US', {
+                      {new Date(estimate.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                       })}
-                      <div className="text-xs text-slate-500 mt-1">
-                        {estimate.daysOld} days ago
-                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex justify-end gap-2">
-                        <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="View">
+                        <Link
+                          href={`/estimates/${estimate.id}`}
+                          className="p-2 hover:bg-slate-100 rounded-lg transition"
+                          title="View"
+                        >
                           <Eye className="w-4 h-4 text-slate-600" />
-                        </button>
+                        </Link>
                         {estimate.status === 'draft' && (
-                          <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="Edit">
-                            <Edit2 className="w-4 h-4 text-slate-600" />
-                          </button>
-                        )}
-                        {estimate.status === 'draft' && (
-                          <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="Send">
+                          <button
+                            onClick={() => updateEstimateStatus(estimate.id, 'sent')}
+                            className="p-2 hover:bg-slate-100 rounded-lg transition"
+                            title="Send"
+                          >
                             <Send className="w-4 h-4 text-slate-600" />
                           </button>
                         )}
-                        <button className="p-2 hover:bg-red-50 rounded-lg transition" title="Delete">
+                        <button
+                          onClick={() => deleteEstimate(estimate.id)}
+                          className="p-2 hover:bg-red-50 rounded-lg transition"
+                          title="Delete"
+                        >
                           <Trash2 className="w-4 h-4 text-rose-600" />
                         </button>
                       </div>
@@ -402,76 +393,243 @@ export default function EstimatesPage() {
         </div>
       </div>
 
-      {/* Pricing Preview Card */}
-      <div className="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-        <h3 className="text-lg font-semibold text-slate-900 mb-6">
-          Pricing Tiers Example
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              name: 'Good',
-              description: 'Basic service package',
-              price: '$650',
-              features: [
-                'Service call included',
-                'Basic repairs',
-                '30-day warranty',
-              ],
-              color: 'border-slate-200',
-            },
-            {
-              name: 'Better',
-              description: 'Standard service + upgrades',
-              price: '$1,200',
-              features: [
-                'Everything in Good',
-                'Premium fixtures',
-                '1-year warranty',
-                'Priority scheduling',
-              ],
-              color: 'border-blue-300 ring-2 ring-blue-200',
-            },
-            {
-              name: 'Best',
-              description: 'Full renovation package',
-              price: '$2,500+',
-              features: [
-                'Everything in Better',
-                'Custom design',
-                'Lifetime warranty',
-                '24/7 support',
-                'Free maintenance visits',
-              ],
-              color: 'border-emerald-300',
-            },
-          ].map((tier) => (
-            <div
-              key={tier.name}
-              className={`p-6 border-2 rounded-lg ${tier.color}`}
-            >
-              <h4 className="text-lg font-semibold text-slate-900 mb-1">
-                {tier.name}
-              </h4>
-              <p className="text-sm text-slate-600 mb-4">{tier.description}</p>
-              <div className="text-3xl font-bold text-slate-900 mb-6">
-                {tier.price}
-              </div>
-              <ul className="space-y-3">
-                {tier.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="text-sm text-slate-700 flex items-center gap-2"
-                  >
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+      {/* Create Estimate Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900">Create Estimate</h2>
+              <button
+                onClick={() => {
+                  setShowCreateModal(false);
+                  resetForm();
+                }}
+                className="p-1 hover:bg-slate-100 rounded-lg transition"
+              >
+                <X className="w-6 h-6 text-slate-600" />
+              </button>
             </div>
-          ))}
+
+            {!showSuccessMessage ? (
+              <div className="p-6 space-y-6">
+                {/* Contact Selector */}
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                    Select Contact *
+                  </label>
+                  <select
+                    value={formData.contactId}
+                    onChange={(e) => setFormData({ ...formData, contactId: e.target.value })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  >
+                    <option value="">-- Choose a contact --</option>
+                    {contacts.map((contact) => (
+                      <option key={contact.id} value={contact.id}>
+                        {contact.name} - {contact.phone}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Service Description */}
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                    Service Description *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.service}
+                    onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                    placeholder="e.g., Water Heater Replacement"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  />
+                </div>
+
+                {/* Detailed Description */}
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                    Detailed Description
+                  </label>
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder="Describe the work in detail..."
+                    rows={3}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  />
+                </div>
+
+                {/* Pricing Tiers */}
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Pricing Tiers</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {formData.tiers.map((tier, tierIndex) => (
+                      <div key={tierIndex} className="border border-slate-200 rounded-lg p-4">
+                        <h4 className="text-base font-semibold text-slate-900 mb-3">
+                          {tier.name}
+                        </h4>
+
+                        {/* Tier Description */}
+                        <div className="mb-3">
+                          <label className="block text-xs font-medium text-slate-700 mb-1">
+                            Description
+                          </label>
+                          <input
+                            type="text"
+                            value={tier.description}
+                            onChange={(e) =>
+                              handleTierChange(tierIndex, 'description', e.target.value)
+                            }
+                            placeholder={`${tier.name} service description`}
+                            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                          />
+                        </div>
+
+                        {/* Tier Price */}
+                        <div className="mb-4">
+                          <label className="block text-xs font-medium text-slate-700 mb-1">
+                            Price
+                          </label>
+                          <div className="relative">
+                            <DollarSign className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                            <input
+                              type="number"
+                              value={tier.price}
+                              onChange={(e) =>
+                                handleTierChange(tierIndex, 'price', parseInt(e.target.value) || 0)
+                              }
+                              placeholder="0"
+                              className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Features */}
+                        <div>
+                          <label className="block text-xs font-medium text-slate-700 mb-2">
+                            Features
+                          </label>
+                          <div className="space-y-2 mb-3">
+                            {tier.features.map((feature, featureIndex) => (
+                              <div
+                                key={featureIndex}
+                                className="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
+                              >
+                                <span className="text-sm text-slate-700">{feature}</span>
+                                <button
+                                  onClick={() => removeFeatureFromTier(tierIndex, featureIndex)}
+                                  className="text-rose-600 hover:text-rose-700"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Add Feature Input */}
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={newFeatureInputs[tierIndex] || ''}
+                              onChange={(e) =>
+                                setNewFeatureInputs({
+                                  ...newFeatureInputs,
+                                  [tierIndex]: e.target.value,
+                                })
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  addFeatureToTier(tierIndex);
+                                }
+                              }}
+                              placeholder="Add feature..."
+                              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                            />
+                            <button
+                              onClick={() => addFeatureToTier(tierIndex)}
+                              className="px-3 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition text-sm font-medium"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Valid For */}
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                    Valid For (Days)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.validDays}
+                    onChange={(e) => setFormData({ ...formData, validDays: parseInt(e.target.value) })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  />
+                </div>
+
+                {/* Notes */}
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                    Notes
+                  </label>
+                  <textarea
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    placeholder="Additional notes..."
+                    rows={3}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  />
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-4 justify-end pt-6 border-t border-slate-200">
+                  <button
+                    onClick={() => {
+                      setShowCreateModal(false);
+                      resetForm();
+                    }}
+                    className="px-6 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleCreateEstimate}
+                    className="px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition"
+                  >
+                    Create Estimate
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="p-12 flex flex-col items-center justify-center min-h-[400px]">
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                  <svg
+                    className="w-8 h-8 text-emerald-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-1">
+                  Estimate Created!
+                </h3>
+                <p className="text-slate-600">Your estimate has been saved as draft.</p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

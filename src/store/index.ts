@@ -2,12 +2,14 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Contact, Deal, Activity, LeadSource, PipelineStage } from '@/types';
+import { Contact, Deal, Activity, Estimate, Invoice, LeadSource, PipelineStage, EstimateStatus, InvoiceStatus } from '@/types';
 
 interface GrowthOSStore {
   contacts: Contact[];
   deals: Deal[];
   activities: Activity[];
+  estimates: Estimate[];
+  invoices: Invoice[];
 
   // Contact operations
   addContact: (contact: Omit<Contact, 'id' | 'createdAt'>) => void;
@@ -22,6 +24,22 @@ interface GrowthOSStore {
   getDeal: (id: string) => Deal | undefined;
   getDealsByStage: (stage: PipelineStage) => Deal[];
   getDealsByContact: (contactId: string) => Deal[];
+
+  // Estimate operations
+  addEstimate: (estimate: Omit<Estimate, 'id' | 'number' | 'createdAt'>) => string;
+  updateEstimate: (id: string, updates: Partial<Estimate>) => void;
+  deleteEstimate: (id: string) => void;
+  getEstimate: (id: string) => Estimate | undefined;
+  getEstimatesByContact: (contactId: string) => Estimate[];
+  updateEstimateStatus: (id: string, status: EstimateStatus) => void;
+
+  // Invoice operations
+  addInvoice: (invoice: Omit<Invoice, 'id' | 'number' | 'createdAt'>) => string;
+  updateInvoice: (id: string, updates: Partial<Invoice>) => void;
+  deleteInvoice: (id: string) => void;
+  getInvoice: (id: string) => Invoice | undefined;
+  getInvoicesByContact: (contactId: string) => Invoice[];
+  recordPayment: (id: string, amount: number) => void;
 
   // Activity operations
   addActivity: (activity: Omit<Activity, 'id' | 'createdAt'>) => void;
@@ -350,6 +368,8 @@ export const useStore = create<GrowthOSStore>()(
       contacts: [],
       deals: [],
       activities: [],
+      estimates: [],
+      invoices: [],
 
       // Contact operations
       addContact: (contact) =>
@@ -432,6 +452,89 @@ export const useStore = create<GrowthOSStore>()(
           .activities.sort((a, b) => b.createdAt - a.createdAt)
           .slice(0, limit),
 
+      // Estimate operations
+      addEstimate: (estimate) => {
+        const id = generateId();
+        const estNumber = `EST-${new Date().getFullYear()}-${String(get().estimates.length + 1).padStart(3, '0')}`;
+        set((state) => ({
+          estimates: [
+            ...state.estimates,
+            { id, number: estNumber, createdAt: Date.now(), ...estimate },
+          ],
+        }));
+        return id;
+      },
+
+      updateEstimate: (id, updates) =>
+        set((state) => ({
+          estimates: state.estimates.map((e) =>
+            e.id === id ? { ...e, ...updates } : e
+          ),
+        })),
+
+      deleteEstimate: (id) =>
+        set((state) => ({
+          estimates: state.estimates.filter((e) => e.id !== id),
+        })),
+
+      getEstimate: (id) => get().estimates.find((e) => e.id === id),
+
+      getEstimatesByContact: (contactId) =>
+        get().estimates.filter((e) => e.contactId === contactId),
+
+      updateEstimateStatus: (id, status) => {
+        const now = Date.now();
+        const updates: Partial<Estimate> = { status };
+        if (status === 'sent') updates.sentAt = now;
+        if (status === 'viewed') updates.viewedAt = now;
+        if (status === 'approved' || status === 'rejected') updates.respondedAt = now;
+        set((state) => ({
+          estimates: state.estimates.map((e) =>
+            e.id === id ? { ...e, ...updates } : e
+          ),
+        }));
+      },
+
+      // Invoice operations
+      addInvoice: (invoice) => {
+        const id = generateId();
+        const invNumber = `INV-${new Date().getFullYear()}-${String(get().invoices.length + 1).padStart(3, '0')}`;
+        set((state) => ({
+          invoices: [
+            ...state.invoices,
+            { id, number: invNumber, createdAt: Date.now(), ...invoice },
+          ],
+        }));
+        return id;
+      },
+
+      updateInvoice: (id, updates) =>
+        set((state) => ({
+          invoices: state.invoices.map((inv) =>
+            inv.id === id ? { ...inv, ...updates } : inv
+          ),
+        })),
+
+      deleteInvoice: (id) =>
+        set((state) => ({
+          invoices: state.invoices.filter((inv) => inv.id !== id),
+        })),
+
+      getInvoice: (id) => get().invoices.find((inv) => inv.id === id),
+
+      getInvoicesByContact: (contactId) =>
+        get().invoices.filter((inv) => inv.contactId === contactId),
+
+      recordPayment: (id, amount) =>
+        set((state) => ({
+          invoices: state.invoices.map((inv) => {
+            if (inv.id !== id) return inv;
+            const newPaid = inv.amountPaid + amount;
+            const newStatus: InvoiceStatus = newPaid >= inv.total ? 'paid' : 'partial';
+            return { ...inv, amountPaid: newPaid, status: newStatus, paidAt: newPaid >= inv.total ? Date.now() : inv.paidAt };
+          }),
+        })),
+
       // Seed data
       initializeSeedData: () => {
         const state = get();
@@ -461,15 +564,96 @@ export const useStore = create<GrowthOSStore>()(
         SEED_DATA.activities.forEach((activity) => {
           get().addActivity(activity);
         });
+
+        // Add seed estimates (linked to contacts/deals)
+        const deals = get().deals;
+        const contacts = get().contacts;
+        const seedEstimates = [
+          { dealIdx: 0, status: 'approved' as const, daysAgo: 8, tier: 'Better' as const },
+          { dealIdx: 1, status: 'sent' as const, daysAgo: 3, tier: undefined },
+          { dealIdx: 2, status: 'approved' as const, daysAgo: 5, tier: 'Good' as const },
+          { dealIdx: 3, status: 'draft' as const, daysAgo: 0, tier: undefined },
+          { dealIdx: 4, status: 'approved' as const, daysAgo: 6, tier: 'Best' as const },
+          { dealIdx: 5, status: 'sent' as const, daysAgo: 1, tier: undefined },
+          { dealIdx: 6, status: 'sent' as const, daysAgo: 2, tier: undefined },
+          { dealIdx: 7, status: 'approved' as const, daysAgo: 15, tier: 'Good' as const },
+          { dealIdx: 8, status: 'approved' as const, daysAgo: 9, tier: 'Better' as const },
+          { dealIdx: 9, status: 'viewed' as const, daysAgo: 4, tier: undefined },
+        ];
+
+        seedEstimates.forEach((se) => {
+          const deal = deals[se.dealIdx];
+          if (!deal) return;
+          const contact = contacts.find(c => c.id === deal.contactId);
+          if (!contact) return;
+          const basePrice = deal.value;
+          get().addEstimate({
+            contactId: contact.id,
+            dealId: deal.id,
+            customerName: contact.name,
+            customerEmail: contact.email,
+            customerPhone: contact.phone,
+            service: deal.title,
+            description: deal.notes,
+            tiers: [
+              { name: 'Good', description: 'Standard service', price: Math.round(basePrice * 0.7), features: ['Basic materials', 'Standard warranty (30 days)', 'Scheduled service'] },
+              { name: 'Better', description: 'Upgraded service + warranty', price: basePrice, features: ['Premium materials', '1-year warranty', 'Priority scheduling', 'Post-job inspection'] },
+              { name: 'Best', description: 'Full premium package', price: Math.round(basePrice * 1.4), features: ['Top-tier materials', 'Lifetime warranty', '24/7 support', 'Free maintenance visits', 'Photo documentation'] },
+            ],
+            selectedTier: se.tier,
+            status: se.status,
+            notes: '',
+            validDays: 30,
+            sentAt: se.status !== 'draft' ? Date.now() - se.daysAgo * 86400000 : undefined,
+            viewedAt: se.status === 'viewed' || se.status === 'approved' ? Date.now() - (se.daysAgo - 1) * 86400000 : undefined,
+            respondedAt: se.status === 'approved' ? Date.now() - (se.daysAgo - 2) * 86400000 : undefined,
+          });
+        });
+
+        // Add seed invoices (from approved estimates / completed deals)
+        const completedDealIndices = [0, 7, 8]; // invoiced and completed deals
+        completedDealIndices.forEach((idx) => {
+          const deal = deals[idx];
+          if (!deal) return;
+          const contact = contacts.find(c => c.id === deal.contactId);
+          if (!contact) return;
+          const isPaid = idx === 0;
+          const taxRate = 0.13; // Ontario HST
+          const subtotal = deal.value;
+          const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
+          const total = subtotal + taxAmount;
+          get().addInvoice({
+            contactId: contact.id,
+            dealId: deal.id,
+            customerName: contact.name,
+            customerEmail: contact.email,
+            customerAddress: contact.address,
+            lineItems: [{ description: deal.title, quantity: 1, unitPrice: subtotal }],
+            subtotal,
+            taxRate,
+            taxAmount,
+            total,
+            amountPaid: isPaid ? total : 0,
+            status: isPaid ? 'paid' : 'sent',
+            notes: '',
+            dueDate: Date.now() + 30 * 86400000,
+            province: 'ON',
+            taxType: 'HST',
+            sentAt: Date.now() - 5 * 86400000,
+            paidAt: isPaid ? Date.now() - 2 * 86400000 : undefined,
+          });
+        });
       },
     }),
     {
       name: 'growth-os-storage',
-      version: 2,
+      version: 3,
       migrate: () => ({
         contacts: [],
         deals: [],
         activities: [],
+        estimates: [],
+        invoices: [],
       }),
     }
   )

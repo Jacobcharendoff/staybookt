@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useStore } from '@/store';
+import { Invoice, InvoiceStatus, InvoiceLineItem } from '@/types';
 import {
   Plus,
   Search,
@@ -13,162 +15,74 @@ import {
   TrendingUp,
   AlertCircle,
   CheckCircle,
+  X,
+  ChevronDown,
 } from 'lucide-react';
-
-type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue' | 'cancelled';
-
-interface Invoice {
-  id: string;
-  number: string;
-  customerName: string;
-  amount: number;
-  status: InvoiceStatus;
-  dueDate: Date;
-  sentDate: Date;
-  paidDate?: Date;
-  daysOverdue?: number;
-}
-
-const MOCK_INVOICES: Invoice[] = [
-  {
-    id: '1',
-    number: 'INV-2026-001',
-    customerName: 'John Martinez',
-    amount: 3500,
-    status: 'paid',
-    dueDate: new Date('2026-03-20'),
-    sentDate: new Date('2026-03-05'),
-    paidDate: new Date('2026-03-18'),
-  },
-  {
-    id: '2',
-    number: 'INV-2026-002',
-    customerName: 'Sarah Chen',
-    amount: 850,
-    status: 'overdue',
-    dueDate: new Date('2026-02-20'),
-    sentDate: new Date('2026-02-05'),
-    daysOverdue: 37,
-  },
-  {
-    id: '3',
-    number: 'INV-2026-003',
-    customerName: 'Michael O\'Brien',
-    amount: 2200,
-    status: 'sent',
-    dueDate: new Date('2026-04-10'),
-    sentDate: new Date('2026-03-25'),
-  },
-  {
-    id: '4',
-    number: 'INV-2026-004',
-    customerName: 'Jennifer Williams',
-    amount: 5600,
-    status: 'viewed',
-    dueDate: new Date('2026-04-15'),
-    sentDate: new Date('2026-03-28'),
-  },
-  {
-    id: '5',
-    number: 'INV-2026-005',
-    customerName: 'David Rodriguez',
-    amount: 3200,
-    status: 'paid',
-    dueDate: new Date('2026-03-25'),
-    sentDate: new Date('2026-03-10'),
-    paidDate: new Date('2026-03-22'),
-  },
-  {
-    id: '6',
-    number: 'INV-2026-006',
-    customerName: 'Lisa Anderson',
-    amount: 1200,
-    status: 'overdue',
-    dueDate: new Date('2026-02-28'),
-    sentDate: new Date('2026-02-10'),
-    daysOverdue: 29,
-  },
-  {
-    id: '7',
-    number: 'INV-2026-007',
-    customerName: 'Robert Thompson',
-    amount: 8900,
-    status: 'paid',
-    dueDate: new Date('2026-03-15'),
-    sentDate: new Date('2026-03-01'),
-    paidDate: new Date('2026-03-14'),
-  },
-  {
-    id: '8',
-    number: 'INV-2026-008',
-    customerName: 'Patricia King',
-    amount: 650,
-    status: 'draft',
-    dueDate: new Date('2026-04-20'),
-    sentDate: new Date('2026-03-28'),
-  },
-  {
-    id: '9',
-    number: 'INV-2026-009',
-    customerName: 'James Davis',
-    amount: 2100,
-    status: 'sent',
-    dueDate: new Date('2026-04-08'),
-    sentDate: new Date('2026-03-26'),
-  },
-  {
-    id: '10',
-    number: 'INV-2026-010',
-    customerName: 'Michelle Jackson',
-    amount: 1800,
-    status: 'paid',
-    dueDate: new Date('2026-03-22'),
-    sentDate: new Date('2026-03-08'),
-    paidDate: new Date('2026-03-20'),
-  },
-  {
-    id: '11',
-    number: 'INV-2026-011',
-    customerName: 'Christopher Lee',
-    amount: 4500,
-    status: 'overdue',
-    dueDate: new Date('2026-03-15'),
-    sentDate: new Date('2026-03-01'),
-    daysOverdue: 13,
-  },
-  {
-    id: '12',
-    number: 'INV-2026-012',
-    customerName: 'Amanda White',
-    amount: 1800,
-    status: 'paid',
-    dueDate: new Date('2026-03-30'),
-    sentDate: new Date('2026-03-15'),
-    paidDate: new Date('2026-03-28'),
-  },
-];
 
 const STATUS_COLORS: Record<InvoiceStatus, string> = {
   draft: 'bg-slate-100 text-slate-800 border-slate-300',
   sent: 'bg-blue-100 text-blue-800 border-blue-300',
   viewed: 'bg-amber-100 text-amber-800 border-amber-300',
+  partial: 'bg-amber-100 text-amber-800 border-amber-300',
   paid: 'bg-emerald-100 text-emerald-800 border-emerald-300',
   overdue: 'bg-rose-100 text-rose-800 border-rose-300',
-  cancelled: 'bg-slate-200 text-slate-800 border-slate-400',
 };
 
+const PROVINCES = [
+  { code: 'ON', name: 'Ontario', taxRate: 0.13, taxType: 'HST' },
+  { code: 'QC', name: 'Quebec', taxRate: 0.14975, taxType: 'GST+QST' },
+  { code: 'BC', name: 'British Columbia', taxRate: 0.12, taxType: 'GST+PST' },
+  { code: 'AB', name: 'Alberta', taxRate: 0.05, taxType: 'GST' },
+  { code: 'SK', name: 'Saskatchewan', taxRate: 0.05, taxType: 'GST' },
+  { code: 'MB', name: 'Manitoba', taxRate: 0.13, taxType: 'GST+PST' },
+  { code: 'NB', name: 'New Brunswick', taxRate: 0.15, taxType: 'HST' },
+  { code: 'NS', name: 'Nova Scotia', taxRate: 0.15, taxType: 'HST' },
+  { code: 'NL', name: 'Newfoundland & Labrador', taxRate: 0.15, taxType: 'HST' },
+  { code: 'PE', name: 'Prince Edward Island', taxRate: 0.15, taxType: 'HST' },
+];
+
+interface LineItem {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
 export default function InvoicesPage() {
-  const { initializeSeedData } = useStore();
+  const router = useRouter();
+  const {
+    invoices,
+    contacts,
+    estimates,
+    addInvoice,
+    deleteInvoice,
+    initializeSeedData,
+    getEstimatesByContact,
+  } = useStore();
+
   const [mounted, setMounted] = useState(false);
-  const [invoices, setInvoices] = useState<Invoice[]>(MOCK_INVOICES);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<InvoiceStatus | 'all'>('all');
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  // Modal form state
+  const [selectedContactId, setSelectedContactId] = useState<string>('');
+  const [selectedEstimateId, setSelectedEstimateId] = useState<string>('');
+  const [lineItems, setLineItems] = useState<LineItem[]>([
+    { description: '', quantity: 1, unitPrice: 0 },
+  ]);
+  const [selectedProvince, setSelectedProvince] = useState<string>('ON');
+  const [dueDate, setDueDate] = useState<string>('');
+  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     setMounted(true);
     initializeSeedData();
-  }, []);
+    // Set default due date (30 days from now)
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 30);
+    setDueDate(futureDate.toISOString().split('T')[0]);
+  }, [initializeSeedData]);
 
   if (!mounted) return <div className="p-8">Loading...</div>;
 
@@ -184,37 +98,127 @@ export default function InvoicesPage() {
   });
 
   // Calculate stats
-  const paidInvoices = invoices.filter((i) => i.status === 'paid');
-  const outstanding = invoices.filter(
+  const outstandingInvoices = invoices.filter(
     (i) => i.status === 'sent' || i.status === 'viewed' || i.status === 'draft'
   );
-  const overdue = invoices.filter((i) => i.status === 'overdue');
+  const paidInvoices = invoices.filter((i) => i.status === 'paid');
+  const partialInvoices = invoices.filter((i) => i.status === 'partial');
+  const overdueInvoices = invoices.filter((i) => i.status === 'overdue');
 
-  const outstandingAmount = outstanding.reduce((sum, i) => sum + i.amount, 0);
+  const outstandingAmount = outstandingInvoices.reduce((sum, i) => sum + (i.total - i.amountPaid), 0);
   const paidThisMonth = paidInvoices
-    .filter((i) => i.paidDate && i.paidDate.getMonth() === 2)
-    .reduce((sum, i) => sum + i.amount, 0);
-  const overdueAmount = overdue.reduce((sum, i) => sum + i.amount, 0);
+    .filter((i) => {
+      const paidDate = new Date(i.paidAt || 0);
+      const now = new Date();
+      return paidDate.getMonth() === now.getMonth() && paidDate.getFullYear() === now.getFullYear();
+    })
+    .reduce((sum, i) => sum + i.total, 0);
+  const overdueAmount = overdueInvoices.reduce((sum, i) => sum + (i.total - i.amountPaid), 0);
 
-  const avgDaysToPay =
-    paidInvoices.length > 0
-      ? Math.round(
-          paidInvoices.reduce((sum, i) => {
-            if (!i.paidDate) return sum;
-            const days = Math.floor(
-              (i.paidDate.getTime() - i.sentDate.getTime()) / (1000 * 60 * 60 * 24)
-            );
-            return sum + days;
-          }, 0) / paidInvoices.length
-        )
-      : 0;
-
-  const totalCollected = paidInvoices.reduce((sum, i) => sum + i.amount, 0);
-  const collectionRate = totalCollected + outstandingAmount + overdueAmount;
+  const totalCollected = paidInvoices.reduce((sum, i) => sum + i.total, 0);
+  const totalOutstanding = outstandingAmount + overdueAmount;
+  const collectionTotal = totalCollected + totalOutstanding;
   const collectionPercent =
-    collectionRate > 0
-      ? Math.round((totalCollected / collectionRate) * 100)
+    collectionTotal > 0
+      ? Math.round((totalCollected / collectionTotal) * 100)
       : 0;
+
+  const selectedContact = contacts.find((c) => c.id === selectedContactId);
+  const contactEstimates = selectedContactId
+    ? getEstimatesByContact(selectedContactId).filter((e) => e.status === 'approved')
+    : [];
+  const selectedEstimate = selectedEstimateId
+    ? estimates.find((e) => e.id === selectedEstimateId)
+    : null;
+
+  const handleEstimateSelect = (estimateId: string) => {
+    setSelectedEstimateId(estimateId);
+    const estimate = estimates.find((e) => e.id === estimateId);
+    if (estimate && estimate.selectedTier) {
+      const tierPrice = estimate.tiers.find((t) => t.name === estimate.selectedTier)
+        ?.price || 0;
+      setLineItems([
+        {
+          description: estimate.service,
+          quantity: 1,
+          unitPrice: tierPrice,
+        },
+      ]);
+    }
+  };
+
+  const handleAddLineItem = () => {
+    setLineItems([
+      ...lineItems,
+      { description: '', quantity: 1, unitPrice: 0 },
+    ]);
+  };
+
+  const handleRemoveLineItem = (index: number) => {
+    setLineItems(lineItems.filter((_, i) => i !== index));
+  };
+
+  const handleLineItemChange = (
+    index: number,
+    field: keyof LineItem,
+    value: string | number
+  ) => {
+    const updated = [...lineItems];
+    updated[index] = { ...updated[index], [field]: value };
+    setLineItems(updated);
+  };
+
+  const calculateSubtotal = () => {
+    return lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+  };
+
+  const provinceInfo = PROVINCES.find((p) => p.code === selectedProvince);
+  const subtotal = calculateSubtotal();
+  const taxRate = provinceInfo?.taxRate || 0.13;
+  const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
+  const total = subtotal + taxAmount;
+
+  const handleCreateInvoice = () => {
+    if (!selectedContactId || lineItems.length === 0 || !selectedContact) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const invoiceId = addInvoice({
+      contactId: selectedContactId,
+      estimateId: selectedEstimateId || undefined,
+      customerName: selectedContact.name,
+      customerEmail: selectedContact.email,
+      customerAddress: selectedContact.address,
+      lineItems,
+      subtotal,
+      taxRate,
+      taxAmount,
+      total,
+      amountPaid: 0,
+      status: 'draft',
+      notes,
+      dueDate: new Date(dueDate).getTime(),
+      province: selectedProvince,
+      taxType: provinceInfo?.taxType || 'HST',
+    });
+
+    // Reset form
+    setShowCreateModal(false);
+    setSelectedContactId('');
+    setSelectedEstimateId('');
+    setLineItems([{ description: '', quantity: 1, unitPrice: 0 }]);
+    setNotes('');
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 30);
+    setDueDate(futureDate.toISOString().split('T')[0]);
+  };
+
+  const handleDeleteInvoice = (id: string) => {
+    if (confirm('Are you sure you want to delete this invoice?')) {
+      deleteInvoice(id);
+    }
+  };
 
   return (
     <div className="p-8 bg-slate-50 min-h-screen">
@@ -224,17 +228,26 @@ export default function InvoicesPage() {
         <p className="text-slate-600">Manage invoices and track payments</p>
       </div>
 
-      {/* Revenue Cards */}
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm text-slate-600 font-medium">Total Invoices</p>
+            <CheckCircle className="w-5 h-5 text-blue-500" />
+          </div>
+          <p className="text-3xl font-bold text-slate-900">{invoices.length}</p>
+          <p className="text-xs text-slate-500 mt-2">All time</p>
+        </div>
+
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-slate-600 font-medium">Outstanding</p>
             <AlertCircle className="w-5 h-5 text-amber-500" />
           </div>
           <p className="text-3xl font-bold text-slate-900">
-            ${outstandingAmount.toLocaleString()}
+            ${outstandingAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
-          <p className="text-xs text-slate-500 mt-2">{outstanding.length} invoices</p>
+          <p className="text-xs text-slate-500 mt-2">{outstandingInvoices.length + partialInvoices.length} invoices</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
@@ -243,29 +256,18 @@ export default function InvoicesPage() {
             <CheckCircle className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-3xl font-bold text-slate-900">
-            ${paidThisMonth.toLocaleString()}
+            ${paidThisMonth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
-          <p className="text-xs text-slate-500 mt-2">{paidInvoices.filter(i => i.paidDate?.getMonth() === 2).length} invoices</p>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-rose-200 p-6 border-l-4 border-l-rose-500">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-slate-600 font-medium">Overdue</p>
-            <AlertCircle className="w-5 h-5 text-rose-500" />
-          </div>
-          <p className="text-3xl font-bold text-rose-600">
-            ${overdueAmount.toLocaleString()}
-          </p>
-          <p className="text-xs text-slate-500 mt-2">{overdue.length} invoices</p>
+          <p className="text-xs text-slate-500 mt-2">{paidInvoices.length} paid</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-slate-600 font-medium">Avg Days to Pay</p>
-            <TrendingUp className="w-5 h-5 text-blue-500" />
+            <p className="text-sm text-slate-600 font-medium">Collection Rate</p>
+            <TrendingUp className="w-5 h-5 text-emerald-500" />
           </div>
-          <p className="text-3xl font-bold text-slate-900">{avgDaysToPay}</p>
-          <p className="text-xs text-slate-500 mt-2">days from invoice</p>
+          <p className="text-3xl font-bold text-slate-900">{collectionPercent}%</p>
+          <p className="text-xs text-slate-500 mt-2">of total invoiced</p>
         </div>
       </div>
 
@@ -275,29 +277,29 @@ export default function InvoicesPage() {
           <h3 className="text-lg font-semibold text-slate-900">Payment Collection</h3>
           <span className="text-2xl font-bold text-emerald-600">{collectionPercent}%</span>
         </div>
-        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden mb-6">
           <div
             className="h-3 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all"
             style={{ width: `${collectionPercent}%` }}
           />
         </div>
-        <div className="grid grid-cols-3 gap-4 mt-6">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <p className="text-xs text-slate-600 mb-1">Collected</p>
             <p className="text-lg font-semibold text-slate-900">
-              ${totalCollected.toLocaleString()}
+              ${totalCollected.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
           <div>
             <p className="text-xs text-slate-600 mb-1">Outstanding</p>
             <p className="text-lg font-semibold text-slate-900">
-              ${outstandingAmount.toLocaleString()}
+              ${totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
           <div>
             <p className="text-xs text-slate-600 mb-1">Overdue</p>
             <p className="text-lg font-semibold text-rose-600">
-              ${overdueAmount.toLocaleString()}
+              ${overdueAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
         </div>
@@ -306,7 +308,6 @@ export default function InvoicesPage() {
       {/* Controls */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-6">
-          {/* Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
             <input
@@ -318,8 +319,10 @@ export default function InvoicesPage() {
             />
           </div>
 
-          {/* Create Button */}
-          <button className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap"
+          >
             <Plus className="w-4 h-4" />
             Create Invoice
           </button>
@@ -327,26 +330,17 @@ export default function InvoicesPage() {
 
         {/* Status Tabs */}
         <div className="flex flex-wrap gap-2">
-          {(['all', 'outstanding', 'paid', 'overdue'] as const).map((status) => {
+          {(['all', 'draft', 'sent', 'paid', 'overdue', 'partial'] as const).map((status) => {
             let count = 0;
             if (status === 'all') count = invoices.length;
-            else if (status === 'outstanding')
-              count = invoices.filter((i) => i.status === 'sent' || i.status === 'viewed' || i.status === 'draft').length;
-            else if (status === 'paid')
-              count = invoices.filter((i) => i.status === 'paid').length;
-            else if (status === 'overdue')
-              count = invoices.filter((i) => i.status === 'overdue').length;
+            else count = invoices.filter((i) => i.status === status).length;
 
             return (
               <button
                 key={status}
-                onClick={() => {
-                  if (status === 'all') setFilterStatus('all');
-                  else if (status === 'outstanding') setFilterStatus('sent');
-                  else setFilterStatus(status as InvoiceStatus);
-                }}
+                onClick={() => setFilterStatus(status)}
                 className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
-                  filterStatus === status || (status === 'outstanding' && filterStatus === 'sent')
+                  filterStatus === status
                     ? 'bg-blue-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                 }`}
@@ -371,16 +365,16 @@ export default function InvoicesPage() {
                   Customer
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
-                  Amount
+                  Total
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                  Paid
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
                   Status
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
                   Due Date
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
-                  Paid Date
                 </th>
                 <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wide">
                   Actions
@@ -394,9 +388,10 @@ export default function InvoicesPage() {
                     key={invoice.id}
                     onMouseEnter={() => setHoveredRow(invoice.id)}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className={`transition ${
+                    className={`transition cursor-pointer ${
                       hoveredRow === invoice.id ? 'bg-blue-50' : ''
                     }`}
+                    onClick={() => router.push(`/invoices/${invoice.id}`)}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
                       {invoice.number}
@@ -405,7 +400,10 @@ export default function InvoicesPage() {
                       {invoice.customerName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
-                      ${invoice.amount.toLocaleString()}
+                      ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600">
+                      ${invoice.amountPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
@@ -417,43 +415,56 @@ export default function InvoicesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-                      {invoice.dueDate.toLocaleDateString('en-US', {
+                      {new Date(invoice.dueDate).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                       })}
-                      {invoice.status === 'overdue' && invoice.daysOverdue && (
-                        <div className="text-xs text-rose-600 font-semibold mt-1">
-                          {invoice.daysOverdue} days overdue
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-                      {invoice.paidDate
-                        ? invoice.paidDate.toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                          })
-                        : '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex justify-end gap-2">
-                        <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="View">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/invoices/${invoice.id}`);
+                          }}
+                          className="p-2 hover:bg-slate-100 rounded-lg transition"
+                          title="View"
+                        >
                           <Eye className="w-4 h-4 text-slate-600" />
                         </button>
                         {invoice.status !== 'paid' && (
-                          <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="Send Reminder">
+                          <button
+                            className="p-2 hover:bg-slate-100 rounded-lg transition"
+                            title="Send Reminder"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <Bell className="w-4 h-4 text-slate-600" />
                           </button>
                         )}
                         {invoice.status !== 'paid' && (
-                          <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="Record Payment">
+                          <button
+                            className="p-2 hover:bg-slate-100 rounded-lg transition"
+                            title="Record Payment"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <DollarSign className="w-4 h-4 text-slate-600" />
                           </button>
                         )}
-                        <button className="p-2 hover:bg-slate-100 rounded-lg transition" title="Download PDF">
+                        <button
+                          className="p-2 hover:bg-slate-100 rounded-lg transition"
+                          title="Download PDF"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <Download className="w-4 h-4 text-slate-600" />
                         </button>
-                        <button className="p-2 hover:bg-red-50 rounded-lg transition" title="Delete">
+                        <button
+                          className="p-2 hover:bg-red-50 rounded-lg transition"
+                          title="Delete"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteInvoice(invoice.id);
+                          }}
+                        >
                           <Trash2 className="w-4 h-4 text-rose-600" />
                         </button>
                       </div>
@@ -471,6 +482,216 @@ export default function InvoicesPage() {
           </table>
         </div>
       </div>
+
+      {/* Create Invoice Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900">Create Invoice</h2>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition"
+              >
+                <X className="w-5 h-5 text-slate-600" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Contact Selector */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  Contact *
+                </label>
+                <select
+                  value={selectedContactId}
+                  onChange={(e) => {
+                    setSelectedContactId(e.target.value);
+                    setSelectedEstimateId('');
+                  }}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                >
+                  <option value="">Select a contact...</option>
+                  {contacts.map((contact) => (
+                    <option key={contact.id} value={contact.id}>
+                      {contact.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Create from Estimate */}
+              {selectedContactId && contactEstimates.length > 0 && (
+                <div>
+                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                    Create from Estimate (Optional)
+                  </label>
+                  <select
+                    value={selectedEstimateId}
+                    onChange={(e) => handleEstimateSelect(e.target.value)}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  >
+                    <option value="">Start from scratch...</option>
+                    {contactEstimates.map((estimate) => (
+                      <option key={estimate.id} value={estimate.id}>
+                        {estimate.number} - {estimate.service}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Line Items */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-sm font-semibold text-slate-900">
+                    Line Items *
+                  </label>
+                  <button
+                    onClick={handleAddLineItem}
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    + Add Line
+                  </button>
+                </div>
+
+                <div className="space-y-3 max-h-48 overflow-y-auto">
+                  {lineItems.map((item, idx) => (
+                    <div key={idx} className="flex gap-3">
+                      <input
+                        type="text"
+                        placeholder="Description"
+                        value={item.description}
+                        onChange={(e) =>
+                          handleLineItemChange(idx, 'description', e.target.value)
+                        }
+                        className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Qty"
+                        min="1"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleLineItemChange(idx, 'quantity', parseInt(e.target.value) || 1)
+                        }
+                        className="w-20 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Price"
+                        min="0"
+                        step="0.01"
+                        value={item.unitPrice}
+                        onChange={(e) =>
+                          handleLineItemChange(idx, 'unitPrice', parseFloat(e.target.value) || 0)
+                        }
+                        className="w-24 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                      />
+                      <span className="w-24 px-3 py-2 bg-slate-50 rounded-lg text-sm font-medium text-slate-900">
+                        ${(item.quantity * item.unitPrice).toFixed(2)}
+                      </span>
+                      {lineItems.length > 1 && (
+                        <button
+                          onClick={() => handleRemoveLineItem(idx)}
+                          className="p-2 hover:bg-red-50 rounded-lg transition"
+                        >
+                          <X className="w-4 h-4 text-rose-600" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Province Selector */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  Province *
+                </label>
+                <select
+                  value={selectedProvince}
+                  onChange={(e) => setSelectedProvince(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                >
+                  {PROVINCES.map((prov) => (
+                    <option key={prov.code} value={prov.code}>
+                      {prov.name} ({prov.taxType} {(prov.taxRate * 100).toFixed(3)}%)
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Pricing Summary */}
+              <div className="bg-slate-50 p-4 rounded-lg space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Subtotal</span>
+                  <span className="font-medium text-slate-900">
+                    ${subtotal.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">
+                    Tax ({provinceInfo?.taxType} {(taxRate * 100).toFixed(3)}%)
+                  </span>
+                  <span className="font-medium text-slate-900">
+                    ${taxAmount.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm border-t border-slate-200 pt-2">
+                  <span className="font-semibold text-slate-900">Total</span>
+                  <span className="font-bold text-lg text-slate-900">
+                    ${total.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Due Date */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                />
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  Notes
+                </label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Add any notes or terms..."
+                  rows={3}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 resize-none"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4 border-t border-slate-200">
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 font-medium transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateInvoice}
+                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+                >
+                  Create Invoice
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

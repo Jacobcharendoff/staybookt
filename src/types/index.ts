@@ -62,6 +62,69 @@ export interface Activity {
   createdAt: number;
 }
 
+export type EstimateStatus = 'draft' | 'sent' | 'viewed' | 'approved' | 'rejected' | 'expired';
+
+export interface EstimateTier {
+  name: 'Good' | 'Better' | 'Best';
+  description: string;
+  price: number;
+  features: string[];
+}
+
+export interface Estimate {
+  id: string;
+  number: string;
+  contactId: string;
+  dealId?: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  service: string;
+  description: string;
+  tiers: EstimateTier[];
+  selectedTier?: 'Good' | 'Better' | 'Best';
+  status: EstimateStatus;
+  notes: string;
+  validDays: number;
+  createdAt: number;
+  sentAt?: number;
+  viewedAt?: number;
+  respondedAt?: number;
+}
+
+export type InvoiceStatus = 'draft' | 'sent' | 'viewed' | 'partial' | 'paid' | 'overdue';
+
+export interface InvoiceLineItem {
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface Invoice {
+  id: string;
+  number: string;
+  contactId: string;
+  dealId?: string;
+  estimateId?: string;
+  customerName: string;
+  customerEmail: string;
+  customerAddress: string;
+  lineItems: InvoiceLineItem[];
+  subtotal: number;
+  taxRate: number;
+  taxAmount: number;
+  total: number;
+  amountPaid: number;
+  status: InvoiceStatus;
+  notes: string;
+  dueDate: number;
+  province: string;
+  taxType: string;
+  createdAt: number;
+  sentAt?: number;
+  paidAt?: number;
+}
+
 export function getLeadSourceRing(source: LeadSource): LeadSourceRing {
   const ring1: LeadSource[] = ['existing_customer', 'reactivation', 'cross_sell'];
   const ring2: LeadSource[] = ['referral', 'review', 'neighborhood'];
