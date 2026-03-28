@@ -839,66 +839,74 @@ function InteractiveExplorer() {
     const [phase, setPhase] = useState(0);
 
     useEffect(() => {
-      const t1 = setTimeout(() => setPhase(1), 300);
-      const t2 = setTimeout(() => setPhase(2), 1500);
-      const t3 = setTimeout(() => setPhase(3), 2700);
-      const t4 = setTimeout(() => setPhase(4), 3900);
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+      const t1 = setTimeout(() => setPhase(1), 600);
+      const t2 = setTimeout(() => setPhase(2), 1800);
+      const t3 = setTimeout(() => setPhase(3), 3000);
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }, []);
 
     const stages = ['New Leads', 'Quoted', 'Booked', 'In Progress'];
-    const colors = ['border-blue-500 bg-blue-50', 'border-purple-500 bg-purple-50', 'border-emerald-500 bg-emerald-50', 'border-amber-500 bg-amber-50'];
-    const customers = [
-      { name: 'Patel Kitchen Reno', value: '$12,400' },
-      { name: 'Chen HVAC Install', value: '$6,200' },
-      { name: 'Rodriguez Bath', value: '$4,800' },
-      { name: 'Smith Plumbing', value: '$3,100' },
-      { name: 'Lee Electrical', value: '$8,900' },
+    const dotColors = ['bg-blue-500', 'bg-purple-500', 'bg-emerald-500', 'bg-amber-500'];
+    const borderColors = ['border-blue-500', 'border-purple-500', 'border-emerald-500', 'border-amber-500'];
+
+    // Static cards per column — they fade in/out based on phase
+    const columns: { name: string; value: string; showAt: number; hideAt?: number }[][] = [
+      // New Leads — starts full, cards leave over time
+      [
+        { name: 'Patel Kitchen Reno', value: '$12,400', showAt: 0 },
+        { name: 'Chen HVAC Install', value: '$6,200', showAt: 0 },
+        { name: 'Rodriguez Bath', value: '$4,800', showAt: 0, hideAt: 1 },
+        { name: 'Lee Electrical', value: '$8,900', showAt: 0, hideAt: 2 },
+        { name: 'Smith Plumbing', value: '$3,100', showAt: 0, hideAt: 3 },
+      ],
+      // Quoted — cards arrive
+      [
+        { name: 'Rodriguez Bath', value: '$4,800', showAt: 1 },
+      ],
+      // Booked
+      [
+        { name: 'Lee Electrical', value: '$8,900', showAt: 2 },
+      ],
+      // In Progress
+      [
+        { name: 'Smith Plumbing', value: '$3,100', showAt: 3 },
+      ],
     ];
-
-    // Card assignments per phase: [stageIdx, customerIdx][]
-    const layout: { [key: number]: number[][] } = {
-      0: [[0,0],[0,1],[0,2],[0,3],[0,4]],
-      1: [[0,0],[0,1],[0,2],[0,3],[1,4]],
-      2: [[0,0],[0,1],[0,2],[2,3],[1,4]],
-      3: [[0,0],[0,1],[3,2],[2,3],[1,4]],
-      4: [[0,0],[3,1],[3,2],[2,3],[1,4]],
-    };
-
-    const currentLayout = layout[phase] || layout[0];
 
     return (
       <div className="w-full">
         <div className="bg-white rounded-xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-lg">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {stages.map((stage, stageIdx) => {
-              const cardsHere = currentLayout.filter(([s]) => s === stageIdx).map(([, c]) => c);
-              return (
-                <div key={stage} className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-gray-200 min-h-[200px]">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className={`w-2 h-2 rounded-full ${stageIdx === 0 ? 'bg-blue-500' : stageIdx === 1 ? 'bg-purple-500' : stageIdx === 2 ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                    <p className="text-[10px] sm:text-xs font-bold text-gray-600 uppercase">{stage}</p>
-                    <span className="ml-auto text-[10px] text-gray-400 font-semibold">{cardsHere.length}</span>
-                  </div>
-                  <div className="space-y-2.5">
-                    {cardsHere.map((cIdx) => (
+            {stages.map((stage, si) => (
+              <div key={stage} className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-gray-200 min-h-[220px]">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className={`w-2 h-2 rounded-full ${dotColors[si]}`} />
+                  <p className="text-[10px] sm:text-xs font-bold text-gray-600 uppercase">{stage}</p>
+                </div>
+                <div className="space-y-2.5">
+                  {columns[si].map((card, ci) => {
+                    const visible = phase >= card.showAt && (card.hideAt === undefined || phase < card.hideAt);
+                    return (
                       <div
-                        key={`card-${cIdx}`}
-                        className={`bg-white rounded-lg p-3 border-l-4 shadow-sm ${colors[stageIdx]}`}
+                        key={`${si}-${ci}`}
+                        className={`bg-white rounded-lg p-3 border-l-4 shadow-sm ${borderColors[si]}`}
                         style={{
-                          opacity: 1,
-                          transform: 'translateY(0) rotate(0deg)',
-                          transition: `all 0.9s ${smooth}`,
+                          opacity: visible ? 1 : 0,
+                          maxHeight: visible ? '80px' : '0px',
+                          padding: visible ? '12px' : '0px 12px',
+                          marginBottom: visible ? '10px' : '0px',
+                          overflow: 'hidden',
+                          transition: `opacity 0.6s ${smooth}, max-height 0.6s ${smooth}, padding 0.6s ${smooth}, margin 0.6s ${smooth}`,
                         }}
                       >
-                        <p className="text-xs sm:text-sm font-semibold text-gray-900">{customers[cIdx].name}</p>
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{customers[cIdx].value}</p>
+                        <p className="text-xs sm:text-sm font-semibold text-gray-900">{card.name}</p>
+                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{card.value}</p>
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -1293,21 +1301,13 @@ function InteractiveExplorer() {
       </div>
 
       {/* Section header with description */}
-      <div className="relative text-center pt-24 sm:pt-32 pb-6 px-6">
-        <h2
-          className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tight"
-          style={{ transform: `translateY(${parallaxOffset * 0.3}px)` }}
-        >
+      <div className="relative text-center pt-24 sm:pt-32 pb-8 px-6">
+        <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tight">
           Take a closer look.
         </h2>
-        {/* Description below heading — not overlapping content */}
-        <div
-          className="mt-4 max-w-xl mx-auto transition-all duration-500"
-          key={`info-${activeTab}`}
-        >
-          <p className="text-lg sm:text-xl font-semibold text-white">{tabInfo[activeTab].title}</p>
-          <p className="text-sm sm:text-base text-slate-400 mt-2">{tabInfo[activeTab].description}</p>
-        </div>
+        <p className="mt-4 text-sm sm:text-base text-slate-400 max-w-lg mx-auto">
+          {tabInfo[activeTab].description}
+        </p>
       </div>
 
       {/* Tab navigation — horizontal, centered */}
@@ -1333,10 +1333,7 @@ function InteractiveExplorer() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pb-24 sm:pb-32">
         <div
           className="relative bg-slate-900/60 rounded-2xl sm:rounded-3xl border border-slate-700/50 overflow-hidden backdrop-blur-sm"
-          style={{
-            minHeight: '520px',
-            transform: `translateY(${parallaxOffset * 0.15}px)`,
-          }}
+          style={{ minHeight: '520px' }}
         >
           {/* Product view area — centered, full width */}
           <div className="flex items-center justify-center w-full p-6 sm:p-10 lg:p-14">
