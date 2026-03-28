@@ -81,6 +81,25 @@ function AnimatedCounter({ end, suffix = "", prefix = "" }: { end: number; suffi
   );
 }
 
+// ─── Scroll Reveal Hook ─────────────────────────────────────
+function useScrollReveal() {
+  useEffect(() => {
+    const elements = document.querySelectorAll('.scroll-fade-up, .scroll-fade-left, .scroll-fade-right, .scroll-scale-up');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    );
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
 // ─── Navigation ───────────────────────────────────────────────
 function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -168,13 +187,13 @@ function Hero() {
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-20 lg:pt-40 lg:pb-32">
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
+          <div className="hero-reveal hero-reveal-delay-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
             <Sparkles className="w-4 h-4 text-blue-600" />
             <span className="text-sm font-medium text-blue-700">Free for 14 days — no credit card needed</span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1]">
+          <h1 className="hero-reveal hero-reveal-delay-2 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1]">
             Every missed call is a
             <br />
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
@@ -183,16 +202,16 @@ function Hero() {
           </h1>
 
           {/* Subheadline */}
-          <p className="mt-6 text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="hero-reveal hero-reveal-delay-3 mt-6 text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
             Growth OS auto-responds to new leads in 60 seconds, follows up on estimates for you,
             and gets you paid faster. You run the jobs. It runs everything else.
           </p>
 
           {/* CTAs */}
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="hero-reveal hero-reveal-delay-4 mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/setup"
-              className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-base font-semibold rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-xl shadow-blue-600/25 hover:shadow-blue-700/30 hover:-translate-y-0.5"
+              className="glow-pulse inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-base font-semibold rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-xl shadow-blue-600/25 hover:shadow-blue-700/30 hover:-translate-y-0.5"
             >
               Try Free for 14 Days
               <ArrowRight className="w-5 h-5" />
@@ -207,7 +226,7 @@ function Hero() {
           </div>
 
           {/* Social Proof */}
-          <div className="mt-14 flex flex-wrap items-center justify-center gap-8">
+          <div className="hero-reveal hero-reveal-delay-5 mt-14 flex flex-wrap items-center justify-center gap-8">
             <div className="flex items-center gap-1.5">
               <div className="flex -space-x-2">
                 {["bg-blue-500", "bg-emerald-500", "bg-purple-500", "bg-amber-500", "bg-rose-500"].map((color, i) => (
@@ -227,9 +246,9 @@ function Hero() {
           </div>
 
           {/* Product Preview */}
-          <div className="mt-16 relative">
+          <div className="scroll-scale-up mt-16 relative">
             <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-blue-600/20 rounded-3xl blur-2xl opacity-60" />
-            <div className="relative bg-white rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-200/50 overflow-hidden">
+            <div className="float-animation relative bg-white rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-200/50 overflow-hidden">
               <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 px-4 py-3 flex items-center gap-2">
                 <div className="flex gap-1.5">
                   <div className="w-3 h-3 rounded-full bg-red-400" />
@@ -322,8 +341,8 @@ function ProblemSection() {
   return (
     <section className="py-20 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">Sound familiar?</h2>
-        <div className="grid sm:grid-cols-2 gap-4 text-left max-w-3xl mx-auto">
+        <h2 className="scroll-fade-up text-2xl sm:text-3xl font-bold text-white mb-8">Sound familiar?</h2>
+        <div className="stagger-children grid sm:grid-cols-2 gap-4 text-left max-w-3xl mx-auto">
           {[
             "You missed a call at 7am because you were already on a job",
             "That estimate you sent last week? No one followed up",
@@ -332,7 +351,7 @@ function ProblemSection() {
             "You have no idea which ads are actually bringing in work",
             "You tried Jobber but it didn't help you grow — just schedule",
           ].map((pain) => (
-            <div key={pain} className="flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
+            <div key={pain} className="scroll-fade-up flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10">
               <X className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
               <p className="text-sm text-slate-300">{pain}</p>
             </div>
@@ -351,7 +370,7 @@ function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">How It Works</span>
           </div>
@@ -363,14 +382,14 @@ function HowItWorks() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             { step: "01", title: "Add Your Customers", description: "Import from a spreadsheet or add them one by one. Takes 5 minutes for most shops.", icon: <Users className="w-6 h-6" /> },
             { step: "02", title: "Turn On Autopilot", description: "Pick which automations you want running — lead responses, estimate follow-ups, review requests. One click each.", icon: <Bot className="w-6 h-6" /> },
             { step: "03", title: "See Every Job at a Glance", description: "Drag jobs through your pipeline: new lead, quoted, booked, in progress, invoiced. Know where everything stands.", icon: <Layers className="w-6 h-6" /> },
             { step: "04", title: "Grow", description: "See which lead sources make you money. Double down on what works. Book more jobs. Get paid faster.", icon: <TrendingUp className="w-6 h-6" /> },
           ].map((s, i) => (
-            <div key={s.step} className="relative">
+            <div key={s.step} className="scroll-fade-up relative">
               {i < 3 && <div className="hidden lg:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-blue-200 to-transparent" />}
               <div className="text-5xl font-black text-blue-100 mb-4">{s.step}</div>
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 text-white flex items-center justify-center mb-4 shadow-lg">
@@ -430,7 +449,7 @@ function Features() {
   return (
     <section id="features" className="py-24 lg:py-32 bg-gradient-to-b from-white to-slate-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">What You Get</span>
           </div>
@@ -446,9 +465,9 @@ function Features() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature) => (
-            <div key={feature.title} className="group relative p-8 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 hover:-translate-y-1">
+            <div key={feature.title} className="scroll-fade-up group relative p-8 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 hover:-translate-y-1">
               <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} text-white shadow-lg mb-5`}>
                 {feature.icon}
               </div>
@@ -476,7 +495,7 @@ function AutopilotSection() {
   return (
     <section id="autopilot" className="py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 mb-6">
             <Bot className="w-3.5 h-3.5 text-purple-600" />
             <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Autopilot</span>
@@ -493,9 +512,9 @@ function AutopilotSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {playbooks.map((p) => (
-            <div key={p.name} className="group p-6 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300">
+            <div key={p.name} className="scroll-fade-up group p-6 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-semibold text-white ${p.color}`}>{p.category}</span>
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -577,7 +596,7 @@ function AdvisorDemo() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: Copy */}
-          <div>
+          <div className="scroll-fade-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 mb-6">
               <Sparkles className="w-3.5 h-3.5 text-purple-600" />
               <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Growth Advisor</span>
@@ -620,7 +639,7 @@ function AdvisorDemo() {
           </div>
 
           {/* Right: Animated Chat */}
-          <div className="relative">
+          <div className="scroll-fade-right relative">
             {/* Phone frame */}
             <div className="mx-auto max-w-[340px] bg-white rounded-[2.5rem] shadow-2xl shadow-slate-900/10 border border-gray-200 overflow-hidden">
               {/* Status bar */}
@@ -708,14 +727,14 @@ function StatsBanner() {
   return (
     <section className="py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div className="stagger-children grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
             { value: 40, suffix: "%", label: "More Jobs Booked", sublabel: "Average in first 90 days" },
             { value: 60, suffix: "sec", label: "Lead Response Time", sublabel: "With Speed to Lead running" },
             { value: 12, suffix: "hrs", label: "Saved Per Week", sublabel: "On admin and follow-ups" },
             { value: 8500, suffix: "", prefix: "$", label: "Extra Revenue / Month", sublabel: "From jobs that would have been lost" },
           ].map((stat) => (
-            <div key={stat.label}>
+            <div key={stat.label} className="scroll-fade-up">
               <div className="text-3xl lg:text-4xl font-bold text-white">
                 <AnimatedCounter end={stat.value} suffix={stat.suffix} prefix={stat.prefix || ""} />
               </div>
@@ -772,7 +791,7 @@ function Testimonials() {
   return (
     <section id="testimonials" className="py-24 lg:py-32 bg-gradient-to-b from-white to-slate-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 mb-6">
             <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">Results</span>
           </div>
@@ -784,9 +803,9 @@ function Testimonials() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.slice(0, 3).map((t) => (
-            <div key={t.name} className="p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all duration-300">
+            <div key={t.name} className="scroll-fade-up p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all duration-300">
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
               </div>
@@ -802,9 +821,9 @@ function Testimonials() {
           ))}
         </div>
         {/* Second row — 2 testimonials centered */}
-        <div className="grid md:grid-cols-2 gap-6 mt-6 max-w-4xl mx-auto">
+        <div className="stagger-children grid md:grid-cols-2 gap-6 mt-6 max-w-4xl mx-auto">
           {testimonials.slice(3).map((t) => (
-            <div key={t.name} className="p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all duration-300">
+            <div key={t.name} className="scroll-fade-up p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all duration-300">
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
               </div>
@@ -853,7 +872,7 @@ function CompetitorComparison() {
   return (
     <section id="compare" className="py-24 lg:py-32 bg-white">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Compare</span>
           </div>
@@ -865,7 +884,7 @@ function CompetitorComparison() {
           </h2>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="scroll-scale-up overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr>
@@ -906,7 +925,7 @@ function BuiltForCanada() {
   return (
     <section className="py-20 bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="scroll-fade-up text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 mb-6">
             <MapPin className="w-3.5 h-3.5 text-red-600" />
             <span className="text-xs font-semibold text-red-600 uppercase tracking-wider">Made in Canada</span>
@@ -919,7 +938,7 @@ function BuiltForCanada() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="stagger-children grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { icon: <DollarSign className="w-5 h-5" />, title: "Taxes? Done.", desc: "HST, GST+QST, GST+PST — calculated automatically for every province. You never do the math." },
             { icon: <Languages className="w-5 h-5" />, title: "French + English", desc: "Quebec clients get emails and invoices in French. Everyone else gets English. Switches automatically." },
@@ -928,7 +947,7 @@ function BuiltForCanada() {
             { icon: <Globe className="w-5 h-5" />, title: "HomeStars Reviews", desc: "The review platform Canadian homeowners actually check. Auto-request reviews there alongside Google." },
             { icon: <DollarSign className="w-5 h-5" />, title: "Interac e-Transfer", desc: "Customers pay the way they prefer. Money hits your account in minutes, not days." },
           ].map((f) => (
-            <div key={f.title} className="p-5 rounded-xl bg-white border border-gray-100 hover:border-red-200/50 hover:shadow-md transition-all">
+            <div key={f.title} className="scroll-fade-up p-5 rounded-xl bg-white border border-gray-100 hover:border-red-200/50 hover:shadow-md transition-all">
               <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-50 text-red-600 mb-3">{f.icon}</div>
               <h3 className="text-sm font-semibold text-gray-900 mb-1">{f.title}</h3>
               <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
@@ -972,7 +991,7 @@ function Pricing() {
   return (
     <section id="pricing" className="py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
             <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Pricing</span>
           </div>
@@ -988,9 +1007,9 @@ function Pricing() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="stagger-children grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {plans.map((plan) => (
-            <div key={plan.name} className={`relative rounded-2xl p-8 transition-all duration-300 ${plan.highlighted ? "bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-2xl shadow-blue-600/25 scale-105" : "bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg"}`}>
+            <div key={plan.name} className={`scroll-fade-up relative rounded-2xl p-8 transition-all duration-300 ${plan.highlighted ? "bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-2xl shadow-blue-600/25 scale-105" : "bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg"}`}>
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-amber-400 to-orange-400 text-white text-xs font-bold rounded-full shadow-lg">
                   Most Popular
@@ -1038,7 +1057,7 @@ function FAQ() {
   return (
     <section className="py-24 lg:py-32 bg-gradient-to-b from-white to-slate-50">
       <div className="max-w-3xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="scroll-fade-up text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 border border-gray-200 mb-6">
             <HelpCircle className="w-3.5 h-3.5 text-gray-500" />
             <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">FAQ</span>
@@ -1046,7 +1065,7 @@ function FAQ() {
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Questions?</h2>
         </div>
 
-        <div className="space-y-3">
+        <div className="scroll-fade-up space-y-3">
           {faqs.map((faq, i) => (
             <div key={i} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
               <button
@@ -1077,7 +1096,7 @@ function CTASection() {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl" />
       </div>
-      <div className="relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div className="scroll-fade-up relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
           10 minutes from now,
           <br />
@@ -1088,7 +1107,7 @@ function CTASection() {
           your estimates are following up, and your reviews are rolling in.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/setup" className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white text-blue-600 text-base font-semibold rounded-2xl hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-0.5">
+          <Link href="/setup" className="glow-pulse inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white text-blue-600 text-base font-semibold rounded-2xl hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-0.5">
             Try Free for 14 Days <ArrowRight className="w-5 h-5" />
           </Link>
           <Link href="/dashboard" className="inline-flex items-center justify-center gap-2.5 px-8 py-4 border border-white/20 text-white text-base font-semibold rounded-2xl hover:bg-white/10 transition-all">
@@ -1163,6 +1182,7 @@ function Footer() {
 
 // ─── Main Landing Page ────────────────────────────────────────
 export default function LandingPage() {
+  useScrollReveal();
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
@@ -1170,10 +1190,10 @@ export default function LandingPage() {
       <ProblemSection />
       <HowItWorks />
       <Features />
+      <Testimonials />
       <AutopilotSection />
       <AdvisorDemo />
       <StatsBanner />
-      <Testimonials />
       <CompetitorComparison />
       <BuiltForCanada />
       <Pricing />
