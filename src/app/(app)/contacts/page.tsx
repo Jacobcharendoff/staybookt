@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { ContactRow } from '@/components/ContactRow';
 import { Modal } from '@/components/Modal';
@@ -8,6 +9,7 @@ import { AddContactForm } from '@/components/AddContactForm';
 import { Plus, Search } from 'lucide-react';
 
 export default function ContactsPage() {
+  const { t } = useLanguage();
   const { contacts, deals, initializeSeedData } = useStore();
   const [isAddContactOpen, setIsAddContactOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,9 +47,9 @@ export default function ContactsPage() {
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Contacts</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('contacts.title')}</h1>
             <p className="text-slate-600 mt-1">
-              {contacts.length} total contacts
+              {contacts.length} {t('contacts.totalContacts')}
             </p>
           </div>
           <button
@@ -55,7 +57,7 @@ export default function ContactsPage() {
             className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             <Plus className="w-5 h-5" />
-            Add Contact
+            {t('contacts.addContact')}
           </button>
         </div>
 
@@ -64,7 +66,7 @@ export default function ContactsPage() {
           <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
           <input
             type="text"
-            placeholder="Search by name, email, or phone..."
+            placeholder={t('contacts.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -78,19 +80,19 @@ export default function ContactsPage() {
           <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0">
             <tr>
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700">
-                Name & Address
+                {t('contacts.nameAddress')}
               </th>
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 hidden sm:table-cell">
-                Type
+                {t('contacts.type')}
               </th>
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 hidden sm:table-cell">
-                Source
+                {t('contacts.source')}
               </th>
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700">
-                Contact
+                {t('contacts.contact')}
               </th>
               <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm font-semibold text-slate-700">
-                Deals
+                {t('contacts.deals')}
               </th>
             </tr>
           </thead>
@@ -107,7 +109,7 @@ export default function ContactsPage() {
               <tr>
                 <td colSpan={5} className="px-6 py-8 text-center">
                   <p className="text-slate-500">
-                    {searchQuery ? 'No contacts found' : 'No contacts yet'}
+                    {searchQuery ? t('contacts.notFound') : t('contacts.noContacts')}
                   </p>
                 </td>
               </tr>

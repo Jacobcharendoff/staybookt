@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import {
   BarChart,
@@ -56,6 +57,7 @@ const RING_COLORS = {
 };
 
 export default function Dashboard() {
+  const { t } = useLanguage();
   const { contacts, deals, activities, initializeSeedData, getActivities } = useStore();
   const [isAddDealOpen, setIsAddDealOpen] = useState(false);
   const [isFABExpanded, setIsFABExpanded] = useState(false);
@@ -227,9 +229,9 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4 md:p-8">
       {/* Header with Date Range */}
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">{t('dashboard.title')}</h1>
         <p className="text-slate-600 mb-4">
-          Welcome back! Here's your business at a glance.
+          {t('dashboard.welcomeBack')}
         </p>
 
         {/* Date Range Selector */}
@@ -244,10 +246,10 @@ export default function Dashboard() {
                   : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300'
               }`}
             >
-              {range === 'today' && 'Today'}
-              {range === 'week' && 'This Week'}
-              {range === 'month' && 'This Month'}
-              {range === 'quarter' && 'This Quarter'}
+              {range === 'today' && t('dashboard.today')}
+              {range === 'week' && t('dashboard.thisWeek')}
+              {range === 'month' && t('dashboard.thisMonth')}
+              {range === 'quarter' && t('dashboard.thisQuarter')}
             </button>
           ))}
         </div>
@@ -262,7 +264,7 @@ export default function Dashboard() {
               <Rocket className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold">Finish setting up Growth OS</h3>
+              <h3 className="text-lg font-bold">{t('dashboard.finishSetup')}</h3>
               <p className="text-blue-100 text-sm">Complete your setup to unlock the full power of autopilot. Takes about 15 minutes.</p>
             </div>
           </div>
@@ -270,7 +272,7 @@ export default function Dashboard() {
             href="/setup"
             className="flex items-center gap-2 px-5 py-2.5 bg-white text-blue-700 rounded-xl font-semibold hover:bg-blue-50 transition-all shrink-0 text-sm"
           >
-            Continue Setup
+            {t('dashboard.continueSetup')}
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -282,7 +284,7 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">Total Leads</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.totalLeads')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">{totalLeads}</p>
             </div>
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -311,7 +313,7 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">Active Deals</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.activeDeals')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">{activeDeals}</p>
             </div>
             <div className="p-2 bg-purple-100 rounded-lg">
@@ -325,7 +327,7 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">Pipeline Value</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.pipelineValue')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">
                 ${(pipelineValue / 1000).toFixed(1)}k
               </p>
@@ -341,7 +343,7 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">Conversion Rate</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.conversionRate')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">{conversionRate}%</p>
             </div>
             <div className="p-2 bg-orange-100 rounded-lg">
@@ -357,7 +359,7 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">Avg Deal Value</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.avgDealValue')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">
                 ${avgDealValue.toLocaleString()}
               </p>
@@ -373,7 +375,7 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">Total Revenue</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.totalRevenue')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">
                 ${(totalRevenue / 1000).toFixed(1)}k
               </p>
@@ -490,7 +492,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20">
         {/* Recent Activity */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">Recent Activity</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-6">{t('dashboard.recentActivity')}</h2>
           <div className="space-y-4">
             {recentActivities.length > 0 ? (
               recentActivities.map((activity) => (
@@ -515,7 +517,7 @@ export default function Dashboard() {
 
         {/* Top Deals */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">Top Deals</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-6">{t('dashboard.topDeals')}</h2>
           <div className="space-y-4">
             {topDeals.length > 0 ? (
               topDeals.map((deal) => (
@@ -559,19 +561,19 @@ export default function Dashboard() {
               className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-3 border-b border-slate-100"
             >
               <Zap className="w-4 h-4 text-purple-600" />
-              Add Deal
+              {t('dashboard.addDeal')}
             </button>
             <button
               className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-3 border-b border-slate-100"
             >
               <Target className="w-4 h-4 text-blue-600" />
-              Add Contact
+              {t('dashboard.addContact')}
             </button>
             <button
               className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-3"
             >
               <Clock className="w-4 h-4 text-orange-600" />
-              Log Activity
+              {t('dashboard.logActivity')}
             </button>
           </div>
         )}

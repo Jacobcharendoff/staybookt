@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { Invoice, InvoiceStatus, InvoiceLineItem } from '@/types';
 import {
@@ -48,6 +49,7 @@ interface LineItem {
 }
 
 export default function InvoicesPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const {
     invoices,
@@ -224,7 +226,7 @@ export default function InvoicesPage() {
     <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Invoices</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('invoices.title')}</h1>
         <p className="text-slate-600">Manage invoices and track payments</p>
       </div>
 
@@ -232,7 +234,7 @@ export default function InvoicesPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">Total Invoices</p>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.title')}</p>
             <CheckCircle className="w-5 h-5 text-blue-500" />
           </div>
           <p className="text-2xl sm:text-3xl font-bold text-slate-900">{invoices.length}</p>
@@ -241,7 +243,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">Outstanding</p>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.outstanding')}</p>
             <AlertCircle className="w-5 h-5 text-amber-500" />
           </div>
           <p className="text-3xl font-bold text-slate-900">
@@ -252,7 +254,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">Paid This Month</p>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.paidThisMonth')}</p>
             <CheckCircle className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-3xl font-bold text-slate-900">
@@ -263,7 +265,7 @@ export default function InvoicesPage() {
 
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">Collection Rate</p>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.collectionRate')}</p>
             <TrendingUp className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-3xl font-bold text-slate-900">{collectionPercent}%</p>
@@ -312,7 +314,7 @@ export default function InvoicesPage() {
             <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
             <input
               type="text"
-              placeholder="Search invoices..."
+              placeholder={t('common.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
@@ -324,7 +326,7 @@ export default function InvoicesPage() {
             className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
-            Create Invoice
+            {t('invoices.createInvoice')}
           </button>
         </div>
 

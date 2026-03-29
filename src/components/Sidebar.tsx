@@ -19,8 +19,10 @@ import {
   X,
   Moon,
   Sun,
+  Globe,
 } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
+import { useLanguage } from './LanguageProvider';
 
 interface SidebarProps {
   mobileOpen?: boolean;
@@ -30,21 +32,22 @@ interface SidebarProps {
 export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { locale, setLocale, t } = useLanguage();
 
   const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/pipeline', label: 'Pipeline', icon: Kanban },
-    { href: '/schedule', label: 'Schedule', icon: Calendar },
-    { href: '/contacts', label: 'Contacts', icon: Users },
-    { href: '/estimates', label: 'Estimates', icon: FileText },
-    { href: '/invoices', label: 'Invoices', icon: Receipt },
-    { href: '/automations', label: 'Autopilot', icon: Zap },
-    { href: '/messages', label: 'Messages', icon: MessageSquare },
-    { href: '/notifications', label: 'Notifications', icon: Bell },
-    { href: '/activity', label: 'Activity', icon: ActivitySquare },
+    { href: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { href: '/pipeline', label: t('nav.pipeline'), icon: Kanban },
+    { href: '/schedule', label: t('nav.schedule'), icon: Calendar },
+    { href: '/contacts', label: t('nav.contacts'), icon: Users },
+    { href: '/estimates', label: t('nav.estimates'), icon: FileText },
+    { href: '/invoices', label: t('nav.invoices'), icon: Receipt },
+    { href: '/automations', label: t('nav.autopilot'), icon: Zap },
+    { href: '/messages', label: t('nav.messages'), icon: MessageSquare },
+    { href: '/notifications', label: t('nav.notifications'), icon: Bell },
+    { href: '/activity', label: t('nav.activity'), icon: ActivitySquare },
   ];
 
-  const settingsItem = { href: '/settings', label: 'Settings', icon: Settings };
+  const settingsItem = { href: '/settings', label: t('nav.settings'), icon: Settings };
 
   const sidebarContent = (
     <>
@@ -80,7 +83,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         >
           <Rocket className="w-5 h-5" />
           <div className="flex-1">
-            <span className="font-semibold text-sm">Get Started</span>
+            <span className="font-semibold text-sm">{t('nav.getStarted')}</span>
             <div className="w-full bg-slate-700/50 rounded-full h-1.5 mt-1.5">
               <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '0%' }} />
             </div>
@@ -101,8 +104,8 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         >
           <Sparkles className="w-5 h-5" />
           <div className="flex-1">
-            <span className="font-semibold text-sm">Growth Advisor</span>
-            <p className={`text-[11px] mt-0.5 ${pathname === '/advisor' ? 'text-purple-100' : 'text-purple-400'}`}>AI Business Partner</p>
+            <span className="font-semibold text-sm">{t('nav.growthAdvisor')}</span>
+            <p className={`text-[11px] mt-0.5 ${pathname === '/advisor' ? 'text-purple-100' : 'text-purple-400'}`}>{t('nav.aiBusinessPartner')}</p>
           </div>
           <div className={`w-2 h-2 rounded-full ${pathname === '/advisor' ? 'bg-emerald-300' : 'bg-emerald-500'} animate-pulse`} />
         </Link>
@@ -134,6 +137,17 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
 
       {/* Settings Section - Bottom */}
       <div className="px-4 py-4 border-t border-slate-700 space-y-2">
+        {/* Language Toggle */}
+        <button
+          onClick={() => setLocale(locale === 'en' ? 'fr' : 'en')}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-slate-300 hover:bg-slate-700/50 hover:text-white"
+          aria-label="Toggle language"
+        >
+          <Globe className="w-5 h-5" />
+          <span className="font-medium text-sm">{locale === 'en' ? 'Français' : 'English'}</span>
+          <span className="ml-auto text-xs font-medium bg-slate-700 px-2 py-0.5 rounded text-slate-300">{locale.toUpperCase()}</span>
+        </button>
+
         {/* Dark Mode Toggle */}
         <button
           onClick={toggleTheme}
@@ -143,12 +157,12 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           {theme === 'light' ? (
             <>
               <Moon className="w-5 h-5" />
-              <span className="font-medium text-sm">Dark Mode</span>
+              <span className="font-medium text-sm">{t('nav.darkMode')}</span>
             </>
           ) : (
             <>
               <Sun className="w-5 h-5" />
-              <span className="font-medium text-sm">Light Mode</span>
+              <span className="font-medium text-sm">{t('nav.lightMode')}</span>
             </>
           )}
         </button>

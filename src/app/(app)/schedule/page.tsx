@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import {
@@ -16,7 +17,8 @@ import {
 
 const TIME_SLOTS = Array.from({ length: 12 }, (_, i) => 7 + i);
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const DAY_ABBREVIATIONS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAY_KEYS = ['schedule.monday', 'schedule.tuesday', 'schedule.wednesday', 'schedule.thursday', 'schedule.friday', 'schedule.saturday'] as const;
+const DAY_ABBR_KEYS = ['schedule.mondayAbbr', 'schedule.tuesdayAbbr', 'schedule.wednesdayAbbr', 'schedule.thursdayAbbr', 'schedule.fridayAbbr', 'schedule.saturdayAbbr'] as const;
 
 const TECH_COLORS: Record<string, { bg: string; border: string; text: string; badge: string }> = {
   Marcus: {
@@ -54,6 +56,7 @@ interface DealWithContact {
 }
 
 export default function SchedulePage() {
+  const { t } = useLanguage();
   const { deals, contacts, initializeSeedData } = useStore();
   const [mounted, setMounted] = useState(false);
   const [weekOffset, setWeekOffset] = useState(0);
@@ -208,8 +211,8 @@ export default function SchedulePage() {
       <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">Schedule</h1>
-          <p className="text-sm sm:text-base text-slate-600">Drag and drop jobs to schedule them for technicians</p>
+          <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">{t('schedule.title')}</h1>
+          <p className="text-sm sm:text-base text-slate-600">{t('schedule.dragDropJobs')}</p>
         </div>
 
         {/* Week Navigation */}
@@ -239,7 +242,7 @@ export default function SchedulePage() {
                 onClick={() => setWeekOffset(0)}
                 className="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition"
               >
-                Today
+                {t('schedule.today')}
               </button>
             </div>
 
@@ -271,12 +274,13 @@ export default function SchedulePage() {
               {/* Day Headers */}
               <div className="grid grid-cols-7 bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
                 <div className="col-span-1 p-4" />
-                {DAYS.map((day, idx) => {
+                {DAY_KEYS.map((dayKey, idx) => {
                   const date = weekDates[idx];
-                  const jobCount = countJobsForDay(day);
+                  const dayValue = t(dayKey as any);
+                  const jobCount = countJobsForDay(dayValue);
                   return (
-                    <div key={day} className="col-span-1 p-4 text-center border-l border-slate-200 dark:border-slate-600">
-                      <div className="text-sm font-semibold text-slate-600">{DAY_ABBREVIATIONS[idx]}</div>
+                    <div key={dayKey} className="col-span-1 p-4 text-center border-l border-slate-200 dark:border-slate-600">
+                      <div className="text-sm font-semibold text-slate-600">{t(DAY_ABBR_KEYS[idx] as any)}</div>
                       <div className="text-lg font-bold text-slate-900 mt-1">{date.getDate()}</div>
                       <div className="text-xs text-slate-500 mt-2">
                         {jobCount} {jobCount === 1 ? 'job' : 'jobs'}
@@ -296,8 +300,10 @@ export default function SchedulePage() {
                     </div>
 
                     {/* Day Columns */}
-                    {DAYS.map((day) => (
-                      <Droppable key={`${day}-${hour}`} droppableId={`${day}-${hour}`} type="JOB">
+                    {DAY_KEYS.map((dayKey, idx) => {
+                      const dayValue = t(dayKey as any);
+                      return (
+                      <Droppable key={`${dayValue}-${hour}`} droppableId={`${dayValue}-${hour}`} type="JOB">
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
@@ -308,7 +314,7 @@ export default function SchedulePage() {
                                 : 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800'
                             }`}
                           >
-                            {getJobsForSlot(day, String(hour)).map((job, index) => (
+                            {getJobsForSlot(dayValue, String(hour)).map((job, index) => (
                               <Draggable key={job.id} draggableId={job.id} index={index}>
                                 {(provided, snapshot) => (
                                   <div
@@ -353,7 +359,8 @@ export default function SchedulePage() {
                           </div>
                         )}
                       </Droppable>
-                    ))}
+                    );
+                    })}
                   </div>
                 ))}
               </div>
@@ -373,8 +380,8 @@ export default function SchedulePage() {
                       : 'border-slate-200 dark:border-slate-600'
                   }`}
                 >
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Unscheduled</h2>
-                  <p className="text-sm text-slate-600 mb-6">{unscheduledJobs.length} jobs ready to schedule</p>
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('schedule.unscheduled')}</h2>
+                  <p className="text-sm text-slate-600 mb-6">{unscheduledJobs.length} {t('schedule.jobsReadyToSchedule')}</p>
 
                   <div className="space-y-3">
                     {filterUnscheduledByTech(unscheduledJobs).length > 0 ? (
@@ -431,19 +438,19 @@ export default function SchedulePage() {
                   {/* Summary Stats */}
                   <div className="mt-8 pt-6 border-t border-slate-200 space-y-3">
                     <div className="p-3 bg-slate-50 rounded-lg">
-                      <div className="text-xs text-slate-600 font-medium">Scheduled</div>
+                      <div className="text-xs text-slate-600 font-medium">{t('schedule.scheduled')}</div>
                       <div className="text-2xl font-bold text-slate-900 mt-1">
                         {Object.keys(scheduledJobs).length}
                       </div>
                     </div>
                     <div className="p-3 bg-slate-50 rounded-lg">
-                      <div className="text-xs text-slate-600 font-medium">Unscheduled</div>
+                      <div className="text-xs text-slate-600 font-medium">{t('schedule.unscheduled')}</div>
                       <div className="text-2xl font-bold text-slate-900 mt-1">
                         {unscheduledJobs.length}
                       </div>
                     </div>
                     <div className="p-3 bg-slate-50 rounded-lg">
-                      <div className="text-xs text-slate-600 font-medium">Total Value</div>
+                      <div className="text-xs text-slate-600 font-medium">{t('schedule.totalValue')}</div>
                       <div className="text-lg font-bold text-emerald-600 mt-1">
                         ${Object.values(scheduledJobs).reduce((sum, job) => {
                           const deal = getSchedulableDeals().find((d) => d.id === job.dealId);

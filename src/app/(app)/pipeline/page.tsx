@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Deal, PipelineStage, Contact, getLeadSourceRing } from '@/types';
@@ -9,18 +10,19 @@ import { Modal } from '@/components/Modal';
 import { AddDealForm } from '@/components/AddDealForm';
 import { Plus, Search, X, Eye, List } from 'lucide-react';
 
-const PIPELINE_STAGES: { stage: PipelineStage; label: string; color: string }[] = [
-  { stage: 'new_lead', label: 'New Lead', color: 'bg-slate-100 border-slate-300' },
-  { stage: 'contacted', label: 'Contacted', color: 'bg-blue-100 border-blue-300' },
-  { stage: 'estimate_scheduled', label: 'Est. Scheduled', color: 'bg-purple-100 border-purple-300' },
-  { stage: 'estimate_sent', label: 'Est. Sent', color: 'bg-amber-100 border-amber-300' },
-  { stage: 'booked', label: 'Booked', color: 'bg-green-100 border-green-300' },
-  { stage: 'in_progress', label: 'In Progress', color: 'bg-cyan-100 border-cyan-300' },
-  { stage: 'completed', label: 'Completed', color: 'bg-emerald-100 border-emerald-300' },
-  { stage: 'invoiced', label: 'Invoiced', color: 'bg-indigo-100 border-indigo-300' },
+const PIPELINE_STAGES_CONFIG: { stage: PipelineStage; labelKey: string; color: string }[] = [
+  { stage: 'new_lead', labelKey: 'pipeline.newLead', color: 'bg-slate-100 border-slate-300' },
+  { stage: 'contacted', labelKey: 'pipeline.contacted', color: 'bg-blue-100 border-blue-300' },
+  { stage: 'estimate_scheduled', labelKey: 'pipeline.estScheduled', color: 'bg-purple-100 border-purple-300' },
+  { stage: 'estimate_sent', labelKey: 'pipeline.estSent', color: 'bg-amber-100 border-amber-300' },
+  { stage: 'booked', labelKey: 'pipeline.booked', color: 'bg-green-100 border-green-300' },
+  { stage: 'in_progress', labelKey: 'pipeline.inProgress', color: 'bg-cyan-100 border-cyan-300' },
+  { stage: 'completed', labelKey: 'pipeline.completed', color: 'bg-emerald-100 border-emerald-300' },
+  { stage: 'invoiced', labelKey: 'pipeline.invoiced', color: 'bg-indigo-100 border-indigo-300' },
 ];
 
 export default function PipelinePage() {
+  const { t } = useLanguage();
   const { deals, contacts, initializeSeedData, updateDeal, getContact } = useStore();
   const [mounted, setMounted] = useState(false);
   const [isAddDealOpen, setIsAddDealOpen] = useState(false);
@@ -134,7 +136,7 @@ export default function PipelinePage() {
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">Pipeline</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">{t('pipeline.title')}</h1>
             <p className="text-sm sm:text-lg text-slate-600 mt-1 font-semibold">
               ${metrics.totalValue.toLocaleString()} across {metrics.totalDeals} deals
             </p>
@@ -144,8 +146,8 @@ export default function PipelinePage() {
             className="flex items-center gap-2 bg-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl font-semibold text-sm sm:text-base"
           >
             <Plus className="w-5 h-5" />
-            <span className="hidden sm:inline">Add Deal</span>
-            <span className="sm:hidden">Add</span>
+            <span className="hidden sm:inline">{t('pipeline.addDeal')}</span>
+            <span className="sm:hidden">{t('common.add')}</span>
           </button>
         </div>
 
@@ -155,7 +157,7 @@ export default function PipelinePage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Search deals by title or contact name..."
+              placeholder={t('pipeline.searchDeals')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
@@ -170,7 +172,7 @@ export default function PipelinePage() {
             onChange={(e) => setAssignedToFilter(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
-            <option value="all">All Assigned</option>
+            <option value="all">{t('pipeline.allAssigned')}</option>
             <option value="Marcus">Marcus</option>
             <option value="James">James</option>
             <option value="Team">Team</option>
@@ -181,7 +183,7 @@ export default function PipelinePage() {
             onChange={(e) => setSourceFilter(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
-            <option value="all">All Sources</option>
+            <option value="all">{t('pipeline.allSources')}</option>
             <option value="ring_1">Ring 1</option>
             <option value="ring_2">Ring 2</option>
             <option value="ring_3">Ring 3</option>
@@ -192,11 +194,11 @@ export default function PipelinePage() {
             onChange={(e) => setValueFilter(e.target.value)}
             className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
-            <option value="all">All Values</option>
-            <option value="under_1k">Under $1K</option>
-            <option value="1k_5k">$1K - $5K</option>
-            <option value="5k_10k">$5K - $10K</option>
-            <option value="over_10k">Over $10K</option>
+            <option value="all">{t('pipeline.allValues')}</option>
+            <option value="under_1k">{t('pipeline.under1k')}</option>
+            <option value="1k_5k">{t('pipeline.1kTo5k')}</option>
+            <option value="5k_10k">{t('pipeline.5kTo10k')}</option>
+            <option value="over_10k">{t('pipeline.over10k')}</option>
           </select>
 
           {hasActiveFilters && (
@@ -205,7 +207,7 @@ export default function PipelinePage() {
               className="flex items-center gap-1 px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
             >
               <X className="w-4 h-4" />
-              Clear Filters
+              {t('pipeline.clearFilters')}
             </button>
           )}
 
@@ -219,7 +221,7 @@ export default function PipelinePage() {
               }`}
             >
               <Eye className="w-4 h-4" />
-              Board
+              {t('pipeline.board')}
             </button>
             <button
               onClick={() => setViewMode('list')}
@@ -230,7 +232,7 @@ export default function PipelinePage() {
               }`}
             >
               <List className="w-4 h-4" />
-              List
+              {t('pipeline.list')}
             </button>
           </div>
         </div>
@@ -241,7 +243,8 @@ export default function PipelinePage() {
         <div className="flex-1 overflow-x-auto overflow-y-hidden bg-slate-50 dark:bg-slate-950 p-3 sm:p-6">
           <DragDropContext onDragEnd={handleDragEnd}>
             <div className="flex gap-3 sm:gap-6 min-w-max">
-              {PIPELINE_STAGES.map(({ stage, label, color }) => {
+              {PIPELINE_STAGES_CONFIG.map(({ stage, labelKey, color }) => {
+                const label = t(labelKey as any);
                 const stageDeals = getDealsByStage(stage);
                 const metrics = getStageMetrics(stage);
 
@@ -341,11 +344,11 @@ export default function PipelinePage() {
                 <th className="text-left px-4 py-3 font-semibold text-slate-900 cursor-pointer hover:bg-slate-200">
                   Title
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">Contact</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900">{t('form.contact')}</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-900">Stage</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-900">Value</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">Source</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">Assigned</th>
+                <th className="text-right px-4 py-3 font-semibold text-slate-900">{t('form.value')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900">{t('contacts.source')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900">{t('form.assignedTo')}</th>
                 <th className="text-right px-4 py-3 font-semibold text-slate-900">Days</th>
               </tr>
             </thead>
@@ -354,7 +357,7 @@ export default function PipelinePage() {
                 const contact = getContact(deal.contactId);
                 const daysInStage = getDaysInStage(deal);
                 const ring = getLeadSourceRing(deal.source);
-                const stageInfo = PIPELINE_STAGES.find((s) => s.stage === deal.stage);
+                const stageInfo = PIPELINE_STAGES_CONFIG.find((s) => s.stage === deal.stage);
 
                 return (
                   <tr
@@ -369,7 +372,7 @@ export default function PipelinePage() {
                     <td className="px-4 py-3 text-slate-600">{contact?.name}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs font-medium px-2 py-1 rounded ${stageInfo?.color}`}>
-                        {stageInfo?.label}
+                        {t((stageInfo as any)?.labelKey)}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-slate-900">
@@ -393,19 +396,19 @@ export default function PipelinePage() {
       {/* Pipeline Summary Bar */}
       <div className="px-4 sm:px-8 py-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="text-center">
-          <p className="text-sm text-slate-600">Total Deals</p>
+          <p className="text-sm text-slate-600">{t('pipeline.totalDeals')}</p>
           <p className="text-2xl font-bold text-slate-900">{metrics.totalDeals}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-slate-600">Total Value</p>
+          <p className="text-sm text-slate-600">{t('pipeline.totalValue')}</p>
           <p className="text-2xl font-bold text-slate-900">${metrics.totalValue.toLocaleString()}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-slate-600">Average Deal</p>
+          <p className="text-sm text-slate-600">{t('pipeline.averageDeal')}</p>
           <p className="text-2xl font-bold text-slate-900">${metrics.avgValue.toLocaleString()}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-slate-600">Win Rate</p>
+          <p className="text-sm text-slate-600">{t('pipeline.winRate')}</p>
           <p className="text-2xl font-bold text-slate-900">
             {metrics.totalDeals > 0
               ? `${Math.round((getDealsByStage('completed').length / metrics.totalDeals) * 100)}%`

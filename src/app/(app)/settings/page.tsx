@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import {
   Settings,
@@ -141,6 +142,7 @@ const MOCK_INTEGRATIONS: Integration[] = [
 ];
 
 export default function SettingsPage() {
+  const { t } = useLanguage();
   const { initializeSeedData } = useStore();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('profile');
@@ -174,12 +176,12 @@ export default function SettingsPage() {
   if (!mounted) return <div className="p-8">Loading...</div>;
 
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
-    { id: 'profile', label: 'Company Profile', icon: <Building2 className="w-5 h-5" /> },
-    { id: 'team', label: 'Team Members', icon: <Users className="w-5 h-5" /> },
-    { id: 'pipeline', label: 'Pipeline Settings', icon: <Zap className="w-5 h-5" /> },
-    { id: 'integrations', label: 'Integrations', icon: <Package className="w-5 h-5" /> },
-    { id: 'notifications', label: 'Notifications', icon: <Bell className="w-5 h-5" /> },
-    { id: 'billing', label: 'Billing', icon: <CreditCard className="w-5 h-5" /> },
+    { id: 'profile', label: t('settings.profile'), icon: <Building2 className="w-5 h-5" /> },
+    { id: 'team', label: t('settings.team'), icon: <Users className="w-5 h-5" /> },
+    { id: 'pipeline', label: t('settings.pipeline'), icon: <Zap className="w-5 h-5" /> },
+    { id: 'integrations', label: t('settings.integrations'), icon: <Package className="w-5 h-5" /> },
+    { id: 'notifications', label: t('settings.notifications'), icon: <Bell className="w-5 h-5" /> },
+    { id: 'billing', label: t('settings.billing'), icon: <CreditCard className="w-5 h-5" /> },
   ];
 
   return (
@@ -188,7 +190,7 @@ export default function SettingsPage() {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <Settings className="w-8 h-8 text-slate-900" />
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Settings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('settings.title')}</h1>
         </div>
         <p className="text-slate-600">Manage your account and application preferences</p>
       </div>

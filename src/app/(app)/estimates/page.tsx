@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { Estimate, EstimateStatus, EstimateTier } from '@/types';
 import {
@@ -41,6 +42,7 @@ interface CreateFeatureState {
 }
 
 export default function EstimatesPage() {
+  const { t } = useLanguage();
   const { estimates, contacts, addEstimate, updateEstimateStatus, deleteEstimate, initializeSeedData } = useStore();
   const [mounted, setMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -197,7 +199,7 @@ export default function EstimatesPage() {
     <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Estimates</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('estimates.title')}</h1>
         <p className="text-slate-600">Create and track customer estimates</p>
       </div>
 
@@ -206,7 +208,7 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">Total Estimates</p>
+              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.totalEstimates')}</p>
               <p className="text-3xl font-bold text-slate-900">{totalEstimates}</p>
             </div>
             <FileText className="w-12 h-12 text-blue-100" />
@@ -216,7 +218,7 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">Pending Approval</p>
+              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.pendingApproval')}</p>
               <p className="text-3xl font-bold text-slate-900">{pendingApproval}</p>
             </div>
             <Clock className="w-12 h-12 text-amber-100" />
@@ -226,7 +228,7 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">Approved This Month</p>
+              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.approvedThisMonth')}</p>
               <p className="text-3xl font-bold text-slate-900">{approvedThisMonth}</p>
             </div>
             <TrendingUp className="w-12 h-12 text-emerald-100" />
@@ -236,7 +238,7 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">Conversion Rate</p>
+              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.conversionRate')}</p>
               <p className="text-3xl font-bold text-slate-900">{conversionRate}%</p>
             </div>
             <div className="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center">
@@ -254,7 +256,7 @@ export default function EstimatesPage() {
             <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
             <input
               type="text"
-              placeholder="Search estimates..."
+              placeholder={t('common.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
@@ -267,7 +269,7 @@ export default function EstimatesPage() {
             className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
-            Create Estimate
+            {t('estimates.createEstimate')}
           </button>
         </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import {
   Search,
   Send,
@@ -230,6 +231,7 @@ const TEMPLATES: Template[] = [
 type FilterTab = 'all' | 'sms' | 'email' | 'automated' | 'templates';
 
 export default function MessagesPage() {
+  const { t } = useLanguage();
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(MOCK_MESSAGES[0]?.id);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterTab>('all');
@@ -298,18 +300,18 @@ export default function MessagesPage() {
             className="w-full flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
           >
             <Edit3 className="w-4 h-4" />
-            Compose
+            {t('messages.compose')}
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           <nav className="p-3 space-y-1">
             {[
-              { id: 'all', label: 'All Messages', icon: MessageSquare },
-              { id: 'sms', label: 'SMS', icon: Send },
-              { id: 'email', label: 'Email', icon: Mail },
-              { id: 'automated', label: 'Automated', icon: Zap },
-              { id: 'templates', label: 'Templates', icon: Copy },
+              { id: 'all', label: t('messages.allMessages'), icon: MessageSquare },
+              { id: 'sms', label: t('messages.sms'), icon: Send },
+              { id: 'email', label: t('messages.email'), icon: Mail },
+              { id: 'automated', label: t('messages.automated'), icon: Zap },
+              { id: 'templates', label: t('messages.templates'), icon: Copy },
             ].map((filter) => {
               const IconComponent = filter.icon;
               return (
@@ -344,7 +346,7 @@ export default function MessagesPage() {
               <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search messages..."
+                placeholder={t('common.search')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
