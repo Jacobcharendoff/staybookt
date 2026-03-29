@@ -1452,6 +1452,18 @@ function Pricing() {
 // ─── Main Landing Page ────────────────────────────────────────
 export default function LandingPage() {
   useScrollReveal();
+
+  // Marketing pages are always light — strip dark class from app pages
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+    return () => {
+      try {
+        const t = localStorage.getItem('growth-os-theme');
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch {}
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <Navigation />

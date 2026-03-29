@@ -370,6 +370,18 @@ export function CTASection() {
 
 // ─── Marketing Page Layout Wrapper ──────────────────────────────
 export function MarketingLayout({ children }: { children: React.ReactNode }) {
+  // Marketing pages are always light — strip dark class that may linger from app pages
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+    return () => {
+      // Restore dark class when navigating back to app if user preference is dark
+      try {
+        const t = localStorage.getItem('growth-os-theme');
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      } catch {}
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
