@@ -1,29 +1,32 @@
 'use client';
 
 import { MarketingLayout } from '@/components/MarketingLayout';
+import { useLanguage } from '@/components/LanguageProvider';
 import { Zap, Calendar, TrendingUp, DollarSign, CheckCircle, Users, BarChart3, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 export default function HvacPage() {
+  const { t } = useLanguage();
+
   return (
     <MarketingLayout>
       {/* Hero Section */}
       <section className="pt-24 pb-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Book more HVAC jobs without hiring another office person
+            {t('hvacPage.heroTitle')}
           </h1>
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            Winter and summer are chaos. Your phone is ringing off the hook, estimates are piling up, and your office is drowning in calls. Growth OS handles the busy season automatically.
+            {t('hvacPage.heroDesc')}
           </p>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-full transition-colors"
           >
-            Get started free
+            {t('industryPage.getStartedFree')}
             <Zap className="w-5 h-5" />
           </Link>
-          <p className="text-sm text-gray-500 mt-4">No credit card required. See the difference in your first week.</p>
+          <p className="text-sm text-gray-500 mt-4">{t('industryPage.noCardNeeded')}</p>
         </div>
       </section>
 
@@ -31,7 +34,7 @@ export default function HvacPage() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-gray-900 mb-16 text-center">
-            The HVAC problems we solve
+            {t('industryPage.commonProblems')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Seasonal Swings */}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store';
+import { useLanguage } from '@/components/LanguageProvider';
 import { Activity as ActivityType } from '@/types';
 import { Phone, Mail, Calendar, FileText, Zap, DollarSign } from 'lucide-react';
 
@@ -16,6 +17,7 @@ const ACTIVITY_ICONS: Record<string, React.ReactNode> = {
 
 export default function ActivityPage() {
   const { activities, deals, contacts, initializeSeedData } = useStore();
+  const { t, locale } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function ActivityPage() {
   }, []);
 
   if (!mounted) {
-    return <div className="p-8">Loading...</div>;
+    return <div className="p-8">{t('common.loading')}</div>;
   }
 
   const sortedActivities = [...activities].sort((a, b) => b.createdAt - a.createdAt);
@@ -45,9 +47,9 @@ export default function ActivityPage() {
     <div className="h-full flex flex-col bg-white dark:bg-slate-900">
       {/* Header */}
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Activity</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('activity.title')}</h1>
         <p className="text-slate-600 mt-1">
-          {activities.length} total activities
+          {activities.length} {t('activity.totalActivities')}
         </p>
       </div>
 
@@ -104,7 +106,7 @@ export default function ActivityPage() {
                           </div>
 
                           <p className="text-xs text-slate-500 mt-3">
-                            {new Date(activity.createdAt).toLocaleDateString('en-US', {
+                            {new Date(activity.createdAt).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-CA', {
                               year: 'numeric',
                               month: 'long',
                               day: 'numeric',
@@ -122,7 +124,7 @@ export default function ActivityPage() {
           ) : (
             <div className="flex items-center justify-center h-64">
               <p className="text-slate-500 text-center">
-                No activities yet. Get started by adding deals and contacts!
+                {t('activity.noActivities')}
               </p>
             </div>
           )}

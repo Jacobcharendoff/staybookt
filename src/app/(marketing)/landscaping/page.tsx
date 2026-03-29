@@ -1,10 +1,12 @@
 'use client';
 
 import { MarketingLayout, CTASection, Footer } from '@/components/MarketingLayout';
+import { useLanguage } from '@/components/LanguageProvider';
 import { ArrowRight, Leaf, Calendar, Clock, RefreshCw, Star, CheckCircle2, Zap, TrendingUp, Users } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LandscapingPage() {
+  const { t } = useLanguage();
   return (
     <MarketingLayout>
       {/* Hero Section */}

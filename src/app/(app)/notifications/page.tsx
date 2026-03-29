@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import { Bell, CheckCircle2, AlertCircle, DollarSign, TrendingUp, MessageSquare, Star, Users, Zap, MessageCircle, Eye, EyeOff } from 'lucide-react';
 
 interface Notification {
@@ -151,18 +152,19 @@ const typeConfig = {
 };
 
 export default function NotificationsPage() {
+  const { t } = useLanguage();
   const [filterTab, setFilterTab] = useState<string>('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const filterTabs = [
-    { id: 'all', label: 'All' },
-    { id: 'unread', label: 'Unread' },
-    { id: 'lead', label: 'Leads' },
-    { id: 'payment', label: 'Payments' },
-    { id: 'reminder', label: 'Reminders' },
-    { id: 'system', label: 'System' }
+    { id: 'all', label: t('notifications.all') },
+    { id: 'unread', label: t('notifications.unreadTab') },
+    { id: 'lead', label: t('notifications.leads') },
+    { id: 'payment', label: t('notifications.payments') },
+    { id: 'reminder', label: t('notifications.reminders') },
+    { id: 'system', label: t('notifications.system') }
   ];
 
   const filteredNotifications = notifications.filter(notif => {
@@ -235,17 +237,17 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Notifications</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('notifications.title')}</h1>
           {unreadCount > 0 && (
             <button className="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium shadow-sm">
-              Mark All Read
+              {t('notifications.markAllRead')}
             </button>
           )}
         </div>
 
         {unreadCount > 0 && (
           <div className="text-sm text-slate-600">
-            You have <span className="font-semibold text-blue-600">{unreadCount} unread</span> notification{unreadCount !== 1 ? 's' : ''}
+            You have <span className="font-semibold text-blue-600">{unreadCount} {t('notifications.unread')}</span> notification{unreadCount !== 1 ? 's' : ''}
           </div>
         )}
       </div>
@@ -279,7 +281,7 @@ export default function NotificationsPage() {
         {/* Today */}
         {groupedNotifications.today.length > 0 && (
           <div>
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Today</h2>
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{t('notifications.today')}</h2>
             <div className="space-y-3">
               {groupedNotifications.today.map(notif => renderNotificationCard(notif))}
             </div>
@@ -289,7 +291,7 @@ export default function NotificationsPage() {
         {/* Yesterday */}
         {groupedNotifications.yesterday.length > 0 && (
           <div>
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Yesterday</h2>
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{t('notifications.yesterday')}</h2>
             <div className="space-y-3">
               {groupedNotifications.yesterday.map(notif => renderNotificationCard(notif))}
             </div>
@@ -299,7 +301,7 @@ export default function NotificationsPage() {
         {/* Earlier */}
         {groupedNotifications.earlier.length > 0 && (
           <div>
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Earlier</h2>
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{t('notifications.earlier')}</h2>
             <div className="space-y-3">
               {groupedNotifications.earlier.map(notif => renderNotificationCard(notif))}
             </div>
@@ -309,8 +311,8 @@ export default function NotificationsPage() {
         {filteredNotifications.length === 0 && (
           <div className="text-center py-12">
             <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-500 font-medium">No notifications</p>
-            <p className="text-slate-400 text-sm mt-1">You're all caught up!</p>
+            <p className="text-slate-500 font-medium">{t('notifications.noNotifications')}</p>
+            <p className="text-slate-400 text-sm mt-1">{t('notifications.youAreCaughtUp')}</p>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import {
   Send,
   Sparkles,
@@ -143,11 +144,11 @@ function formatTime(date: Date): string {
 }
 
 // ─── Quick Actions ───────────────────────────────────────────
-const QUICK_ACTIONS: QuickAction[] = [
-  { label: 'How\'s my business doing?', icon: TrendingUp, prompt: 'How is my business doing?' },
-  { label: 'Stale estimates', icon: AlertTriangle, prompt: 'Show me estimates that need follow-up' },
-  { label: 'Revenue this month', icon: DollarSign, prompt: 'What are my revenue numbers?' },
-  { label: 'Missed leads', icon: Users, prompt: 'Did I miss any calls today?' },
+const getQuickActions = (t: any): QuickAction[] => [
+  { label: t('advisor.businessDoing'), icon: TrendingUp, prompt: 'How is my business doing?' },
+  { label: t('advisor.staleEstimates'), icon: AlertTriangle, prompt: 'Show me estimates that need follow-up' },
+  { label: t('advisor.revenueThisMonth'), icon: DollarSign, prompt: 'What are my revenue numbers?' },
+  { label: t('advisor.missedLeads'), icon: Users, prompt: 'Did I miss any calls today?' },
 ];
 
 // ─── Message Bubble ──────────────────────────────────────────
@@ -188,6 +189,7 @@ function MessageBubble({ message }: { message: Message }) {
 
 // ─── Main Advisor Page ───────────────────────────────────────
 export default function AdvisorPage() {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -269,8 +271,8 @@ export default function AdvisorPage() {
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-[17px] font-semibold text-slate-900">Growth Advisor</h1>
-              <p className="text-[13px] text-emerald-600 font-medium">Online</p>
+              <h1 className="text-[17px] font-semibold text-slate-900">{t('advisor.title')}</h1>
+              <p className="text-[13px] text-emerald-600 font-medium">{t('advisor.online')}</p>
             </div>
           </div>
         </div>
@@ -280,14 +282,14 @@ export default function AdvisorPage() {
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Hey {ACCOUNT_DATA.ownerName} 👋</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('advisor.greeting', { ownerName: ACCOUNT_DATA.ownerName })}</h2>
           <p className="text-slate-500 text-center max-w-sm mb-10 leading-relaxed">
-            I know your numbers, your pipeline, and your customers. Ask me anything about your business.
+            {t('advisor.introduction')}
           </p>
 
           {/* Quick Actions */}
           <div className="w-full max-w-sm space-y-3">
-            {QUICK_ACTIONS.map((action) => {
+            {getQuickActions(t).map((action) => {
               const Icon = action.icon;
               return (
                 <button
@@ -315,7 +317,7 @@ export default function AdvisorPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about your business..."
+              placeholder={t('advisor.placeholder')}
               className="flex-1 bg-transparent text-[15px] text-slate-900 placeholder-slate-400 outline-none"
             />
             <button
@@ -345,14 +347,14 @@ export default function AdvisorPage() {
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-[17px] font-semibold text-slate-900">Growth Advisor</h1>
+            <h1 className="text-[17px] font-semibold text-slate-900">{t('advisor.title')}</h1>
             <p className="text-[13px] text-emerald-600 font-medium">
-              {isTyping ? 'typing...' : 'Online'}
+              {isTyping ? t('advisor.typing') : t('advisor.online')}
             </p>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 rounded-full">
             <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-xs font-medium text-emerald-700">Connected to your account</span>
+            <span className="text-xs font-medium text-emerald-700">{t('advisor.connectedToAccount')}</span>
           </div>
         </div>
       </div>
@@ -361,7 +363,7 @@ export default function AdvisorPage() {
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {/* Date separator */}
         <div className="flex justify-center mb-4">
-          <span className="text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Today</span>
+          <span className="text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{t('advisor.today')}</span>
         </div>
 
         {messages.map((message) => (
@@ -388,12 +390,12 @@ export default function AdvisorPage() {
         <div className="flex-shrink-0 px-4 pb-2">
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {[
-              'How\'s my revenue?',
-              'Stale estimates',
-              'Seasonal prep',
-              'Team capacity',
-              'My reviews',
-              'Autopilot status',
+              t('advisor.myRevenue'),
+              t('advisor.staleEstimates'),
+              t('advisor.seasonalPrep'),
+              t('advisor.teamCapacity'),
+              t('advisor.myReviews'),
+              t('advisor.autopilotStatus'),
             ].map((suggestion) => (
               <button
                 key={suggestion}
@@ -416,7 +418,7 @@ export default function AdvisorPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about your business..."
+            placeholder={t('advisor.placeholder')}
             className="flex-1 bg-transparent text-[15px] text-slate-900 placeholder-slate-400 outline-none"
             autoFocus
           />

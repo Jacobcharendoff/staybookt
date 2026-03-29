@@ -1,8 +1,11 @@
 'use client';
 
 import { MarketingLayout } from '@/components/MarketingLayout';
+import { useLanguage } from '@/components/LanguageProvider';
 
 export default function TermsPage() {
+  const { t } = useLanguage();
+
   return (
     <MarketingLayout>
       {/* Hero Section */}

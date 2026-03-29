@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { MarketingLayout } from "@/components/MarketingLayout";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function VsHousecallProPage() {
+  const { t } = useLanguage();
+
   return (
     <MarketingLayout>
       {/* Hero Section */}

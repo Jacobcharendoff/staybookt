@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 import {
   Zap, Play, Pause, Clock, Mail, MessageSquare, Star, DollarSign,
   Users, Calendar, ChevronRight, CheckCircle2, ArrowRight, Shield,
@@ -396,6 +397,7 @@ const StepIcon = ({ icon, type }: { icon: string; type: string }) => {
 // ============================================================
 
 export default function AutomationsPage() {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<PlaybookCategory>('all');
   const [playbooks, setPlaybooks] = useState<Playbook[]>(PLAYBOOKS);
@@ -406,14 +408,14 @@ export default function AutomationsPage() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <div className="p-8">Loading...</div>;
+  if (!mounted) return <div className="p-8">{t('common.loading')}</div>;
 
   const categories: { id: PlaybookCategory; label: string; icon: React.ReactNode }[] = [
-    { id: 'all', label: 'All Playbooks', icon: <Sparkles className="w-4 h-4" /> },
-    { id: 'lead_capture', label: 'Lead Capture', icon: <Target className="w-4 h-4" /> },
-    { id: 'follow_up', label: 'Follow-Up', icon: <RotateCcw className="w-4 h-4" /> },
-    { id: 'retention', label: 'Retention', icon: <Heart className="w-4 h-4" /> },
-    { id: 'revenue', label: 'Revenue', icon: <DollarSign className="w-4 h-4" /> },
+    { id: 'all', label: t('automations.allPlaybooks'), icon: <Sparkles className="w-4 h-4" /> },
+    { id: 'lead_capture', label: t('automations.leadCapture'), icon: <Target className="w-4 h-4" /> },
+    { id: 'follow_up', label: t('automations.followUp'), icon: <RotateCcw className="w-4 h-4" /> },
+    { id: 'retention', label: t('automations.retention'), icon: <Heart className="w-4 h-4" /> },
+    { id: 'revenue', label: t('automations.revenue'), icon: <DollarSign className="w-4 h-4" /> },
   ];
 
   const filtered = activeCategory === 'all'
@@ -444,8 +446,8 @@ export default function AutomationsPage() {
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Autopilot</h1>
-            <p className="text-slate-600">Pre-built playbooks that run your business on autopilot. Activate with one click.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('automations.title')}</h1>
+            <p className="text-slate-600">{t('automations.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -456,11 +458,11 @@ export default function AutomationsPage() {
         <div className="relative">
           <div className="flex items-center justify-between flex-wrap gap-6">
             <div>
-              <p className="text-slate-400 text-sm font-medium mb-1">AUTOPILOT STATUS</p>
+              <p className="text-slate-400 text-sm font-medium mb-1">{t('automations.status')}</p>
               <div className="flex items-center gap-4">
                 <div className="text-3xl sm:text-4xl font-bold">{activeCount} / {playbooks.length}</div>
                 <div className="text-slate-400">
-                  <p className="text-sm">playbooks active</p>
+                  <p className="text-sm">{t('automations.playbooksActive')}</p>
                   <p className="text-emerald-400 text-sm font-medium">{totalImpact}</p>
                 </div>
               </div>
@@ -471,7 +473,7 @@ export default function AutomationsPage() {
                 className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-semibold transition-all hover:shadow-lg hover:shadow-emerald-500/25"
               >
                 <Play className="w-4 h-4" />
-                Activate All Free Playbooks
+                {t('automations.activateAllFree')}
               </button>
             </div>
           </div>
@@ -479,10 +481,10 @@ export default function AutomationsPage() {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
             {[
-              { label: 'Emails/month', value: '~240', icon: <Mail className="w-4 h-4" /> },
-              { label: 'Texts/month', value: '~180', icon: <MessageSquare className="w-4 h-4" /> },
-              { label: 'Hours saved/month', value: '47', icon: <Clock className="w-4 h-4" /> },
-              { label: 'Est. revenue impact', value: '+$19.4K', icon: <TrendingUp className="w-4 h-4" /> },
+              { label: t('automations.emailsPerMonth'), value: '~240', icon: <Mail className="w-4 h-4" /> },
+              { label: t('automations.textsPerMonth'), value: '~180', icon: <MessageSquare className="w-4 h-4" /> },
+              { label: t('automations.hoursSavedPerMonth'), value: '47', icon: <Clock className="w-4 h-4" /> },
+              { label: t('automations.estRevenueImpact'), value: '+$19.4K', icon: <TrendingUp className="w-4 h-4" /> },
             ].map((stat) => (
               <div key={stat.label} className="bg-white/5 rounded-xl p-4 border border-white/10">
                 <div className="flex items-center gap-2 text-slate-400 text-xs mb-2">
@@ -501,11 +503,9 @@ export default function AutomationsPage() {
         <div className="flex items-start gap-3">
           <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
           <div>
-            <h3 className="font-semibold text-slate-900 mb-1">How Autopilot Works</h3>
+            <h3 className="font-semibold text-slate-900 mb-1">{t('automations.howItWorks')}</h3>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Each playbook is a proven sequence of emails and texts that trigger automatically based on what happens in your pipeline.
-              Activate a playbook and it starts working immediately — no setup required. Every template uses your company name, technician names,
-              and customer details automatically. You can customize any template, or just use the defaults. They&apos;re written by people who know the trades.
+              {t('automations.howItWorksDesc')}
             </p>
           </div>
         </div>

@@ -1,10 +1,12 @@
 'use client';
 
 import { MarketingLayout } from '@/components/MarketingLayout';
+import { useLanguage } from '@/components/LanguageProvider';
 import { Zap, FileText, AlertCircle, TrendingUp, CheckCircle, Phone, BarChart3, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ElectricalPage() {
+  const { t } = useLanguage();
   return (
     <MarketingLayout>
       {/* Hero Section */}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Navigation, Footer, CTASection } from "@/components/MarketingLayout";
+import { useLanguage } from '@/components/LanguageProvider';
 import {
   Zap,
   ArrowRight,
@@ -153,17 +154,18 @@ function useParallax(speed: number = 0.3) {
 
 // ─── Hero Section ─────────────────────────────────────────────
 function Hero() {
+  const { t } = useLanguage();
   const parallaxOffset = useParallax(0.15);
   const [tradeIndex, setTradeIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const trades = [
-    { name: 'plumbers', icon: <Wrench className="w-5 h-5" />, color: 'from-blue-500 to-blue-600' },
-    { name: 'HVAC technicians', icon: <Flame className="w-5 h-5" />, color: 'from-orange-500 to-red-500' },
-    { name: 'electricians', icon: <Plug className="w-5 h-5" />, color: 'from-amber-500 to-yellow-600' },
-    { name: 'landscapers', icon: <TreePine className="w-5 h-5" />, color: 'from-emerald-500 to-green-600' },
-    { name: 'roofers', icon: <Home className="w-5 h-5" />, color: 'from-slate-500 to-slate-700' },
-    { name: 'cleaners', icon: <Sparkles className="w-5 h-5" />, color: 'from-purple-500 to-violet-600' },
+    { name: t('hero.plumbers'), icon: <Wrench className="w-5 h-5" />, color: 'from-blue-500 to-blue-600' },
+    { name: t('hero.hvac'), icon: <Flame className="w-5 h-5" />, color: 'from-orange-500 to-red-500' },
+    { name: t('hero.electricians'), icon: <Plug className="w-5 h-5" />, color: 'from-amber-500 to-yellow-600' },
+    { name: t('hero.landscapers'), icon: <TreePine className="w-5 h-5" />, color: 'from-emerald-500 to-green-600' },
+    { name: t('hero.roofers'), icon: <Home className="w-5 h-5" />, color: 'from-slate-500 to-slate-700' },
+    { name: t('hero.cleaners'), icon: <Sparkles className="w-5 h-5" />, color: 'from-purple-500 to-violet-600' },
   ];
 
   const personaCards = [
@@ -247,12 +249,12 @@ function Hero() {
           {/* Badge */}
           <div className="hero-reveal hero-reveal-delay-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-8">
             <Sparkles className="w-4 h-4 text-blue-500" />
-            <span className="text-sm font-medium text-blue-700">Free for 14 days — no credit card needed</span>
+            <span className="text-sm font-medium text-blue-700">{t('hero.freeForFourteen')}</span>
           </div>
 
           {/* Headline with rotating trade name */}
           <h1 className="hero-reveal hero-reveal-delay-2 text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1] mb-2">
-            The growth engine
+            {t('hero.growthEngine')}
             <br />
             for{' '}
             <span className="relative inline-block">
@@ -292,7 +294,7 @@ function Hero() {
 
           {/* Subheadline */}
           <p className="hero-reveal hero-reveal-delay-3 text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Never miss a lead. Growth OS auto-responds in 60 seconds and handles follow-ups, estimates, and invoicing — so you can focus on the job.
+            {t('hero.neverMissLead')}
           </p>
 
           {/* CTAs */}
@@ -301,14 +303,14 @@ function Hero() {
               href="/setup"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-base font-semibold rounded-2xl hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-500/40 hover:-translate-y-0.5"
             >
-              Start Free — No Card Required
+              {t('hero.startFreeNoCard')}
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/dashboard"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white text-gray-700 text-base font-semibold rounded-2xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all shadow-sm"
             >
-              See It in Action
+              {t('landing.seeItInAction')}
               <ChevronRight className="w-5 h-5" />
             </Link>
           </div>
@@ -316,14 +318,14 @@ function Hero() {
           {/* Canada-first trust bar */}
           <div className="hero-reveal hero-reveal-delay-4 mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
             <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-red-500" /> Built in Canada
+              <MapPin className="w-4 h-4 text-red-500" /> {t('landing.builtInCanada')}
             </span>
             <span className="hidden sm:inline text-gray-300">|</span>
-            <span>Bilingual (EN/FR)</span>
+            <span>{t('landing.bilingualEnFr')}</span>
             <span className="hidden sm:inline text-gray-300">|</span>
-            <span>HST/GST/QST auto-calculated</span>
+            <span>{t('landing.hstGstQstAutoCalculated')}</span>
             <span className="hidden sm:inline text-gray-300">|</span>
-            <span>HomeStars integrated</span>
+            <span>{t('landing.homeStarsIntegrated')}</span>
           </div>
 
           {/* Social Proof */}
@@ -336,13 +338,13 @@ function Hero() {
                   </div>
                 ))}
               </div>
-              <span className="text-sm text-gray-500">Trusted across Canada</span>
+              <span className="text-sm text-gray-500">{t('landing.trustedAcrossCanada')}</span>
             </div>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
               ))}
-              <span className="text-sm text-gray-500 ml-1.5">4.9/5 rating</span>
+              <span className="text-sm text-gray-500 ml-1.5">{t('landing.rating')}</span>
             </div>
           </div>
 
@@ -374,18 +376,19 @@ function Hero() {
 
 // ─── Problem Agitation ───────────────────────────────────────
 function ProblemSection() {
+  const { t } = useLanguage();
   return (
     <section className="py-20 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-        <h2 className="scroll-fade-up text-2xl sm:text-3xl font-bold text-white mb-8">Sound familiar?</h2>
+        <h2 className="scroll-fade-up text-2xl sm:text-3xl font-bold text-white mb-8">{t('problem.soundFamiliar')}</h2>
         <div className="stagger-children scroll-fade-up grid sm:grid-cols-2 gap-4 text-left max-w-3xl mx-auto">
           {[
-            "You missed a call at 7am because you were already on a job",
-            "That estimate you sent last week? No one followed up",
-            "Your best customer hasn't called in 6 months and you didn't notice",
-            "You invoiced a job 4 days late and waited 45 days to get paid",
-            "You have no idea which ads are actually bringing in work",
-            "You tried Jobber but it didn't help you grow — just schedule",
+            t('problem.missedCall'),
+            t('problem.estimateFollowUp'),
+            t('problem.bestCustomer'),
+            t('problem.invoicedLate'),
+            t('problem.adsNotWorking'),
+            t('problem.jobberDidntHelp'),
           ].map((pain, index) => (
             <div key={pain} className={`${index % 2 === 0 ? 'scroll-fade-left' : 'scroll-fade-right'} flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10`}>
               <X className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
@@ -397,14 +400,12 @@ function ProblemSection() {
         {/* Canada differentiator */}
         <div className="scroll-fade-up mt-12 max-w-3xl mx-auto text-center">
           <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-            Every other CRM was built in the US and patched for Canada.{" "}
-            <span className="font-semibold text-white">Growth OS was built here.</span>{" "}
-            Your invoices calculate HST, GST, and QST correctly — for every province. Your templates work in French and English. That's not an add-on. That's how it should be.
+            {t('problem.builtInUs')}
           </p>
         </div>
 
         <p className="mt-10 text-lg text-blue-300 font-medium">
-          Every one of these problems has a fix. And it takes 10 minutes to set up.
+          {t('problem.fixesAvailable')}
         </p>
       </div>
     </section>
@@ -413,27 +414,28 @@ function ProblemSection() {
 
 // ─── How It Works ────────────────────────────────────────────
 function HowItWorks() {
+  const { t } = useLanguage();
   return (
     <section id="how-it-works" className="py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
-            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">How It Works</span>
+            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">{t('howItWorks.title')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            Set it up in 10 minutes.{" "}
+            {t('howItWorks.setupTime')}{" "}
             <span className="text-blue-600">
-              Use it today.
+              {t('howItWorks.setupTimeHighlight')}
             </span>
           </h2>
         </div>
 
         <div className="stagger-children scroll-fade-up grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
-            { step: "01", title: "Add Your Customers", description: "Import from a spreadsheet or add them one by one. Takes 5 minutes for most shops.", icon: <Users className="w-6 h-6" /> },
-            { step: "02", title: "Turn On Autopilot", description: "Pick which automations you want running — lead responses, estimate follow-ups, review requests. One click each.", icon: <Bot className="w-6 h-6" /> },
-            { step: "03", title: "See Every Job at a Glance", description: "Drag jobs through your pipeline: new lead, quoted, booked, in progress, invoiced. Know where everything stands.", icon: <Layers className="w-6 h-6" /> },
-            { step: "04", title: "Grow", description: "See which lead sources make you money. Double down on what works. Book more jobs. Get paid faster.", icon: <TrendingUp className="w-6 h-6" /> },
+            { step: "01", title: t('howItWorks.addCustomers'), description: t('howItWorks.addCustomersDesc'), icon: <Users className="w-6 h-6" /> },
+            { step: "02", title: t('howItWorks.turnOnAutopilot'), description: t('howItWorks.autopilotDesc'), icon: <Bot className="w-6 h-6" /> },
+            { step: "03", title: t('howItWorks.seeEveryJob'), description: t('howItWorks.seeEveryJobDesc'), icon: <Layers className="w-6 h-6" /> },
+            { step: "04", title: t('howItWorks.grow'), description: t('howItWorks.growDesc'), icon: <TrendingUp className="w-6 h-6" /> },
           ].map((s, i) => (
             <div key={s.step} className="scroll-fade-up relative">
               {i < 3 && <div className="scroll-fade-up hidden lg:block absolute top-12 left-full w-full h-px draw-path bg-gradient-to-r from-blue-200 to-transparent" />}
@@ -453,6 +455,7 @@ function HowItWorks() {
 
 // ─── Product Showcase Component (Sticky Scroll Feature Showcase) ─────────────────────────────────────────
 function ProductShowcase() {
+  const { t } = useLanguage();
   const [phase, setPhase] = useState(0);
   const showcaseRef = useRef<HTMLDivElement>(null);
 
@@ -479,7 +482,7 @@ function ProductShowcase() {
 
   const phases = [
     {
-      title: "See every job at a glance",
+      title: t('showcase.seeEveryJobGlance'),
       gradient: "from-blue-600 via-blue-500 to-cyan-500",
       content: (
         <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
@@ -491,9 +494,9 @@ function ProductShowcase() {
             </div>
           </div>
           <div className="p-4 bg-slate-50">
-            <div className="text-xs font-semibold text-gray-600 mb-3">PIPELINE</div>
+            <div className="text-xs font-semibold text-gray-600 mb-3">{t('showcase.pipelineLabel')}</div>
             <div className="flex gap-3">
-              {['New Leads', 'Quoted', 'Booked', 'In Progress'].map((stage, i) => (
+              {[t('showcase.newLeads'), t('showcase.quoted'), t('showcase.booked'), t('showcase.inProgress')].map((stage, i) => (
                 <div key={stage} className="flex-1 bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
                   <div className="text-[10px] text-gray-500 font-semibold mb-2">{stage}</div>
                   <div className="space-y-2">
@@ -517,14 +520,14 @@ function ProductShowcase() {
       ),
     },
     {
-      title: "Tiered pricing that closes deals",
+      title: t('showcase.tieredPricingCloses'),
       gradient: "from-purple-600 via-purple-500 to-pink-500",
       content: (
         <div className="w-full max-w-lg space-y-4">
           {[
-            { tier: 'Good', price: '$800', color: 'bg-slate-50 border-gray-200' },
-            { tier: 'Better', price: '$1,200', color: 'bg-gradient-to-br from-blue-50 to-blue-100 border-blue-400 ring-2 ring-blue-500', isHighlight: true },
-            { tier: 'Best', price: '$1,800', color: 'bg-slate-50 border-gray-200' }
+            { tier: t('showcase.good'), price: '$800', color: 'bg-slate-50 border-gray-200' },
+            { tier: t('showcase.better'), price: '$1,200', color: 'bg-gradient-to-br from-blue-50 to-blue-100 border-blue-400 ring-2 ring-blue-500', isHighlight: true },
+            { tier: t('showcase.best'), price: '$1,800', color: 'bg-slate-50 border-gray-200' }
           ].map((tier) => (
             <div key={tier.tier} className={`rounded-xl p-4 border-2 transition-all ${tier.color} ${tier.isHighlight ? 'scale-105 shadow-2xl shadow-blue-500/20' : 'shadow-lg'}`}>
               <div className="flex items-center justify-between">
@@ -532,7 +535,7 @@ function ProductShowcase() {
                   <div className="font-semibold text-gray-900">{tier.tier}</div>
                   <div className="text-2xl font-bold text-gray-900 mt-1">{tier.price}</div>
                 </div>
-                {tier.isHighlight && <div className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-semibold">Recommended</div>}
+                {tier.isHighlight && <div className="px-3 py-1 rounded-full bg-blue-500 text-white text-xs font-semibold">{t('showcase.recommended')}</div>}
               </div>
             </div>
           ))}
@@ -540,18 +543,18 @@ function ProductShowcase() {
       ),
     },
     {
-      title: "Automations running while you sleep",
+      title: t('showcase.automationsRunning'),
       gradient: "from-emerald-600 via-emerald-500 to-cyan-500",
       content: (
         <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
           <div className="bg-gradient-to-r from-slate-800 to-slate-900 px-4 py-3" />
           <div className="p-6 space-y-4">
-            {['Speed to Lead', 'Estimate Follow-Up', 'Review Requests', 'Payment Reminders'].map((automation) => (
+            {[t('showcase.speedToLead'), t('showcase.estimateFollowUp'), t('showcase.reviewRequests'), t('showcase.paymentReminders')].map((automation) => (
               <div key={automation} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-gray-200">
                 <span className="text-sm font-medium text-gray-900">{automation}</span>
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-lg shadow-emerald-500/50" />
-                  <span className="text-xs font-semibold text-emerald-600">Running</span>
+                  <span className="text-xs font-semibold text-emerald-600">{t('showcase.running')}</span>
                 </div>
               </div>
             ))}
@@ -560,7 +563,7 @@ function ProductShowcase() {
       ),
     },
     {
-      title: "Your AI growth advisor in your pocket",
+      title: t('showcase.aiGrowthAdvisor'),
       gradient: "from-indigo-600 via-indigo-500 to-purple-500",
       content: (
         <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
@@ -608,10 +611,10 @@ function ProductShowcase() {
                   {phases[phase].title}
                 </h2>
                 <p className="text-lg text-white/80 max-w-xl transition-all duration-500">
-                  {phase === 0 && "Drag jobs between stages. Customers see updates in real-time. Nothing slips through the cracks."}
-                  {phase === 1 && "Good, Better, Best pricing increases close rates by 30%. Growth OS auto-follows up if they don't respond."}
-                  {phase === 2 && "Set it once. It runs forever. Speed to Lead, Follow-ups, Reviews, Payments — all on autopilot."}
-                  {phase === 3 && "Ask Growth Advisor anything about your business. Get AI-powered insights on what to focus on today."}
+                  {phase === 0 && t('showcase.seeEveryJobGlanceDesc')}
+                  {phase === 1 && t('showcase.tieredPricingDesc')}
+                  {phase === 2 && t('showcase.automationsRunningDesc')}
+                  {phase === 3 && t('showcase.aiGrowthAdvisorDesc')}
                 </p>
               </div>
 
@@ -646,10 +649,10 @@ function ProductShowcase() {
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">{phaseData.title}</h3>
                   <p className="text-gray-600 mb-6">
-                    {index === 0 && "Drag jobs between stages. Customers see updates in real-time. Nothing slips through the cracks."}
-                    {index === 1 && "Good, Better, Best pricing increases close rates by 30%. Growth OS auto-follows up if they don't respond."}
-                    {index === 2 && "Set it once. It runs forever. Speed to Lead, Follow-ups, Reviews, Payments — all on autopilot."}
-                    {index === 3 && "Ask Growth Advisor anything about your business. Get AI-powered insights on what to focus on today."}
+                    {index === 0 && t('showcase.seeEveryJobGlanceDesc')}
+                    {index === 1 && t('showcase.tieredPricingDesc')}
+                    {index === 2 && t('showcase.automationsRunningDesc')}
+                    {index === 3 && t('showcase.aiGrowthAdvisorDesc')}
                   </p>
                   <div className="scale-75 origin-top-left">
                     {phaseData.content}
@@ -666,15 +669,16 @@ function ProductShowcase() {
 
 // ─── Interactive Explorer Section ─────────────────────────────
 function InteractiveExplorer() {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<string>('dashboard');
 
   const tabs = [
-    { id: 'dashboard', icon: <BarChart3 className="w-5 h-5" />, label: 'Dashboard', description: 'See leads, revenue, pipeline, and team activity — all in one view.', url: 'app.growthos.com/dashboard' },
-    { id: 'pipeline', icon: <Layers className="w-5 h-5" />, label: 'Pipeline', description: 'Drag jobs from quote to complete. Every crew member sees what\'s next.', url: 'app.growthos.com/pipeline' },
-    { id: 'estimates', icon: <FileText className="w-5 h-5" />, label: 'Estimates', description: 'Good/Better/Best pricing closes 30% more deals. Track every quote.', url: 'app.growthos.com/estimates' },
-    { id: 'advisor', icon: <Bot className="w-5 h-5" />, label: 'Growth Advisor', description: 'Like texting your smartest business partner. Get instant insights.', url: 'app.growthos.com/advisor' },
-    { id: 'autopilot', icon: <Zap className="w-5 h-5" />, label: 'Autopilot', description: '8 automations running while you sleep. Leads, follow-ups, reviews.', url: 'app.growthos.com/automations' },
-    { id: 'invoicing', icon: <Receipt className="w-5 h-5" />, label: 'Invoicing', description: 'Send invoices instantly. Canadian taxes calculated automatically.', url: 'app.growthos.com/invoices' },
+    { id: 'dashboard', icon: <BarChart3 className="w-5 h-5" />, label: t('explorer.dashboard'), description: t('explorer.dashboardDesc'), url: 'app.growthos.com/dashboard' },
+    { id: 'pipeline', icon: <Layers className="w-5 h-5" />, label: t('explorer.pipeline'), description: t('explorer.pipelineDesc'), url: 'app.growthos.com/pipeline' },
+    { id: 'estimates', icon: <FileText className="w-5 h-5" />, label: t('explorer.estimates'), description: t('explorer.estimatesDesc'), url: 'app.growthos.com/estimates' },
+    { id: 'advisor', icon: <Bot className="w-5 h-5" />, label: t('explorer.growthAdvisor'), description: t('explorer.growthAdvisorDesc'), url: 'app.growthos.com/advisor' },
+    { id: 'autopilot', icon: <Zap className="w-5 h-5" />, label: t('explorer.autopilot'), description: t('explorer.autopilotDesc'), url: 'app.growthos.com/automations' },
+    { id: 'invoicing', icon: <Receipt className="w-5 h-5" />, label: t('explorer.invoicing'), description: t('explorer.invoicingDesc'), url: 'app.growthos.com/invoices' },
   ];
 
   // ─── Static mockup content for each tab (no animation, clean and final-state) ───
@@ -965,10 +969,10 @@ function InteractiveExplorer() {
         {/* Section header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-            Take a closer look.
+            {t('explorer.takeCloserLook')}
           </h2>
           <p className="mt-4 text-base text-slate-400 max-w-lg mx-auto">
-            Everything you need to run and grow your business. No extra tools, no spreadsheets.
+            {t('explorer.everythingYouNeed')}
           </p>
         </div>
 
@@ -1054,6 +1058,7 @@ function InteractiveExplorer() {
 
 // ─── Features Section ─────────────────────────────────────────
 function Features() {
+  const { t } = useLanguage();
   const handleTiltMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -1070,38 +1075,38 @@ function Features() {
   const features = [
     {
       icon: <Phone className="w-6 h-6" />,
-      title: "Answer Every Call — Even When You're Busy",
-      description: "The average plumber misses 30-40% of calls. Growth OS auto-texts every missed call in seconds: \"Thanks for calling. We got your message. Someone will call you back within 2 hours.\" That lead stays yours.",
+      title: t('features.answerEveryCall'),
+      description: t('features.answerEveryCallDesc'),
       gradient: "from-emerald-500 to-teal-600",
     },
     {
       icon: <Layers className="w-6 h-6" />,
-      title: "See All Your Jobs in One Place",
-      description: "Drag jobs through your pipeline as they progress — new lead, quoted, booked, in progress, done. No sticky notes. No spreadsheets. Open your phone and know exactly where every job stands.",
+      title: t('features.seeAllJobs'),
+      description: t('features.seeAllJobsDesc'),
       gradient: "from-blue-500 to-indigo-600",
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,
-      title: "Estimates That Actually Close",
-      description: "Send Good/Better/Best pricing on every estimate. Customers pick the option that fits. Businesses using tiered pricing see 30% higher average tickets. Growth OS auto-follows up if they don't respond.",
+      title: t('features.estimatesThatClose'),
+      description: t('features.estimatesThatCloseDesc'),
       gradient: "from-purple-500 to-violet-600",
     },
     {
       icon: <Star className="w-6 h-6" />,
-      title: "Get Reviews Without Asking",
-      description: "After every job, Growth OS texts your customer asking for a Google review. Most people leave one when you make it easy. More reviews means more calls from people who already trust you.",
+      title: t('features.getReviews'),
+      description: t('features.getReviewsDesc'),
       gradient: "from-amber-500 to-orange-600",
     },
     {
       icon: <Receipt className="w-6 h-6" />,
-      title: "Invoice Same-Day. Get Paid Faster.",
-      description: "Send invoices the moment a job is done. Automatic reminders go out at 3, 7, and 14 days. Provincial taxes calculated correctly every time — HST, GST, PST, QST. You never do the math.",
+      title: t('features.invoiceSameDay'),
+      description: t('features.invoiceSameDayDesc'),
       gradient: "from-rose-500 to-pink-600",
     },
     {
       icon: <TrendingUp className="w-6 h-6" />,
-      title: "Know What Makes You Money",
-      description: "See exactly which ads, referrals, and repeat customers bring in the most revenue. Stop guessing. Make decisions with real numbers — which jobs are profitable, which lead sources actually pay off.",
+      title: t('features.knowWhatMakes'),
+      description: t('features.knowWhatMakesDesc'),
       gradient: "from-slate-500 to-gray-600",
     },
   ];
@@ -1111,17 +1116,16 @@ function Features() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
-            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">What You Get</span>
+            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">{t('features.whatYouGet')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            Six problems solved.{" "}
+            {t('features.sixProblemsSolved')}{" "}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              One dashboard.
+              {t('features.oneDashboard')}
             </span>
           </h2>
           <p className="mt-4 text-lg text-gray-500">
-            Leads, jobs, estimates, invoices, follow-ups, reviews — all in one place.
-            Simple enough for your office manager. Powerful enough for a 50-person operation.
+            {t('features.description')}
           </p>
         </div>
 
@@ -1148,13 +1152,14 @@ function Features() {
 
 // ─── Autopilot Section ───────────────────────────────────────
 function AutopilotSection() {
+  const { t } = useLanguage();
   const playbooks = [
-    { name: "Speed to Lead", description: "New lead comes in? They get a text in 60 seconds. 78% of jobs go to whoever responds first. This makes sure it's you.", category: "Leads", color: "bg-blue-500" },
-    { name: "Estimate Follow-Up", description: "Sent a quote? Growth OS follows up on day 1, 3, and 7. Gentle nudges with the customer's name — not spam. Just enough to close the deal.", category: "Sales", color: "bg-purple-500" },
-    { name: "5-Star Review Machine", description: "After every job, your customer gets a text asking for a Google review. Most people leave one when you make it this easy. More reviews = more calls.", category: "Reputation", color: "bg-amber-500" },
-    { name: "Payment Reminders", description: "Invoices get automatic reminders at 3, 7, and 14 days. Friendly but firm. Your money comes in faster without an awkward phone call.", category: "Revenue", color: "bg-emerald-500" },
-    { name: "Customer Reactivation", description: "Your past customers haven't called in months. Not because they don't need you — they just forgot. Growth OS reaches out with a special offer automatically.", category: "Retention", color: "bg-rose-500" },
-    { name: "Seasonal Campaigns", description: "Furnace tune-ups in fall. AC checks in spring. Winterization reminders in October. Timed perfectly so customers book before the rush.", category: "Growth", color: "bg-teal-500" },
+    { name: t('autopilot.speedToLead'), description: t('autopilot.speedToLeadDesc'), category: "Leads", color: "bg-blue-500" },
+    { name: t('autopilot.estimateFollowUp'), description: t('autopilot.estimateFollowUpDesc'), category: "Sales", color: "bg-purple-500" },
+    { name: t('autopilot.reviewMachine'), description: t('autopilot.reviewMachineDesc'), category: "Reputation", color: "bg-amber-500" },
+    { name: t('autopilot.paymentReminders'), description: t('autopilot.paymentRemindersDesc'), category: "Revenue", color: "bg-emerald-500" },
+    { name: t('autopilot.customerReactivation'), description: t('autopilot.customerReactivationDesc'), category: "Retention", color: "bg-rose-500" },
+    { name: t('autopilot.seasonalCampaigns'), description: t('autopilot.seasonalCampaignsDesc'), category: "Growth", color: "bg-teal-500" },
   ];
 
   return (
@@ -1163,17 +1168,16 @@ function AutopilotSection() {
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 mb-6">
             <Bot className="w-3.5 h-3.5 text-purple-600" />
-            <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Autopilot</span>
+            <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">{t('automations.title')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            Your business runs itself{" "}
+            {t('autopilot.title')}{" "}
             <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              while you run your jobs.
+              {t('autopilot.subtitle')}
             </span>
           </h2>
           <p className="mt-4 text-lg text-gray-500">
-            8 automations that text and email your customers for you.
-            Every message uses their name — it looks personal, not like spam. Just turn them on.
+            {t('autopilot.description')}
           </p>
         </div>
 
@@ -1194,12 +1198,12 @@ function AutopilotSection() {
         </div>
 
         <p className="mt-8 text-center text-sm text-gray-400">
-          Every automation is pre-written and tested. Nothing to customize. Nothing to mess up. Just click on.
+          {t('autopilot.preWritten')}
         </p>
 
         <div className="mt-6 text-center">
           <Link href="/automations" className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg shadow-purple-600/20">
-            Explore All 8 Automations <ArrowRight className="w-4 h-4" />
+            {t('autopilot.exploreAll')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
@@ -1209,6 +1213,7 @@ function AutopilotSection() {
 
 // ─── Growth Advisor Demo (Animated Chat) ────────────────────
 function AdvisorDemo() {
+  const { t } = useLanguage();
   const [visibleMessages, setVisibleMessages] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
@@ -1267,23 +1272,22 @@ function AdvisorDemo() {
           <div className="scroll-fade-left text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-100 mb-6">
               <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-              <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Growth Advisor</span>
+              <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">{t('advisor.title')}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-              Like texting your{" "}
+              {t('advisor.likeTexting')}{" "}
               <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                smartest business partner.
+                {t('advisor.smartestPartner')}
               </span>
             </h2>
             <p className="mt-6 text-lg text-gray-500 leading-relaxed">
-              Your Growth Advisor knows your numbers, your pipeline, and your customers.
-              It flags problems before they cost you money, and tells you exactly what to do about them.
+              {t('advisor.description')}
             </p>
             <div className="mt-8 space-y-4">
               {[
-                { text: "Spots stale estimates before they go cold", icon: DollarSign },
-                { text: "Tracks revenue trends and flags slowdowns", icon: TrendingUp },
-                { text: "Gives you a game plan — not just data", icon: Target },
+                { text: t('advisor.spotsStale'), icon: DollarSign },
+                { text: t('advisor.tracksRevenue'), icon: TrendingUp },
+                { text: t('advisor.givesGamePlan'), icon: Target },
               ].map((item) => {
                 const Icon = item.icon;
                 return (
@@ -1301,7 +1305,7 @@ function AdvisorDemo() {
                 href="/advisor"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg shadow-purple-600/20"
               >
-                Try Growth Advisor <ArrowRight className="w-4 h-4" />
+                {t('advisor.tryAdvisor')} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -1328,8 +1332,8 @@ function AdvisorDemo() {
                   <Sparkles className="w-4.5 h-4.5 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">Growth Advisor</p>
-                  <p className="text-[11px] text-emerald-600">Online</p>
+                  <p className="text-sm font-semibold text-gray-900">{t('advisor.title')}</p>
+                  <p className="text-[11px] text-emerald-600">{t('advisor.online')}</p>
                 </div>
               </div>
 
@@ -1371,7 +1375,7 @@ function AdvisorDemo() {
               {/* Input bar */}
               <div className="px-4 py-3 border-t border-gray-100 bg-white">
                 <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3.5 py-2">
-                  <span className="flex-1 text-[13px] text-gray-400">Ask about your business...</span>
+                  <span className="flex-1 text-[13px] text-gray-400">{t('explorer.askAboutBusiness')}</span>
                   <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center">
                     <ArrowRight className="w-3 h-3 text-white" />
                   </div>
@@ -1392,15 +1396,16 @@ function AdvisorDemo() {
 
 // ─── Stats Banner ─────────────────────────────────────────────
 function StatsBanner() {
+  const { t } = useLanguage();
   return (
     <section className="py-12 lg:py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="stagger-children scroll-fade-up grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
-            { value: 40, suffix: "%", label: "More Jobs Booked", sublabel: "Average in first 90 days" },
-            { value: 60, suffix: "sec", label: "Lead Response Time", sublabel: "With Speed to Lead running" },
-            { value: 12, suffix: "hrs", label: "Saved Per Week", sublabel: "On admin and follow-ups" },
-            { value: 8500, suffix: "", prefix: "$", label: "Extra Revenue / Month", sublabel: "From jobs that would have been lost" },
+            { value: 40, suffix: "%", label: t('stats.moreJobsBooked'), sublabel: t('stats.moreJobsBookedSub') },
+            { value: 60, suffix: "sec", label: t('stats.leadResponseTime'), sublabel: t('stats.leadResponseTimeSub') },
+            { value: 12, suffix: "hrs", label: t('stats.savedPerWeek'), sublabel: t('stats.savedPerWeekSub') },
+            { value: 8500, suffix: "", prefix: "$", label: t('stats.extraRevenue'), sublabel: t('stats.extraRevenueSub') },
           ].map((stat) => (
             <div key={stat.label} className="scroll-fade-up">
               <div className="text-3xl lg:text-4xl font-bold text-white">
@@ -1461,6 +1466,7 @@ function AnimatedStars() {
 
 // ─── Testimonials ─────────────────────────────────────────────
 function Testimonials() {
+  const { t } = useLanguage();
   const testimonials = [
     {
       quote: "We were losing calls every morning because the guys were already on jobs. Growth OS auto-texts every missed call now. Month one: 12 extra jobs. That's $14,000 we would have lost.",
@@ -1504,12 +1510,12 @@ function Testimonials() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 mb-6">
-            <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">Results</span>
+            <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">{t('testimonials.results')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            Real businesses.{" "}
+            {t('testimonials.realBusinesses')}{" "}
             <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-              Real numbers.
+              {t('testimonials.realNumbers')}
             </span>
           </h2>
         </div>
@@ -1552,6 +1558,7 @@ function Testimonials() {
 
 // ─── Competitor Comparison ───────────────────────────────────
 function CompetitorComparison() {
+  const { t } = useLanguage();
   const competitors = [
     { name: "Growth OS", price: "$79\u2013$299", highlight: true, features: { leads: true, autopilot: true, estimates: true, tax: true, bilingual: true, noContract: true, reviews: true, pipeline: true } },
     { name: "ServiceTitan", price: "$200+ (annual)", highlight: false, features: { leads: true, autopilot: "partial" as const, estimates: true, tax: false, bilingual: false, noContract: false, reviews: false, pipeline: true } },
@@ -1560,14 +1567,14 @@ function CompetitorComparison() {
   ];
 
   const featureLabels = [
-    { key: "leads", label: "Auto-respond to missed calls / leads" },
-    { key: "autopilot", label: "Automated follow-ups, reviews & reminders" },
-    { key: "estimates", label: "Good/Better/Best estimates" },
-    { key: "tax", label: "Canadian tax calculations (no manual math)" },
-    { key: "bilingual", label: "French + English templates" },
-    { key: "noContract", label: "Month-to-month (cancel anytime)" },
-    { key: "reviews", label: "Google + HomeStars review requests" },
-    { key: "pipeline", label: "Visual job pipeline" },
+    { key: "leads", label: t('comparison.autoRespondMissedCalls') },
+    { key: "autopilot", label: t('comparison.automatedFollowUps') },
+    { key: "estimates", label: t('comparison.goodBetterBest') },
+    { key: "tax", label: t('comparison.canadianTaxCalculations') },
+    { key: "bilingual", label: t('comparison.frenchEnglishTemplates') },
+    { key: "noContract", label: t('comparison.monthToMonth') },
+    { key: "reviews", label: t('comparison.googleHomeStarsReviews') },
+    { key: "pipeline", label: t('comparison.visualPipeline') },
   ];
 
   const renderCheck = (value: boolean | "partial") => {
@@ -1581,12 +1588,12 @@ function CompetitorComparison() {
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-6">
-            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Compare</span>
+            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">{t('comparison.compare')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            More features.{" "}
+            {t('comparison.moreFeatures')}{" "}
             <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
-              Less money. No contracts.
+              {t('comparison.lessMoneyNoContracts')}
             </span>
           </h2>
         </div>
@@ -1629,7 +1636,7 @@ function CompetitorComparison() {
                   <div className={`text-base font-bold ${c.highlight ? "text-blue-600" : "text-gray-900"}`}>{c.name}</div>
                   <div className={`text-xs ${c.highlight ? "text-blue-500" : "text-gray-400"}`}>{c.price}/mo</div>
                 </div>
-                {c.highlight && <span className="px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold rounded-full">Best Value</span>}
+                {c.highlight && <span className="px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold rounded-full">{t('comparison.bestValue')}</span>}
               </div>
               <div className="space-y-2">
                 {featureLabels.map((feature) => (
@@ -1644,7 +1651,7 @@ function CompetitorComparison() {
         </div>
 
         <p className="mt-8 text-center text-sm text-gray-400">
-          Growth OS: month-to-month, cancel anytime. ServiceTitan requires annual contracts. Housecall Pro keeps raising prices.
+          {t('comparison.noContractNote')}
         </p>
       </div>
     </section>
@@ -1653,30 +1660,31 @@ function CompetitorComparison() {
 
 // ─── Built for Canada (Closer) ───────────────────────────────
 function BuiltForCanada() {
+  const { t } = useLanguage();
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
         <div className="scroll-fade-up text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 border border-red-100 mb-6">
             <MapPin className="w-3.5 h-3.5 text-red-600" />
-            <span className="text-xs font-semibold text-red-600 uppercase tracking-wider">Made in Canada</span>
+            <span className="text-xs font-semibold text-red-600 uppercase tracking-wider">{t('marketing.madeInCanada')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-            And it handles the Canadian stuff too.
+            {t('builtForCanada.title')}
           </h2>
           <p className="mt-3 text-lg text-gray-500 max-w-2xl mx-auto">
-            Every other CRM was built in the US and patched for Canada. Growth OS was built here.
+            {t('builtForCanada.subtitle')}
           </p>
         </div>
 
         <div className="stagger-children scroll-fade-up grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
-            { icon: <DollarSign className="w-5 h-5" />, title: "Taxes? Done.", desc: "HST, GST+QST, GST+PST — calculated automatically for every province. You never do the math." },
-            { icon: <Languages className="w-5 h-5" />, title: "French + English", desc: "Quebec clients get emails and invoices in French. Everyone else gets English. Switches automatically." },
-            { icon: <Receipt className="w-5 h-5" />, title: "CRA-Ready Invoices", desc: "Registration numbers, tax breakdowns, proper formatting. Your invoices are audit-ready by default." },
-            { icon: <BadgeCheck className="w-5 h-5" />, title: "License Tracking", desc: "WSIB, WCB, trade licenses — get a reminder 90 days before anything expires. No surprise shutdowns." },
-            { icon: <Globe className="w-5 h-5" />, title: "HomeStars Reviews", desc: "The review platform Canadian homeowners actually check. Auto-request reviews there alongside Google." },
-            { icon: <DollarSign className="w-5 h-5" />, title: "Interac e-Transfer", desc: "Customers pay the way they prefer. Money hits your account in minutes, not days." },
+            { icon: <DollarSign className="w-5 h-5" />, title: t('builtForCanada.taxesDone'), desc: t('builtForCanada.taxesDesc') },
+            { icon: <Languages className="w-5 h-5" />, title: t('builtForCanada.frenchEnglish'), desc: t('builtForCanada.frenchEnglishDesc') },
+            { icon: <Receipt className="w-5 h-5" />, title: t('builtForCanada.craReadyInvoices'), desc: t('builtForCanada.craReadyInvoicesDesc') },
+            { icon: <BadgeCheck className="w-5 h-5" />, title: t('builtForCanada.licenseTracking'), desc: t('builtForCanada.licenseTrackingDesc') },
+            { icon: <Globe className="w-5 h-5" />, title: t('builtForCanada.homeStarsReviews'), desc: t('builtForCanada.homeStarsReviewsDesc') },
+            { icon: <DollarSign className="w-5 h-5" />, title: t('builtForCanada.interacETransfer'), desc: t('builtForCanada.interacETransferDesc') },
           ].map((f) => (
             <div key={f.title} className="scroll-fade-up p-5 rounded-xl bg-white border border-gray-100 hover:border-red-200/50 hover:shadow-md transition-all">
               <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-50 text-red-600 mb-3">{f.icon}</div>
@@ -1692,29 +1700,30 @@ function BuiltForCanada() {
 
 // ─── Pricing ──────────────────────────────────────────────────
 function Pricing() {
+  const { t } = useLanguage();
   const plans = [
     {
-      name: "Starter",
+      name: t('pricing.starter'),
       price: "79",
-      description: "You. One dashboard. Never miss a lead.",
-      features: ["1 user account", "See every job at a glance", "All your customers in one place", "Provincial tax on every invoice", "Speed to Lead + Reviews + Payment reminders", "Email support"],
-      cta: "Try Free (14 Days)",
+      description: t('pricing.starterDesc'),
+      features: [t('pricing.oneUser'), t('pricing.seeEveryJobGlance'), t('pricing.allCustomersOnePlace'), t('pricing.provincialTax'), t('pricing.speedToLeadReviewsReminders'), t('pricing.emailSupport')],
+      cta: t('pricing.tryFree'),
       highlighted: false,
     },
     {
-      name: "Growth",
+      name: t('pricing.growth'),
       price: "149",
-      description: "Your whole team. One system. Everyone sees everything.",
-      features: ["Up to 5 users", "Track as many jobs as you want", "All 8 automations running", "Tiered estimates to close bigger jobs", "French + English templates", "Know which jobs make the most money", "Priority support", "Google + HomeStars review sync"],
-      cta: "Try Free (14 Days)",
+      description: t('pricing.growthDesc'),
+      features: [t('pricing.upTo5Users'), t('pricing.trackAsMany'), t('pricing.all8Automations'), t('pricing.tieredEstimates'), t('pricing.frenchEnglishTemplates'), t('pricing.whichJobsMakeMoney'), t('pricing.prioritySupport'), t('pricing.googleHomeStarsSync')],
+      cta: t('pricing.tryFree'),
       highlighted: true,
     },
     {
-      name: "Scale",
+      name: t('pricing.scale'),
       price: "299",
-      description: "Multiple crews. Multiple locations. One view of everything.",
-      features: ["Unlimited users", "Multi-location support", "License and WSIB/WCB tracking", "Connect to any software you use", "Dedicated account manager", "Interac e-Transfer integration", "We train your whole team", "Accounting software syncs automatically"],
-      cta: "Try Free (14 Days)",
+      description: t('pricing.scaleDesc'),
+      features: [t('pricing.unlimitedUsers'), t('pricing.multiLocationSupport'), t('pricing.licenseWsibWcbTracking'), t('pricing.connectToAnySoftware'), t('pricing.dedicatedAccountManager'), t('pricing.interacETransferIntegration'), t('pricing.trainYourTeam'), t('pricing.accountingSoftwareSyncs')],
+      cta: t('pricing.tryFree'),
       highlighted: false,
     },
   ];
@@ -1724,17 +1733,16 @@ function Pricing() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
-            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Pricing</span>
+            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">{t('pricing.title')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-            One price. Everything{" "}
+            {t('pricing.description')} {" "}
             <span className="gradient-text-shimmer bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
-              included.
+              {t('pricing.included')}
             </span>
           </h2>
           <p className="mt-4 text-lg text-gray-500">
-            14-day free trial. No credit card. Month-to-month — cancel anytime.
-            Most people stick around because it works.
+            {t('pricing.noCredit')}
           </p>
         </div>
 
@@ -1743,6 +1751,7 @@ function Pricing() {
             <div key={plan.name} className={`scroll-fade-up relative rounded-2xl p-6 sm:p-8 transition-all duration-300 ${plan.highlighted ? "bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-2xl shadow-blue-600/25 md:scale-105 shimmer-border" : "bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg"}`}>
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gradient-to-r from-amber-400 to-orange-400 text-white text-xs font-bold rounded-full shadow-lg">
+                  {/* Note: "Most Popular" is not in translations yet, keeping hardcoded for now */}
                   Most Popular
                 </div>
               )}
@@ -1774,15 +1783,16 @@ function Pricing() {
 
 // ─── FAQ ──────────────────────────────────────────────────────
 function FAQ() {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqs = [
-    { q: "How long does it take to set up?", a: "10 minutes. Import your customers from a spreadsheet (or add them one by one), turn on the automations you want, and you're running. No training required." },
-    { q: "Can I import my data from Jobber / Housecall Pro?", a: "Yes. Export your customer list as a CSV and import it directly into Growth OS. We also offer free migration help on the Growth and Scale plans." },
-    { q: "Does it handle Quebec taxes (GST + QST)?", a: "Yes. Growth OS auto-calculates the correct tax for every province — HST in Ontario, GST+QST in Quebec, GST+PST in BC, and so on. Your invoices are always CRA-compliant." },
-    { q: "Can my technicians use it on their phones?", a: "Yes. Growth OS is fully responsive. Your team can see their jobs, update statuses, and check the pipeline from any phone or tablet." },
-    { q: "What if I'm a solo operator — is this too much for me?", a: "Not at all. The Starter plan ($79/mo) is built for one-person shops. You get a pipeline view, auto-responses to missed calls, payment reminders, and review requests. It saves you 12+ hours a week." },
-    { q: "Is there a contract?", a: "No. Month-to-month billing. Cancel anytime. No cancellation fees. No awkward phone calls." },
+    { q: t('faq.setupTime'), a: t('faq.setupTimeAnswer') },
+    { q: t('faq.importData'), a: t('faq.importDataAnswer') },
+    { q: t('faq.quebecTaxes'), a: t('faq.quebecTaxesAnswer') },
+    { q: t('faq.techniciansMobile'), a: t('faq.techniciansMobileAnswer') },
+    { q: t('faq.soloOperator'), a: t('faq.soloOperatorAnswer') },
+    { q: t('faq.contract'), a: t('faq.contractAnswer') },
   ];
 
   return (
@@ -1791,9 +1801,9 @@ function FAQ() {
         <div className="scroll-fade-up text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 border border-gray-200 mb-6">
             <HelpCircle className="w-3.5 h-3.5 text-gray-500" />
-            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">FAQ</span>
+            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">{t('faq.faq')}</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">Questions?</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">{t('faq.questions')}</h2>
         </div>
 
         <div className="scroll-fade-up space-y-3">

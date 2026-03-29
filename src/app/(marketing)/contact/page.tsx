@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { MarketingLayout } from '@/components/MarketingLayout';
+import { useLanguage } from '@/components/LanguageProvider';
 import { Phone, Mail, MapPin, Calendar } from 'lucide-react';
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -33,10 +35,10 @@ export default function ContactPage() {
       <section className="pt-24 pb-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            Let's talk
+            {t('contactPage.heroTitle')}
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl">
-            Have questions about Growth OS? Want to see how it works? We're here to help.
+            {t('contactPage.heroDesc')}
           </p>
         </div>
       </section>
@@ -48,13 +50,13 @@ export default function ContactPage() {
             {/* Form Column */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                <h2 className="text-2xl font-bold text-gray-900 mb-8">Send us a message</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-8">{t('contactPage.sendMessage')}</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">
-                      Name
+                      {t('contactPage.labelName')}
                     </label>
                     <input
                       type="text"
@@ -62,7 +64,7 @@ export default function ContactPage() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Your name"
+                      placeholder={t('contactPage.placeholderName')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                     />
                   </div>
@@ -70,7 +72,7 @@ export default function ContactPage() {
                   {/* Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
-                      Email
+                      {t('contactPage.labelEmail')}
                     </label>
                     <input
                       type="email"
@@ -78,7 +80,7 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="your@email.com"
+                      placeholder={t('contactPage.placeholderEmail')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                     />
                   </div>
@@ -86,7 +88,7 @@ export default function ContactPage() {
                   {/* Company */}
                   <div>
                     <label htmlFor="company" className="block text-sm font-semibold text-gray-900 mb-2">
-                      Company / Trade
+                      {t('contactPage.labelCompany')}
                     </label>
                     <input
                       type="text"
@@ -94,7 +96,7 @@ export default function ContactPage() {
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      placeholder="e.g., ABC Plumbing"
+                      placeholder={t('contactPage.placeholderCompany')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                     />
                   </div>
@@ -102,7 +104,7 @@ export default function ContactPage() {
                   {/* Phone */}
                   <div>
                     <label htmlFor="phone" className="block text-sm font-semibold text-gray-900 mb-2">
-                      Phone <span className="text-gray-400">(optional)</span>
+                      {t('contactPage.labelPhone')} <span className="text-gray-400">{t('contactPage.phoneOptional')}</span>
                     </label>
                     <input
                       type="tel"
@@ -110,7 +112,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="1-555-000-0000"
+                      placeholder={t('contactPage.placeholderPhone')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                     />
                   </div>
@@ -118,14 +120,14 @@ export default function ContactPage() {
                   {/* Message */}
                   <div>
                     <label htmlFor="message" className="block text-sm font-semibold text-gray-900 mb-2">
-                      Message
+                      {t('contactPage.labelMessage')}
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell us what's on your mind..."
+                      placeholder={t('contactPage.placeholderMessage')}
                       rows={5}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
                     />
@@ -135,7 +137,7 @@ export default function ContactPage() {
                     type="submit"
                     className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                   >
-                    Send message
+                    {t('contactPage.submitMessage')}
                   </button>
                 </form>
               </div>
@@ -145,7 +147,7 @@ export default function ContactPage() {
             <div className="space-y-6">
               {/* Contact Info */}
               <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Contact info</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-6">{t('contactPage.contactInfo')}</h3>
 
                 <div className="space-y-4">
                   {/* Email */}
@@ -154,7 +156,7 @@ export default function ContactPage() {
                       <Mail className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Email</p>
+                      <p className="text-sm text-gray-600">{t('contactPage.email')}</p>
                       <a href="mailto:hello@growthos.ca" className="font-semibold text-gray-900 hover:text-blue-600">
                         hello@growthos.ca
                       </a>
@@ -167,7 +169,7 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Phone</p>
+                      <p className="text-sm text-gray-600">{t('contactPage.phone')}</p>
                       <a href="tel:1-800-555-0199" className="font-semibold text-gray-900 hover:text-blue-600">
                         1-800-555-0199
                       </a>
@@ -180,7 +182,7 @@ export default function ContactPage() {
                       <MapPin className="w-5 h-5 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Address</p>
+                      <p className="text-sm text-gray-600">{t('contactPage.address')}</p>
                       <p className="font-semibold text-gray-900">Toronto, ON, Canada</p>
                     </div>
                   </div>
@@ -191,13 +193,13 @@ export default function ContactPage() {
               <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 sm:p-8">
                 <div className="flex gap-3 mb-4">
                   <Calendar className="w-6 h-6 text-blue-600 flex-shrink-0" />
-                  <h3 className="text-xl font-bold text-gray-900">Book a demo</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{t('contactPage.bookDemo')}</h3>
                 </div>
                 <p className="text-gray-700 mb-6">
-                  Want a walkthrough? Book a free 15-minute demo and see Growth OS in action.
+                  {t('contactPage.demoDesc')}
                 </p>
                 <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                  Schedule a call
+                  {t('contactPage.scheduleCall')}
                 </button>
               </div>
             </div>

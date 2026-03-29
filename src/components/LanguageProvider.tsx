@@ -45,7 +45,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t = useCallback(
     (key: TranslationKey, vars?: Record<string, string | number>): string => {
-      let str: string = translations[locale]?.[key] || translations['en'][key] || key;
+      let str: string = (translations[locale] as Record<string, string>)?.[key] || (translations['en'] as Record<string, string>)[key] || key;
       if (vars) {
         Object.entries(vars).forEach(([k, v]) => {
           str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));

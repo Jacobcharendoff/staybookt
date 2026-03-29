@@ -1,9 +1,12 @@
 'use client';
 
 import { MarketingLayout } from '@/components/MarketingLayout';
+import { useLanguage } from '@/components/LanguageProvider';
 import Link from 'next/link';
 
 export default function VsJobberPage() {
+  const { t } = useLanguage();
+
   return (
     <MarketingLayout>
       {/* Hero Section */}

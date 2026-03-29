@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '@/components/LanguageProvider';
 import {
   CheckCircle2, Circle, ChevronRight, Building2, Users, UserPlus,
   Star, Zap, FileText, CreditCard, Calendar, ArrowRight, Sparkles,
@@ -178,6 +179,7 @@ const CATEGORIES = {
 // ============================================================
 
 export default function SetupPage() {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [steps, setSteps] = useState<SetupStep[]>(INITIAL_STEPS);
   const [activeStepId, setActiveStepId] = useState<string | null>(null);
@@ -192,7 +194,7 @@ export default function SetupPage() {
     if (firstIncomplete) setActiveStepId(firstIncomplete.id);
   }, []);
 
-  if (!mounted) return <div className="p-8">Loading...</div>;
+  if (!mounted) return <div className="p-8">{t('common.loading')}</div>;
 
   const completedCount = steps.filter((s) => s.isCompleted).length;
   const totalSteps = steps.length;
@@ -230,12 +232,12 @@ export default function SetupPage() {
 
   // Motivation messages based on progress
   const getMotivation = () => {
-    if (completedCount === 0) return "Let's get you set up! This takes about 15 minutes and we'll walk you through every step.";
-    if (completedCount <= 2) return "Great start! You're laying the foundation for a well-run business.";
-    if (completedCount <= 4) return "You're on a roll! Most owners don't get this far — you're already ahead of the competition.";
-    if (completedCount <= 6) return "Almost there! Just a few more steps to unlock your full growth potential.";
-    if (completedCount < totalSteps) return "One more step and you're fully set up! Your competitors are still using sticky notes.";
-    return "You're all set! Growth OS is ready to help you grow.";
+    if (completedCount === 0) return t('setup.getStartedMotivation1');
+    if (completedCount <= 2) return t('setup.getStartedMotivation2');
+    if (completedCount <= 4) return t('setup.getStartedMotivation3');
+    if (completedCount <= 6) return t('setup.getStartedMotivation4');
+    if (completedCount < totalSteps) return t('setup.getStartedMotivation5');
+    return t('setup.getStartedMotivation6');
   };
 
   return (
@@ -258,25 +260,25 @@ export default function SetupPage() {
             <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <PartyPopper className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">You&apos;re All Set!</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">{t('setup.youreAllSet')}</h2>
             <p className="text-slate-600 mb-2">
-              Growth OS is fully configured and ready to help you grow your business.
+              {t('setup.allSetDesc')}
             </p>
             <p className="text-slate-500 text-sm mb-8">
-              Your Autopilot playbooks are running, your profile is complete, and you&apos;re ahead of 90% of service businesses out there. Let&apos;s go get some jobs.
+              {t('setup.allSetSubtitle')}
             </p>
             <div className="flex gap-3">
               <Link
                 href="/dashboard"
                 className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all hover:shadow-lg text-center"
               >
-                Go to Dashboard
+                {t('setup.goToDashboard')}
               </Link>
               <button
                 onClick={() => setShowCelebration(false)}
                 className="flex-1 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all text-center"
               >
-                Review Setup
+                {t('setup.reviewSetup')}
               </button>
             </div>
           </div>
@@ -290,8 +292,8 @@ export default function SetupPage() {
             <Rocket className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Get Started</h1>
-            <p className="text-slate-600">Complete these steps to get the most out of Growth OS. We&apos;ll walk you through everything.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('setup.title')}</h1>
+            <p className="text-slate-600">{t('setup.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -302,17 +304,17 @@ export default function SetupPage() {
         <div className="relative">
           <div className="flex items-center justify-between flex-wrap gap-6 mb-6">
             <div>
-              <p className="text-slate-400 text-sm font-medium mb-1">SETUP PROGRESS</p>
+              <p className="text-slate-400 text-sm font-medium mb-1">{t('setup.setupProgress')}</p>
               <div className="flex items-baseline gap-3">
                 <span className="text-5xl font-bold">{progressPercent}%</span>
-                <span className="text-slate-400 text-sm">{completedCount} of {totalSteps} steps complete</span>
+                <span className="text-slate-400 text-sm">{completedCount} of {totalSteps} {t('setup.stepsComplete')}</span>
               </div>
               <p className="text-blue-300 text-sm mt-2">{getMotivation()}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-center">
                 <Clock className="w-5 h-5 text-slate-400 mx-auto mb-1" />
-                <p className="text-xs text-slate-400">Est. time left</p>
+                <p className="text-xs text-slate-400">{t('setup.estTimeLeft')}</p>
                 <p className="text-lg font-bold">
                   {Math.max(0, (totalSteps - completedCount) * 2)} min
                 </p>
