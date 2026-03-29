@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { Navigation, Footer, CTASection } from "@/components/MarketingLayout";
 import {
   Zap,
   ArrowRight,
@@ -148,82 +149,6 @@ function useParallax(speed: number = 0.3) {
     };
   }, [speed]);
   return offset;
-}
-
-// ─── Navigation ───────────────────────────────────────────────
-function Navigation() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-xl shadow-sm border-b border-gray-200/50"
-          : "bg-white/0"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-600/25">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold tracking-tight">
-              Growth OS<span className="text-blue-600">™</span>
-            </span>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-8">
-            <a href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">How It Works</a>
-            <a href="#autopilot" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Autopilot</a>
-            <a href="#compare" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Compare</a>
-            <a href="#pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-4">
-            <Link href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              Log in
-            </Link>
-            <Link
-              href="/setup"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold rounded-full hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-700/30 hover:-translate-y-0.5"
-            >
-              Try Free for 14 Days
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <button className="lg:hidden p-2 text-gray-600" onClick={() => setMobileOpen(!mobileOpen)}>
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {mobileOpen && (
-          <div className="lg:hidden pb-6 pt-2 border-t border-gray-100">
-            <div className="flex flex-col gap-4">
-              <a href="#how-it-works" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>How It Works</a>
-              <a href="#autopilot" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>Autopilot</a>
-              <a href="#compare" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>Compare</a>
-              <a href="#pricing" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>Pricing</a>
-              <div className="flex gap-3 pt-2">
-                <Link href="/dashboard" className="text-sm font-medium text-gray-600">Log in</Link>
-                <Link href="/setup" className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full">
-                  Try Free <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </nav>
-  );
 }
 
 // ─── Hero Section ─────────────────────────────────────────────
@@ -389,6 +314,19 @@ function Hero() {
             </Link>
           </div>
 
+          {/* Canada-first trust bar */}
+          <div className="hero-reveal hero-reveal-delay-4 mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
+            <span className="flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-red-500" /> Built in Canada
+            </span>
+            <span className="hidden sm:inline text-gray-300">|</span>
+            <span>Bilingual (EN/FR)</span>
+            <span className="hidden sm:inline text-gray-300">|</span>
+            <span>HST/GST/QST auto-calculated</span>
+            <span className="hidden sm:inline text-gray-300">|</span>
+            <span>HomeStars integrated</span>
+          </div>
+
           {/* Social Proof */}
           <div className="hero-reveal hero-reveal-delay-5 mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-8">
             <div className="flex items-center gap-2">
@@ -456,6 +394,16 @@ function ProblemSection() {
             </div>
           ))}
         </div>
+
+        {/* Canada differentiator */}
+        <div className="scroll-fade-up mt-12 max-w-3xl mx-auto text-center">
+          <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+            Every other CRM was built in the US and patched for Canada.{" "}
+            <span className="font-semibold text-white">Growth OS was built here.</span>{" "}
+            Your invoices calculate HST, GST, and QST correctly — for every province. Your templates work in French and English. That's not an add-on. That's how it should be.
+          </p>
+        </div>
+
         <p className="mt-10 text-lg text-blue-300 font-medium">
           Every one of these problems has a fix. And it takes 10 minutes to set up.
         </p>
@@ -475,7 +423,7 @@ function HowItWorks() {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
             Set it up in 10 minutes.{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-blue-600">
               Use it today.
             </span>
           </h2>
@@ -490,7 +438,7 @@ function HowItWorks() {
           ].map((s, i) => (
             <div key={s.step} className="scroll-fade-up relative">
               {i < 3 && <div className="scroll-fade-up hidden lg:block absolute top-12 left-full w-full h-px draw-path bg-gradient-to-r from-blue-200 to-transparent" />}
-              <div className="text-5xl font-black text-blue-100 mb-4">{s.step}</div>
+              <div className="text-5xl font-black text-blue-200/70 mb-4">{s.step}</div>
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 text-white flex items-center justify-center mb-4 shadow-lg">
                 {s.icon}
               </div>
@@ -1180,7 +1128,7 @@ function Features() {
           </p>
         </div>
 
-        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="stagger-children scroll-fade-up grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature) => (
             <div
               key={feature.title}
@@ -1232,7 +1180,7 @@ function AutopilotSection() {
           </p>
         </div>
 
-        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="stagger-children scroll-fade-up grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {playbooks.map((p) => (
             <div key={p.name} className="scroll-fade-up group relative p-6 rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 overflow-hidden">
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 overflow-hidden rounded-b-2xl">
@@ -1450,7 +1398,7 @@ function StatsBanner() {
   return (
     <section className="py-12 lg:py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="stagger-children grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+        <div className="stagger-children scroll-fade-up grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
             { value: 40, suffix: "%", label: "More Jobs Booked", sublabel: "Average in first 90 days" },
             { value: 60, suffix: "sec", label: "Lead Response Time", sublabel: "With Speed to Lead running" },
@@ -1569,7 +1517,7 @@ function Testimonials() {
           </h2>
         </div>
 
-        <div className="stagger-children grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="stagger-children scroll-fade-up grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {testimonials.slice(0, 3).map((t) => (
             <div key={t.name} className="scroll-fade-up p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all duration-300">
               <AnimatedStars />
@@ -1585,7 +1533,7 @@ function Testimonials() {
           ))}
         </div>
         {/* Second row — 2 testimonials centered */}
-        <div className="stagger-children grid md:grid-cols-2 gap-6 mt-6 max-w-4xl mx-auto">
+        <div className="stagger-children scroll-fade-up grid md:grid-cols-2 gap-6 mt-6 max-w-4xl mx-auto">
           {testimonials.slice(3).map((t) => (
             <div key={t.name} className="scroll-fade-up p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-lg transition-all duration-300">
               <AnimatedStars />
@@ -1724,7 +1672,7 @@ function BuiltForCanada() {
           </p>
         </div>
 
-        <div className="stagger-children grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="stagger-children scroll-fade-up grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             { icon: <DollarSign className="w-5 h-5" />, title: "Taxes? Done.", desc: "HST, GST+QST, GST+PST — calculated automatically for every province. You never do the math." },
             { icon: <Languages className="w-5 h-5" />, title: "French + English", desc: "Quebec clients get emails and invoices in French. Everyone else gets English. Switches automatically." },
@@ -1793,7 +1741,7 @@ function Pricing() {
           </p>
         </div>
 
-        <div className="stagger-children grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="stagger-children scroll-fade-up grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {plans.map((plan) => (
             <div key={plan.name} className={`scroll-fade-up relative rounded-2xl p-6 sm:p-8 transition-all duration-300 ${plan.highlighted ? "bg-gradient-to-b from-blue-600 to-blue-700 text-white shadow-2xl shadow-blue-600/25 md:scale-105 shimmer-border" : "bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg"}`}>
               {plan.highlighted && (
@@ -1871,116 +1819,6 @@ function FAQ() {
         </div>
       </div>
     </section>
-  );
-}
-
-// ─── CTA Section ──────────────────────────────────────────────
-function CTASection() {
-  return (
-    <section className="py-16 lg:py-24 gradient-mesh relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 opacity-90" />
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl" />
-      </div>
-      <div className="scroll-fade-up relative max-w-4xl mx-auto px-6 lg:px-8 text-center">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-          10 minutes from now,
-          <br />
-          your business runs different.
-        </h2>
-        <p className="mt-6 text-lg text-blue-200/80 max-w-2xl mx-auto">
-          Set it up during your morning coffee. By lunch, your leads are getting auto-responses,
-          your estimates are following up, and your reviews are rolling in.
-        </p>
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/setup" className="glow-pulse inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white text-blue-600 text-base font-semibold rounded-2xl hover:bg-blue-50 transition-all shadow-xl hover:-translate-y-0.5">
-            Try Free for 14 Days <ArrowRight className="w-5 h-5" />
-          </Link>
-          <Link href="/dashboard" className="inline-flex items-center justify-center gap-2.5 px-8 py-4 border border-white/20 text-white text-base font-semibold rounded-2xl hover:bg-white/10 transition-all">
-            See It in Action
-          </Link>
-        </div>
-        <p className="mt-6 text-sm text-blue-300/60">No credit card. No contracts. Cancel anytime. No fine print.</p>
-      </div>
-    </section>
-  );
-}
-
-// ─── Footer ───────────────────────────────────────────────────
-function Footer() {
-  return (
-    <footer className="bg-slate-950 text-slate-400">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-16">
-          <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-lg font-bold text-white">Growth OS<span className="text-blue-500">™</span></span>
-            </div>
-            <p className="text-sm leading-relaxed">The operating system for service business growth. Purpose-built for the trades.</p>
-            <div className="mt-3 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-red-400" />
-              <span className="text-xs text-slate-500">Made in Canada</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4">Product</h4>
-            <ul className="space-y-2.5">
-              {[
-                { label: "Features", href: "#explorer" },
-                { label: "Autopilot", href: "#autopilot" },
-                { label: "Pricing", href: "#pricing" },
-                { label: "Compare", href: "#compare" },
-              ].map((link) => (
-                <li key={link.label}><a href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</a></li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4">Built For</h4>
-            <ul className="space-y-2.5">
-              {[
-                { label: "Plumbing", href: "/plumbing" },
-                { label: "HVAC", href: "/hvac" },
-                { label: "Electrical", href: "/electrical" },
-                { label: "Landscaping", href: "/landscaping" },
-                { label: "Roofing", href: "/roofing" },
-                { label: "Cleaning", href: "/cleaning" },
-              ].map((link) => (
-                <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
-            <ul className="space-y-2.5">
-              {[
-                { label: "About", href: "/about" },
-                { label: "Contact", href: "/contact" },
-                { label: "Privacy Policy", href: "/privacy" },
-                { label: "Terms of Service", href: "/terms" },
-              ].map((link) => (
-                <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500">&copy; {new Date().getFullYear()} Growth OS. All rights reserved. Made in Canada.</p>
-          <div className="flex items-center gap-4">
-            <a href="mailto:hello@growthos.ca" className="text-slate-500 hover:text-white transition-colors"><Mail className="w-5 h-5" /></a>
-            <a href="tel:+18005550199" className="text-slate-500 hover:text-white transition-colors"><Phone className="w-5 h-5" /></a>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 }
 
