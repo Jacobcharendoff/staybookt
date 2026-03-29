@@ -249,8 +249,8 @@ export default function Dashboard() {
               onClick={() => setDateRange(range)}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 dateRange === range
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600'
+                  ? 'bg-[#27AE60] text-white shadow-md'
+                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-600'
               }`}
             >
               {range === 'today' && t('dashboard.today')}
@@ -272,12 +272,12 @@ export default function Dashboard() {
             </div>
             <div>
               <h3 className="text-lg font-bold">{t('dashboard.finishSetup')}</h3>
-              <p className="text-blue-100 text-sm">Complete your setup to unlock the full power of autopilot. Takes about 15 minutes.</p>
+              <p className="text-white/70 text-sm">Complete your setup to unlock the full power of autopilot. Takes about 15 minutes.</p>
             </div>
           </div>
           <Link
             href="/setup"
-            className="flex items-center gap-2 px-5 py-2.5 bg-white text-blue-700 rounded-xl font-semibold hover:bg-blue-50 transition-all shrink-0 text-sm"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#27AE60] text-white rounded-xl font-semibold hover:bg-[#229954] transition-all shrink-0 text-sm"
           >
             {t('dashboard.continueSetup')}
             <ChevronRight className="w-4 h-4" />
@@ -321,8 +321,8 @@ export default function Dashboard() {
               <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.totalLeads')}</p>
               <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">{totalLeads}</p>
             </div>
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Target className="w-6 h-6 text-blue-600" />
+            <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+              <Target className="w-6 h-6 text-[#27AE60]" />
             </div>
           </div>
           {leadsTrend !== 0 && (
@@ -588,7 +588,7 @@ export default function Dashboard() {
                       {deal.contactName}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 font-medium">
+                      <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-medium">
                         {deal.stage.replace('_', ' ')}
                       </span>
                     </div>
@@ -629,7 +629,7 @@ export default function Dashboard() {
             <button
               className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-3 border-b border-slate-100 dark:border-slate-700"
             >
-              <Target className="w-4 h-4 text-blue-600" />
+              <Target className="w-4 h-4 text-[#27AE60]" />
               {t('dashboard.addContact')}
             </button>
             <button
