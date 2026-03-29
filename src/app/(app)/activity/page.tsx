@@ -47,8 +47,8 @@ export default function ActivityPage() {
     <div className="h-full flex flex-col bg-white dark:bg-slate-900">
       {/* Header */}
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('activity.title')}</h1>
-        <p className="text-slate-600 mt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{t('activity.title')}</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-1">
           {activities.length} {t('activity.totalActivities')}
         </p>
       </div>
@@ -83,10 +83,10 @@ export default function ActivityPage() {
                         <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
                           <div className="flex items-start justify-between mb-2">
                             <div>
-                              <p className="font-semibold text-slate-900 capitalize">
+                              <p className="font-semibold text-slate-900 dark:text-white capitalize">
                                 {activity.type}
                               </p>
-                              <p className="text-sm text-slate-600 mt-1">
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                                 {activity.description}
                               </p>
                             </div>
@@ -105,7 +105,7 @@ export default function ActivityPage() {
                             )}
                           </div>
 
-                          <p className="text-xs text-slate-500 mt-3">
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-3">
                             {new Date(activity.createdAt).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-CA', {
                               year: 'numeric',
                               month: 'long',
@@ -123,7 +123,7 @@ export default function ActivityPage() {
             </div>
           ) : (
             <div className="flex items-center justify-center h-64">
-              <p className="text-slate-500 text-center">
+              <p className="text-slate-500 dark:text-slate-400 text-center">
                 {t('activity.noActivities')}
               </p>
             </div>

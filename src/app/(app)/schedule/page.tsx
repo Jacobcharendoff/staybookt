@@ -211,8 +211,8 @@ export default function SchedulePage() {
       <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">{t('schedule.title')}</h1>
-          <p className="text-sm sm:text-base text-slate-600">{t('schedule.dragDropJobs')}</p>
+          <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-2">{t('schedule.title')}</h1>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">{t('schedule.dragDropJobs')}</p>
         </div>
 
         {/* Week Navigation */}
@@ -221,26 +221,26 @@ export default function SchedulePage() {
             <div className="flex items-center gap-2 sm:gap-4">
               <button
                 onClick={() => setWeekOffset(weekOffset - 1)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600 hover:text-slate-900"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900 rounded-lg border border-blue-200 dark:border-blue-700">
                 <Calendar className="w-4 h-4 text-blue-600" />
-                <span className="font-semibold text-slate-900">{formatDateRange()}</span>
+                <span className="font-semibold text-slate-900 dark:text-white">{formatDateRange()}</span>
               </div>
 
               <button
                 onClick={() => setWeekOffset(weekOffset + 1)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-600 hover:text-slate-900"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
 
               <button
                 onClick={() => setWeekOffset(0)}
-                className="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition"
+                className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
               >
                 {t('schedule.today')}
               </button>
@@ -248,7 +248,7 @@ export default function SchedulePage() {
 
             {/* Technician Filter */}
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-              <Filter className="w-4 h-4 text-slate-600" />
+              <Filter className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               {Object.keys(TECH_COLORS).map((tech) => (
                 <button
                   key={tech}
@@ -256,7 +256,7 @@ export default function SchedulePage() {
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                     selectedTechs.has(tech)
                       ? `${TECH_COLORS[tech].badge} border border-current`
-                      : 'bg-slate-200 text-slate-500 border border-slate-300'
+                      : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 border border-slate-300 dark:border-slate-600'
                   }`}
                 >
                   {tech}
@@ -280,9 +280,9 @@ export default function SchedulePage() {
                   const jobCount = countJobsForDay(dayValue);
                   return (
                     <div key={dayKey} className="col-span-1 p-4 text-center border-l border-slate-200 dark:border-slate-600">
-                      <div className="text-sm font-semibold text-slate-600">{t(DAY_ABBR_KEYS[idx] as any)}</div>
-                      <div className="text-lg font-bold text-slate-900 mt-1">{date.getDate()}</div>
-                      <div className="text-xs text-slate-500 mt-2">
+                      <div className="text-sm font-semibold text-slate-600 dark:text-slate-400">{t(DAY_ABBR_KEYS[idx] as any)}</div>
+                      <div className="text-lg font-bold text-slate-900 dark:text-white mt-1">{date.getDate()}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                         {jobCount} {jobCount === 1 ? 'job' : 'jobs'}
                       </div>
                     </div>
@@ -339,10 +339,10 @@ export default function SchedulePage() {
                                         <div className={`text-xs font-semibold truncate ${TECH_COLORS[job.assignedTo].text}`}>
                                           {job.title}
                                         </div>
-                                        <div className="text-xs text-slate-600 truncate">{job.customerName}</div>
+                                        <div className="text-xs text-slate-600 dark:text-slate-400 truncate">{job.customerName}</div>
                                         <div className="mt-1 flex items-center gap-1">
-                                          <DollarSign className="w-2.5 h-2.5 text-slate-500" />
-                                          <span className="text-xs font-semibold text-slate-700">
+                                          <DollarSign className="w-2.5 h-2.5 text-slate-500 dark:text-slate-400" />
+                                          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                                             {(job.value / 1000).toFixed(1)}k
                                           </span>
                                         </div>
@@ -380,8 +380,8 @@ export default function SchedulePage() {
                       : 'border-slate-200 dark:border-slate-600'
                   }`}
                 >
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('schedule.unscheduled')}</h2>
-                  <p className="text-sm text-slate-600 mb-6">{unscheduledJobs.length} {t('schedule.jobsReadyToSchedule')}</p>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">{t('schedule.unscheduled')}</h2>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">{unscheduledJobs.length} {t('schedule.jobsReadyToSchedule')}</p>
 
                   <div className="space-y-3">
                     {filterUnscheduledByTech(unscheduledJobs).length > 0 ? (
@@ -422,13 +422,13 @@ export default function SchedulePage() {
                         </Draggable>
                       ))
                     ) : unscheduledJobs.length > 0 ? (
-                      <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-center">
-                        <Filter className="w-4 h-4 text-slate-400 mx-auto mb-2" />
-                        <p className="text-sm text-slate-500">No jobs match selected technicians</p>
+                      <div className="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 text-center">
+                        <Filter className="w-4 h-4 text-slate-400 dark:text-slate-500 mx-auto mb-2" />
+                        <p className="text-sm text-slate-500 dark:text-slate-400">No jobs match selected technicians</p>
                       </div>
                     ) : (
-                      <div className="p-4 bg-emerald-50 rounded-lg border border-emerald-200 text-center">
-                        <p className="text-sm font-medium text-emerald-700">All jobs scheduled!</p>
+                      <div className="p-4 bg-emerald-50 dark:bg-emerald-900 rounded-lg border border-emerald-200 dark:border-emerald-700 text-center">
+                        <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">All jobs scheduled!</p>
                       </div>
                     )}
                   </div>
@@ -436,22 +436,22 @@ export default function SchedulePage() {
                   {provided.placeholder}
 
                   {/* Summary Stats */}
-                  <div className="mt-8 pt-6 border-t border-slate-200 space-y-3">
-                    <div className="p-3 bg-slate-50 rounded-lg">
-                      <div className="text-xs text-slate-600 font-medium">{t('schedule.scheduled')}</div>
-                      <div className="text-2xl font-bold text-slate-900 mt-1">
+                  <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700 space-y-3">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                      <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">{t('schedule.scheduled')}</div>
+                      <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
                         {Object.keys(scheduledJobs).length}
                       </div>
                     </div>
-                    <div className="p-3 bg-slate-50 rounded-lg">
-                      <div className="text-xs text-slate-600 font-medium">{t('schedule.unscheduled')}</div>
-                      <div className="text-2xl font-bold text-slate-900 mt-1">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                      <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">{t('schedule.unscheduled')}</div>
+                      <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
                         {unscheduledJobs.length}
                       </div>
                     </div>
-                    <div className="p-3 bg-slate-50 rounded-lg">
-                      <div className="text-xs text-slate-600 font-medium">{t('schedule.totalValue')}</div>
-                      <div className="text-lg font-bold text-emerald-600 mt-1">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                      <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">{t('schedule.totalValue')}</div>
+                      <div className="text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-1">
                         ${Object.values(scheduledJobs).reduce((sum, job) => {
                           const deal = getSchedulableDeals().find((d) => d.id === job.dealId);
                           return sum + (deal?.value || 0);

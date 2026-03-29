@@ -226,60 +226,60 @@ export default function InvoicesPage() {
     <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('invoices.title')}</h1>
-        <p className="text-slate-600">Manage invoices and track payments</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">{t('invoices.title')}</h1>
+        <p className="text-slate-600 dark:text-slate-400">Manage invoices and track payments</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.title')}</p>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('invoices.title')}</p>
             <CheckCircle className="w-5 h-5 text-blue-500" />
           </div>
-          <p className="text-2xl sm:text-3xl font-bold text-slate-900">{invoices.length}</p>
-          <p className="text-xs text-slate-500 mt-2">All time</p>
+          <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{invoices.length}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">All time</p>
         </div>
 
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.outstanding')}</p>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('invoices.outstanding')}</p>
             <AlertCircle className="w-5 h-5 text-amber-500" />
           </div>
-          <p className="text-3xl font-bold text-slate-900">
+          <p className="text-3xl font-bold text-slate-900 dark:text-white">
             ${outstandingAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
-          <p className="text-xs text-slate-500 mt-2">{outstandingInvoices.length + partialInvoices.length} invoices</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">{outstandingInvoices.length + partialInvoices.length} invoices</p>
         </div>
 
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.paidThisMonth')}</p>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('invoices.paidThisMonth')}</p>
             <CheckCircle className="w-5 h-5 text-emerald-500" />
           </div>
-          <p className="text-3xl font-bold text-slate-900">
+          <p className="text-3xl font-bold text-slate-900 dark:text-white">
             ${paidThisMonth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
-          <p className="text-xs text-slate-500 mt-2">{paidInvoices.length} paid</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">{paidInvoices.length} paid</p>
         </div>
 
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">{t('invoices.collectionRate')}</p>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">{t('invoices.collectionRate')}</p>
             <TrendingUp className="w-5 h-5 text-emerald-500" />
           </div>
-          <p className="text-3xl font-bold text-slate-900">{collectionPercent}%</p>
-          <p className="text-xs text-slate-500 mt-2">of total invoiced</p>
+          <p className="text-3xl font-bold text-slate-900 dark:text-white">{collectionPercent}%</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">of total invoiced</p>
         </div>
       </div>
 
       {/* Payment Collection Progress */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-slate-900">Payment Collection</h3>
-          <span className="text-2xl font-bold text-emerald-600">{collectionPercent}%</span>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Payment Collection</h3>
+          <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{collectionPercent}%</span>
         </div>
-        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden mb-6">
+        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden mb-6">
           <div
             className="h-3 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all"
             style={{ width: `${collectionPercent}%` }}
@@ -287,20 +287,20 @@ export default function InvoicesPage() {
         </div>
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <p className="text-xs text-slate-600 mb-1">Collected</p>
-            <p className="text-lg font-semibold text-slate-900">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Collected</p>
+            <p className="text-lg font-semibold text-slate-900 dark:text-white">
               ${totalCollected.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
           <div>
-            <p className="text-xs text-slate-600 mb-1">Outstanding</p>
-            <p className="text-lg font-semibold text-slate-900">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Outstanding</p>
+            <p className="text-lg font-semibold text-slate-900 dark:text-white">
               ${totalOutstanding.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
           <div>
-            <p className="text-xs text-slate-600 mb-1">Overdue</p>
-            <p className="text-lg font-semibold text-rose-600">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Overdue</p>
+            <p className="text-lg font-semibold text-rose-600 dark:text-rose-400">
               ${overdueAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -308,7 +308,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Controls */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-3 w-5 h-5 text-slate-400" />
@@ -317,7 +317,7 @@ export default function InvoicesPage() {
               placeholder={t('common.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
             />
           </div>
 
@@ -344,7 +344,7 @@ export default function InvoicesPage() {
                 className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
                   filterStatus === status
                     ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                 }`}
               >
                 {status === 'all' ? 'All' : status} ({count})
@@ -355,35 +355,35 @@ export default function InvoicesPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Invoice #
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Customer
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Total
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Paid
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Status
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Due Date
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {filteredInvoices.length > 0 ? (
                 filteredInvoices.map((invoice) => (
                   <tr
@@ -391,20 +391,20 @@ export default function InvoicesPage() {
                     onMouseEnter={() => setHoveredRow(invoice.id)}
                     onMouseLeave={() => setHoveredRow(null)}
                     className={`transition cursor-pointer ${
-                      hoveredRow === invoice.id ? 'bg-blue-50' : ''
+                      hoveredRow === invoice.id ? 'bg-blue-50 dark:bg-blue-900' : ''
                     }`}
                     onClick={() => router.push(`/invoices/${invoice.id}`)}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
                       {invoice.number}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700 dark:text-slate-300">
                       {invoice.customerName}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
                       ${invoice.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                       ${invoice.amountPaid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -416,7 +416,7 @@ export default function InvoicesPage() {
                         {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
                       {new Date(invoice.dueDate).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -429,38 +429,38 @@ export default function InvoicesPage() {
                             e.stopPropagation();
                             router.push(`/invoices/${invoice.id}`);
                           }}
-                          className="p-2 hover:bg-slate-100 rounded-lg transition"
+                          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
                           title="View"
                         >
-                          <Eye className="w-4 h-4 text-slate-600" />
+                          <Eye className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                         </button>
                         {invoice.status !== 'paid' && (
                           <button
-                            className="p-2 hover:bg-slate-100 rounded-lg transition"
+                            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
                             title="Send Reminder"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <Bell className="w-4 h-4 text-slate-600" />
+                            <Bell className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                           </button>
                         )}
                         {invoice.status !== 'paid' && (
                           <button
-                            className="p-2 hover:bg-slate-100 rounded-lg transition"
+                            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
                             title="Record Payment"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <DollarSign className="w-4 h-4 text-slate-600" />
+                            <DollarSign className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                           </button>
                         )}
                         <button
-                          className="p-2 hover:bg-slate-100 rounded-lg transition"
+                          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
                           title="Download PDF"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <Download className="w-4 h-4 text-slate-600" />
+                          <Download className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                         </button>
                         <button
-                          className="p-2 hover:bg-red-50 rounded-lg transition"
+                          className="p-2 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition"
                           title="Delete"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -476,7 +476,7 @@ export default function InvoicesPage() {
               ) : (
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center">
-                    <p className="text-slate-500 text-sm">No invoices found</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">No invoices found</p>
                   </td>
                 </tr>
               )}
@@ -488,21 +488,21 @@ export default function InvoicesPage() {
       {/* Create Invoice Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900">Create Invoice</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create Invoice</h2>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
               >
-                <X className="w-5 h-5 text-slate-600" />
+                <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               </button>
             </div>
 
             <div className="p-6 space-y-6">
               {/* Contact Selector */}
               <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                   Contact *
                 </label>
                 <select
@@ -511,7 +511,7 @@ export default function InvoicesPage() {
                     setSelectedContactId(e.target.value);
                     setSelectedEstimateId('');
                   }}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                 >
                   <option value="">Select a contact...</option>
                   {contacts.map((contact) => (
@@ -525,13 +525,13 @@ export default function InvoicesPage() {
               {/* Create from Estimate */}
               {selectedContactId && contactEstimates.length > 0 && (
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                     Create from Estimate (Optional)
                   </label>
                   <select
                     value={selectedEstimateId}
                     onChange={(e) => handleEstimateSelect(e.target.value)}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                   >
                     <option value="">Start from scratch...</option>
                     {contactEstimates.map((estimate) => (
@@ -546,12 +546,12 @@ export default function InvoicesPage() {
               {/* Line Items */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <label className="block text-sm font-semibold text-slate-900">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white">
                     Line Items *
                   </label>
                   <button
                     onClick={handleAddLineItem}
-                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                   >
                     + Add Line
                   </button>
@@ -567,7 +567,7 @@ export default function InvoicesPage() {
                         onChange={(e) =>
                           handleLineItemChange(idx, 'description', e.target.value)
                         }
-                        className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                        className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-500 dark:bg-slate-900 dark:text-white"
                       />
                       <input
                         type="number"
@@ -577,7 +577,7 @@ export default function InvoicesPage() {
                         onChange={(e) =>
                           handleLineItemChange(idx, 'quantity', parseInt(e.target.value) || 1)
                         }
-                        className="w-20 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                        className="w-20 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-500 dark:bg-slate-900 dark:text-white"
                       />
                       <input
                         type="number"
@@ -588,15 +588,15 @@ export default function InvoicesPage() {
                         onChange={(e) =>
                           handleLineItemChange(idx, 'unitPrice', parseFloat(e.target.value) || 0)
                         }
-                        className="w-24 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+                        className="w-24 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-500 dark:bg-slate-900 dark:text-white"
                       />
-                      <span className="w-24 px-3 py-2 bg-slate-50 rounded-lg text-sm font-medium text-slate-900">
+                      <span className="w-24 px-3 py-2 bg-slate-50 dark:bg-slate-700 rounded-lg text-sm font-medium text-slate-900 dark:text-white">
                         ${(item.quantity * item.unitPrice).toFixed(2)}
                       </span>
                       {lineItems.length > 1 && (
                         <button
                           onClick={() => handleRemoveLineItem(idx)}
-                          className="p-2 hover:bg-red-50 rounded-lg transition"
+                          className="p-2 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition"
                         >
                           <X className="w-4 h-4 text-rose-600" />
                         </button>
@@ -608,13 +608,13 @@ export default function InvoicesPage() {
 
               {/* Province Selector */}
               <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                   Province *
                 </label>
                 <select
                   value={selectedProvince}
                   onChange={(e) => setSelectedProvince(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                 >
                   {PROVINCES.map((prov) => (
                     <option key={prov.code} value={prov.code}>
@@ -625,24 +625,24 @@ export default function InvoicesPage() {
               </div>
 
               {/* Pricing Summary */}
-              <div className="bg-slate-50 p-4 rounded-lg space-y-2">
+              <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Subtotal</span>
-                  <span className="font-medium text-slate-900">
+                  <span className="text-slate-600 dark:text-slate-400">Subtotal</span>
+                  <span className="font-medium text-slate-900 dark:text-white">
                     ${subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">
+                  <span className="text-slate-600 dark:text-slate-400">
                     Tax ({provinceInfo?.taxType} {(taxRate * 100).toFixed(3)}%)
                   </span>
-                  <span className="font-medium text-slate-900">
+                  <span className="font-medium text-slate-900 dark:text-white">
                     ${taxAmount.toFixed(2)}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm border-t border-slate-200 pt-2">
-                  <span className="font-semibold text-slate-900">Total</span>
-                  <span className="font-bold text-lg text-slate-900">
+                <div className="flex justify-between text-sm border-t border-slate-200 dark:border-slate-600 pt-2">
+                  <span className="font-semibold text-slate-900 dark:text-white">Total</span>
+                  <span className="font-bold text-lg text-slate-900 dark:text-white">
                     ${total.toFixed(2)}
                   </span>
                 </div>
@@ -650,20 +650,20 @@ export default function InvoicesPage() {
 
               {/* Due Date */}
               <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                   Due Date
                 </label>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                 />
               </div>
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                   Notes
                 </label>
                 <textarea
@@ -671,15 +671,15 @@ export default function InvoicesPage() {
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Add any notes or terms..."
                   rows={3}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 resize-none"
+                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white resize-none"
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4 border-t border-slate-200">
+              <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
                 <button
                   onClick={() => setShowCreateModal(false)}
-                  className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 font-medium transition"
+                  className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 font-medium transition"
                 >
                   Cancel
                 </button>

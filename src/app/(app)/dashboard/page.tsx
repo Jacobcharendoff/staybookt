@@ -236,8 +236,8 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4 md:p-8">
       {/* Header with Date Range */}
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-2">{t('dashboard.title')}</h1>
-        <p className="text-slate-600 mb-4">
+        <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-2">{t('dashboard.title')}</h1>
+        <p className="text-slate-600 dark:text-slate-400 mb-4">
           {t('dashboard.welcomeBack')}
         </p>
 
@@ -250,7 +250,7 @@ export default function Dashboard() {
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 dateRange === range
                   ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-300'
+                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600'
               }`}
             >
               {range === 'today' && t('dashboard.today')}
@@ -287,16 +287,16 @@ export default function Dashboard() {
 
       {/* Overdue Invoices Alert */}
       {overdueInvoices.length > 0 && (
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-6 mb-8 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border border-red-200 dark:border-red-800 rounded-2xl p-6 mb-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 h-48 bg-red-100/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4" />
           <div className="relative flex items-center justify-between gap-6 flex-wrap">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-xl flex items-center justify-center">
                 <AlertCircle className="w-6 h-6 text-red-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-red-900">{t('dashboard.overdueInvoices')}</h3>
-                <p className="text-red-700 text-sm">
+                <h3 className="text-lg font-bold text-red-900 dark:text-red-100">{t('dashboard.overdueInvoices')}</h3>
+                <p className="text-red-700 dark:text-red-300 text-sm">
                   {overdueInvoices.length} invoice{overdueInvoices.length !== 1 ? 's' : ''} — ${totalOverdueAmount.toLocaleString()} {t('dashboard.overdueAmount')}
                 </p>
               </div>
@@ -318,8 +318,8 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.totalLeads')}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">{totalLeads}</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.totalLeads')}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">{totalLeads}</p>
             </div>
             <div className="p-2 bg-blue-100 rounded-lg">
               <Target className="w-6 h-6 text-blue-600" />
@@ -347,22 +347,22 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.activeDeals')}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">{activeDeals}</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.activeDeals')}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">{activeDeals}</p>
             </div>
             <div className="p-2 bg-purple-100 rounded-lg">
               <Zap className="w-6 h-6 text-purple-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500">In progress</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">In progress</p>
         </div>
 
         {/* Pipeline Value */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.pipelineValue')}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.pipelineValue')}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">
                 ${(pipelineValue / 1000).toFixed(1)}k
               </p>
             </div>
@@ -370,21 +370,21 @@ export default function Dashboard() {
               <DollarSign className="w-6 h-6 text-green-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500">{activeDeals} active opportunities</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{activeDeals} active opportunities</p>
         </div>
 
         {/* Conversion Rate */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.conversionRate')}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">{conversionRate}%</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.conversionRate')}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">{conversionRate}%</p>
             </div>
             <div className="p-2 bg-orange-100 rounded-lg">
               <Activity className="w-6 h-6 text-orange-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {completedDeals} of {deals.length} closed
           </p>
         </div>
@@ -393,8 +393,8 @@ export default function Dashboard() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.avgDealValue')}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.avgDealValue')}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">
                 ${avgDealValue.toLocaleString()}
               </p>
             </div>
@@ -402,15 +402,15 @@ export default function Dashboard() {
               <TrendingUp className="w-6 h-6 text-indigo-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500">Per active deal</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Per active deal</p>
         </div>
 
         {/* Total Revenue */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
-              <p className="text-xs sm:text-sm font-medium text-slate-600">{t('dashboard.totalRevenue')}</p>
-              <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 sm:mt-2">
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">{t('dashboard.totalRevenue')}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 sm:mt-2">
                 ${(totalRevenue / 1000).toFixed(1)}k
               </p>
             </div>
@@ -418,7 +418,7 @@ export default function Dashboard() {
               <CheckCircle className="w-6 h-6 text-cyan-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500">{completedDeals} invoiced deals</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{completedDeals} invoiced deals</p>
         </div>
       </div>
 
@@ -426,7 +426,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Pipeline Funnel Chart */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">Pipeline Funnel</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Pipeline Funnel</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
               data={pipelineData}
@@ -447,7 +447,7 @@ export default function Dashboard() {
 
         {/* Revenue by Lead Source Pie Chart */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
             Revenue by Lead Source
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -479,7 +479,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Monthly Revenue Trend */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
             Monthly Revenue Trend
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -507,7 +507,7 @@ export default function Dashboard() {
 
         {/* Deal Stage Duration */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
             Stage Duration (Avg Days)
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -526,41 +526,41 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20">
         {/* Recent Activity */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">{t('dashboard.recentActivity')}</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.recentActivity')}</h2>
           <div className="space-y-4">
             {recentActivities.length > 0 ? (
               recentActivities.map((activity) => (
                 <div
                   key={activity.id}
-                  className="flex items-start gap-4 pb-4 border-b border-slate-100 last:border-0 last:pb-0"
+                  className="flex items-start gap-4 pb-4 border-b border-slate-100 dark:border-slate-700 last:border-0 last:pb-0"
                 >
                   <div className="mt-1">{getActivityIcon(activity.type)}</div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900 truncate">
+                    <p className="text-sm font-medium text-slate-900 dark:text-white truncate">
                       {activity.description}
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">{activity.timeAgo}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{activity.timeAgo}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-slate-500 text-sm">No recent activity</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">No recent activity</p>
             )}
           </div>
         </div>
 
         {/* Top Deals */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 mb-6">{t('dashboard.topDeals')}</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.topDeals')}</h2>
           <div className="space-y-4">
             {topDeals.length > 0 ? (
               topDeals.map((deal) => (
                 <div
                   key={deal.id}
-                  className="flex items-start gap-4 pb-4 border-b border-slate-100 last:border-0 last:pb-0"
+                  className="flex items-start gap-4 pb-4 border-b border-slate-100 dark:border-slate-700 last:border-0 last:pb-0"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900 truncate">
+                    <p className="text-sm font-medium text-slate-900 dark:text-white truncate">
                       {deal.contactName}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
@@ -570,14 +570,14 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-slate-900">
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">
                       ${deal.value.toLocaleString()}
                     </p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-slate-500 text-sm">No deals yet</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">No deals yet</p>
             )}
           </div>
         </div>
@@ -592,19 +592,19 @@ export default function Dashboard() {
                 setIsAddDealOpen(true);
                 setIsFABExpanded(false);
               }}
-              className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-3 border-b border-slate-100"
+              className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-3 border-b border-slate-100 dark:border-slate-700"
             >
               <Zap className="w-4 h-4 text-purple-600" />
               {t('dashboard.addDeal')}
             </button>
             <button
-              className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-3 border-b border-slate-100"
+              className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-3 border-b border-slate-100 dark:border-slate-700"
             >
               <Target className="w-4 h-4 text-blue-600" />
               {t('dashboard.addContact')}
             </button>
             <button
-              className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-3"
+              className="w-full px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-3"
             >
               <Clock className="w-4 h-4 text-orange-600" />
               {t('dashboard.logActivity')}

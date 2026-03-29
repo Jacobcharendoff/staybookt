@@ -199,8 +199,8 @@ export default function EstimatesPage() {
     <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{t('estimates.title')}</h1>
-        <p className="text-slate-600">Create and track customer estimates</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">{t('estimates.title')}</h1>
+        <p className="text-slate-600 dark:text-slate-400">Create and track customer estimates</p>
       </div>
 
       {/* Stats Bar */}
@@ -208,8 +208,8 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.totalEstimates')}</p>
-              <p className="text-3xl font-bold text-slate-900">{totalEstimates}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.totalEstimates')}</p>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white">{totalEstimates}</p>
             </div>
             <FileText className="w-12 h-12 text-blue-100" />
           </div>
@@ -218,8 +218,8 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.pendingApproval')}</p>
-              <p className="text-3xl font-bold text-slate-900">{pendingApproval}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.pendingApproval')}</p>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white">{pendingApproval}</p>
             </div>
             <Clock className="w-12 h-12 text-amber-100" />
           </div>
@@ -228,8 +228,8 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.approvedThisMonth')}</p>
-              <p className="text-3xl font-bold text-slate-900">{approvedThisMonth}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.approvedThisMonth')}</p>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white">{approvedThisMonth}</p>
             </div>
             <TrendingUp className="w-12 h-12 text-emerald-100" />
           </div>
@@ -238,8 +238,8 @@ export default function EstimatesPage() {
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600 font-medium mb-1">{t('estimates.conversionRate')}</p>
-              <p className="text-3xl font-bold text-slate-900">{conversionRate}%</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.conversionRate')}</p>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white">{conversionRate}%</p>
             </div>
             <div className="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center">
               <span className="text-xl font-bold text-rose-600">↗</span>
@@ -259,7 +259,7 @@ export default function EstimatesPage() {
               placeholder={t('common.search')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
             />
           </div>
 
@@ -286,7 +286,7 @@ export default function EstimatesPage() {
                 className={`px-4 py-2 rounded-lg font-medium transition capitalize ${
                   filterStatus === status
                     ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                 }`}
               >
                 {status === 'all' ? 'All' : status} ({count})
@@ -297,55 +297,55 @@ export default function EstimatesPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-slate-50 dark:bg-slate-700 border-b border-slate-200 dark:border-slate-600">
               <tr>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Estimate #
                 </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Customer
                 </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide hidden md:table-cell">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide hidden md:table-cell">
                   Service
                 </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Amount
                 </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Status
                 </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide hidden md:table-cell">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide hidden md:table-cell">
                   Created
                 </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wide">
+                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {filteredEstimates.length > 0 ? (
                 filteredEstimates.map((estimate) => (
                   <tr
                     key={estimate.id}
                     onMouseEnter={() => setHoveredRow(estimate.id)}
                     onMouseLeave={() => setHoveredRow(null)}
-                    className={`transition ${hoveredRow === estimate.id ? 'bg-blue-50' : ''}`}
+                    className={`transition ${hoveredRow === estimate.id ? 'bg-blue-50 dark:bg-blue-900' : ''}`}
                   >
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
-                      <Link href={`/estimates/${estimate.id}`} className="hover:text-blue-600">
+                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
+                      <Link href={`/estimates/${estimate.id}`} className="hover:text-blue-600 dark:hover:text-blue-400">
                         {estimate.number}
                       </Link>
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-slate-700">
+                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-slate-700 dark:text-slate-300">
                       {estimate.customerName}
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-slate-600 hidden md:table-cell">
+                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 hidden md:table-cell">
                       {estimate.service}
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm font-semibold text-slate-900">
+                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
                       ${getDisplayAmount(estimate).toLocaleString()}
                     </td>
                     <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
@@ -357,7 +357,7 @@ export default function EstimatesPage() {
                         {estimate.status.charAt(0).toUpperCase() + estimate.status.slice(1)}
                       </span>
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-slate-600 hidden md:table-cell">
+                    <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 hidden md:table-cell">
                       {new Date(estimate.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -367,23 +367,23 @@ export default function EstimatesPage() {
                       <div className="flex justify-end gap-2">
                         <Link
                           href={`/estimates/${estimate.id}`}
-                          className="p-2 hover:bg-slate-100 rounded-lg transition"
+                          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
                           title="View"
                         >
-                          <Eye className="w-4 h-4 text-slate-600" />
+                          <Eye className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                         </Link>
                         {estimate.status === 'draft' && (
                           <button
                             onClick={() => updateEstimateStatus(estimate.id, 'sent')}
-                            className="p-2 hover:bg-slate-100 rounded-lg transition"
+                            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
                             title="Send"
                           >
-                            <Send className="w-4 h-4 text-slate-600" />
+                            <Send className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                           </button>
                         )}
                         <button
                           onClick={() => deleteEstimate(estimate.id)}
-                          className="p-2 hover:bg-red-50 rounded-lg transition"
+                          className="p-2 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4 text-rose-600" />
@@ -395,7 +395,7 @@ export default function EstimatesPage() {
               ) : (
                 <tr>
                   <td colSpan={7} className="px-3 sm:px-6 py-12 text-center">
-                    <p className="text-slate-500 text-sm">No estimates found</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">No estimates found</p>
                   </td>
                 </tr>
               )}
@@ -407,17 +407,17 @@ export default function EstimatesPage() {
       {/* Create Estimate Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-slate-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900">Create Estimate</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create Estimate</h2>
               <button
                 onClick={() => {
                   setShowCreateModal(false);
                   resetForm();
                 }}
-                className="p-1 hover:bg-slate-100 rounded-lg transition"
+                className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
               >
-                <X className="w-6 h-6 text-slate-600" />
+                <X className="w-6 h-6 text-slate-600 dark:text-slate-400" />
               </button>
             </div>
 
@@ -425,13 +425,13 @@ export default function EstimatesPage() {
               <div className="p-6 space-y-6">
                 {/* Contact Selector */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                     Select Contact *
                   </label>
                   <select
                     value={formData.contactId}
                     onChange={(e) => setFormData({ ...formData, contactId: e.target.value })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                   >
                     <option value="">-- Choose a contact --</option>
                     {contacts.map((contact) => (
@@ -444,7 +444,7 @@ export default function EstimatesPage() {
 
                 {/* Service Description */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                     Service Description *
                   </label>
                   <input
@@ -452,13 +452,13 @@ export default function EstimatesPage() {
                     value={formData.service}
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                     placeholder="e.g., Water Heater Replacement"
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                   />
                 </div>
 
                 {/* Detailed Description */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                     Detailed Description
                   </label>
                   <textarea
@@ -466,23 +466,23 @@ export default function EstimatesPage() {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Describe the work in detail..."
                     rows={3}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                   />
                 </div>
 
                 {/* Pricing Tiers */}
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-4">Pricing Tiers</h3>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Pricing Tiers</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {formData.tiers.map((tier, tierIndex) => (
-                      <div key={tierIndex} className="border border-slate-200 rounded-lg p-4">
-                        <h4 className="text-base font-semibold text-slate-900 mb-3">
+                      <div key={tierIndex} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4 dark:bg-slate-700">
+                        <h4 className="text-base font-semibold text-slate-900 dark:text-white mb-3">
                           {tier.name}
                         </h4>
 
                         {/* Tier Description */}
                         <div className="mb-3">
-                          <label className="block text-xs font-medium text-slate-700 mb-1">
+                          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
                             Description
                           </label>
                           <input
@@ -492,13 +492,13 @@ export default function EstimatesPage() {
                               handleTierChange(tierIndex, 'description', e.target.value)
                             }
                             placeholder={`${tier.name} service description`}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                           />
                         </div>
 
                         {/* Tier Price */}
                         <div className="mb-4">
-                          <label className="block text-xs font-medium text-slate-700 mb-1">
+                          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
                             Price
                           </label>
                           <div className="relative">
@@ -510,23 +510,23 @@ export default function EstimatesPage() {
                                 handleTierChange(tierIndex, 'price', parseInt(e.target.value) || 0)
                               }
                               placeholder="0"
-                              className="w-full pl-8 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                              className="w-full pl-8 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                             />
                           </div>
                         </div>
 
                         {/* Features */}
                         <div>
-                          <label className="block text-xs font-medium text-slate-700 mb-2">
+                          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-2">
                             Features
                           </label>
                           <div className="space-y-2 mb-3">
                             {tier.features.map((feature, featureIndex) => (
                               <div
                                 key={featureIndex}
-                                className="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
+                                className="flex items-center justify-between bg-slate-50 dark:bg-slate-600 px-3 py-2 rounded-lg"
                               >
-                                <span className="text-sm text-slate-700">{feature}</span>
+                                <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
                                 <button
                                   onClick={() => removeFeatureFromTier(tierIndex, featureIndex)}
                                   className="text-rose-600 hover:text-rose-700"
@@ -554,11 +554,11 @@ export default function EstimatesPage() {
                                 }
                               }}
                               placeholder="Add feature..."
-                              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
+                              className="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                             />
                             <button
                               onClick={() => addFeatureToTier(tierIndex)}
-                              className="px-3 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition text-sm font-medium"
+                              className="px-3 py-2 bg-slate-100 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-500 transition text-sm font-medium"
                             >
                               <Plus className="w-4 h-4" />
                             </button>
@@ -571,20 +571,20 @@ export default function EstimatesPage() {
 
                 {/* Valid For */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                     Valid For (Days)
                   </label>
                   <input
                     type="number"
                     value={formData.validDays}
                     onChange={(e) => setFormData({ ...formData, validDays: parseInt(e.target.value) })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                   />
                 </div>
 
                 {/* Notes */}
                 <div>
-                  <label className="block text-sm font-semibold text-slate-900 mb-2">
+                  <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
                     Notes
                   </label>
                   <textarea
@@ -592,18 +592,18 @@ export default function EstimatesPage() {
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="Additional notes..."
                     rows={3}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-slate-900 dark:text-white"
                   />
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-4 justify-end pt-6 border-t border-slate-200">
+                <div className="flex gap-4 justify-end pt-6 border-t border-slate-200 dark:border-slate-600">
                   <button
                     onClick={() => {
                       setShowCreateModal(false);
                       resetForm();
                     }}
-                    className="px-6 py-2 text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium transition"
+                    className="px-6 py-2 text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg font-medium transition"
                   >
                     Cancel
                   </button>
@@ -617,7 +617,7 @@ export default function EstimatesPage() {
               </div>
             ) : (
               <div className="p-12 flex flex-col items-center justify-center min-h-[400px]">
-                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900 rounded-full flex items-center justify-center mb-4">
                   <svg
                     className="w-8 h-8 text-emerald-600"
                     fill="none"
@@ -632,10 +632,10 @@ export default function EstimatesPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-1">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-1">
                   Estimate Created!
                 </h3>
-                <p className="text-slate-600">Your estimate has been saved as draft.</p>
+                <p className="text-slate-600 dark:text-slate-400">Your estimate has been saved as draft.</p>
               </div>
             )}
           </div>

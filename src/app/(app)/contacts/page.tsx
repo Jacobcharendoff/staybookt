@@ -47,8 +47,8 @@ export default function ContactsPage() {
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('contacts.title')}</h1>
-            <p className="text-slate-600 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{t('contacts.title')}</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">
               {contacts.length} {t('contacts.totalContacts')}
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function ContactsPage() {
             placeholder={t('contacts.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:text-white"
           />
         </div>
       </div>
@@ -79,19 +79,19 @@ export default function ContactsPage() {
         <table className="w-full">
           <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0">
             <tr>
-              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700">
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
                 {t('contacts.nameAddress')}
               </th>
-              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 hidden sm:table-cell">
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hidden sm:table-cell">
                 {t('contacts.type')}
               </th>
-              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 hidden sm:table-cell">
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 dark:text-slate-300 hidden sm:table-cell">
                 {t('contacts.source')}
               </th>
-              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700">
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
                 {t('contacts.contact')}
               </th>
-              <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm font-semibold text-slate-700">
+              <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm font-semibold text-slate-700 dark:text-slate-300">
                 {t('contacts.deals')}
               </th>
             </tr>
@@ -108,7 +108,7 @@ export default function ContactsPage() {
             ) : (
               <tr>
                 <td colSpan={5} className="px-6 py-8 text-center">
-                  <p className="text-slate-500">
+                  <p className="text-slate-500 dark:text-slate-400">
                     {searchQuery ? t('contacts.notFound') : t('contacts.noContacts')}
                   </p>
                 </td>

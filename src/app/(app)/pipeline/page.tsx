@@ -20,14 +20,14 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 const PIPELINE_STAGES_CONFIG: { stage: PipelineStage; labelKey: string; color: string }[] = [
-  { stage: 'new_lead', labelKey: 'pipeline.newLead', color: 'bg-slate-100 border-slate-300' },
-  { stage: 'contacted', labelKey: 'pipeline.contacted', color: 'bg-blue-100 border-blue-300' },
-  { stage: 'estimate_scheduled', labelKey: 'pipeline.estScheduled', color: 'bg-purple-100 border-purple-300' },
-  { stage: 'estimate_sent', labelKey: 'pipeline.estSent', color: 'bg-amber-100 border-amber-300' },
-  { stage: 'booked', labelKey: 'pipeline.booked', color: 'bg-green-100 border-green-300' },
-  { stage: 'in_progress', labelKey: 'pipeline.inProgress', color: 'bg-cyan-100 border-cyan-300' },
-  { stage: 'completed', labelKey: 'pipeline.completed', color: 'bg-emerald-100 border-emerald-300' },
-  { stage: 'invoiced', labelKey: 'pipeline.invoiced', color: 'bg-indigo-100 border-indigo-300' },
+  { stage: 'new_lead', labelKey: 'pipeline.newLead', color: 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600' },
+  { stage: 'contacted', labelKey: 'pipeline.contacted', color: 'bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700' },
+  { stage: 'estimate_scheduled', labelKey: 'pipeline.estScheduled', color: 'bg-purple-100 dark:bg-purple-900 border-purple-300 dark:border-purple-700' },
+  { stage: 'estimate_sent', labelKey: 'pipeline.estSent', color: 'bg-amber-100 dark:bg-amber-900 border-amber-300 dark:border-amber-700' },
+  { stage: 'booked', labelKey: 'pipeline.booked', color: 'bg-green-100 dark:bg-green-900 border-green-300 dark:border-green-700' },
+  { stage: 'in_progress', labelKey: 'pipeline.inProgress', color: 'bg-cyan-100 dark:bg-cyan-900 border-cyan-300 dark:border-cyan-700' },
+  { stage: 'completed', labelKey: 'pipeline.completed', color: 'bg-emerald-100 dark:bg-emerald-900 border-emerald-300 dark:border-emerald-700' },
+  { stage: 'invoiced', labelKey: 'pipeline.invoiced', color: 'bg-indigo-100 dark:bg-indigo-900 border-indigo-300 dark:border-indigo-700' },
 ];
 
 export default function PipelinePage() {
@@ -146,8 +146,8 @@ export default function PipelinePage() {
       <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">{t('pipeline.title')}</h1>
-            <p className="text-sm sm:text-lg text-slate-600 mt-1 font-semibold">
+            <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white">{t('pipeline.title')}</h1>
+            <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-400 mt-1 font-semibold">
               ${metrics.totalValue.toLocaleString()} across {metrics.totalDeals} deals
             </p>
           </div>
@@ -170,7 +170,7 @@ export default function PipelinePage() {
               placeholder={t('pipeline.searchDeals')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder-slate-500 dark:placeholder-slate-400"
             />
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function PipelinePage() {
           <select
             value={assignedToFilter}
             onChange={(e) => setAssignedToFilter(e.target.value)}
-            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="all">{t('pipeline.allAssigned')}</option>
             <option value="Marcus">Marcus</option>
@@ -191,7 +191,7 @@ export default function PipelinePage() {
           <select
             value={sourceFilter}
             onChange={(e) => setSourceFilter(e.target.value)}
-            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="all">{t('pipeline.allSources')}</option>
             <option value="ring_1">Ring 1</option>
@@ -202,7 +202,7 @@ export default function PipelinePage() {
           <select
             value={valueFilter}
             onChange={(e) => setValueFilter(e.target.value)}
-            className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="all">{t('pipeline.allValues')}</option>
             <option value="under_1k">{t('pipeline.under1k')}</option>
@@ -214,20 +214,20 @@ export default function PipelinePage() {
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="flex items-center gap-1 px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+              className="flex items-center gap-1 px-3 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
             >
               <X className="w-4 h-4" />
               {t('pipeline.clearFilters')}
             </button>
           )}
 
-          <div className="ml-auto flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+          <div className="ml-auto flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
             <button
               onClick={() => setViewMode('board')}
               className={`flex items-center gap-1 px-3 py-1 rounded transition-colors text-sm font-medium ${
                 viewMode === 'board'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <Eye className="w-4 h-4" />
@@ -237,8 +237,8 @@ export default function PipelinePage() {
               onClick={() => setViewMode('list')}
               className={`flex items-center gap-1 px-3 py-1 rounded transition-colors text-sm font-medium ${
                 viewMode === 'list'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <List className="w-4 h-4" />
@@ -271,18 +271,18 @@ export default function PipelinePage() {
                         {/* Column Header */}
                         <div className="sticky top-0 p-4 border-b border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 rounded-t-md">
                           <div className="flex items-center justify-between mb-2">
-                            <h3 className="font-bold text-slate-900">{label}</h3>
+                            <h3 className="font-bold text-slate-900 dark:text-white">{label}</h3>
                             <button
                               onClick={() => setIsAddDealOpen(true)}
-                              className="text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded p-1"
+                              className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded p-1"
                               title="Add deal to this stage"
                             >
                               <Plus className="w-4 h-4" />
                             </button>
                           </div>
                           <div className="flex justify-between text-xs">
-                            <span className="text-slate-600">{metrics.count} deals</span>
-                            <span className="font-semibold text-slate-900">
+                            <span className="text-slate-600 dark:text-slate-400">{metrics.count} deals</span>
+                            <span className="font-semibold text-slate-900 dark:text-white">
                               ${metrics.value.toLocaleString()}
                             </span>
                           </div>
@@ -308,23 +308,23 @@ export default function PipelinePage() {
                                       }`}
                                     >
                                       <div className="flex justify-between items-start gap-2 mb-2">
-                                        <h4 className="font-semibold text-slate-900 text-sm line-clamp-2">
+                                        <h4 className="font-semibold text-slate-900 dark:text-white text-sm line-clamp-2">
                                           {deal.title}
                                         </h4>
-                                        <span className="flex-shrink-0 text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                                        <span className="flex-shrink-0 text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-1 rounded">
                                           {daysInStage}d
                                         </span>
                                       </div>
-                                      <p className="text-xs text-slate-600 mb-3">{contact?.name}</p>
+                                      <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">{contact?.name}</p>
                                       <div className="flex justify-between items-end mb-2">
-                                        <span className="font-bold text-lg text-slate-900">
+                                        <span className="font-bold text-lg text-slate-900 dark:text-white">
                                           ${deal.value.toLocaleString()}
                                         </span>
-                                        <span className="text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 px-2 py-1 rounded">
+                                        <span className="text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded">
                                           {ring}
                                         </span>
                                       </div>
-                                      <div className="text-xs text-slate-500">
+                                      <div className="text-xs text-slate-500 dark:text-slate-400">
                                         {deal.assignedTo}
                                       </div>
                                     </div>
@@ -351,15 +351,15 @@ export default function PipelinePage() {
           <table className="w-full text-sm">
             <thead className="bg-slate-100 dark:bg-slate-800 sticky top-0">
               <tr>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900 cursor-pointer hover:bg-slate-200">
+                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700">
                   Title
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">{t('form.contact')}</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">Stage</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-900">{t('form.value')}</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">{t('contacts.source')}</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900">{t('form.assignedTo')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-900">Days</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.contact')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">Stage</th>
+                <th className="text-right px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.value')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('contacts.source')}</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.assignedTo')}</th>
+                <th className="text-right px-4 py-3 font-semibold text-slate-900 dark:text-white">Days</th>
               </tr>
             </thead>
             <tbody>
@@ -372,29 +372,29 @@ export default function PipelinePage() {
                 return (
                   <tr
                     key={deal.id}
-                    className="border-b border-slate-200 hover:bg-slate-50 transition-colors"
+                    className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                   >
                     <td className="px-4 py-3">
-                      <Link href={`/pipeline/${deal.id}`} className="text-blue-600 hover:underline font-medium">
+                      <Link href={`/pipeline/${deal.id}`} className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
                         {deal.title}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{contact?.name}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{contact?.name}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs font-medium px-2 py-1 rounded ${stageInfo?.color}`}>
                         {t((stageInfo as any)?.labelKey)}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right font-semibold text-slate-900">
+                    <td className="px-4 py-3 text-right font-semibold text-slate-900 dark:text-white">
                       ${deal.value.toLocaleString()}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded font-medium">
+                      <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded font-medium">
                         {ring}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{deal.assignedTo}</td>
-                    <td className="px-4 py-3 text-right text-slate-600">{daysInStage}d</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{deal.assignedTo}</td>
+                    <td className="px-4 py-3 text-right text-slate-600 dark:text-slate-400">{daysInStage}d</td>
                   </tr>
                 );
               })}
@@ -406,20 +406,20 @@ export default function PipelinePage() {
       {/* Pipeline Summary Bar */}
       <div className="px-4 sm:px-8 py-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="text-center">
-          <p className="text-sm text-slate-600">{t('pipeline.totalDeals')}</p>
-          <p className="text-2xl font-bold text-slate-900">{metrics.totalDeals}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('pipeline.totalDeals')}</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white">{metrics.totalDeals}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-slate-600">{t('pipeline.totalValue')}</p>
-          <p className="text-2xl font-bold text-slate-900">${metrics.totalValue.toLocaleString()}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('pipeline.totalValue')}</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white">${metrics.totalValue.toLocaleString()}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-slate-600">{t('pipeline.averageDeal')}</p>
-          <p className="text-2xl font-bold text-slate-900">${metrics.avgValue.toLocaleString()}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('pipeline.averageDeal')}</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white">${metrics.avgValue.toLocaleString()}</p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-slate-600">{t('pipeline.winRate')}</p>
-          <p className="text-2xl font-bold text-slate-900">
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('pipeline.winRate')}</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white">
             {metrics.totalDeals > 0
               ? `${Math.round((getDealsByStage('completed').length / metrics.totalDeals) * 100)}%`
               : '0%'}

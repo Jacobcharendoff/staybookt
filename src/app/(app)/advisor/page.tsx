@@ -158,11 +158,11 @@ function MessageBubble({ message }: { message: Message }) {
   if (message.isTyping) {
     return (
       <div className="flex justify-start">
-        <div className="bg-[#E9E9EB] rounded-2xl rounded-bl-md px-4 py-3 max-w-[75%]">
+        <div className="bg-[#E9E9EB] dark:bg-slate-700 rounded-2xl rounded-bl-md px-4 py-3 max-w-[75%]">
           <div className="flex gap-1.5 items-center h-5">
-            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+            <div className="w-2 h-2 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-2 h-2 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-2 h-2 bg-slate-400 dark:bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
           </div>
         </div>
       </div>
@@ -174,12 +174,12 @@ function MessageBubble({ message }: { message: Message }) {
       <div
         className={`rounded-2xl px-4 py-2.5 max-w-[75%] whitespace-pre-line leading-relaxed ${
           isAdvisor
-            ? 'bg-[#E9E9EB] text-slate-900 rounded-bl-md'
+            ? 'bg-[#E9E9EB] dark:bg-slate-700 text-slate-900 dark:text-white rounded-bl-md'
             : 'bg-[#0071E3] text-white rounded-br-md'
         }`}
       >
         <p className="text-[15px]">{message.text}</p>
-        <p className={`text-[11px] mt-1 ${isAdvisor ? 'text-slate-500' : 'text-blue-100'}`}>
+        <p className={`text-[11px] mt-1 ${isAdvisor ? 'text-slate-500 dark:text-slate-400' : 'text-blue-100'}`}>
           {message.timestamp}
         </p>
       </div>
@@ -271,8 +271,8 @@ export default function AdvisorPage() {
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-[17px] font-semibold text-slate-900">{t('advisor.title')}</h1>
-              <p className="text-[13px] text-emerald-600 font-medium">{t('advisor.online')}</p>
+              <h1 className="text-[17px] font-semibold text-slate-900 dark:text-white">{t('advisor.title')}</h1>
+              <p className="text-[13px] text-emerald-600 dark:text-emerald-400 font-medium">{t('advisor.online')}</p>
             </div>
           </div>
         </div>
@@ -282,8 +282,8 @@ export default function AdvisorPage() {
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">{t('advisor.greeting', { ownerName: ACCOUNT_DATA.ownerName })}</h2>
-          <p className="text-slate-500 text-center max-w-sm mb-10 leading-relaxed">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{t('advisor.greeting', { ownerName: ACCOUNT_DATA.ownerName })}</h2>
+          <p className="text-slate-500 dark:text-slate-400 text-center max-w-sm mb-10 leading-relaxed">
             {t('advisor.introduction')}
           </p>
 
@@ -297,11 +297,11 @@ export default function AdvisorPage() {
                   onClick={() => handleQuickAction(action)}
                   className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-2xl transition-colors text-left group"
                 >
-                  <div className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center flex-shrink-0">
                     <Icon className="w-4.5 h-4.5 text-blue-600" />
                   </div>
-                  <span className="text-[15px] text-slate-700 font-medium flex-1">{action.label}</span>
-                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
+                  <span className="text-[15px] text-slate-700 dark:text-slate-300 font-medium flex-1">{action.label}</span>
+                  <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors" />
                 </button>
               );
             })}
@@ -318,7 +318,7 @@ export default function AdvisorPage() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t('advisor.placeholder')}
-              className="flex-1 bg-transparent text-[15px] text-slate-900 placeholder-slate-400 outline-none"
+              className="flex-1 bg-transparent text-[15px] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none"
             />
             <button
               onClick={() => handleSend()}
@@ -347,14 +347,14 @@ export default function AdvisorPage() {
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h1 className="text-[17px] font-semibold text-slate-900">{t('advisor.title')}</h1>
-            <p className="text-[13px] text-emerald-600 font-medium">
+            <h1 className="text-[17px] font-semibold text-slate-900 dark:text-white">{t('advisor.title')}</h1>
+            <p className="text-[13px] text-emerald-600 dark:text-emerald-400 font-medium">
               {isTyping ? t('advisor.typing') : t('advisor.online')}
             </p>
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 rounded-full">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900 rounded-full">
             <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-xs font-medium text-emerald-700">{t('advisor.connectedToAccount')}</span>
+            <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">{t('advisor.connectedToAccount')}</span>
           </div>
         </div>
       </div>
@@ -363,7 +363,7 @@ export default function AdvisorPage() {
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {/* Date separator */}
         <div className="flex justify-center mb-4">
-          <span className="text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{t('advisor.today')}</span>
+          <span className="text-xs text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">{t('advisor.today')}</span>
         </div>
 
         {messages.map((message) => (
@@ -400,7 +400,7 @@ export default function AdvisorPage() {
               <button
                 key={suggestion}
                 onClick={() => handleSend(suggestion)}
-                className="flex-shrink-0 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-[13px] text-slate-600 font-medium transition-colors whitespace-nowrap"
+                className="flex-shrink-0 px-3.5 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full text-[13px] text-slate-600 dark:text-slate-400 font-medium transition-colors whitespace-nowrap"
               >
                 {suggestion}
               </button>
@@ -410,8 +410,8 @@ export default function AdvisorPage() {
       )}
 
       {/* Input Bar */}
-      <div className="flex-shrink-0 border-t border-slate-200 bg-white px-4 py-3">
-        <div className="flex items-center gap-2 bg-slate-100 rounded-full px-4 py-2.5">
+      <div className="flex-shrink-0 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3">
+        <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-700 rounded-full px-4 py-2.5">
           <input
             ref={inputRef}
             type="text"
@@ -419,7 +419,7 @@ export default function AdvisorPage() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={t('advisor.placeholder')}
-            className="flex-1 bg-transparent text-[15px] text-slate-900 placeholder-slate-400 outline-none"
+            className="flex-1 bg-transparent text-[15px] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none"
             autoFocus
           />
           <button

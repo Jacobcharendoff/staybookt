@@ -260,11 +260,11 @@ export default function SetupPage() {
             <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <PartyPopper className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">{t('setup.youreAllSet')}</h2>
-            <p className="text-slate-600 mb-2">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">{t('setup.youreAllSet')}</h2>
+            <p className="text-slate-600 dark:text-slate-400 mb-2">
               {t('setup.allSetDesc')}
             </p>
-            <p className="text-slate-500 text-sm mb-8">
+            <p className="text-slate-500 dark:text-slate-500 text-sm mb-8">
               {t('setup.allSetSubtitle')}
             </p>
             <div className="flex gap-3">
@@ -276,7 +276,7 @@ export default function SetupPage() {
               </Link>
               <button
                 onClick={() => setShowCelebration(false)}
-                className="flex-1 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all text-center"
+                className="flex-1 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all text-center"
               >
                 {t('setup.reviewSetup')}
               </button>
@@ -292,8 +292,8 @@ export default function SetupPage() {
             <Rocket className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('setup.title')}</h1>
-            <p className="text-slate-600">{t('setup.subtitle')}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{t('setup.title')}</h1>
+            <p className="text-slate-600 dark:text-slate-400">{t('setup.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -365,12 +365,12 @@ export default function SetupPage() {
           return (
             <div
               key={step.id}
-              className={`bg-white rounded-2xl border transition-all ${
+              className={`bg-white dark:bg-slate-800 rounded-2xl border transition-all ${
                 step.isCompleted
-                  ? 'border-emerald-200 bg-emerald-50/30'
+                  ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/30 dark:bg-emerald-900/20'
                   : isActive
-                    ? 'border-blue-300 shadow-lg shadow-blue-100'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-blue-300 dark:border-blue-700 shadow-lg shadow-blue-100 dark:shadow-blue-900/30'
+                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
               }`}
             >
               {/* Step Header */}
@@ -381,10 +381,10 @@ export default function SetupPage() {
                 {/* Step Number / Check */}
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
                   step.isCompleted
-                    ? 'bg-emerald-100 text-emerald-600'
+                    ? 'bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400'
                     : isActive
-                      ? 'bg-blue-100 text-blue-600'
-                      : 'bg-slate-100 text-slate-400'
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'
+                      : 'bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500'
                 }`}>
                   {step.isCompleted ? (
                     <CheckCircle2 className="w-6 h-6" />
@@ -396,43 +396,43 @@ export default function SetupPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
                     <h3 className={`text-lg font-bold ${
-                      step.isCompleted ? 'text-emerald-700' : 'text-slate-900'
+                      step.isCompleted ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-900 dark:text-white'
                     }`}>
                       {step.isCompleted && 'Done — '}{step.title}
                     </h3>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                       step.category === 'foundation'
-                        ? 'bg-blue-100 text-blue-600'
+                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'
                         : step.category === 'growth'
-                          ? 'bg-emerald-100 text-emerald-600'
-                          : 'bg-purple-100 text-purple-600'
+                          ? 'bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400'
+                          : 'bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400'
                     }`}>
                       {categoryConfig.label}
                     </span>
-                    <span className="text-xs text-slate-400 flex items-center gap-1">
+                    <span className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {step.estimatedTime}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-500 line-clamp-1">{step.description}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1">{step.description}</p>
                 </div>
 
-                <ChevronRight className={`w-5 h-5 text-slate-400 shrink-0 transition-transform ${
+                <ChevronRight className={`w-5 h-5 text-slate-400 dark:text-slate-500 shrink-0 transition-transform ${
                   isActive ? 'rotate-90' : ''
                 }`} />
               </button>
 
               {/* Expanded Content */}
               {isActive && !step.isCompleted && (
-                <div className="px-6 pb-6 border-t border-slate-100">
+                <div className="px-6 pb-6 border-t border-slate-100 dark:border-slate-700">
                   <div className="pt-5">
                     {/* Why It Matters */}
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                    <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6">
                       <div className="flex items-start gap-2">
-                        <TrendingUp className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                        <TrendingUp className="w-4 h-4 text-amber-600 dark:text-amber-500 mt-0.5 shrink-0" />
                         <div>
-                          <p className="text-sm font-semibold text-amber-800 mb-0.5">Why this matters</p>
-                          <p className="text-sm text-amber-700">{step.whyItMatters}</p>
+                          <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-0.5">Why this matters</p>
+                          <p className="text-sm text-amber-700 dark:text-amber-400">{step.whyItMatters}</p>
                         </div>
                       </div>
                     </div>
@@ -442,15 +442,15 @@ export default function SetupPage() {
                       <div className="space-y-4 mb-6">
                         {step.fields.map((field) => (
                           <div key={field.id}>
-                            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                               {field.label}
-                              {field.required && <span className="text-rose-500 ml-1">*</span>}
+                              {field.required && <span className="text-rose-500 dark:text-rose-400 ml-1">*</span>}
                             </label>
                             {field.type === 'select' ? (
                               <select
                                 value={formData[field.id] || ''}
                                 onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
-                                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-900 dark:text-white"
                               >
                                 <option value="">{field.placeholder}</option>
                                 {field.options?.map((opt) => (
@@ -463,7 +463,7 @@ export default function SetupPage() {
                                 onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
                                 placeholder={field.placeholder}
                                 rows={3}
-                                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm resize-none bg-white dark:bg-slate-900 dark:text-white"
                               />
                             ) : (
                               <input
@@ -471,11 +471,11 @@ export default function SetupPage() {
                                 value={formData[field.id] || ''}
                                 onChange={(e) => setFormData({ ...formData, [field.id]: e.target.value })}
                                 placeholder={field.placeholder}
-                                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 text-sm bg-white dark:bg-slate-900 dark:text-white"
                               />
                             )}
                             {field.hint && (
-                              <p className="text-xs text-slate-500 mt-1.5 flex items-center gap-1">
+                              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-1">
                                 <AlertCircle className="w-3 h-3" />
                                 {field.hint}
                               </p>
@@ -489,7 +489,7 @@ export default function SetupPage() {
                     {step.linkTo && !step.fields && (
                       <Link
                         href={step.linkTo}
-                        className="flex items-center gap-2 px-5 py-3 bg-blue-50 text-blue-700 rounded-xl font-medium hover:bg-blue-100 transition mb-6 text-sm"
+                        className="flex items-center gap-2 px-5 py-3 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-xl font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition mb-6 text-sm"
                       >
                         <ArrowRight className="w-4 h-4" />
                         {step.linkLabel}
@@ -500,7 +500,7 @@ export default function SetupPage() {
                     {TOURS[step.id] && (
                       <button
                         onClick={() => setActiveTourId(step.id)}
-                        className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 text-blue-700 rounded-xl font-medium hover:from-blue-100 hover:to-purple-100 transition-all mb-4 w-full justify-center text-sm"
+                        className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-50 dark:from-blue-900/30 to-purple-50 dark:to-purple-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 rounded-xl font-medium hover:from-blue-100 dark:hover:from-blue-900/50 hover:to-purple-100 dark:hover:to-purple-900/50 transition-all mb-4 w-full justify-center text-sm"
                       >
                         <MousePointerClick className="w-4 h-4" />
                         Walk me through this step-by-step
@@ -518,14 +518,14 @@ export default function SetupPage() {
                       </button>
                       <button
                         onClick={() => skipStep(step.id)}
-                        className="px-4 py-3 text-sm text-slate-500 hover:text-slate-700 font-medium transition"
+                        className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 font-medium transition"
                       >
                         Skip for now
                       </button>
                       {step.linkTo && step.fields && (
                         <Link
                           href={step.linkTo}
-                          className="ml-auto text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                          className="ml-auto text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1"
                         >
                           {step.linkLabel}
                           <ChevronRight className="w-4 h-4" />
@@ -542,30 +542,30 @@ export default function SetupPage() {
 
       {/* Bottom Help Section */}
       <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
-            <Phone className="w-5 h-5 text-blue-600" />
+        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mb-3">
+            <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           </div>
-          <h4 className="font-bold text-slate-900 mb-1">Need help?</h4>
-          <p className="text-sm text-slate-600">
+          <h4 className="font-bold text-slate-900 dark:text-white mb-1">Need help?</h4>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Our team is here to help you get set up. Call us at (888) 555-GROW or chat with us anytime.
           </p>
         </div>
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center mb-3">
-            <Shield className="w-5 h-5 text-emerald-600" />
+        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900 rounded-xl flex items-center justify-center mb-3">
+            <Shield className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <h4 className="font-bold text-slate-900 mb-1">Your data is safe</h4>
-          <p className="text-sm text-slate-600">
+          <h4 className="font-bold text-slate-900 dark:text-white mb-1">Your data is safe</h4>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Everything you enter is encrypted and secure. We never sell your data. You own it, period.
           </p>
         </div>
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
-            <Heart className="w-5 h-5 text-purple-600" />
+        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
+          <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-xl flex items-center justify-center mb-3">
+            <Heart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
           </div>
-          <h4 className="font-bold text-slate-900 mb-1">Built for the trades</h4>
-          <p className="text-sm text-slate-600">
+          <h4 className="font-bold text-slate-900 dark:text-white mb-1">Built for the trades</h4>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Growth OS was built by people who understand service businesses. Every feature is designed for the way you actually work.
           </p>
         </div>

@@ -290,7 +290,7 @@ export default function MessagesPage() {
   return (
     <div className="h-screen flex flex-col lg:flex-row bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       {/* Left Sidebar - Filters */}
-      <div className="hidden lg:flex lg:w-56 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <div className="hidden lg:flex lg:w-56 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 dark:flex flex-col">
         <div className="p-4 border-b border-slate-200 dark:border-slate-700">
           <button
             onClick={() => {
@@ -323,8 +323,8 @@ export default function MessagesPage() {
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-sm font-medium ${
                     activeFilter === filter.id
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-slate-700 hover:bg-slate-100'
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                   }`}
                 >
                   <IconComponent className="w-4 h-4" />
@@ -349,7 +349,7 @@ export default function MessagesPage() {
                 placeholder={t('common.search')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm dark:bg-slate-900 dark:text-white"
               />
             </div>
           </div>
@@ -360,10 +360,10 @@ export default function MessagesPage() {
               {TEMPLATES.map((template) => (
                 <div
                   key={template.id}
-                  className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600 hover:border-blue-300 transition-colors cursor-pointer"
+                  className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4 border border-slate-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors cursor-pointer"
                 >
-                  <p className="font-medium text-sm text-slate-900 mb-1">{template.title}</p>
-                  <p className="text-xs text-slate-600 line-clamp-2 mb-3">{template.preview}</p>
+                  <p className="font-medium text-sm text-slate-900 dark:text-white mb-1">{template.title}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">{template.preview}</p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
@@ -399,12 +399,12 @@ export default function MessagesPage() {
                   }`}
                 >
                   <div className="flex items-start justify-between mb-1">
-                    <p className="font-medium text-sm text-slate-900 truncate">
+                    <p className="font-medium text-sm text-slate-900 dark:text-white truncate">
                       {message.contactName}
                     </p>
-                    <span className="text-xs text-slate-500">{message.timestamp}</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">{message.timestamp}</span>
                   </div>
-                  <p className="text-sm text-slate-600 truncate mb-2">{message.preview}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 truncate mb-2">{message.preview}</p>
                   <div className="flex items-center gap-2">
                     <span
                       className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full ${
@@ -430,8 +430,8 @@ export default function MessagesPage() {
               {filteredMessages.length === 0 && (
                 <div className="flex items-center justify-center h-full text-center">
                   <div>
-                    <MessageSquare className="w-12 h-12 text-slate-300 mx-auto mb-2" />
-                    <p className="text-slate-500 text-sm">No messages found</p>
+                    <MessageSquare className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">No messages found</p>
                   </div>
                 </div>
               )}
@@ -445,12 +445,12 @@ export default function MessagesPage() {
             <div className="flex flex-col h-full">
               {/* Compose Header */}
               <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-slate-900">Compose Message</h2>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Compose Message</h2>
                 <button
                   onClick={() => setComposeMode(false)}
-                  className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                 >
-                  <X className="w-5 h-5 text-slate-600" />
+                  <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 </button>
               </div>
 
@@ -458,19 +458,19 @@ export default function MessagesPage() {
               <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-4 sm:py-6 space-y-5">
                 {/* To Field */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">To</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">To</label>
                   <input
                     type="text"
                     placeholder="Search contact..."
                     value={composeData.to}
                     onChange={(e) => setComposeData({ ...composeData, to: e.target.value })}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:text-white"
                   />
                 </div>
 
                 {/* Type Toggle */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Type</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Type</label>
                   <div className="flex gap-3">
                     {(['SMS', 'Email'] as const).map((type) => (
                       <button
@@ -491,7 +491,7 @@ export default function MessagesPage() {
                 {/* Subject (Email only) */}
                 {composeData.type === 'Email' && (
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Subject
                     </label>
                     <input
@@ -499,14 +499,14 @@ export default function MessagesPage() {
                       placeholder="Email subject..."
                       value={composeData.subject}
                       onChange={(e) => setComposeData({ ...composeData, subject: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:text-white"
                     />
                   </div>
                 )}
 
                 {/* Template Selector */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Select Template
                   </label>
                   <select
@@ -521,7 +521,7 @@ export default function MessagesPage() {
                         }));
                       }
                     }}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:text-white"
                   >
                     <option value="">Choose a template...</option>
                     {TEMPLATES.map((template) => (
@@ -534,16 +534,16 @@ export default function MessagesPage() {
 
                 {/* Message Body */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
                   <textarea
                     value={composeData.message}
                     onChange={(e) => setComposeData({ ...composeData, message: e.target.value })}
                     placeholder="Type your message..."
                     rows={10}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:text-white resize-none"
                   />
                   {composeData.type === 'SMS' && (
-                    <p className="text-xs text-slate-500 mt-2">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                       {composeData.message.length} / 160 characters
                     </p>
                   )}
@@ -551,13 +551,13 @@ export default function MessagesPage() {
               </div>
 
               {/* Compose Actions */}
-              <div className="px-4 sm:px-8 py-4 sm:py-6 border-t border-slate-200 flex gap-4">
+              <div className="px-4 sm:px-8 py-4 sm:py-6 border-t border-slate-200 dark:border-slate-700 flex gap-4">
                 <button className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
                   Send Message
                 </button>
                 <button
                   onClick={() => setComposeMode(false)}
-                  className="flex-1 px-6 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium"
+                  className="flex-1 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors font-medium"
                 >
                   Cancel
                 </button>
@@ -566,16 +566,16 @@ export default function MessagesPage() {
           ) : selectedMessage ? (
             <div className="flex flex-col h-full">
               {/* Message Header */}
-              <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200">
+              <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-200 dark:border-slate-700">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h2 className="text-2xl font-bold text-slate-900">
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                       {selectedMessage.contactName}
                     </h2>
-                    <p className="text-sm text-slate-600 mt-1">{selectedMessage.recipient}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{selectedMessage.recipient}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-slate-600 mb-2">{selectedMessage.timestamp}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{selectedMessage.timestamp}</p>
                     <div className="flex gap-2 justify-end">
                       <span
                         className={`inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full ${
@@ -602,19 +602,19 @@ export default function MessagesPage() {
               {/* Message Content */}
               <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-4 sm:py-6">
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
-                  <p className="text-slate-900 whitespace-pre-wrap">
+                  <p className="text-slate-900 dark:text-white whitespace-pre-wrap">
                     {selectedMessage.fullContent}
                   </p>
                 </div>
               </div>
 
               {/* Message Actions */}
-              <div className="px-4 sm:px-8 py-4 sm:py-6 border-t border-slate-200 flex gap-4">
+              <div className="px-4 sm:px-8 py-4 sm:py-6 border-t border-slate-200 dark:border-slate-700 flex gap-4">
                 <button className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2">
                   <Send className="w-4 h-4" />
                   Reply
                 </button>
-                <button className="flex-1 px-6 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium flex items-center justify-center gap-2">
+                <button className="flex-1 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors font-medium flex items-center justify-center gap-2">
                   <Copy className="w-4 h-4" />
                   Forward
                 </button>
@@ -623,9 +623,9 @@ export default function MessagesPage() {
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-600 text-lg font-medium">No message selected</p>
-                <p className="text-slate-500 text-sm mt-1">Select a message to view details</p>
+                <MessageSquare className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                <p className="text-slate-600 dark:text-slate-400 text-lg font-medium">No message selected</p>
+                <p className="text-slate-500 dark:text-slate-500 text-sm mt-1">Select a message to view details</p>
               </div>
             </div>
           )}

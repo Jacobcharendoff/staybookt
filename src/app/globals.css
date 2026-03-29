@@ -648,6 +648,27 @@ select:focus-visible {
 .dark .bg-slate-200 {
   background-color: #334155;
 }
+.dark .bg-slate-300 {
+  background-color: #475569;
+}
+.dark .bg-slate-400 {
+  background-color: #64748b;
+}
+.dark .bg-slate-600 {
+  background-color: #1e293b;
+}
+.dark .bg-slate-700 {
+  background-color: #0f172a;
+}
+.dark .bg-slate-800 {
+  background-color: #0f172a;
+}
+.dark .bg-slate-900 {
+  background-color: #0f172a;
+}
+.dark .bg-slate-950 {
+  background-color: #0f172a;
+}
 
 /* ── Gray backgrounds (legacy) ── */
 .dark .bg-gray-50,
@@ -677,6 +698,12 @@ select:focus-visible {
 .dark .text-slate-400 {
   color: #94a3b8;
 }
+.dark .text-slate-300 {
+  color: #cbd5e1;
+}
+.dark .text-slate-200 {
+  color: #e2e8f0;
+}
 
 /* ── Gray text (legacy) ── */
 .dark .text-gray-900 {
@@ -695,6 +722,9 @@ select:focus-visible {
 .dark .text-gray-400 {
   color: #64748b;
 }
+.dark .text-white {
+  color: #1e293b;
+}
 
 /* ── Slate borders ── */
 .dark .border-slate-100 {
@@ -706,6 +736,21 @@ select:focus-visible {
 .dark .border-slate-300 {
   border-color: #475569;
 }
+.dark .border-slate-400 {
+  border-color: #64748b;
+}
+.dark .border-slate-500 {
+  border-color: #64748b;
+}
+.dark .border-slate-600 {
+  border-color: #475569;
+}
+.dark .border-slate-700 {
+  border-color: #334155;
+}
+.dark .border-white {
+  border-color: #334155;
+}
 
 /* ── Gray borders (legacy) ── */
 .dark .border-gray-100 {
@@ -713,6 +758,9 @@ select:focus-visible {
 }
 .dark .border-gray-200 {
   border-color: #334155;
+}
+.dark .border-gray-300 {
+  border-color: #475569;
 }
 
 /* ── Shadows ── */
@@ -832,6 +880,12 @@ select:focus-visible {
 .dark .hover\:bg-slate-200:hover {
   background-color: #475569;
 }
+.dark .hover\:bg-gray-50:hover {
+  background-color: #1e293b;
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: #334155;
+}
 
 /* ── Scrollbar in dark mode ── */
 .dark ::-webkit-scrollbar-track {
@@ -846,6 +900,9 @@ select:focus-visible {
 
 /* ── Dividers ── */
 .dark .divide-slate-200 > :not(:last-child) {
+  border-color: #334155;
+}
+.dark .divide-gray-200 > :not(:last-child) {
   border-color: #334155;
 }
 

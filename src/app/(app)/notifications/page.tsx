@@ -199,19 +199,19 @@ export default function NotificationsPage() {
 
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
-              <h3 className={`${notif.read ? 'font-medium' : 'font-bold'} text-slate-900 text-sm line-clamp-2`}>
+              <h3 className={`${notif.read ? 'font-medium' : 'font-bold'} text-slate-900 dark:text-white text-sm line-clamp-2`}>
                 {notif.title}
               </h3>
-              <span className="text-xs text-slate-500 flex-shrink-0 whitespace-nowrap">{notif.timeAgo}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 flex-shrink-0 whitespace-nowrap">{notif.timeAgo}</span>
             </div>
 
             {expandedId === notif.id && (
               <>
-                <p className="text-sm text-slate-600 mt-2">{notif.description}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{notif.description}</p>
                 {notif.action && (
                   <a
                     href={notif.action.href}
-                    className="inline-block mt-3 px-3 py-1 text-xs font-medium bg-blue-600 text-white rounded hover:bg-blue-700"
+                    className="inline-block mt-3 px-3 py-1 text-xs font-medium bg-blue-600 dark:bg-blue-700 text-white rounded hover:bg-blue-700 dark:hover:bg-blue-800"
                   >
                     {notif.action.label}
                   </a>
@@ -220,7 +220,7 @@ export default function NotificationsPage() {
             )}
 
             {expandedId !== notif.id && (
-              <p className="text-xs text-slate-600 mt-1 line-clamp-1">{notif.description}</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-1">{notif.description}</p>
             )}
           </div>
 
@@ -237,23 +237,23 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{t('notifications.title')}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">{t('notifications.title')}</h1>
           {unreadCount > 0 && (
-            <button className="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium shadow-sm">
+            <button className="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium shadow-sm">
               {t('notifications.markAllRead')}
             </button>
           )}
         </div>
 
         {unreadCount > 0 && (
-          <div className="text-sm text-slate-600">
-            You have <span className="font-semibold text-blue-600">{unreadCount} {t('notifications.unread')}</span> notification{unreadCount !== 1 ? 's' : ''}
+          <div className="text-sm text-slate-600 dark:text-slate-400">
+            You have <span className="font-semibold text-blue-600 dark:text-blue-400">{unreadCount} {t('notifications.unread')}</span> notification{unreadCount !== 1 ? 's' : ''}
           </div>
         )}
       </div>
 
       {/* Filter Tabs */}
-      <div className="mb-8 border-b border-slate-200">
+      <div className="mb-8 border-b border-slate-200 dark:border-slate-700">
         <div className="flex gap-1 overflow-x-auto">
           {filterTabs.map(tab => (
             <button
@@ -261,8 +261,8 @@ export default function NotificationsPage() {
               onClick={() => setFilterTab(tab.id)}
               className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                 filterTab === tab.id
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-slate-600 hover:text-slate-900'
+                  ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300'
               }`}
             >
               {tab.label}
@@ -281,7 +281,7 @@ export default function NotificationsPage() {
         {/* Today */}
         {groupedNotifications.today.length > 0 && (
           <div>
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{t('notifications.today')}</h2>
+            <h2 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">{t('notifications.today')}</h2>
             <div className="space-y-3">
               {groupedNotifications.today.map(notif => renderNotificationCard(notif))}
             </div>
@@ -291,7 +291,7 @@ export default function NotificationsPage() {
         {/* Yesterday */}
         {groupedNotifications.yesterday.length > 0 && (
           <div>
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{t('notifications.yesterday')}</h2>
+            <h2 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">{t('notifications.yesterday')}</h2>
             <div className="space-y-3">
               {groupedNotifications.yesterday.map(notif => renderNotificationCard(notif))}
             </div>
@@ -301,7 +301,7 @@ export default function NotificationsPage() {
         {/* Earlier */}
         {groupedNotifications.earlier.length > 0 && (
           <div>
-            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{t('notifications.earlier')}</h2>
+            <h2 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">{t('notifications.earlier')}</h2>
             <div className="space-y-3">
               {groupedNotifications.earlier.map(notif => renderNotificationCard(notif))}
             </div>
@@ -310,9 +310,9 @@ export default function NotificationsPage() {
 
         {filteredNotifications.length === 0 && (
           <div className="text-center py-12">
-            <Bell className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-500 font-medium">{t('notifications.noNotifications')}</p>
-            <p className="text-slate-400 text-sm mt-1">{t('notifications.youAreCaughtUp')}</p>
+            <Bell className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+            <p className="text-slate-500 dark:text-slate-400 font-medium">{t('notifications.noNotifications')}</p>
+            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">{t('notifications.youAreCaughtUp')}</p>
           </div>
         )}
       </div>
