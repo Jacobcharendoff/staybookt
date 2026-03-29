@@ -553,3 +553,65 @@ a {
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out forwards;
 }
+
+/* ─── ACCESSIBILITY ─────────────────────────────────────────── */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-fade-up,
+  .scroll-fade-left,
+  .scroll-fade-right,
+  .scroll-scale-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .stagger-children > div {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .shimmer-border,
+  .gradient-text-shimmer {
+    animation: none !important;
+  }
+}
+
+/* Focus visible styles for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to content link (hidden until focused) */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  z-index: 100;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 0;
+}

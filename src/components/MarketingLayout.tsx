@@ -94,7 +94,9 @@ export function Footer() {
     { label: 'Features', href: '/#explorer' },
     { label: 'Autopilot', href: '/#autopilot' },
     { label: 'Pricing', href: '/#pricing' },
-    { label: 'Compare', href: '/#compare' },
+    { label: 'vs ServiceTitan', href: '/vs-servicetitan' },
+    { label: 'vs Jobber', href: '/vs-jobber' },
+    { label: 'vs Housecall Pro', href: '/vs-housecall-pro' },
   ];
 
   const industryLinks = [
