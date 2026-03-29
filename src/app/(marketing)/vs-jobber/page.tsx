@@ -332,30 +332,6 @@ export default function VsJobberPage() {
         </div>
       </div>
 
-      {/* Final CTA */}
-      <div className="py-16 bg-emerald-50">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('vsJobber.seeInAction')}</h2>
-          <p className="text-lg text-slate-700 mb-8">
-            {t('vsJobber.readyGrowBeyond')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/signup"
-              className="inline-block px-8 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors"
-            >
-              Start Free Trial
-            </Link>
-            <Link
-              href="/demo"
-              className="inline-block px-8 py-3 bg-white text-emerald-600 font-semibold border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors"
-            >
-              Book a Demo
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* FAQ Section */}
       <div className="py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4">

@@ -256,24 +256,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-            Ready to grow?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Start your free 14-day trial today. No credit card required. Cancel anytime.
-          </p>
-          <Link
-            href="/setup"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
-          >
-            Start Free Trial
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
     </MarketingLayout>
   );
 }
