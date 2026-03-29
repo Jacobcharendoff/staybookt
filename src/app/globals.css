@@ -919,3 +919,30 @@ select:focus-visible {
 .dark .to-pink-100 {
   --tw-gradient-to: rgba(236, 72, 153, 0.15);
 }
+
+/* ── Ring colors ── */
+.dark .ring-blue-500 {
+  --tw-ring-color: rgba(59, 130, 246, 0.5);
+}
+.dark .ring-red-500 {
+  --tw-ring-color: rgba(239, 68, 68, 0.5);
+}
+.dark .ring-slate-300 {
+  --tw-ring-color: #94a3b8;
+}
+
+/* ── Table styling ── */
+.dark table {
+  border-color: #475569;
+}
+.dark th {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+.dark td {
+  border-color: #475569;
+}
+.dark tbody tr:hover {
+  background-color: #0f172a;
+}

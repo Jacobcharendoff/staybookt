@@ -137,18 +137,18 @@ const notifications: Notification[] = [
 ];
 
 const typeConfig = {
-  lead: { icon: Users, color: 'text-blue-600', bgColor: 'bg-blue-100' },
-  payment: { icon: DollarSign, color: 'text-green-600', bgColor: 'bg-green-100' },
-  urgent: { icon: AlertCircle, color: 'text-red-600', bgColor: 'bg-red-100' },
-  estimate: { icon: MessageSquare, color: 'text-blue-600', bgColor: 'bg-blue-100' },
-  reminder: { icon: Bell, color: 'text-amber-600', bgColor: 'bg-amber-100' },
-  completion: { icon: CheckCircle2, color: 'text-green-600', bgColor: 'bg-green-100' },
-  report: { icon: TrendingUp, color: 'text-purple-600', bgColor: 'bg-purple-100' },
-  overdue: { icon: AlertCircle, color: 'text-red-600', bgColor: 'bg-red-100' },
-  review: { icon: Star, color: 'text-yellow-600', bgColor: 'bg-yellow-100' },
-  team: { icon: Users, color: 'text-slate-600', bgColor: 'bg-slate-100' },
-  automation: { icon: Zap, color: 'text-indigo-600', bgColor: 'bg-indigo-100' },
-  system: { icon: MessageCircle, color: 'text-slate-600', bgColor: 'bg-slate-100' }
+  lead: { icon: Users, color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-blue-100 dark:bg-blue-900' },
+  payment: { icon: DollarSign, color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-100 dark:bg-green-900' },
+  urgent: { icon: AlertCircle, color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-100 dark:bg-red-900' },
+  estimate: { icon: MessageSquare, color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-blue-100 dark:bg-blue-900' },
+  reminder: { icon: Bell, color: 'text-amber-600 dark:text-amber-400', bgColor: 'bg-amber-100 dark:bg-amber-900' },
+  completion: { icon: CheckCircle2, color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-100 dark:bg-green-900' },
+  report: { icon: TrendingUp, color: 'text-purple-600 dark:text-purple-400', bgColor: 'bg-purple-100 dark:bg-purple-900' },
+  overdue: { icon: AlertCircle, color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-100 dark:bg-red-900' },
+  review: { icon: Star, color: 'text-yellow-600 dark:text-yellow-400', bgColor: 'bg-yellow-100 dark:bg-yellow-900' },
+  team: { icon: Users, color: 'text-slate-600 dark:text-slate-400', bgColor: 'bg-slate-100 dark:bg-slate-700' },
+  automation: { icon: Zap, color: 'text-indigo-600 dark:text-indigo-400', bgColor: 'bg-indigo-100 dark:bg-indigo-900' },
+  system: { icon: MessageCircle, color: 'text-slate-600 dark:text-slate-400', bgColor: 'bg-slate-100 dark:bg-slate-700' }
 };
 
 export default function NotificationsPage() {

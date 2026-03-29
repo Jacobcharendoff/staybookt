@@ -432,7 +432,7 @@ export default function Dashboard() {
               data={pipelineData}
               margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
               <YAxis allowDecimals={false} />
               <Tooltip />
@@ -490,7 +490,7 @@ export default function Dashboard() {
                   <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />
@@ -512,7 +512,7 @@ export default function Dashboard() {
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={stageDurationData} margin={{ top: 5, right: 30, left: 0, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="stage" angle={-45} textAnchor="end" height={80} />
               <YAxis />
               <Tooltip />
@@ -564,7 +564,7 @@ export default function Dashboard() {
                       {deal.contactName}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700 font-medium">
+                      <span className="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 font-medium">
                         {deal.stage.replace('_', ' ')}
                       </span>
                     </div>

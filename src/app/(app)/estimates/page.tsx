@@ -211,7 +211,7 @@ export default function EstimatesPage() {
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.totalEstimates')}</p>
               <p className="text-3xl font-bold text-slate-900 dark:text-white">{totalEstimates}</p>
             </div>
-            <FileText className="w-12 h-12 text-blue-100" />
+            <FileText className="w-12 h-12 text-blue-100 dark:text-blue-900" />
           </div>
         </div>
 
@@ -221,7 +221,7 @@ export default function EstimatesPage() {
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.pendingApproval')}</p>
               <p className="text-3xl font-bold text-slate-900 dark:text-white">{pendingApproval}</p>
             </div>
-            <Clock className="w-12 h-12 text-amber-100" />
+            <Clock className="w-12 h-12 text-amber-100 dark:text-amber-900" />
           </div>
         </div>
 
@@ -231,7 +231,7 @@ export default function EstimatesPage() {
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.approvedThisMonth')}</p>
               <p className="text-3xl font-bold text-slate-900 dark:text-white">{approvedThisMonth}</p>
             </div>
-            <TrendingUp className="w-12 h-12 text-emerald-100" />
+            <TrendingUp className="w-12 h-12 text-emerald-100 dark:text-emerald-900" />
           </div>
         </div>
 
@@ -241,7 +241,7 @@ export default function EstimatesPage() {
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium mb-1">{t('estimates.conversionRate')}</p>
               <p className="text-3xl font-bold text-slate-900 dark:text-white">{conversionRate}%</p>
             </div>
-            <div className="w-12 h-12 rounded-lg bg-rose-100 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-lg bg-rose-100 dark:bg-rose-900 flex items-center justify-center">
               <span className="text-xl font-bold text-rose-600">↗</span>
             </div>
           </div>

@@ -408,13 +408,13 @@ export default function SchedulePage() {
                                   <div className={`text-sm font-semibold truncate ${TECH_COLORS[job.assignedTo].text}`}>
                                     {job.title}
                                   </div>
-                                  <div className="text-xs text-slate-600 truncate mt-1">{job.customerName}</div>
+                                  <div className="text-xs text-slate-600 dark:text-slate-400 truncate mt-1">{job.customerName}</div>
                                   <div className={`inline-block px-2 py-0.5 rounded text-xs font-medium mt-2 ${TECH_COLORS[job.assignedTo].badge}`}>
                                     {job.assignedTo}
                                   </div>
                                 </div>
                               </div>
-                              <div className="mt-2 text-sm font-semibold text-emerald-600">
+                              <div className="mt-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                                 ${job.value.toLocaleString()}
                               </div>
                             </div>

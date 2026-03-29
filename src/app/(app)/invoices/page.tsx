@@ -86,7 +86,7 @@ export default function InvoicesPage() {
     setDueDate(futureDate.toISOString().split('T')[0]);
   }, [initializeSeedData]);
 
-  if (!mounted) return <div className="p-8">Loading...</div>;
+  if (!mounted) return <div className="p-8 dark:text-white">Loading...</div>;
 
   const filteredInvoices = invoices.filter((inv) => {
     const matchesSearch =

@@ -175,7 +175,7 @@ function MessageBubble({ message }: { message: Message }) {
         className={`rounded-2xl px-4 py-2.5 max-w-[75%] whitespace-pre-line leading-relaxed ${
           isAdvisor
             ? 'bg-[#E9E9EB] dark:bg-slate-700 text-slate-900 dark:text-white rounded-bl-md'
-            : 'bg-[#0071E3] text-white rounded-br-md'
+            : 'bg-[#0071E3] dark:bg-blue-600 text-white rounded-br-md'
         }`}
       >
         <p className="text-[15px]">{message.text}</p>
