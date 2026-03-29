@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { Contact, Deal, Activity } from '@/types';
 import { LeadSourceBadge } from '@/components/LeadSourceBadge';
@@ -36,6 +37,7 @@ const ACTIVITY_ICONS = {
 export default function ContactDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { t } = useLanguage();
   const { getContact, getDealsByContact, activities, initializeSeedData, updateContact } = useStore();
 
   const [mounted, setMounted] = useState(false);
@@ -105,7 +107,7 @@ export default function ContactDetailPage() {
       : 'bg-blue-100 text-blue-700';
 
   if (!mounted) {
-    return <div className="p-8">Loading...</div>;
+    return <div className="p-8">{t('contactDetail.loading')}</div>;
   }
 
   if (!contact) {
@@ -117,17 +119,17 @@ export default function ContactDetailPage() {
             className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back to Contacts
+            {t('contactDetail.backToContacts')}
           </button>
         </div>
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-slate-600 text-lg">Contact not found</p>
+            <p className="text-slate-600 text-lg">{t('contactDetail.notFound')}</p>
             <Link
               href="/contacts"
               className="text-blue-600 hover:text-blue-700 mt-2 inline-block"
             >
-              Return to contacts
+              {t('contactDetail.returnToContacts')}
             </Link>
           </div>
         </div>
@@ -145,7 +147,7 @@ export default function ContactDetailPage() {
             className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back to Contacts
+            {t('contactDetail.backToContacts')}
           </button>
           <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
             <Edit className="w-5 h-5 text-slate-600" />
@@ -155,7 +157,7 @@ export default function ContactDetailPage() {
         <div className="flex items-baseline gap-3">
           <h1 className="text-2xl sm:text-4xl font-bold text-slate-900">{contact.name}</h1>
           <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${contactTypeColor}`}>
-            {contact.type === 'customer' ? 'Customer' : 'Lead'}
+            {contact.type === 'customer' ? t('contactDetail.customer') : t('contactDetail.lead')}
           </span>
         </div>
         <div className="mt-3">
@@ -167,13 +169,13 @@ export default function ContactDetailPage() {
       <div className="flex-1 px-4 sm:px-8 py-4 sm:py-6 space-y-6">
         {/* Contact Info Card */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Contact Information</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('contactDetail.contactInformation')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <Mail className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Email</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.email')}</p>
                   <a
                     href={`mailto:${contact.email}`}
                     className="text-blue-600 hover:text-blue-700 font-medium"
@@ -186,7 +188,7 @@ export default function ContactDetailPage() {
               <div className="flex items-center gap-3 mb-4">
                 <Phone className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Phone</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.phone')}</p>
                   <a
                     href={`tel:${contact.phone}`}
                     className="text-blue-600 hover:text-blue-700 font-medium"
@@ -201,7 +203,7 @@ export default function ContactDetailPage() {
               <div className="flex items-start gap-3 mb-4">
                 <MapPin className="w-5 h-5 text-slate-400 mt-0.5" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Address</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.address')}</p>
                   <p className="text-slate-900 font-medium">{contact.address}</p>
                 </div>
               </div>
@@ -209,7 +211,7 @@ export default function ContactDetailPage() {
               <div className="flex items-center gap-3">
                 <Calendar className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Member Since</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.memberSince')}</p>
                   <p className="text-slate-900 font-medium">
                     {new Date(contact.createdAt).toLocaleDateString()}
                   </p>
@@ -222,33 +224,33 @@ export default function ContactDetailPage() {
         {/* Quick Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Total Deals</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.totalDeals')}</p>
             <p className="text-2xl font-bold text-slate-900 mt-1">{stats.totalDeals}</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Total Value</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.totalValue')}</p>
             <p className="text-2xl font-bold text-slate-900 mt-1">
               ${stats.totalValue.toLocaleString()}
             </p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Avg Deal Value</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.avgDealValue')}</p>
             <p className="text-2xl font-bold text-slate-900 mt-1">
               ${stats.avgValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             </p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Days as Customer</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('contactDetail.daysAsCustomer')}</p>
             <p className="text-2xl font-bold text-slate-900 mt-1">{stats.daysAsCustomer}</p>
           </div>
         </div>
 
         {/* Associated Deals */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Associated Deals ({deals.length})</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('contactDetail.associatedDeals')} ({deals.length})</h2>
           {deals.length > 0 ? (
             <div className="space-y-3">
               {deals.map((deal) => (
@@ -280,13 +282,13 @@ export default function ContactDetailPage() {
               ))}
             </div>
           ) : (
-            <p className="text-slate-600 text-center py-8">No deals yet for this contact</p>
+            <p className="text-slate-600 text-center py-8">{t('contactDetail.noDealMessage')}</p>
           )}
         </div>
 
         {/* Activity Timeline */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Activity Timeline</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('contactDetail.activityTimeline')}</h2>
           {contactActivities.length > 0 ? (
             <div className="space-y-4">
               {contactActivities.map((activity) => {
@@ -314,20 +316,20 @@ export default function ContactDetailPage() {
               })}
             </div>
           ) : (
-            <p className="text-slate-600 text-center py-8">No activities yet</p>
+            <p className="text-slate-600 text-center py-8">{t('contactDetail.noActivitiesMessage')}</p>
           )}
         </div>
 
         {/* Notes Section */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-slate-900">Notes</h2>
+            <h2 className="text-lg font-semibold text-slate-900">{t('contactDetail.notes')}</h2>
             {!editingNotes && (
               <button
                 onClick={() => setEditingNotes(true)}
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium"
               >
-                Edit
+                {t('contactDetail.edit')}
               </button>
             )}
           </div>
@@ -339,7 +341,7 @@ export default function ContactDetailPage() {
                 onChange={(e) => setNotes(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 rows={6}
-                placeholder="Add notes about this contact..."
+                placeholder={t('contactDetail.addNotesPlaceholder')}
               />
               <div className="flex gap-2 justify-end">
                 <button
@@ -349,41 +351,41 @@ export default function ContactDetailPage() {
                   }}
                   className="px-3 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 text-sm font-medium"
                 >
-                  Cancel
+                  {t('contactDetail.cancel')}
                 </button>
                 <button
                   onClick={handleSaveNotes}
                   disabled={isSavingNotes}
                   className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium disabled:opacity-50"
                 >
-                  {isSavingNotes ? 'Saving...' : 'Save'}
+                  {isSavingNotes ? t('contactDetail.saving') : t('contactDetail.save')}
                 </button>
               </div>
             </div>
           ) : (
-            <p className="text-slate-700 whitespace-pre-wrap">{notes || 'No notes yet'}</p>
+            <p className="text-slate-700 whitespace-pre-wrap">{notes || t('contactDetail.noNotesYet')}</p>
           )}
         </div>
 
         {/* Quick Actions Bar */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('contactDetail.quickActions')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <button className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors">
               <Phone className="w-4 h-4" />
-              Log Call
+              {t('contactDetail.logCall')}
             </button>
             <button className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors">
               <Mail className="w-4 h-4" />
-              Send Email
+              {t('contactDetail.sendEmail')}
             </button>
             <button className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors">
               <FileText className="w-4 h-4" />
-              Create Estimate
+              {t('contactDetail.createEstimate')}
             </button>
             <button className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors">
               <Plus className="w-4 h-4" />
-              Add Deal
+              {t('contactDetail.addDeal')}
             </button>
           </div>
         </div>

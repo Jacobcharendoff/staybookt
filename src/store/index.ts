@@ -49,7 +49,7 @@ interface GrowthOSStore {
   initializeSeedData: () => void;
 }
 
-const generateId = () => Math.random().toString(36).substring(7);
+const generateId = () => typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 11);
 
 const SEED_DATA = {
   contacts: [

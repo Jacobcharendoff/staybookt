@@ -13,13 +13,13 @@ export default function VsHousecallProPage() {
       <section className="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-20 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-            Growth OS vs Housecall Pro
+            {t('vsHousecallPro.title')}
           </h1>
           <p className="text-xl text-slate-300 mb-8">
-            One price. Everything included. No add-on surprises.
+            {t('vsHousecallPro.subtitle')}
           </p>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Housecall Pro's base price looks cheap—until you add proposals, service plans, and price books. See why Canadian contractors choose Growth OS.
+            {t('vsHousecallPro.description')}
           </p>
         </div>
       </section>
@@ -28,7 +28,7 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6 bg-slate-50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 text-slate-900">
-            Real-World Monthly Cost (5 Users)
+            {t('vsHousecallPro.realWorldCost')}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -36,7 +36,7 @@ export default function VsHousecallProPage() {
             <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-blue-600">
               <h3 className="text-2xl font-bold text-blue-600 mb-6">Growth OS</h3>
               <div className="text-4xl font-bold text-slate-900 mb-2">$149/mo</div>
-              <p className="text-slate-600 mb-8">Plus plan. Everything included.</p>
+              <p className="text-slate-600 mb-8">{t('vsHousecallPro.plus')}</p>
 
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start">
@@ -78,7 +78,7 @@ export default function VsHousecallProPage() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h3 className="text-2xl font-bold text-slate-700 mb-6">Housecall Pro</h3>
               <div className="text-4xl font-bold text-slate-900 mb-2">$229+/mo</div>
-              <p className="text-slate-600 mb-8">Essentials + common add-ons</p>
+              <p className="text-slate-600 mb-8">{t('vsHousecallPro.essentials')})</p>
 
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start">
@@ -87,36 +87,36 @@ export default function VsHousecallProPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-orange-600 font-bold mr-3">+$40</span>
-                  <span>Sales Proposal Tool</span>
+                  <span>{t('vsHousecallPro.proposal')})</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-orange-600 font-bold mr-3">+$40</span>
-                  <span>Recurring Service Plans</span>
+                  <span>{t('vsHousecallPro.recurring')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-orange-600 font-bold mr-3">—</span>
-                  <span>Price book (separate subscription)</span>
+                  <span>{t('vsHousecallPro.priceBook')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-red-600 font-bold mr-3">✗</span>
-                  <span>Manual tax setup only</span>
+                  <span>{t('vsHousecallPro.manualTax')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-red-600 font-bold mr-3">✗</span>
-                  <span>No French support</span>
+                  <span>{t('vsHousecallPro.noFrench')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-red-600 font-bold mr-3">✗</span>
-                  <span>No HomeStars integration</span>
+                  <span>{t('vsHousecallPro.noHomeStars')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-red-600 font-bold mr-3">✗</span>
-                  <span>Chat support only</span>
+                  <span>{t('vsHousecallPro.chatOnly')}</span>
                 </li>
               </ul>
 
               <p className="text-xs text-slate-500 mt-6 pt-6 border-t">
-                * Add GPS ($20/mo per vehicle) and rate book add-ons separately. Actual cost varies.
+                * {t('vsHousecallPro.gpsExtra')}
               </p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 text-slate-900">
-            Feature-by-Feature Breakdown
+            {t('vsHousecallPro.featureBreakdown')}
           </h2>
 
           <div className="overflow-x-auto bg-white rounded-lg shadow">
@@ -325,25 +325,25 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6 bg-slate-50">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">
-            What Housecall Pro Does Well
+            {t('vsHousecallPro.whatWorks')}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-slate-900 mb-3">Good Mobile App</h3>
+              <h3 className="font-bold text-slate-900 mb-3">{t('vsHousecallPro.mobileApp')}</h3>
               <p className="text-slate-600 text-sm">
-                Field teams get a solid mobile experience for dispatch and job updates.
+                {t('vsHousecallPro.mobileDesc')}
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-slate-900 mb-3">Decent Dispatch</h3>
+              <h3 className="font-bold text-slate-900 mb-3">{t('vsHousecallPro.dispatch')}</h3>
               <p className="text-slate-600 text-sm">
-                Route planning and crew assignment work well for small operations.
+                {t('vsHousecallPro.dispatchDesc')}
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-slate-900 mb-3">Low Entry Price (Solo)</h3>
+              <h3 className="font-bold text-slate-900 mb-3">{t('vsHousecallPro.lowEntry')}</h3>
               <p className="text-slate-600 text-sm">
-                At $59/mo for one person, it's cheap to start. Cost escalates fast with scale.
+                {t('vsHousecallPro.lowEntryDesc')}
               </p>
             </div>
           </div>
@@ -354,55 +354,55 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">
-            Where Growth OS Pulls Ahead
+            {t('vsHousecallPro.pullsAhead')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             <div className="border-l-4 border-blue-600 pl-6">
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                All-In-One Pricing
+                {t('vsHousecallPro.allInOne')}
               </h3>
               <p className="text-slate-600">
-                No hunting for add-ons. Proposals, service plans, price book, and automation are built in. One plan scales with you.
+                {t('vsHousecallPro.allInOneDesc')}
               </p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6">
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Built for Canada
+                {t('vsHousecallPro.builtCanada')}
               </h3>
               <p className="text-slate-600">
-                HST, GST, and QST auto-calculate by province. French templates included. Designed for how Canadian trades actually work.
+                {t('vsHousecallPro.builtCanadaDesc')}
               </p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6">
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Growth Automations
+                {t('vsHousecallPro.growthAutos')}
               </h3>
               <p className="text-slate-600">
-                Auto-respond to leads in 60 seconds. Smart follow-ups. Recurring service reminders. Grow without hiring more office staff.
+                {t('vsHousecallPro.growthAutosDesc')}
               </p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6">
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Real Support
+                {t('vsHousecallPro.realSupport')}
               </h3>
               <p className="text-slate-600">
-                Phone support 24/7. When you call, we answer. Not scripts or chatbots. People who know your business.
+                {t('vsHousecallPro.realSupportDesc')}
               </p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6">
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                HomeStars Integration
+                {t('vsHousecallPro.homeStarsInteg')}
               </h3>
               <p className="text-slate-600">
-                Sync reviews directly. Turn reviews into social proof. Build your reputation automatically.
+                {t('vsHousecallPro.homeStarsIntegDesc')}
               </p>
             </div>
             <div className="border-l-4 border-blue-600 pl-6">
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Stability You Can Trust
+                {t('vsHousecallPro.stability2')}
               </h3>
               <p className="text-slate-600">
-                Features work as promised. Support knows what they're talking about. No surprise breakdowns mid-month.
+                {t('vsHousecallPro.stability2Desc')}
               </p>
             </div>
           </div>
@@ -413,33 +413,33 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6 bg-slate-50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 text-slate-900">
-            Growth OS Pricing (No Hidden Costs)
+            {t('vsHousecallPro.noHidden')}
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {/* Starter */}
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h3 className="text-xl font-bold text-slate-900 mb-2">Starter</h3>
-              <p className="text-slate-600 mb-6 text-sm">Solo or pair</p>
+              <p className="text-slate-600 mb-6 text-sm">{t('vsHousecallPro.soloLabel')}</p>
               <div className="text-3xl font-bold text-slate-900 mb-6">
                 $79<span className="text-lg">/mo</span>
               </div>
               <ul className="space-y-3 text-sm text-slate-600 mb-8">
                 <li className="flex items-start">
                   <span className="text-green-600 font-bold mr-2">✓</span>
-                  <span>2 users</span>
+                  <span>{t('vsHousecallPro.twoBenUsers')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 font-bold mr-2">✓</span>
-                  <span>Core CRM</span>
+                  <span>{t('vsHousecallPro.coreCRM')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 font-bold mr-2">✓</span>
-                  <span>Estimates & invoices</span>
+                  <span>{t('vsHousecallPro.estimatesInvoices')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 font-bold mr-2">✓</span>
-                  <span>Auto tax calc</span>
+                  <span>{t('vsHousecallPro.autoTax')}</span>
                 </li>
               </ul>
               <Link
@@ -453,10 +453,10 @@ export default function VsHousecallProPage() {
             {/* Plus (Recommended) */}
             <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-blue-600 relative">
               <div className="absolute top-0 left-6 bg-blue-600 text-white px-4 py-1 rounded-b text-sm font-semibold">
-                Recommended
+                {t('vsHousecallPro.recommended')}
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2 mt-4">Plus</h3>
-              <p className="text-slate-600 mb-6 text-sm">Growing teams</p>
+              <p className="text-slate-600 mb-6 text-sm">{t('vsHousecallPro.growingTeams')}</p>
               <div className="text-3xl font-bold text-blue-600 mb-6">
                 $149<span className="text-lg">/mo</span>
               </div>
@@ -497,7 +497,7 @@ export default function VsHousecallProPage() {
             {/* Enterprise */}
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h3 className="text-xl font-bold text-slate-900 mb-2">Enterprise</h3>
-              <p className="text-slate-600 mb-6 text-sm">Scaling fast</p>
+              <p className="text-slate-600 mb-6 text-sm">{t('vsHousecallPro.scalingFast')}</p>
               <div className="text-3xl font-bold text-slate-900 mb-6">
                 Custom<span className="text-lg">/mo</span>
               </div>
@@ -538,23 +538,23 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-            Ready to Stop Overpaying for Add-Ons?
+            {t('vsHousecallPro.stopOverpaying')}
           </h2>
           <p className="text-lg mb-8 text-blue-100">
-            Switch to Growth OS and save $80/month while getting better support and Canadian-native features.
+            {t('vsHousecallPro.stopOverpayingDesc')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/signup"
               className="bg-white text-blue-600 px-8 py-3 rounded font-bold hover:bg-blue-50 transition"
             >
-              Free 14-Day Trial
+              {t('vsHousecallPro.free14')}
             </Link>
             <Link
               href="/demo"
               className="border-2 border-white text-white px-8 py-3 rounded font-bold hover:bg-blue-600 transition"
             >
-              Book a Demo
+              {t('marketing.bookDemo')}
             </Link>
           </div>
         </div>
@@ -564,43 +564,43 @@ export default function VsHousecallProPage() {
       <section className="py-16 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-10">
-            Common Questions
+            {t('vsHousecallPro.closeQuestions')}
           </h2>
 
           <div className="space-y-6">
             <div>
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Can I import my data from Housecall Pro?
+                {t('vsHousecallPro.importQuestion')}
               </h3>
               <p className="text-slate-600">
-                Yes. We help you migrate customers, jobs, and settings. Our onboarding team walks you through it.
+                {t('vsHousecallPro.importAnswer')}
               </p>
             </div>
 
             <div>
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Is there a setup fee?
+                {t('vsHousecallPro.setupFeeQuestion')}
               </h3>
               <p className="text-slate-600">
-                No. Start free on day one. We charge monthly only—nothing more.
+                {t('vsHousecallPro.setupFeeAnswer')}
               </p>
             </div>
 
             <div>
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                What if I only need one user?
+                {t('vsHousecallPro.oneUserQuestion')}
               </h3>
               <p className="text-slate-600">
-                Try the Starter plan at $79/mo for 2 users. All the core features, none of the bloat. Cancel anytime.
+                {t('vsHousecallPro.oneUserAnswer')}
               </p>
             </div>
 
             <div>
               <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                Do you integrate with QuickBooks?
+                {t('vsHousecallPro.quickBooksQuestion')}
               </h3>
               <p className="text-slate-600">
-                Yes. Real-time sync without the bugs Housecall Pro users report. Your estimates come through as estimates, not invoices.
+                {t('vsHousecallPro.quickBooksAnswer')}
               </p>
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { Deal, Contact, Activity, PipelineStage } from '@/types';
 import { LeadSourceBadge } from '@/components/LeadSourceBadge';
@@ -64,6 +65,7 @@ const PRIORITY_LEVELS = {
 export default function DealDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { t } = useLanguage();
   const { getDeal, getContact, activities, initializeSeedData, updateDeal } = useStore();
 
   const [mounted, setMounted] = useState(false);
@@ -139,7 +141,7 @@ export default function DealDetailPage() {
   const stageIndex = getCurrentStageIndex();
 
   if (!mounted) {
-    return <div className="p-8">Loading...</div>;
+    return <div className="p-8">{t('dealDetail.loading')}</div>;
   }
 
   if (!deal) {
@@ -151,17 +153,17 @@ export default function DealDetailPage() {
             className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back to Pipeline
+            {t('dealDetail.backToPipeline')}
           </button>
         </div>
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-slate-600 text-lg">Deal not found</p>
+            <p className="text-slate-600 text-lg">{t('dealDetail.dealNotFound')}</p>
             <Link
               href="/pipeline"
               className="text-blue-600 hover:text-blue-700 mt-2 inline-block"
             >
-              Return to pipeline
+              {t('dealDetail.returnToPipeline')}
             </Link>
           </div>
         </div>
@@ -184,7 +186,7 @@ export default function DealDetailPage() {
             className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back to Pipeline
+            {t('dealDetail.backToPipeline')}
           </button>
           <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
             <Edit className="w-5 h-5 text-slate-600" />
@@ -212,9 +214,9 @@ export default function DealDetailPage() {
         {/* Stage Progress Tracker */}
         <div className="bg-white rounded-xl p-4 sm:p-8 shadow-sm border border-slate-200">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-lg font-semibold text-slate-900">Pipeline Progress</h2>
+            <h2 className="text-lg font-semibold text-slate-900">{t('dealDetail.pipelineProgress')}</h2>
             <span className="text-sm text-slate-600 font-medium">
-              {daysInStage} day{daysInStage !== 1 ? 's' : ''} in current stage
+              {t('dealDetail.daysInStage', { days: daysInStage, plural: daysInStage !== 1 ? 's' : '' })}
             </span>
           </div>
 
@@ -267,13 +269,13 @@ export default function DealDetailPage() {
 
         {/* Deal Info Card */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Deal Information</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('dealDetail.dealInformation')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <FileText className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Service Type</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.serviceType')}</p>
                   <p className="text-slate-900 font-medium capitalize">
                     {deal.title}
                   </p>
@@ -283,9 +285,9 @@ export default function DealDetailPage() {
               <div className="flex items-start gap-3 mb-4">
                 <MapPin className="w-5 h-5 text-slate-400 mt-0.5" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Location</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.location')}</p>
                   <p className="text-slate-900 font-medium">
-                    {contact?.address || 'N/A'}
+                    {contact?.address || t('dealDetail.notAvailable')}
                   </p>
                 </div>
               </div>
@@ -295,7 +297,7 @@ export default function DealDetailPage() {
               <div className="flex items-center gap-3 mb-4">
                 <Calendar className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Created</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.created')}</p>
                   <p className="text-slate-900 font-medium">
                     {new Date(deal.createdAt).toLocaleDateString()}
                   </p>
@@ -305,7 +307,7 @@ export default function DealDetailPage() {
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-600 uppercase font-semibold">Last Updated</p>
+                  <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.lastUpdated')}</p>
                   <p className="text-slate-900 font-medium">
                     {new Date(deal.updatedAt).toLocaleDateString()}
                   </p>
@@ -318,7 +320,7 @@ export default function DealDetailPage() {
             <div className="flex items-center gap-3">
               <TrendingUp className="w-5 h-5 text-slate-400" />
               <div>
-                <p className="text-xs text-slate-600 uppercase font-semibold">Source</p>
+                <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.source')}</p>
                 <div className="mt-2">
                   <LeadSourceBadge source={deal.source} variant="full" />
                 </div>
@@ -330,7 +332,7 @@ export default function DealDetailPage() {
         {/* Contact Card */}
         {contact && (
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Contact Information</h2>
+            <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('dealDetail.contactInformation')}</h2>
             <Link
               href={`/contacts/${contact.id}`}
               className="flex items-start justify-between p-4 border border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all"
@@ -364,22 +366,22 @@ export default function DealDetailPage() {
         {/* Financial Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Deal Value</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.dealValue')}</p>
             <p className="text-2xl font-bold text-slate-900 mt-2">
               ${deal.value.toLocaleString()}
             </p>
           </div>
 
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Estimated Profit</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.estimatedProfit')}</p>
             <p className="text-2xl font-bold text-emerald-600 mt-2">
               ${Math.floor(deal.value * 0.35).toLocaleString()}
             </p>
-            <p className="text-xs text-slate-600 mt-2">35% margin</p>
+            <p className="text-xs text-slate-600 mt-2">35% {t('dealDetail.margin')}</p>
           </div>
 
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <p className="text-xs text-slate-600 uppercase font-semibold">Status</p>
+            <p className="text-xs text-slate-600 uppercase font-semibold">{t('dealDetail.status')}</p>
             <p className="text-lg font-bold text-slate-900 mt-2 capitalize">
               {STAGE_LABELS[deal.stage]}
             </p>
@@ -388,7 +390,7 @@ export default function DealDetailPage() {
 
         {/* Activity Timeline */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Activity Timeline</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('dealDetail.activityTimeline')}</h2>
           {dealActivities.length > 0 ? (
             <div className="space-y-4">
               {dealActivities.map((activity) => {
@@ -416,20 +418,20 @@ export default function DealDetailPage() {
               })}
             </div>
           ) : (
-            <p className="text-slate-600 text-center py-8">No activities yet</p>
+            <p className="text-slate-600 text-center py-8">{t('dealDetail.noActivitiesMessage')}</p>
           )}
         </div>
 
         {/* Notes Section */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-slate-900">Notes</h2>
+            <h2 className="text-lg font-semibold text-slate-900">{t('dealDetail.notes')}</h2>
             {!editingNotes && (
               <button
                 onClick={() => setEditingNotes(true)}
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium"
               >
-                Edit
+                {t('dealDetail.edit')}
               </button>
             )}
           </div>
@@ -441,7 +443,7 @@ export default function DealDetailPage() {
                 onChange={(e) => setNotes(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 rows={6}
-                placeholder="Add notes about this deal..."
+                placeholder={t('dealDetail.addNotesPlaceholder')}
               />
               <div className="flex gap-2 justify-end">
                 <button
@@ -451,25 +453,25 @@ export default function DealDetailPage() {
                   }}
                   className="px-3 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 text-sm font-medium"
                 >
-                  Cancel
+                  {t('dealDetail.cancel')}
                 </button>
                 <button
                   onClick={handleSaveNotes}
                   disabled={isSavingNotes}
                   className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium disabled:opacity-50"
                 >
-                  {isSavingNotes ? 'Saving...' : 'Save'}
+                  {isSavingNotes ? t('dealDetail.saving') : t('dealDetail.save')}
                 </button>
               </div>
             </div>
           ) : (
-            <p className="text-slate-700 whitespace-pre-wrap">{notes || 'No notes yet'}</p>
+            <p className="text-slate-700 whitespace-pre-wrap">{notes || t('dealDetail.noNotesYet')}</p>
           )}
         </div>
 
         {/* Stage Navigation */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Stage Actions</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('dealDetail.stageActions')}</h2>
           <div className="flex flex-col sm:flex-row gap-3">
             {prevStage && (
               <button
@@ -477,7 +479,7 @@ export default function DealDetailPage() {
                 className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Move Back
+                {t('dealDetail.moveBack')}
               </button>
             )}
 
@@ -486,7 +488,7 @@ export default function DealDetailPage() {
                 onClick={() => handleStageChange(nextStage)}
                 className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
               >
-                Advance to {STAGE_LABELS[nextStage]}
+                {t('dealDetail.advanceTo', { stage: STAGE_LABELS[nextStage] })}
                 <ArrowRight className="w-4 h-4" />
               </button>
             )}
@@ -494,14 +496,14 @@ export default function DealDetailPage() {
             {deal.stage === 'completed' && (
               <button className="flex items-center justify-center gap-2 px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-medium text-sm transition-colors">
                 <FileText className="w-4 h-4" />
-                Generate Invoice
+                {t('dealDetail.generateInvoice')}
               </button>
             )}
 
             {deal.stage !== 'invoiced' && deal.stage !== 'completed' && (
               <button className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors">
                 <CheckSquare className="w-4 h-4" />
-                Mark as Completed
+                {t('dealDetail.markAsCompleted')}
               </button>
             )}
           </div>

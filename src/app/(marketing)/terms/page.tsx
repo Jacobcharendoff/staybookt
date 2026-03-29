@@ -11,8 +11,8 @@ export default function TermsPage() {
       {/* Hero Section */}
       <section className="pt-24 pb-12 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Terms of Service</h1>
-          <p className="text-gray-600">Last updated: March 2026</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('termsPage.title')}</h1>
+          <p className="text-gray-600">{t('termsPage.lastUpdated')}</p>
         </div>
       </section>
 

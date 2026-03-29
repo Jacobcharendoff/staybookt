@@ -13,13 +13,13 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Growth OS vs ServiceTitan
+            {t('vsServicetitan.title')}
           </h1>
           <p className="text-xl text-gray-600 mb-4">
-            Built for Growth, Not for Enterprise Overhead
+            {t('vsServicetitan.subtitle')}
           </p>
           <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8">
-            Small-to-mid Canadian service shops are making the switch. ServiceTitan's high per-technician fees and complex setup don't fit how you work. Growth OS is built for you.
+            {t('vsServicetitan.description')}
           </p>
         </div>
       </section>
@@ -28,7 +28,7 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
-            Head-to-Head Comparison
+            {t('vsServicetitan.headToHead')}
           </h2>
 
           <div className="overflow-x-auto bg-white rounded-2xl shadow-sm border border-gray-200">
@@ -36,109 +36,109 @@ export default function VsServiceTitanPage() {
               <tbody>
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Monthly Cost (5-person team)
+                    {t('vsServicetitan.monthlyPlan')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    $149/month
+                    {t('vsServicetitan.monthlyGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    $625–$1,225/month
+                    {t('vsServicetitan.monthlyServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Setup/Implementation Fee
+                    {t('vsServicetitan.setupFee')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    Free
+                    {t('vsServicetitan.setupGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    $5,000–$10,000
+                    {t('vsServicetitan.setupServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Contract Terms
+                    {t('vsServicetitan.contractTerms')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    Month-to-month
+                    {t('vsServicetitan.contractGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    12–36 months locked
+                    {t('vsServicetitan.contractServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Early Exit Penalty
+                    {t('vsServicetitan.earlyExit')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    None
+                    {t('vsServicetitan.exitGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    $5,000–$20,000+
+                    {t('vsServicetitan.exitServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Setup Time to Go Live
+                    {t('vsServicetitan.setupTime')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    10 minutes
+                    {t('vsServicetitan.timeGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    6–12 months
+                    {t('vsServicetitan.timeServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Canadian Taxes (HST/GST/QST)
+                    {t('vsServicetitan.canadianTaxes')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    Built-in
+                    {t('vsServicetitan.taxesGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    Not available
+                    {t('vsServicetitan.taxesServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    French + English Support
+                    {t('vsServicetitan.frenchSupport')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    Yes
+                    {t('vsServicetitan.frenchGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    English only
+                    {t('vsServicetitan.frenchServiceTitan')}
                   </td>
                 </tr>
 
                 <tr className="border-b border-gray-200">
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    HomeStars Integration
+                    {t('vsServicetitan.homeStars')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    Built-in
+                    {t('vsServicetitan.homeStarsGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    Not available
+                    {t('vsServicetitan.homeStarsServiceTitan')}
                   </td>
                 </tr>
 
                 <tr>
                   <td className="px-6 py-4 font-semibold text-gray-900 bg-gray-50 w-1/3">
-                    Customer Support
+                    {t('vsServicetitan.support')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    Email + Priority
+                    {t('vsServicetitan.supportGrowthOS')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
-                    Slow response times reported
+                    {t('vsServicetitan.supportServiceTitan')}
                   </td>
                 </tr>
               </tbody>
@@ -147,7 +147,7 @@ export default function VsServiceTitanPage() {
 
           <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-2xl">
             <p className="text-sm text-gray-600">
-              <strong>Growth OS pricing example:</strong> A 5-person crew with the Pro plan ($149/month) starts at $1,788/year. ServiceTitan's same team costs $7,500–$14,700/year before setup fees. That's $5,700–$12,900 you keep in your pocket.
+              <strong>{t('vsServicetitan.pricingExample')}</strong>
             </p>
           </div>
         </div>
@@ -157,27 +157,27 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            ServiceTitan: Great for Large Operations
+            {t('vsServicetitan.greatFor')}
           </h2>
           <p className="text-lg text-gray-600 mb-6">
-            ServiceTitan is excellent for big shops. If you have 20+ technicians, a fat budget, and need their enterprise features, it might work. Their system handles complex operations, integrations, and heavy volume.
+            {t('vsServicetitan.greatForDesc')}
           </p>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-gray-700">✓ Multi-branch operations</p>
+              <p className="text-gray-700">✓ {t('vsServicetitan.multiBranch')}</p>
             </div>
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-gray-700">✓ 50+ technicians</p>
+              <p className="text-gray-700">✓ {t('vsServicetitan.fiftyTechs')}</p>
             </div>
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-gray-700">✓ Enterprise budgets</p>
+              <p className="text-gray-700">✓ {t('vsServicetitan.enterpriseBudget')}</p>
             </div>
             <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-gray-700">✓ Custom integrations</p>
+              <p className="text-gray-700">✓ {t('vsServicetitan.customIntegrations')}</p>
             </div>
           </div>
           <p className="text-gray-600 mt-6 text-sm">
-            But if that's not you—if you're 1–15 people, you need to move fast, and you want to keep costs down—keep reading.
+            {t('vsServicetitan.notYou')}
           </p>
         </div>
       </section>
@@ -186,35 +186,35 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            Growth OS is Built for You
+            {t('vsServicetitan.builtFor')}
           </h2>
           <p className="text-lg text-gray-600 mb-6">
-            If you're growing a Canadian field service shop—plumbing, HVAC, electrical, landscaping—Growth OS gets it.
+            {t('vsServicetitan.builtForDesc')}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div className="p-4 bg-white rounded-lg border border-gray-300">
               <p className="font-semibold text-gray-900 mb-2">1–15 person teams</p>
-              <p className="text-sm text-gray-600">No bloat. No features you don't need.</p>
+              <p className="text-sm text-gray-600">{t('vsServicetitan.noBlat')}</p>
             </div>
             <div className="p-4 bg-white rounded-lg border border-gray-300">
               <p className="font-semibold text-gray-900 mb-2">Canadian first</p>
-              <p className="text-sm text-gray-600">HST/GST/QST, French, HomeStars built-in.</p>
+              <p className="text-sm text-gray-600">{t('vsServicetitan.canadianFirst')}</p>
             </div>
             <div className="p-4 bg-white rounded-lg border border-gray-300">
               <p className="font-semibold text-gray-900 mb-2">Month-to-month</p>
-              <p className="text-sm text-gray-600">No lock-in. No penalty. Pure flexibility.</p>
+              <p className="text-sm text-gray-600">{t('vsServicetitan.monthToMonth')}</p>
             </div>
             <div className="p-4 bg-white rounded-lg border border-gray-300">
               <p className="font-semibold text-gray-900 mb-2">Fast setup</p>
-              <p className="text-sm text-gray-600">Go live in 10 minutes. Not 10 months.</p>
+              <p className="text-sm text-gray-600">{t('vsServicetitan.fastSetup')}</p>
             </div>
             <div className="p-4 bg-white rounded-lg border border-gray-300">
               <p className="font-semibold text-gray-900 mb-2">You own your data</p>
-              <p className="text-sm text-gray-600">Export anytime. We don't hold you hostage.</p>
+              <p className="text-sm text-gray-600">{t('vsServicetitan.ownData')}</p>
             </div>
             <div className="p-4 bg-white rounded-lg border border-gray-300">
               <p className="font-semibold text-gray-900 mb-2">Real support</p>
-              <p className="text-sm text-gray-600">Fast, helpful, not a ticket queue.</p>
+              <p className="text-sm text-gray-600">{t('vsServicetitan.realSupport')}</p>
             </div>
           </div>
         </div>
@@ -224,7 +224,7 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
-            Pricing Breakdown
+            {t('vsServicetitan.pricingBreakdown')}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -310,10 +310,10 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-gradient-to-br from-blue-600 to-blue-700 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to Switch?
+            {t('cta.stopLosingLeads')}
           </h2>
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            See how Growth OS compares in action. Start a free trial or book a demo—no credit card, no pressure.
+            {t('cta.ctaDescription')}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -321,18 +321,18 @@ export default function VsServiceTitanPage() {
               href="/trial"
               className="inline-block px-8 py-4 bg-white text-blue-600 font-bold rounded-2xl hover:bg-gray-50 transition-colors"
             >
-              Start Free Trial
+              {t('cta.startFreeTrial')}
             </Link>
             <Link
               href="/demo"
               className="inline-block px-8 py-4 bg-blue-800 text-white font-bold rounded-2xl hover:bg-blue-900 transition-colors border border-blue-500"
             >
-              Book a Demo
+              {t('marketing.bookDemo')}
             </Link>
           </div>
 
           <p className="text-sm text-blue-100 mt-8">
-            Joining 200+ Canadian service shops on Growth OS.
+            {t('cta.noCardRequired')}
           </p>
         </div>
       </section>
@@ -341,39 +341,39 @@ export default function VsServiceTitanPage() {
       <section className="w-full bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            Have Questions?
+            {t('vsServicetitan.haveQuestions')}
           </h2>
 
           <div className="space-y-6">
             <div className="p-6 bg-white rounded-lg border border-gray-200">
-              <h3 className="font-bold text-gray-900 mb-2">Can I import my data from ServiceTitan?</h3>
+              <h3 className="font-bold text-gray-900 mb-2">{t('vsServicetitan.importQuestion')}</h3>
               <p className="text-gray-600">
-                Yes. We help you migrate customer and job data with zero hassle. Our team handles the heavy lifting.
+                {t('vsServicetitan.importAnswer')}
               </p>
             </div>
 
             <div className="p-6 bg-white rounded-lg border border-gray-200">
-              <h3 className="font-bold text-gray-900 mb-2">What if I only have 1 or 2 techs?</h3>
+              <h3 className="font-bold text-gray-900 mb-2">{t('vsServicetitan.techQuestion')}</h3>
               <p className="text-gray-600">
-                Growth OS Starter is $79/month. Perfect for solopreneurs. Scale up to Pro or Enterprise as you grow.
+                {t('vsServicetitan.techAnswer')}
               </p>
             </div>
 
             <div className="p-6 bg-white rounded-lg border border-gray-200">
-              <h3 className="font-bold text-gray-900 mb-2">Do you offer a money-back guarantee?</h3>
+              <h3 className="font-bold text-gray-900 mb-2">{t('vsServicetitan.guaranteeQuestion')}</h3>
               <p className="text-gray-600">
-                30-day trial. If it's not for you, no questions asked. But we think you'll stick around.
+                {t('vsServicetitan.guaranteeAnswer')}
               </p>
             </div>
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <p className="text-gray-600 mb-4">{t('vsServicetitan.moreQuestions')}</p>
             <Link
               href="/contact"
               className="inline-block text-blue-600 font-semibold hover:text-blue-700 underline"
             >
-              Get in touch with our team
+              {t('vsServicetitan.getInTouch')}
             </Link>
           </div>
         </div>

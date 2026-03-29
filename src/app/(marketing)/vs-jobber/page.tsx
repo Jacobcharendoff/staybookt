@@ -13,15 +13,13 @@ export default function VsJobberPage() {
       <div className="py-16 bg-gradient-to-br from-slate-50 to-white">
         <div className="max-w-5xl mx-auto px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Growth OS vs Jobber
+            {t('vsJobber.title')}
           </h1>
           <p className="text-xl text-slate-600 mb-6">
-            More Than Scheduling. Built to Grow.
+            {t('vsJobber.subtitle')}
           </p>
           <p className="text-lg text-slate-700 max-w-3xl">
-            Jobber excels at the basics — scheduling, quoting, and keeping your calendar straight.
-            But Growth OS is built for teams ready to grow their revenue, not just manage their schedule.
-            Canadian contractors. Bilingual teams. Hands-on growth.
+            {t('vsJobber.description')}
           </p>
         </div>
       </div>
@@ -31,14 +29,14 @@ export default function VsJobberPage() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div>
-              <p className="text-sm font-semibold text-slate-600 uppercase">Growth OS</p>
+              <p className="text-sm font-semibold text-slate-600 uppercase">{t('vsJobber.pricingHighlight')}</p>
               <p className="text-4xl font-bold text-slate-900 mt-2">$149/month</p>
-              <p className="text-slate-700 mt-2">For 5 users on Standard plan</p>
+              <p className="text-slate-700 mt-2">{t('vsJobber.forFiveUsers')}</p>
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-600 uppercase">Jobber</p>
+              <p className="text-sm font-semibold text-slate-600 uppercase">{t('vsJobber.jobberLabel')}</p>
               <p className="text-4xl font-bold text-slate-900 mt-2">$315/month</p>
-              <p className="text-slate-700 mt-2">Grow plan + 4 extra users @ $29 each</p>
+              <p className="text-slate-700 mt-2">{t('vsJobber.jobberUsers')}</p>
             </div>
           </div>
         </div>
@@ -47,13 +45,13 @@ export default function VsJobberPage() {
       {/* Comparison Table */}
       <div className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12">Head-to-Head Comparison</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-12">{t('comparison.compare')}</h2>
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-slate-300 bg-slate-50">
-                  <th className="px-4 py-3 text-left font-semibold text-slate-900">Feature</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-900">{t('vsJobber.feature')}</th>
                   <th className="px-4 py-3 text-left font-semibold text-emerald-700">Growth OS</th>
                   <th className="px-4 py-3 text-left font-semibold text-slate-600">Jobber</th>
                 </tr>
@@ -61,7 +59,7 @@ export default function VsJobberPage() {
               <tbody className="divide-y divide-slate-200">
                 {/* Pricing */}
                 <tr>
-                  <td className="px-4 py-4 font-medium text-slate-900">Monthly Cost (5 users)</td>
+                  <td className="px-4 py-4 font-medium text-slate-900">{t('vsJobber.canadianTaxSetup')}</td>
                   <td className="px-4 py-4 text-emerald-700 font-semibold">$149/month</td>
                   <td className="px-4 py-4 text-slate-700">$315/month</td>
                 </tr>
@@ -176,28 +174,26 @@ export default function VsJobberPage() {
       {/* Who is Jobber Good For */}
       <div className="py-16 bg-slate-50">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">Who Jobber is Great For</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">{t('vsJobber.jobberGood')}</h2>
           <p className="text-slate-700 leading-relaxed mb-6">
-            Jobber is solid if you need a simple scheduling tool. It works well for small teams — 1 to 3 people —
-            who just need basic quoting and calendar management. If you're not worried about estimates landing in inboxes (or 60% going unseen),
-            and you're okay with manual QuickBooks matching, Jobber gets the job done.
+            {t('vsJobber.jobberDesc')}
           </p>
           <ul className="space-y-3 text-slate-700">
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Solo contractors or very small teams</span>
+              <span>{t('vsJobber.soloTeams')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Teams comfortable with basic scheduling only</span>
+              <span>{t('vsJobber.basicScheduling')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Businesses not in Canada or needing bilingual support</span>
+              <span>{t('vsJobber.notCanada')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Manual invoice and payment workflows</span>
+              <span>{t('vsJobber.manualWorkflows')}</span>
             </li>
           </ul>
         </div>
@@ -206,32 +202,30 @@ export default function VsJobberPage() {
       {/* Who Growth OS is Built For */}
       <div className="py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">Who Growth OS is Built For</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">{t('vsJobber.builtForGrowth')}</h2>
           <p className="text-slate-700 leading-relaxed mb-6">
-            Growth OS is for shops ready to grow — not just manage the schedule. Canadian contractors. Bilingual teams.
-            Businesses that want estimates to actually be read, leads to get instant responses, and automations to handle
-            the repetitive stuff so you can focus on winning and serving.
+            {t('vsJobber.builtForGrowthDesc')}
           </p>
           <ul className="space-y-3 text-slate-700">
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Service businesses in Canada needing tax compliance built-in</span>
+              <span>{t('vsJobber.canadianNeed')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Teams ready to grow beyond basic scheduling</span>
+              <span>{t('vsJobber.readyGrow')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Bilingual teams serving French and English markets</span>
+              <span>{t('vsJobber.bilingual')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Businesses serious about automating lead follow-up</span>
+              <span>{t('vsJobber.automateLeads')}</span>
             </li>
             <li className="flex items-start">
               <span className="text-emerald-600 font-bold mr-3">✓</span>
-              <span>Teams ready to scale estimate delivery and customer trust</span>
+              <span>{t('vsJobber.scaleEstimates')}</span>
             </li>
           </ul>
         </div>
@@ -240,13 +234,13 @@ export default function VsJobberPage() {
       {/* Growth OS Pricing Tiers */}
       <div className="py-16 bg-slate-50">
         <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">Growth OS Pricing Plans</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">{t('vsJobber.pricingTiers')}</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Starter */}
             <div className="bg-white rounded-lg border border-slate-200 p-8">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Starter</h3>
-              <p className="text-slate-600 mb-6">Perfect to start</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">{t('vsJobber.starter')}</h3>
+              <p className="text-slate-600 mb-6">{t('vsJobber.startPerfect')}</p>
               <p className="text-3xl font-bold text-slate-900 mb-6">
                 $49<span className="text-lg font-normal text-slate-600">/mo</span>
               </p>
@@ -273,10 +267,10 @@ export default function VsJobberPage() {
             {/* Standard (Highlighted) */}
             <div className="bg-white rounded-lg border-2 border-emerald-500 p-8 shadow-lg relative">
               <div className="absolute -top-4 left-4 bg-emerald-500 text-white px-4 py-1 rounded-full text-xs font-bold">
-                MOST POPULAR
+                {t('vsJobber.mostPopular')}
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Standard</h3>
-              <p className="text-slate-600 mb-6">Built to grow</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">{t('vsJobber.standard')}</h3>
+              <p className="text-slate-600 mb-6">{t('vsJobber.builtGrow')}</p>
               <p className="text-3xl font-bold text-slate-900 mb-6">
                 $149<span className="text-lg font-normal text-slate-600">/mo</span>
               </p>
@@ -306,8 +300,8 @@ export default function VsJobberPage() {
 
             {/* Professional */}
             <div className="bg-white rounded-lg border border-slate-200 p-8">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Professional</h3>
-              <p className="text-slate-600 mb-6">Advanced growth</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">{t('vsJobber.professional')}</h3>
+              <p className="text-slate-600 mb-6">{t('vsJobber.advancedGrow')}</p>
               <p className="text-3xl font-bold text-slate-900 mb-6">
                 $299<span className="text-lg font-normal text-slate-600">/mo</span>
               </p>
@@ -341,10 +335,9 @@ export default function VsJobberPage() {
       {/* Final CTA */}
       <div className="py-16 bg-emerald-50">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">See Growth OS in Action</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">{t('vsJobber.seeInAction')}</h2>
           <p className="text-lg text-slate-700 mb-8">
-            Ready to grow beyond scheduling? Try Growth OS free for 14 days.
-            No credit card. No long-term contract.
+            {t('vsJobber.readyGrowBeyond')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -366,37 +359,34 @@ export default function VsJobberPage() {
       {/* FAQ Section */}
       <div className="py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8">Common Questions</h2>
+          <h2 className="text-2xl font-bold text-slate-900 mb-8">{t('vsJobber.commonQuestions')}</h2>
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Can I switch from Jobber to Growth OS?</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">{t('vsJobber.switchQuestion')}</h3>
               <p className="text-slate-700">
-                Yes. We can help you move your customers, jobs, and estimates over.
-                Your data belongs to you — we make the transition smooth.
+                {t('vsJobber.switchAnswer')}
               </p>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Do you offer discounts for annual plans?</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">{t('vsJobber.discountQuestion')}</h3>
               <p className="text-slate-700">
-                We keep pricing simple and fair. Pay monthly and cancel anytime. No long contracts. No surprise fees.
+                {t('vsJobber.discountAnswer')}
               </p>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Is Growth OS right for my Canadian business?</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">{t('vsJobber.canadianQuestion')}</h3>
               <p className="text-slate-700">
-                If you're in Canada and need bilingual support, tax compliance, or HomeStars integration, yes.
-                Growth OS is built for the Canadian market.
+                {t('vsJobber.canadianAnswer')}
               </p>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">What if I need more users?</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">{t('vsJobber.usersQuestion')}</h3>
               <p className="text-slate-700">
-                Professional plan includes unlimited users. Starter and Standard plans come with user limits,
-                and you can add extra users anytime.
+                {t('vsJobber.usersAnswer')}
               </p>
             </div>
           </div>

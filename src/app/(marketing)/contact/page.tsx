@@ -14,6 +14,7 @@ export default function ContactPage() {
     phone: '',
     message: '',
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -25,8 +26,15 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    console.log('Form submitted:', formData);
+    setSubmitted(true);
+    setFormData({
+      name: '',
+      email: '',
+      company: '',
+      phone: '',
+      message: '',
+    });
+    setTimeout(() => setSubmitted(false), 5000);
   };
 
   return (
@@ -51,6 +59,12 @@ export default function ContactPage() {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
                 <h2 className="text-2xl font-bold text-gray-900 mb-8">{t('contactPage.sendMessage')}</h2>
+
+                {submitted && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-green-800 font-medium">Thank you! We'll be in touch within 24 hours.</p>
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}

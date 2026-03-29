@@ -16,30 +16,30 @@ export default function RoofingPage() {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
                 <Home className="w-4 h-4" />
-                Built for Roofing
+                {t('roofingPage.builtFor')}
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Roofing contractors: from estimate to invoice in half the time
+                {t('roofingPage.heroTitle')}
               </h1>
               <p className="text-lg text-gray-600 mb-8 max-w-xl">
-                Big ticket jobs need tight follow-up. Weather delays happen. Subcontractors need coordination. Growth OS handles the business side so you close bigger deals faster.
+                {t('roofingPage.heroDesc')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/setup"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-base font-semibold rounded-full hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-700/30 hover:-translate-y-0.5"
                 >
-                  Start Free Trial
+                  {t('roofingPage.startFreeTrial')}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/contact"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-700 text-base font-semibold rounded-full border-2 border-blue-200 hover:bg-blue-50 transition-all"
                 >
-                  See It in Action
+                  {t('roofingPage.seeInAction')}
                 </Link>
               </div>
-              <p className="mt-6 text-sm text-gray-500">No credit card needed. Full access for 14 days.</p>
+              <p className="mt-6 text-sm text-gray-500">{t('roofingPage.noCardNeeded')}.</p>
             </div>
             <div className="hidden lg:block">
               <div className="relative">
@@ -49,29 +49,29 @@ export default function RoofingPage() {
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Follow up on big estimates</div>
-                        <div className="text-sm text-blue-700">Never lose a $15K job to lost follow-up</div>
+                        <div className="font-semibold">{t('roofingPage.followUpEstimates')}</div>
+                        <div className="text-sm text-blue-700">{t('roofingPage.followUpEstimatesDesc')}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Track insurance claims end-to-end</div>
-                        <div className="text-sm text-blue-700">Assessment to approval to payment</div>
+                        <div className="font-semibold">{t('roofingPage.trackClaims')}</div>
+                        <div className="text-sm text-blue-700">{t('roofingPage.trackClaimsDesc')}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Coordinate subcontractors</div>
-                        <div className="text-sm text-blue-700">Everyone knows what's happening</div>
+                        <div className="font-semibold">{t('roofingPage.coordinateSubs')}</div>
+                        <div className="text-sm text-blue-700">{t('roofingPage.coordinateSubsDesc')}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Close deals faster</div>
-                        <div className="text-sm text-blue-700">Invoice instantly when work's done</div>
+                        <div className="font-semibold">{t('roofingPage.closeDeals')}</div>
+                        <div className="text-sm text-blue-700">{t('roofingPage.closeDealsDesc')}</div>
                       </div>
                     </div>
                   </div>
@@ -87,10 +87,10 @@ export default function RoofingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Roofing business gets complicated
+              {t('roofingPage.getComplicated')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Long sales cycles. Weather delays. Big ticket deals. We built Growth OS to handle it.
+              {t('roofingPage.getComplicatedDesc')}
             </p>
           </div>
 
@@ -101,15 +101,15 @@ export default function RoofingPage() {
                 <Clock className="w-6 h-6 text-red-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Long, messy sales cycles
+                {t('roofingPage.longSales')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Estimate sits for a month. Client goes quiet. You're not sure where they are in the decision.
+                {t('roofingPage.longSalesDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>Can't track which stage each deal is in</li>
-                <li>Big estimates get lost in email chains</li>
-                <li>No reminders to follow up on stalled deals</li>
+                {t('roofingPage.longSalesIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
 
@@ -119,15 +119,15 @@ export default function RoofingPage() {
                 <AlertCircle className="w-6 h-6 text-orange-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Weather delays frustrate everyone
+                {t('roofingPage.weatherDelays')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Rain. You reschedule. Client doesn't see the new date. They hire someone else.
+                {t('roofingPage.weatherDelaysDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>Manual reschedule process is painful</li>
-                <li>Customers don't know what's happening</li>
-                <li>You're making multiple phone calls per delay</li>
+                {t('roofingPage.weatherIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
 
@@ -137,15 +137,15 @@ export default function RoofingPage() {
                 <Hammer className="w-6 h-6 text-yellow-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Big-ticket estimates go dark
+                {t('roofingPage.darkEstimates')}
               </h3>
               <p className="text-gray-600 mb-4">
-                A $20K roofing estimate. You sent it two weeks ago. Did they even open it?
+                {t('roofingPage.darkEstimatesDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>You lose 25% of high-value deals to no follow-up</li>
-                <li>Can't see which prospects are serious</li>
-                <li>Manual tracking wastes hours</li>
+                {t('roofingPage.darkIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
 
@@ -155,15 +155,15 @@ export default function RoofingPage() {
                 <Users className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Insurance flow chaos and material delays
+                {t('roofingPage.insuranceFlow')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Adjuster request. Supplement negotiations. Materials on backorder. No way to track it all or keep subs in sync.
+                {t('roofingPage.insuranceFlowDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>Insurance jobs disappear into spreadsheets</li>
-                <li>Material delays aren't visible until crew shows up</li>
-                <li>Subs don't know why work keeps getting pushed</li>
+                {t('roofingPage.insuranceIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -175,10 +175,10 @@ export default function RoofingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              How Growth OS helps you win more
+              {t('roofingPage.howWin')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Built for the complexity of roofing deals and timelines.
+              {t('roofingPage.howWinDesc')}
             </p>
           </div>
 
@@ -189,19 +189,19 @@ export default function RoofingPage() {
                 <TrendingUp className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Insurance Claims Pipeline
+                {t('roofingPage.insurancePipeline')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Damage assessment → estimate → adjuster review → supplement → approval → invoice. Track every step. Stop using spreadsheets.
+                {t('roofingPage.insurancePipelineDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Close 10-15% more big deals</span>
+                  <span>{t('roofingPage.closeMorDeals')}</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Never lose a quote to disorganization</span>
+                  <span>{t('roofingPage.neverLose')}</span>
                 </li>
               </ul>
             </div>
@@ -212,19 +212,19 @@ export default function RoofingPage() {
                 <AlertCircle className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Weather Delays & Material Backorders
+                {t('roofingPage.weatherMaterial')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Rain pushed the job back 3 days? Shingles on 4-week backorder? Log it in two taps. Customer gets notified. Everyone knows the status.
+                {t('roofingPage.weatherMaterialDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Reduce no-shows by 30-40%</span>
+                  <span>{t('cleaningPage.reduceNoShows')}</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Never forget a material follow-up</span>
+                  <span>{t('roofingPage.forgetMaterial')}</span>
                 </li>
               </ul>
             </div>
@@ -235,19 +235,19 @@ export default function RoofingPage() {
                 <Users className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Subcontractor Payment Management
+                {t('roofingPage.subcontractorPayment')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Your subs want to get paid on completion, not net-30. Track sub invoices separately from customer invoices. Everyone gets paid on time.
+                {t('roofingPage.subcontractorPaymentDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Subs stay happy and show up</span>
+                  <span>{t('roofingPage.subsStayHappy')}</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span>Better coordination on complex jobs</span>
+                  <span>{t('roofingPage.betterCoordination')}</span>
                 </li>
               </ul>
             </div>
@@ -260,10 +260,10 @@ export default function RoofingPage() {
                 <Zap className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Quick Invoicing
+                {t('roofingPage.quickInvoicing')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Work's done. Generate invoice and send instantly. Get paid a week faster on average.
+                {t('roofingPage.quickInvoicingDesc')}
               </p>
             </div>
 
@@ -273,10 +273,10 @@ export default function RoofingPage() {
                 <Clock className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Reduce Admin Time
+                {t('roofingPage.reduceAdminTime')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Spend less time coordinating, more time building relationships. Automate the paperwork.
+                {t('roofingPage.reduceAdminTimeDesc')}
               </p>
             </div>
           </div>
@@ -293,16 +293,16 @@ export default function RoofingPage() {
               ))}
             </div>
             <blockquote className="text-xl sm:text-2xl font-bold text-gray-900 mb-8">
-              "Honestly, I resisted this for a year. My accountant kept saying I needed a system. The biggest win is tracking where every estimate stands — I had 12 open quotes I'd basically forgotten about. The system reminded the customers and three of them came back. That alone paid for it. Insurance tracking is still something I'm learning but it beats my old notebook by a mile."
+              {t('roofingPage.testimonialQuote')}
             </blockquote>
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                 TD
               </div>
               <div>
-                <p className="font-bold text-gray-900">Tom Devries</p>
-                <p className="text-gray-600 text-sm">Owner, Devries Roofing</p>
-                <p className="text-gray-500 text-xs">Ottawa, ON</p>
+                <p className="font-bold text-gray-900">{t('roofingPage.testimonialAuthor')}</p>
+                <p className="text-gray-600 text-sm">{t('roofingPage.testimonialCompany')}</p>
+                <p className="text-gray-500 text-xs">{t('roofingPage.testimonialLocation')}</p>
               </div>
             </div>
           </div>
@@ -313,10 +313,10 @@ export default function RoofingPage() {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Simple pricing. No surprises.
+            {t('industryPage.simplePricing')}
           </h2>
           <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-            Month-to-month. Cancel anytime. No contracts, no setup fees.
+            {t('electricalPage.pricingDesc')}
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="rounded-2xl border border-gray-200 p-6 text-left hover:shadow-lg transition-shadow">
@@ -325,9 +325,9 @@ export default function RoofingPage() {
                 <span className="text-3xl font-bold text-gray-900">$79</span>
                 <span className="text-sm text-gray-500">/mo CAD</span>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Solo operators. One dashboard, never miss a lead.</p>
+              <p className="mt-2 text-sm text-gray-500">{t('pricing.starterDesc')}</p>
               <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors">
-                Try Free (14 Days)
+                {t('pricing.tryFree')}
               </Link>
             </div>
             <div className="rounded-2xl border-2 border-blue-600 p-6 text-left shadow-lg relative">
@@ -339,9 +339,9 @@ export default function RoofingPage() {
                 <span className="text-3xl font-bold text-gray-900">$149</span>
                 <span className="text-sm text-gray-500">/mo CAD</span>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Your whole team. All automations. French + English.</p>
+              <p className="mt-2 text-sm text-gray-500">{t('pricing.growthDesc')}</p>
               <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">
-                Try Free (14 Days)
+                {t('pricing.tryFree')}
               </Link>
             </div>
             <div className="rounded-2xl border border-gray-200 p-6 text-left hover:shadow-lg transition-shadow">
@@ -350,14 +350,14 @@ export default function RoofingPage() {
                 <span className="text-3xl font-bold text-gray-900">$299</span>
                 <span className="text-sm text-gray-500">/mo CAD</span>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Multiple crews. Multiple locations. Dedicated support.</p>
+              <p className="mt-2 text-sm text-gray-500">{t('pricing.scaleDesc')}</p>
               <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors">
-                Try Free (14 Days)
+                {t('pricing.tryFree')}
               </Link>
             </div>
           </div>
           <p className="mt-8 text-sm text-gray-400">
-            All plans include a 14-day free trial. No credit card required.{" "}
+            {t('electricalPage.pricingNote')}{" "}
             <Link href="/#pricing" className="text-blue-600 hover:underline">See full plan comparison</Link>
           </p>
         </div>
@@ -367,23 +367,23 @@ export default function RoofingPage() {
       <section className="py-16 sm:py-20" style={{ backgroundColor: '#F5F5F7' }}>
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-            Want to see it before you try it?
+            {t('industryPage.seeItBeforeTry')}
           </h2>
           <p className="text-lg text-gray-500 mb-8">
-            Book a free 15-minute walkthrough. We'll show you how Growth OS works for your specific business — no sales pitch, just a demo.
+            {t('industryPage.bookWalkthrough')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white text-base font-semibold rounded-full hover:bg-gray-800 transition-all hover:-translate-y-0.5"
             >
-              Book a Demo
+              {t('contactPage.bookDemo')}
             </Link>
             <Link
               href="/setup"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 text-base font-semibold rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
             >
-              Or start your free trial
+              {t('hero.startFreeNoCard')}
             </Link>
           </div>
         </div>

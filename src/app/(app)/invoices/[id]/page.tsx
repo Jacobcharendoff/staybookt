@@ -2,6 +2,7 @@
 
 import { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import {
   ArrowLeft,
@@ -44,6 +45,7 @@ export default function InvoiceDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const router = useRouter();
+  const { t } = useLanguage();
   const { id } = use(params);
   const { getInvoice, recordPayment, deleteInvoice, updateInvoice } = useStore();
   const invoice = getInvoice(id);
@@ -61,11 +63,11 @@ export default function InvoiceDetailPage({
       <div className="min-h-screen bg-slate-50 p-4 sm:p-8">
         <Link href="/invoices" className="flex items-center text-blue-600 hover:text-blue-700 mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Invoices
+          {t('invoiceDetail.backToInvoices')}
         </Link>
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">Invoice Not Found</h1>
-          <p className="text-slate-600">The invoice you're looking for doesn't exist.</p>
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">{t('invoiceDetail.notFound')}</h1>
+          <p className="text-slate-600">{t('invoiceDetail.notFoundDesc')}</p>
         </div>
       </div>
     );
@@ -106,7 +108,7 @@ export default function InvoiceDetailPage({
   };
 
   const handleDeleteInvoice = () => {
-    if (confirm('Are you sure you want to delete this invoice? This cannot be undone.')) {
+    if (confirm(t('invoiceDetail.deleteConfirm'))) {
       deleteInvoice(id);
       router.push('/invoices');
     }
@@ -127,7 +129,7 @@ export default function InvoiceDetailPage({
       <div className="mb-8">
         <Link href="/invoices" className="flex items-center text-blue-600 hover:text-blue-700 mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Invoices
+          {t('invoiceDetail.backToInvoices')}
         </Link>
 
         <div className="flex items-start justify-between">
@@ -155,7 +157,7 @@ export default function InvoiceDetailPage({
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
               >
                 <Send className="w-4 h-4" />
-                Send Invoice
+                {t('invoiceDetail.sendInvoice')}
               </button>
             )}
 
@@ -165,7 +167,7 @@ export default function InvoiceDetailPage({
                 className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition"
               >
                 <DollarSign className="w-4 h-4" />
-                Record Payment
+                {t('invoiceDetail.recordPayment')}
               </button>
             )}
 
@@ -173,7 +175,7 @@ export default function InvoiceDetailPage({
               className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-700 font-medium transition"
             >
               <Download className="w-4 h-4" />
-              Download PDF
+              {t('invoiceDetail.downloadPDF')}
             </button>
 
             <button
@@ -181,7 +183,7 @@ export default function InvoiceDetailPage({
               className="flex items-center gap-2 px-4 py-2 bg-white border border-rose-200 rounded-lg hover:bg-rose-50 text-rose-600 font-medium transition"
             >
               <Trash2 className="w-4 h-4" />
-              Delete
+              {t('invoiceDetail.delete')}
             </button>
           </div>
         </div>
@@ -194,25 +196,25 @@ export default function InvoiceDetailPage({
           <div className="bg-white rounded-xl p-4 sm:p-8 shadow-sm border border-slate-200">
             {/* Company Header */}
             <div className="mb-8 pb-8 border-b border-slate-200">
-              <h2 className="text-2xl font-bold text-slate-900">Your Company</h2>
-              <p className="text-slate-600 text-sm mt-4">Tax Registration #: [Your Tax ID]</p>
+              <h2 className="text-2xl font-bold text-slate-900">{t('invoiceDetail.yourCompany')}</h2>
+              <p className="text-slate-600 text-sm mt-4">{t('invoiceDetail.taxRegistration')}</p>
             </div>
 
             {/* Bill To and Invoice Details */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
               <div>
-                <h3 className="text-xs font-semibold text-slate-500 uppercase mb-3">Bill To</h3>
+                <h3 className="text-xs font-semibold text-slate-500 uppercase mb-3">{t('invoiceDetail.billTo')}</h3>
                 <p className="font-semibold text-slate-900">{invoice.customerName}</p>
                 <p className="text-sm text-slate-600 mt-2">{invoice.customerAddress}</p>
                 <p className="text-sm text-slate-600">{invoice.customerEmail}</p>
               </div>
               <div className="text-right text-sm">
                 <div className="mb-4">
-                  <p className="text-slate-500">Invoice #</p>
+                  <p className="text-slate-500">{t('invoiceDetail.invoiceNumber')}</p>
                   <p className="font-semibold text-slate-900 text-base">{invoice.number}</p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-slate-500">Invoice Date</p>
+                  <p className="text-slate-500">{t('invoiceDetail.invoiceDate')}</p>
                   <p className="font-semibold text-slate-900">
                     {new Date(invoice.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -222,7 +224,7 @@ export default function InvoiceDetailPage({
                   </p>
                 </div>
                 <div className="mb-4">
-                  <p className="text-slate-500">Due Date</p>
+                  <p className="text-slate-500">{t('invoiceDetail.dueDate')}</p>
                   <p className="font-semibold text-slate-900">
                     {new Date(invoice.dueDate).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -232,7 +234,7 @@ export default function InvoiceDetailPage({
                   </p>
                 </div>
                 <div>
-                  <p className="text-slate-500">Province</p>
+                  <p className="text-slate-500">{t('invoiceDetail.province')}</p>
                   <p className="font-semibold text-slate-900">{invoice.province}</p>
                 </div>
               </div>
@@ -243,10 +245,10 @@ export default function InvoiceDetailPage({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200">
-                    <th className="text-left py-3 px-4 font-semibold text-slate-900">Description</th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-900">Quantity</th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-900">Unit Price</th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-900">Amount</th>
+                    <th className="text-left py-3 px-4 font-semibold text-slate-900">{t('invoiceDetail.description')}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-slate-900">{t('invoiceDetail.quantity')}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-slate-900">{t('invoiceDetail.unitPrice')}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-slate-900">{t('invoiceDetail.amount')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -270,7 +272,7 @@ export default function InvoiceDetailPage({
             <div className="flex justify-end mb-8">
               <div className="w-72 space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-slate-600">Subtotal</span>
+                  <span className="text-slate-600">{t('invoiceDetail.subtotal')}</span>
                   <span className="font-medium text-slate-900">
                     ${invoice.subtotal.toFixed(2)}
                   </span>
@@ -284,7 +286,7 @@ export default function InvoiceDetailPage({
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-slate-200 pt-3">
-                  <span className="font-semibold text-slate-900">Total</span>
+                  <span className="font-semibold text-slate-900">{t('invoiceDetail.total')}</span>
                   <span className="font-bold text-lg text-slate-900">
                     ${invoice.total.toFixed(2)}
                   </span>
@@ -295,7 +297,7 @@ export default function InvoiceDetailPage({
             {/* Notes */}
             {invoice.notes && (
               <div className="pt-6 border-t border-slate-200">
-                <h4 className="text-sm font-semibold text-slate-900 mb-2">Notes</h4>
+                <h4 className="text-sm font-semibold text-slate-900 mb-2">{t('contactDetail.notes')}</h4>
                 <p className="text-sm text-slate-600 whitespace-pre-wrap">{invoice.notes}</p>
               </div>
             )}
@@ -303,11 +305,11 @@ export default function InvoiceDetailPage({
 
           {/* Payment Progress */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Payment Progress</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-4">{t('invoiceDetail.paymentProgress')}</h3>
 
             <div className="mb-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-slate-600">{percentPaid}% Paid</span>
+                <span className="text-sm font-medium text-slate-600">{t('invoiceDetail.percentPaid', { percent: percentPaid })}</span>
                 <span className="text-sm font-medium text-slate-900">
                   ${invoice.amountPaid.toFixed(2)} of ${invoice.total.toFixed(2)}
                 </span>
@@ -323,7 +325,7 @@ export default function InvoiceDetailPage({
             {!isPaid && (
               <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
                 <p className="text-sm font-medium text-amber-900">
-                  Remaining Balance: ${remainingBalance.toFixed(2)}
+                  {t('invoiceDetail.remainingBalance', { amount: remainingBalance.toFixed(2) })}
                 </p>
               </div>
             )}
@@ -332,13 +334,14 @@ export default function InvoiceDetailPage({
               <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-medium text-emerald-900">Paid in Full</p>
+                  <p className="text-sm font-medium text-emerald-900">{t('invoiceDetail.paidInFull')}</p>
                   <p className="text-xs text-emerald-700">
-                    Paid on{' '}
-                    {new Date(invoice.paidAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
+                    {t('invoiceDetail.paidOn', {
+                      date: new Date(invoice.paidAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      }),
                     })}
                   </p>
                 </div>
@@ -351,7 +354,7 @@ export default function InvoiceDetailPage({
         <div className="space-y-6">
           {/* Summary Card */}
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-            <p className="text-sm text-blue-900 font-medium mb-2">Invoice Total</p>
+            <p className="text-sm text-blue-900 font-medium mb-2">{t('invoiceDetail.invoiceTotal')}</p>
             <p className="text-2xl sm:text-4xl font-bold text-blue-900">
               ${invoice.total.toFixed(2)}
             </p>
@@ -362,34 +365,34 @@ export default function InvoiceDetailPage({
 
           {!isPaid && (
             <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 space-y-4">
-              <h3 className="text-lg font-bold text-slate-900">Record Payment</h3>
+              <h3 className="text-lg font-bold text-slate-900">{t('invoiceDetail.recordPayment')}</h3>
 
               <div>
                 <label className="block text-sm font-medium text-slate-900 mb-2">
-                  Amount
+                  {t('invoiceDetail.paymentAmount')}
                 </label>
                 <div className="text-2xl font-bold text-slate-900 mb-2">
                   ${remainingBalance.toFixed(2)}
                 </div>
-                <p className="text-xs text-slate-500">Remaining balance</p>
+                <p className="text-xs text-slate-500">{t('invoiceDetail.recordPayment')}</p>
               </div>
 
               <button
                 onClick={() => setShowPaymentModal(true)}
                 className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
               >
-                Record Payment
+                {t('invoiceDetail.recordPaymentButton')}
               </button>
             </div>
           )}
 
           {/* Status Card */}
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Status Details</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-4">{t('invoiceDetail.statusDetails')}</h3>
 
             <div className="space-y-4 text-sm">
               <div>
-                <p className="text-slate-600 mb-1">Current Status</p>
+                <p className="text-slate-600 mb-1">{t('invoiceDetail.currentStatus')}</p>
                 <div
                   className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${
                     STATUS_COLORS[invoice.status]
@@ -401,7 +404,7 @@ export default function InvoiceDetailPage({
 
               {invoice.sentAt && (
                 <div>
-                  <p className="text-slate-600 mb-1">Sent On</p>
+                  <p className="text-slate-600 mb-1">{t('invoiceDetail.sentOn')}</p>
                   <p className="text-slate-900 font-medium">
                     {new Date(invoice.sentAt).toLocaleDateString('en-US')}
                   </p>
@@ -410,7 +413,7 @@ export default function InvoiceDetailPage({
 
               {invoice.paidAt && (
                 <div>
-                  <p className="text-slate-600 mb-1">Paid On</p>
+                  <p className="text-slate-600 mb-1">{t('invoiceDetail.paidOn', { date: new Date(invoice.paidAt).toLocaleDateString('en-US') })}</p>
                   <p className="text-slate-900 font-medium">
                     {new Date(invoice.paidAt).toLocaleDateString('en-US')}
                   </p>
@@ -418,7 +421,7 @@ export default function InvoiceDetailPage({
               )}
 
               <div>
-                <p className="text-slate-600 mb-1">Tax Information</p>
+                <p className="text-slate-600 mb-1">{t('invoiceDetail.taxInformation')}</p>
                 <p className="text-slate-900 font-medium">
                   {invoice.taxType} ({(invoice.taxRate * 100).toFixed(3)}%)
                 </p>
@@ -433,7 +436,7 @@ export default function InvoiceDetailPage({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg max-w-md w-full mx-4">
             <div className="border-b border-slate-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900">Record Payment</h2>
+              <h2 className="text-2xl font-bold text-slate-900">{t('invoiceDetail.recordPayment')}</h2>
               <button
                 onClick={() => setShowPaymentModal(false)}
                 className="p-2 hover:bg-slate-100 rounded-lg transition"
@@ -446,7 +449,7 @@ export default function InvoiceDetailPage({
               {/* Amount */}
               <div>
                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                  Payment Amount *
+                  {t('invoiceDetail.paymentAmount')}
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-2.5 text-slate-600">$</span>
@@ -463,14 +466,14 @@ export default function InvoiceDetailPage({
                   />
                 </div>
                 <p className="text-xs text-slate-500 mt-1">
-                  Max: ${remainingBalance.toFixed(2)}
+                  {t('invoiceDetail.maxAmount', { amount: remainingBalance.toFixed(2) })}
                 </p>
               </div>
 
               {/* Payment Method */}
               <div>
                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                  Payment Method
+                  {t('invoiceDetail.paymentMethod')}
                 </label>
                 <select
                   value={paymentForm.method}
@@ -481,7 +484,11 @@ export default function InvoiceDetailPage({
                 >
                   {PAYMENT_METHODS.map((method) => (
                     <option key={method} value={method}>
-                      {method}
+                      {method === 'Interac e-Transfer' ? t('invoiceDetail.interacTransfer') :
+                       method === 'Credit Card' ? t('invoiceDetail.creditCard') :
+                       method === 'Cheque' ? t('invoiceDetail.cheque') :
+                       method === 'Cash' ? t('invoiceDetail.cash') :
+                       method}
                     </option>
                   ))}
                 </select>
@@ -490,7 +497,7 @@ export default function InvoiceDetailPage({
               {/* Date */}
               <div>
                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                  Payment Date
+                  {t('invoiceDetail.paymentDate')}
                 </label>
                 <input
                   type="date"
@@ -505,14 +512,14 @@ export default function InvoiceDetailPage({
               {/* Notes */}
               <div>
                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                  Notes
+                  {t('contactDetail.notes')}
                 </label>
                 <textarea
                   value={paymentForm.notes}
                   onChange={(e) =>
                     setPaymentForm({ ...paymentForm, notes: e.target.value })
                   }
-                  placeholder="Reference number, check number, etc."
+                  placeholder={t('invoiceDetail.notesPlaceholder')}
                   rows={2}
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 resize-none"
                 />
@@ -524,13 +531,13 @@ export default function InvoiceDetailPage({
                   onClick={() => setShowPaymentModal(false)}
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 font-medium transition"
                 >
-                  Cancel
+                  {t('invoiceDetail.cancel')}
                 </button>
                 <button
                   onClick={handleRecordPayment}
                   className="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition"
                 >
-                  Record Payment
+                  {t('invoiceDetail.recordPaymentButton')}
                 </button>
               </div>
             </div>

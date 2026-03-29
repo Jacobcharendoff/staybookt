@@ -16,30 +16,30 @@ export default function LandscapingPage() {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-sm font-medium mb-6">
                 <Leaf className="w-4 h-4" />
-                Built for Landscaping
+                {t('landscapingPage.builtFor')}
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-                Grow your landscaping business without the back-office headaches
+                {t('landscapingPage.heroTitle')}
               </h1>
               <p className="text-lg text-gray-600 mb-8 max-w-xl">
-                Stop juggling spreadsheets, lost estimates, and crew chaos. Growth OS handles the paperwork so you focus on what you do best: building beautiful outdoor spaces.
+                {t('landscapingPage.heroDesc')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/setup"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white text-base font-semibold rounded-full hover:from-green-700 hover:to-green-800 transition-all shadow-lg shadow-green-600/25 hover:shadow-green-700/30 hover:-translate-y-0.5"
                 >
-                  Start Free Trial
+                  {t('landscapingPage.startFreeTrial')}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/contact"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-green-700 text-base font-semibold rounded-full border-2 border-green-200 hover:bg-green-50 transition-all"
                 >
-                  See It in Action
+                  {t('landscapingPage.seeInAction')}
                 </Link>
               </div>
-              <p className="mt-6 text-sm text-gray-500">No credit card needed. Full access for 14 days.</p>
+              <p className="mt-6 text-sm text-gray-500">{t('landscapingPage.noCardNeeded')}</p>
             </div>
             <div className="hidden lg:block">
               <div className="relative">
@@ -49,29 +49,29 @@ export default function LandscapingPage() {
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Schedule crews in seconds</div>
-                        <div className="text-sm text-green-700">No more phone tag</div>
+                        <div className="font-semibold">{t('landscapingPage.scheduleCrews')}</div>
+                        <div className="text-sm text-green-700">{t('landscapingPage.scheduleCrewsDesc')}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Track seasonal cash flow</div>
-                        <div className="text-sm text-green-700">Know exactly where you stand</div>
+                        <div className="font-semibold">{t('landscapingPage.trackCashFlow')}</div>
+                        <div className="text-sm text-green-700">{t('landscapingPage.trackCashFlowDesc')}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Collect spring deposits early</div>
-                        <div className="text-sm text-green-700">Lock in work before you fill up</div>
+                        <div className="font-semibold">{t('landscapingPage.collectDeposits')}</div>
+                        <div className="text-sm text-green-700">{t('landscapingPage.collectDepositsDesc')}</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="font-semibold">Before/after photos automatically organized</div>
-                        <div className="text-sm text-green-700">Crew takes them. System sorts them by customer</div>
+                        <div className="font-semibold">{t('landscapingPage.photoOrganized')}</div>
+                        <div className="text-sm text-green-700">{t('landscapingPage.photoOrganizedDesc')}</div>
                       </div>
                     </div>
                   </div>
@@ -87,10 +87,10 @@ export default function LandscapingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Does this sound familiar?
+              {t('landscapingPage.soundFamiliar')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We built Growth OS specifically to solve the problems landscape contractors face.
+              {t('landscapingPage.builtForSolutions')}
             </p>
           </div>
 
@@ -101,15 +101,15 @@ export default function LandscapingPage() {
                 <TrendingUp className="w-6 h-6 text-red-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Seasonal cash flow chaos
+                {t('landscapingPage.seasonalCashflow')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Winter dries up. Spring explodes. You never know if you can make payroll next month.
+                {t('landscapingPage.seasonalCashflowDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>Unpredictable income makes hiring impossible</li>
-                <li>Can't plan equipment upgrades</li>
-                <li>Emergency loans become routine</li>
+                {t('landscapingPage.seasonalIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
 
@@ -119,15 +119,15 @@ export default function LandscapingPage() {
                 <Calendar className="w-6 h-6 text-orange-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Crew scheduling is a nightmare
+                {t('landscapingPage.crewScheduling')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Texting crew members. Emails going to spam. Someone showing up to the wrong job.
+                {t('landscapingPage.crewSchedulingDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>No one knows what site they're going to</li>
-                <li>You spend 2 hours a day coordinating</li>
-                <li>Equipment ends up at the wrong location</li>
+                {t('landscapingPage.crewIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
 
@@ -137,15 +137,15 @@ export default function LandscapingPage() {
                 <Clock className="w-6 h-6 text-yellow-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Dead estimates pile up
+                {t('landscapingPage.deadEstimates')}
               </h3>
               <p className="text-gray-600 mb-4">
-                You send a quote. Weeks pass. You forget to follow up. The lead hires someone else.
+                {t('landscapingPage.deadEstimatesDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>30% of estimates never get a second look</li>
-                <li>You forget which leads need follow-up</li>
-                <li>Lost revenue from ignored prospects</li>
+                {t('landscapingPage.estimateIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
 
@@ -155,15 +155,15 @@ export default function LandscapingPage() {
                 <RefreshCw className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Equipment and crew scheduling headaches
+                {t('landscapingPage.equipmentTracking')}
               </h3>
               <p className="text-gray-600 mb-4">
-                Spring hits, you need 5 extra people for 6 weeks. Finding them is chaotic. Equipment breaks down on jobs.
+                {t('landscapingPage.equipmentTrackingDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>Don't know which crew has seasonal availability</li>
-                <li>Equipment maintenance falls through the cracks</li>
-                <li>Seasonal crew turnover is unpredictable</li>
+                {t('landscapingPage.equipmentIssues').split('\n').map((issue, i) => (
+                  <li key={i}>{issue}</li>
+                ))}
               </ul>
             </div>
           </div>
@@ -175,10 +175,10 @@ export default function LandscapingPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              How Growth OS solves it
+              {t('landscapingPage.howSolveIt')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Purpose-built features that speak the language of landscaping.
+              {t('landscapingPage.purposeBuilt')}
             </p>
           </div>
 
@@ -189,19 +189,19 @@ export default function LandscapingPage() {
                 <Calendar className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Smart Crew Dispatch
+                {t('landscapingPage.smartDispatch')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Assign jobs to crews with one click. They get instant notifications. No more confusion about which site they're on.
+                {t('landscapingPage.smartDispatchDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Mobile app updates crews in real-time</span>
+                  <span>{t('landscapingPage.mobileUpdates')}</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Track who worked on which site</span>
+                  <span>{t('landscapingPage.trackWorked')}</span>
                 </li>
               </ul>
             </div>
@@ -212,19 +212,19 @@ export default function LandscapingPage() {
                 <Zap className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Recover Cold Estimates
+                {t('landscapingPage.recoverEstimates')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Estimates sitting for a week? We flag them. You get a reminder to follow up. Simple template follows up automatically.
+                {t('landscapingPage.recoverEstimatesDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Recover 8-12% of estimates that would go cold</span>
+                  <span>{t('landscapingPage.recoverPercent')}</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Template messages save time</span>
+                  <span>{t('landscapingPage.saveTime')}</span>
                 </li>
               </ul>
             </div>
@@ -235,19 +235,19 @@ export default function LandscapingPage() {
                 <RefreshCw className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Seasonal Deposit Collection
+                {t('landscapingPage.seasonalDeposits')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Collect spring cleanup deposits in January. Lock in the work before your schedule fills up. Automatic reminders for recurring seasonal jobs.
+                {t('landscapingPage.seasonalDepositsDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Reduce seasonal cash flow stress</span>
+                  <span>{t('landscapingPage.reduceStress')}</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Runs without you lifting a finger</span>
+                  <span>{t('landscapingPage.runsAutomatic')}</span>
                 </li>
               </ul>
             </div>
@@ -260,10 +260,10 @@ export default function LandscapingPage() {
                 <TrendingUp className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Cash Flow Clarity
+                {t('landscapingPage.cashFlowClarity')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                See next month's revenue in real time. Know exactly what's locked in, what's pending, what's at risk.
+                {t('landscapingPage.cashFlowClarityDesc')}
               </p>
             </div>
 
@@ -273,10 +273,10 @@ export default function LandscapingPage() {
                 <Users className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">
-                Equipment & Seasonal Crew Tracking
+                {t('landscapingPage.equipmentCrewTracking')}
               </h3>
               <p className="text-gray-600 text-sm mb-4">
-                Know which truck has the mower that needs service. Track seasonal crew availability so you're not scrambling in spring.
+                {t('landscapingPage.equipmentCrewTrackingDesc')}
               </p>
             </div>
           </div>
@@ -293,16 +293,16 @@ export default function LandscapingPage() {
               ))}
             </div>
             <blockquote className="text-xl sm:text-2xl font-bold text-gray-900 mb-8">
-              "The seasonal cash flow thing was killing us. We'd be flush in July and broke in January. Growth OS didn't fix that overnight — it's still seasonal — but now we can see it coming. We started collecting deposits earlier and booking spring work in February instead of scrambling in April. Crew scheduling is easier too, though I still end up texting my guys directly half the time. Old habits."
+              {t('landscapingPage.testimonialQuote')}
             </blockquote>
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                 PR
               </div>
               <div>
-                <p className="font-bold text-gray-900">Priya Patel</p>
-                <p className="text-gray-600 text-sm">Owner, Patel Landscapes</p>
-                <p className="text-gray-500 text-xs">Calgary, AB</p>
+                <p className="font-bold text-gray-900">{t('landscapingPage.testimonialAuthor')}</p>
+                <p className="text-gray-600 text-sm">{t('landscapingPage.testimonialCompany')}</p>
+                <p className="text-gray-500 text-xs">{t('landscapingPage.testimonialLocation')}</p>
               </div>
             </div>
           </div>
@@ -313,10 +313,10 @@ export default function LandscapingPage() {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Simple pricing. No surprises.
+            {t('industryPage.simplePricing')}
           </h2>
           <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-            Month-to-month. Cancel anytime. No contracts, no setup fees.
+            {t('electricalPage.pricingDesc')}
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="rounded-2xl border border-gray-200 p-6 text-left hover:shadow-lg transition-shadow">
@@ -325,9 +325,9 @@ export default function LandscapingPage() {
                 <span className="text-3xl font-bold text-gray-900">$79</span>
                 <span className="text-sm text-gray-500">/mo CAD</span>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Solo operators. One dashboard, never miss a lead.</p>
+              <p className="mt-2 text-sm text-gray-500">{t('pricing.starterDesc')}</p>
               <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors">
-                Try Free (14 Days)
+                {t('pricing.tryFree')}
               </Link>
             </div>
             <div className="rounded-2xl border-2 border-blue-600 p-6 text-left shadow-lg relative">
@@ -339,9 +339,9 @@ export default function LandscapingPage() {
                 <span className="text-3xl font-bold text-gray-900">$149</span>
                 <span className="text-sm text-gray-500">/mo CAD</span>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Your whole team. All automations. French + English.</p>
+              <p className="mt-2 text-sm text-gray-500">{t('pricing.growthDesc')}</p>
               <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">
-                Try Free (14 Days)
+                {t('pricing.tryFree')}
               </Link>
             </div>
             <div className="rounded-2xl border border-gray-200 p-6 text-left hover:shadow-lg transition-shadow">
@@ -350,14 +350,14 @@ export default function LandscapingPage() {
                 <span className="text-3xl font-bold text-gray-900">$299</span>
                 <span className="text-sm text-gray-500">/mo CAD</span>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Multiple crews. Multiple locations. Dedicated support.</p>
+              <p className="mt-2 text-sm text-gray-500">{t('pricing.scaleDesc')}</p>
               <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors">
-                Try Free (14 Days)
+                {t('pricing.tryFree')}
               </Link>
             </div>
           </div>
           <p className="mt-8 text-sm text-gray-400">
-            All plans include a 14-day free trial. No credit card required.{" "}
+            {t('electricalPage.pricingNote')}{" "}
             <Link href="/#pricing" className="text-blue-600 hover:underline">See full plan comparison</Link>
           </p>
         </div>
@@ -367,23 +367,23 @@ export default function LandscapingPage() {
       <section className="py-16 sm:py-20" style={{ backgroundColor: '#F5F5F7' }}>
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-            Want to see it before you try it?
+            {t('industryPage.seeItBeforeTry')}
           </h2>
           <p className="text-lg text-gray-500 mb-8">
-            Book a free 15-minute walkthrough. We'll show you how Growth OS works for your specific business — no sales pitch, just a demo.
+            {t('industryPage.bookWalkthrough')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white text-base font-semibold rounded-full hover:bg-gray-800 transition-all hover:-translate-y-0.5"
             >
-              Book a Demo
+              {t('contactPage.bookDemo')}
             </Link>
             <Link
               href="/setup"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 text-base font-semibold rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
             >
-              Or start your free trial
+              {t('hero.startFreeNoCard')}
             </Link>
           </div>
         </div>
