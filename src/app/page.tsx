@@ -303,8 +303,28 @@ function Hero() {
             {t('hero.neverMissLead')}
           </p>
 
+          {/* Social Proof — moved above CTA */}
+          <div className="hero-reveal hero-reveal-delay-4 mt-10 flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {personaCards.slice(0, 5).map((card) => (
+                  <div key={card.initials} className={`w-8 h-8 rounded-full bg-gradient-to-br ${card.gradient} border-2 border-white flex items-center justify-center text-white text-[10px] font-bold shadow-sm`}>
+                    {card.initials}
+                  </div>
+                ))}
+              </div>
+              <span className="text-sm text-gray-500">{t('landing.trustedAcrossCanada')}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+              ))}
+              <span className="text-sm text-gray-500 ml-1.5">{t('landing.rating')}</span>
+            </div>
+          </div>
+
           {/* CTA */}
-          <div className="hero-reveal hero-reveal-delay-4 mt-10 flex justify-center">
+          <div className="hero-reveal hero-reveal-delay-4 mt-8 flex justify-center">
             <Link
               href="/setup"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-2xl transition-all shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5"
@@ -312,6 +332,27 @@ function Hero() {
               {t('hero.startFreeNoCard')}
               <ArrowRight className="w-5 h-5" />
             </Link>
+          </div>
+
+          {/* Price Anchor */}
+          <p className="hero-reveal hero-reveal-delay-4 text-sm text-slate-500 dark:text-slate-400 mt-3">
+            Free 14-day trial. Plans from <span className="font-semibold text-slate-700 dark:text-slate-300">$79/mo CAD</span>
+          </p>
+
+          {/* Risk Reversal Messaging */}
+          <div className="hero-reveal hero-reveal-delay-4 flex items-center gap-4 mt-4 text-sm text-slate-500 dark:text-slate-400 flex-wrap justify-center">
+            <span className="flex items-center gap-1.5">
+              <svg className="w-4 h-4 text-[#27AE60]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+              No credit card required
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="w-4 h-4 text-[#27AE60]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+              Cancel anytime
+            </span>
+            <span className="flex items-center gap-1.5">
+              <svg className="w-4 h-4 text-[#27AE60]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+              Setup in 10 minutes
+            </span>
           </div>
 
           {/* Social Proof - New Line */}
@@ -331,26 +372,6 @@ function Hero() {
             <span>{t('landing.hstGstQstAutoCalculated')}</span>
             <span className="hidden sm:inline text-gray-300">|</span>
             <span>{t('landing.homeStarsIntegrated')}</span>
-          </div>
-
-          {/* Social Proof */}
-          <div className="hero-reveal hero-reveal-delay-5 mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-8">
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {personaCards.slice(0, 5).map((card) => (
-                  <div key={card.initials} className={`w-8 h-8 rounded-full bg-gradient-to-br ${card.gradient} border-2 border-white flex items-center justify-center text-white text-[10px] font-bold shadow-sm`}>
-                    {card.initials}
-                  </div>
-                ))}
-              </div>
-              <span className="text-sm text-gray-500">{t('landing.trustedAcrossCanada')}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-              ))}
-              <span className="text-sm text-gray-500 ml-1.5">{t('landing.rating')}</span>
-            </div>
           </div>
 
           {/* Mobile persona cards — horizontal scroll */}

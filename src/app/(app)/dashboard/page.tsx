@@ -238,7 +238,7 @@ export default function Dashboard() {
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-2">{t('dashboard.title')}</h1>
         <p className="text-slate-600 dark:text-slate-400 mb-4">
-          {t('dashboard.welcomeBack')}
+          {deals.length === 0 ? 'Welcome to GrowthOS' : t('dashboard.welcomeBack')}
         </p>
 
         {/* Date Range Selector */}
@@ -343,7 +343,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Active Deals */}
+        {/* Active Jobs */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
@@ -354,7 +354,7 @@ export default function Dashboard() {
               <Zap className="w-6 h-6 text-purple-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">In progress</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t('dashboard.inProgress')}</p>
         </div>
 
         {/* Pipeline Value */}
@@ -370,7 +370,7 @@ export default function Dashboard() {
               <DollarSign className="w-6 h-6 text-green-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">{activeDeals} active opportunities</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{activeDeals} {t('dashboard.activeOpportunities')}</p>
         </div>
 
         {/* Conversion Rate */}
@@ -389,7 +389,7 @@ export default function Dashboard() {
           </p>
         </div>
 
-        {/* Avg Deal Value */}
+        {/* Avg Job Value */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between mb-3 sm:mb-4">
             <div>
@@ -402,7 +402,7 @@ export default function Dashboard() {
               <TrendingUp className="w-6 h-6 text-[#27AE60]" />
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Per active deal</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t('dashboard.perActiveDeal')}</p>
         </div>
 
         {/* Total Revenue */}
@@ -418,111 +418,133 @@ export default function Dashboard() {
               <CheckCircle className="w-6 h-6 text-cyan-600" />
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400">{completedDeals} invoiced deals</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{completedDeals} invoiced jobs</p>
         </div>
       </div>
 
       {/* Charts Row 1: Pipeline Funnel & Revenue by Source */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Pipeline Funnel Chart */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Pipeline Funnel</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              data={pipelineData}
-              margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Bar dataKey="count" radius={[6, 6, 0, 0]}>
-                {pipelineData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={Object.values(PIPELINE_STAGE_COLORS)[index]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+      {deals.length === 0 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-slate-200 dark:border-slate-700">
+            <p className="text-slate-500 dark:text-slate-400">Charts will appear once you add your first job</p>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-slate-200 dark:border-slate-700">
+            <p className="text-slate-500 dark:text-slate-400">Charts will appear once you add your first job</p>
+          </div>
         </div>
-
-        {/* Revenue by Lead Source Pie Chart */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-            Revenue by Lead Source
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={revenueBySourceData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value }) => `${name}: $${(value / 1000).toFixed(1)}k`}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Pipeline Funnel Chart */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.pipelineFunnel')}</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={pipelineData}
+                margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
               >
-                {revenueBySourceData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={Object.values(RING_COLORS)[index]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => `$${(Number(value) / 1000).toFixed(1)}k`} />
-            </PieChart>
-          </ResponsiveContainer>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                  {pipelineData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={Object.values(PIPELINE_STAGE_COLORS)[index]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* {t('dashboard.revenueBySource')} Pie Chart */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
+              Revenue by Lead Source
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={revenueBySourceData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value }) => `${name}: $${(value / 1000).toFixed(1)}k`}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {revenueBySourceData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={Object.values(RING_COLORS)[index]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => `$${(Number(value) / 1000).toFixed(1)}k`} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Charts Row 2: Monthly Trend & Stage Duration */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Monthly Revenue Trend */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-            Monthly Revenue Trend
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={monthlyRevenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />
-              <Area
-                type="monotone"
-                dataKey="revenue"
-                stroke="#3B82F6"
-                fillOpacity={1}
-                fill="url(#colorRevenue)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+      {deals.length === 0 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-slate-200 dark:border-slate-700">
+            <p className="text-slate-500 dark:text-slate-400">Charts will appear once you add your first job</p>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-slate-200 dark:border-slate-700">
+            <p className="text-slate-500 dark:text-slate-400">Charts will appear once you add your first job</p>
+          </div>
         </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* {t('dashboard.monthlyRevenue')} */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
+              Monthly Revenue Trend
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={monthlyRevenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />
+                <Area
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#3B82F6"
+                  fillOpacity={1}
+                  fill="url(#colorRevenue)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Deal Stage Duration */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-            Stage Duration (Avg Days)
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={stageDurationData} margin={{ top: 5, right: 30, left: 0, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="stage" angle={-45} textAnchor="end" height={80} />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="days" fill="#8B5CF6" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          {/* Job Stage Duration */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
+              {t('dashboard.stageDuration')}
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={stageDurationData} margin={{ top: 5, right: 30, left: 0, bottom: 60 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="stage" angle={-45} textAnchor="end" height={80} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="days" fill="#8B5CF6" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Bottom Section: Recent Activity & Top Deals */}
+      {/* Bottom Section: Recent Activity & Top Jobs */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20">
         {/* Recent Activity */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
@@ -544,12 +566,14 @@ export default function Dashboard() {
                 </div>
               ))
             ) : (
-              <p className="text-slate-500 dark:text-slate-400 text-sm">No recent activity</p>
+              <div className="text-center py-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.noRecentActivity')}</p>
+              </div>
             )}
           </div>
         </div>
 
-        {/* Top Deals */}
+        {/* Top Jobs */}
         <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.topDeals')}</h2>
           <div className="space-y-4">
@@ -577,7 +601,12 @@ export default function Dashboard() {
                 </div>
               ))
             ) : (
-              <p className="text-slate-500 dark:text-slate-400 text-sm">No deals yet</p>
+              <div className="text-center py-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('dashboard.noDealsYet')}</p>
+                <Link href="/pipeline" className="text-sm text-[#27AE60] hover:underline mt-2 inline-block">
+                  Add your first job →
+                </Link>
+              </div>
             )}
           </div>
         </div>
@@ -620,11 +649,11 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* Add Deal Modal */}
+      {/* Add Job Modal */}
       <Modal
         isOpen={isAddDealOpen}
         onClose={() => setIsAddDealOpen(false)}
-        title="Add New Deal"
+        title="Add New Job"
       >
         <AddDealForm
           contacts={contacts}

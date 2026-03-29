@@ -148,7 +148,7 @@ export default function PipelinePage() {
           <div>
             <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white">{t('pipeline.title')}</h1>
             <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-400 mt-1 font-semibold">
-              ${metrics.totalValue.toLocaleString()} across {metrics.totalDeals} deals
+              ${metrics.totalValue.toLocaleString()} across {metrics.totalDeals} jobs
             </p>
           </div>
           <button
@@ -167,7 +167,7 @@ export default function PipelinePage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
             <input
               type="text"
-              placeholder={t('pipeline.searchDeals')}
+              placeholder={t('pipeline.searchJobs')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder-slate-500 dark:placeholder-slate-400"
@@ -194,9 +194,9 @@ export default function PipelinePage() {
             className="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="all">{t('pipeline.allSources')}</option>
-            <option value="ring_1">Ring 1</option>
-            <option value="ring_2">Ring 2</option>
-            <option value="ring_3">Ring 3</option>
+            <option value="ring_1">{t('pipeline.ring1')}</option>
+            <option value="ring_2">{t('pipeline.ring2')}</option>
+            <option value="ring_3">{t('pipeline.ring3')}</option>
           </select>
 
           <select
@@ -275,13 +275,13 @@ export default function PipelinePage() {
                             <button
                               onClick={() => setIsAddDealOpen(true)}
                               className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded p-1"
-                              title="Add deal to this stage"
+                              title="Add job to this stage"
                             >
                               <Plus className="w-4 h-4" />
                             </button>
                           </div>
                           <div className="flex justify-between text-xs">
-                            <span className="text-slate-600 dark:text-slate-400">{metrics.count} deals</span>
+                            <span className="text-slate-600 dark:text-slate-400">{metrics.count} jobs</span>
                             <span className="font-semibold text-slate-900 dark:text-white">
                               ${metrics.value.toLocaleString()}
                             </span>
@@ -427,11 +427,11 @@ export default function PipelinePage() {
         </div>
       </div>
 
-      {/* Add Deal Modal */}
+      {/* Add Job Modal */}
       <Modal
         isOpen={isAddDealOpen}
         onClose={() => setIsAddDealOpen(false)}
-        title="Add New Deal"
+        title="Add New Job"
       >
         <AddDealForm
           contacts={contacts}

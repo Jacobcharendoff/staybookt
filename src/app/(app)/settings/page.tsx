@@ -236,12 +236,12 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  Company Information
+                  {t('settings.companyInformation')}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                      Business Name
+                      {t('settings.businessName')}
                     </label>
                     <input
                       type="text"
@@ -366,10 +366,10 @@ export default function SettingsPage() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                  Team Members
+                  {t('settings.teamMembers')}
                 </h3>
                 <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">
-                  Add Team Member
+                  {t('settings.addTeamMember')}
                 </button>
               </div>
 
@@ -414,7 +414,7 @@ export default function SettingsPage() {
           {/* Pipeline Settings Tab */}
           {activeTab === 'pipeline' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Pipeline Stages</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{t('settings.pipelineStages')}</h3>
               <div className="space-y-3">
                 {pipelineStages.map((stage, index) => (
                   <div
@@ -452,7 +452,7 @@ export default function SettingsPage() {
           {/* Integrations Tab */}
           {activeTab === 'integrations' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Connected Apps</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{t('settings.connectedApps')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {integrations.map((integration) => (
                   <div
@@ -494,7 +494,7 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  Email Notifications
+                  {t('settings.emailNotifications')}
                 </h3>
                 <div className="space-y-4">
                   {[
@@ -548,7 +548,7 @@ export default function SettingsPage() {
 
               <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  SMS & Push Notifications
+                  {t('settings.smsNotifications')}
                 </h3>
                 <div className="space-y-4">
                   {[
@@ -608,7 +608,7 @@ export default function SettingsPage() {
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 sm:p-8 rounded-xl border border-blue-200 dark:border-blue-900/50">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Growth Plan</h3>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{t('settings.billingPlan')}</h3>
                     <p className="text-slate-600 dark:text-slate-400 mt-1">Your current plan</p>
                   </div>
                   <span className="text-4xl font-bold text-blue-600 dark:text-blue-400">$149</span>
@@ -640,7 +640,7 @@ export default function SettingsPage() {
 
               <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  Usage This Month
+                  {t('settings.usageThisMonth')}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
@@ -664,7 +664,7 @@ export default function SettingsPage() {
 
               <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                  Billing History
+                  {t('settings.billingHistory')}
                 </h3>
                 <div className="space-y-2">
                   {[

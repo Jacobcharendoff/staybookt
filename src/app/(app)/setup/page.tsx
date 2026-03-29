@@ -503,7 +503,7 @@ export default function SetupPage() {
                         className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-50 dark:from-blue-900/30 to-purple-50 dark:to-purple-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 rounded-xl font-medium hover:from-blue-100 dark:hover:from-blue-900/50 hover:to-purple-100 dark:hover:to-purple-900/50 transition-all mb-4 w-full justify-center text-sm"
                       >
                         <MousePointerClick className="w-4 h-4" />
-                        Walk me through this step-by-step
+                        {t('setup.walkMeThroughThisStep')}
                       </button>
                     )}
 
@@ -514,7 +514,7 @@ export default function SetupPage() {
                         className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all hover:shadow-lg hover:shadow-blue-600/20"
                       >
                         <CheckCircle2 className="w-4 h-4" />
-                        {step.fields ? 'Save & Continue' : 'Mark Complete'}
+                        {step.fields ? t('setup.saveAndContinue') : t('setup.markComplete')}
                       </button>
                       <button
                         onClick={() => skipStep(step.id)}
@@ -546,7 +546,7 @@ export default function SetupPage() {
           <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mb-3">
             <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           </div>
-          <h4 className="font-bold text-slate-900 dark:text-white mb-1">Need help?</h4>
+          <h4 className="font-bold text-slate-900 dark:text-white mb-1">{t('setup.needHelp')}</h4>
           <p className="text-sm text-slate-600 dark:text-slate-400">
             Our team is here to help you get set up. Call us at (888) 555-GROW or chat with us anytime.
           </p>
@@ -555,7 +555,7 @@ export default function SetupPage() {
           <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900 rounded-xl flex items-center justify-center mb-3">
             <Shield className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <h4 className="font-bold text-slate-900 dark:text-white mb-1">Your data is safe</h4>
+          <h4 className="font-bold text-slate-900 dark:text-white mb-1">{t('setup.dataSafe')}</h4>
           <p className="text-sm text-slate-600 dark:text-slate-400">
             Everything you enter is encrypted and secure. We never sell your data. You own it, period.
           </p>
@@ -564,7 +564,7 @@ export default function SetupPage() {
           <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-xl flex items-center justify-center mb-3">
             <Heart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
           </div>
-          <h4 className="font-bold text-slate-900 dark:text-white mb-1">Built for the trades</h4>
+          <h4 className="font-bold text-slate-900 dark:text-white mb-1">{t('setup.builtForTrades')}</h4>
           <p className="text-sm text-slate-600 dark:text-slate-400">
             GrowthOS was built by people who understand service businesses. Every feature is designed for the way you actually work.
           </p>
