@@ -11,13 +11,41 @@ import {
   Phone,
   MapPin,
   Globe,
+  Wrench,
+  Flame,
+  Zap as Lightning,
+  Sprout,
+  Home,
+  Wind,
+  ChevronDown,
 } from 'lucide-react';
 import { useLanguage } from './LanguageProvider';
+
+// Trade icons mapping
+const tradeIcons: { [key: string]: React.ReactNode } = {
+  plumbing: <Wrench className="w-4 h-4" />,
+  hvac: <Flame className="w-4 h-4" />,
+  electrical: <Lightning className="w-4 h-4" />,
+  landscaping: <Sprout className="w-4 h-4" />,
+  roofing: <Home className="w-4 h-4" />,
+  cleaning: <Wind className="w-4 h-4" />,
+};
+
+const tradeLinks = [
+  { key: 'plumbing', href: '/plumbing' },
+  { key: 'hvac', href: '/hvac' },
+  { key: 'electrical', href: '/electrical' },
+  { key: 'landscaping', href: '/landscaping' },
+  { key: 'roofing', href: '/roofing' },
+  { key: 'cleaning', href: '/cleaning' },
+];
 
 // ─── Shared Navigation ─────────────────────────────────────────
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
+  const [mobileTradeOpen, setMobileTradeOpen] = useState(false);
   const { locale, setLocale, t } = useLanguage();
 
   useEffect(() => {
@@ -25,6 +53,14 @@ export function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = () => setDesktopDropdownOpen(false);
+    if (desktopDropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [desktopDropdownOpen]);
 
   return (
     <nav
@@ -45,11 +81,53 @@ export function Navigation() {
             </span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
-            <Link href="/#how-it-works" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">{t('marketing.howItWorks')}</Link>
-            <Link href="/#autopilot" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">{t('marketing.autopilot')}</Link>
-            <Link href="/#compare" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">{t('marketing.compare')}</Link>
-            <Link href="/#pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">{t('marketing.pricing')}</Link>
+            <Link href="/#product" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+              {t('nav.product')}
+            </Link>
+
+            {/* For Your Trade Dropdown */}
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDesktopDropdownOpen(!desktopDropdownOpen);
+                }}
+                onMouseEnter={() => setDesktopDropdownOpen(true)}
+                className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                {t('nav.forYourTrade')}
+                <ChevronDown className={`w-4 h-4 transition-transform ${desktopDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {desktopDropdownOpen && (
+                <div
+                  className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 animate-in fade-in duration-200"
+                  onMouseLeave={() => setDesktopDropdownOpen(false)}
+                >
+                  {tradeLinks.map((trade) => (
+                    <Link
+                      key={trade.key}
+                      href={trade.href}
+                      onClick={() => setDesktopDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                    >
+                      <span className="text-gray-400">{tradeIcons[trade.key]}</span>
+                      {t(`industry.${trade.key}` as any)}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+              {t('marketing.pricing')}
+            </Link>
+
+            <Link href="/switch" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+              {t('nav.switch')}
+            </Link>
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -77,17 +155,78 @@ export function Navigation() {
           </button>
         </div>
 
+        {/* Mobile Navigation */}
         {mobileOpen && (
           <div className="lg:hidden pb-6 pt-2 border-t border-gray-100">
             <div className="flex flex-col gap-4">
-              <Link href="/#how-it-works" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>{t('marketing.howItWorks')}</Link>
-              <Link href="/#autopilot" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>{t('marketing.autopilot')}</Link>
-              <Link href="/#compare" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>{t('marketing.compare')}</Link>
-              <Link href="/#pricing" className="text-sm font-medium text-gray-600" onClick={() => setMobileOpen(false)}>{t('marketing.pricing')}</Link>
-              <div className="flex gap-3 pt-2">
-                <Link href="/dashboard" className="text-sm font-medium text-gray-600">{t('marketing.logIn')}</Link>
-                <Link href="/setup" className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full">
-                  {t('marketing.tryFree')} <ArrowRight className="w-4 h-4" />
+              <Link
+                href="/#product"
+                className="text-sm font-medium text-gray-600"
+                onClick={() => setMobileOpen(false)}
+              >
+                {t('nav.product')}
+              </Link>
+
+              {/* Mobile For Your Trade Collapsible */}
+              <div>
+                <button
+                  onClick={() => setMobileTradeOpen(!mobileTradeOpen)}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-600 w-full"
+                >
+                  {t('nav.forYourTrade')}
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileTradeOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileTradeOpen && (
+                  <div className="mt-2 ml-4 flex flex-col gap-2">
+                    {tradeLinks.map((trade) => (
+                      <Link
+                        key={trade.key}
+                        href={trade.href}
+                        className="flex items-center gap-2 text-sm text-gray-600"
+                        onClick={() => {
+                          setMobileOpen(false);
+                          setMobileTradeOpen(false);
+                        }}
+                      >
+                        <span className="text-gray-400">{tradeIcons[trade.key]}</span>
+                        {t(`industry.${trade.key}` as any)}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link
+                href="/pricing"
+                className="text-sm font-medium text-gray-600"
+                onClick={() => setMobileOpen(false)}
+              >
+                {t('marketing.pricing')}
+              </Link>
+
+              <Link
+                href="/switch"
+                className="text-sm font-medium text-gray-600"
+                onClick={() => setMobileOpen(false)}
+              >
+                {t('nav.switch')}
+              </Link>
+
+              <div className="border-t border-gray-100 pt-4 flex flex-col gap-3">
+                <Link
+                  href="/dashboard"
+                  className="text-sm font-medium text-gray-600"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {t('marketing.logIn')}
+                </Link>
+                <Link
+                  href="/setup"
+                  className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {t('marketing.tryFree')}
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
@@ -102,9 +241,10 @@ export function Navigation() {
 export function Footer() {
   const { t } = useLanguage();
   const productLinks = [
-    { label: 'Features', href: '/#explorer' },
-    { label: 'Autopilot', href: '/#autopilot' },
-    { label: 'Pricing', href: '/#pricing' },
+    { label: t('nav.product'), href: '/#product' },
+    { label: t('nav.automations'), href: '/automations' },
+    { label: t('marketing.pricing'), href: '/pricing' },
+    { label: t('nav.switch'), href: '/switch' },
     { label: 'vs ServiceTitan', href: '/vs-servicetitan' },
     { label: 'vs Jobber', href: '/vs-jobber' },
     { label: 'vs Housecall Pro', href: '/vs-housecall-pro' },
