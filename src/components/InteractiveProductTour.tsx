@@ -355,7 +355,7 @@ export function InteractiveProductTour() {
                 onClick={() => handleStepClick(step.id)}
                 className={`relative flex-shrink-0 lg:flex-shrink p-4 rounded-xl transition-all duration-300 group text-left ${
                   activeStep === step.id
-                    ? 'bg-white border-2 border-blue-500 shadow-lg'
+                    ? 'bg-white border-2 border-[#27AE60] shadow-lg'
                     : 'bg-white border border-gray-200 hover:border-gray-300 hover:shadow-md'
                 }`}
               >
@@ -387,7 +387,7 @@ export function InteractiveProductTour() {
 
                 {/* Active indicator */}
                 {activeStep === step.id && (
-                  <div className="absolute inset-0 rounded-xl bg-blue-500/5 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-xl bg-emerald-500/5 pointer-events-none" />
                 )}
               </button>
             ))}
@@ -395,11 +395,11 @@ export function InteractiveProductTour() {
 
           {/* Mockup panel */}
           <div className="lg:col-span-3">
-            <div className="rounded-2xl overflow-hidden bg-white shadow-2xl shadow-black/10 ring-1 ring-black/5 h-[380px] sm:h-[450px] lg:h-[520px]">
+            <div className="rounded-2xl overflow-hidden bg-white shadow-2xl shadow-black/10 ring-1 ring-black/5 flex flex-col h-[480px] sm:h-[520px] lg:h-[560px]">
               {/* Header */}
-              <div className="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 flex items-center justify-between border-b border-slate-700/50">
+              <div className="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-3 flex items-center justify-between border-b border-slate-700/50 flex-shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2C3E50] to-[#34495E] flex items-center justify-center">
                     <span className="text-xs font-bold text-white">GO</span>
                   </div>
                   <span className="text-sm font-medium text-slate-300">GrowthOS</span>
@@ -411,7 +411,7 @@ export function InteractiveProductTour() {
               </div>
 
               {/* Content area with crossfade */}
-              <div className="h-full overflow-hidden relative bg-gradient-to-br from-slate-900 to-slate-950">
+              <div className="flex-1 min-h-0 overflow-hidden relative bg-gradient-to-br from-slate-900 to-slate-950">
                 <div
                   className="absolute inset-0 transition-opacity duration-500 ease-in-out"
                   style={{ opacity: 1 }}
@@ -434,7 +434,7 @@ export function InteractiveProductTour() {
                     onClick={() => handleStepClick(idx)}
                     className={`h-2 rounded-full transition-all ${
                       idx === activeStep
-                        ? 'bg-blue-600 w-8'
+                        ? 'bg-[#27AE60] w-8'
                         : 'bg-gray-300 hover:bg-gray-400 w-2'
                     }`}
                     aria-label={`Go to step ${idx + 1}`}

@@ -876,7 +876,7 @@ function InteractiveExplorer() {
               {/* Minimal app header - no browser chrome */}
               <div className="bg-slate-800 px-4 py-2.5 flex items-center justify-between border-b border-slate-700/50">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-lg bg-[#2C3E50] flex items-center justify-center">
                     <Zap className="w-3.5 h-3.5 text-white" />
                   </div>
                   <span className="text-xs font-medium text-slate-400">GrowthOS</span>
@@ -888,7 +888,7 @@ function InteractiveExplorer() {
               </div>
 
               {/* Mockup content — fixed height for consistency */}
-              <div className="bg-slate-900 h-[420px] sm:h-[480px] overflow-hidden">
+              <div className="bg-slate-900 h-[480px] sm:h-[520px] overflow-hidden">
                 {renderMockup()}
               </div>
             </div>
@@ -897,7 +897,7 @@ function InteractiveExplorer() {
 
         {/* CTA below the explorer — clearly separated */}
         <div className="mt-10 text-center">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-lg shadow-blue-600/25 transition-all">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold text-white bg-[#27AE60] hover:bg-[#229954] shadow-lg shadow-emerald-600/25 transition-all">
             Explore all features
             <ArrowRight className="w-4 h-4" />
           </Link>
