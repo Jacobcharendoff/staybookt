@@ -10,6 +10,15 @@ import { Modal } from '@/components/Modal';
 import { AddDealForm } from '@/components/AddDealForm';
 import { Plus, Search, X, Eye, List } from 'lucide-react';
 
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
 const PIPELINE_STAGES_CONFIG: { stage: PipelineStage; labelKey: string; color: string }[] = [
   { stage: 'new_lead', labelKey: 'pipeline.newLead', color: 'bg-slate-100 border-slate-300' },
   { stage: 'contacted', labelKey: 'pipeline.contacted', color: 'bg-blue-100 border-blue-300' },
@@ -28,6 +37,7 @@ export default function PipelinePage() {
   const [isAddDealOpen, setIsAddDealOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'board' | 'list'>('board');
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [assignedToFilter, setAssignedToFilter] = useState<string>('all');
   const [sourceFilter, setSourceFilter] = useState<string>('all');
   const [valueFilter, setValueFilter] = useState<string>('all');
@@ -42,7 +52,7 @@ export default function PipelinePage() {
 
   useEffect(() => {
     applyFilters();
-  }, [deals, searchQuery, assignedToFilter, sourceFilter, valueFilter]);
+  }, [deals, debouncedSearchQuery, assignedToFilter, sourceFilter, valueFilter]);
 
   const applyFilters = () => {
     let filtered = deals.filter((deal) => {
@@ -50,9 +60,9 @@ export default function PipelinePage() {
       const contactName = contact?.name || '';
 
       const matchesSearch =
-        searchQuery === '' ||
-        deal.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        contactName.toLowerCase().includes(searchQuery.toLowerCase());
+        debouncedSearchQuery === '' ||
+        deal.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+        contactName.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
 
       const matchesAssigned =
         assignedToFilter === 'all' ||
@@ -117,7 +127,7 @@ export default function PipelinePage() {
   };
 
   const hasActiveFilters =
-    searchQuery || assignedToFilter !== 'all' || sourceFilter !== 'all' || valueFilter !== 'all';
+    debouncedSearchQuery || assignedToFilter !== 'all' || sourceFilter !== 'all' || valueFilter !== 'all';
 
   if (!mounted) {
     return (

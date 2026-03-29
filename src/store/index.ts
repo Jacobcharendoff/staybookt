@@ -217,6 +217,7 @@ const SEED_DATA = {
       source: 'google_lsa' as LeadSource,
       assignedTo: 'James',
       notes: '50 gallon tank installation scheduled',
+      scheduledDate: Date.now() + 3 * 86400000 + 14 * 3600000, // 3 days, 2 PM
     },
     {
       contactId: 3,
@@ -235,6 +236,7 @@ const SEED_DATA = {
       source: 'neighborhood' as LeadSource,
       assignedTo: 'Marcus',
       notes: 'Final phase of bathroom remodel',
+      scheduledDate: Date.now() + 5 * 86400000 + 10 * 3600000, // 5 days, 10 AM
     },
     {
       contactId: 5,
@@ -325,6 +327,7 @@ const SEED_DATA = {
       source: 'seo' as LeadSource,
       assignedTo: 'Team',
       notes: 'Includes new fixtures, plumbing, ventilation',
+      scheduledDate: Date.now() + 7 * 86400000 + 11 * 3600000, // 7 days, 11 AM
     },
   ],
 
@@ -611,13 +614,16 @@ export const useStore = create<GrowthOSStore>()(
         });
 
         // Add seed invoices (from approved estimates / completed deals)
-        const completedDealIndices = [0, 7, 8]; // invoiced and completed deals
-        completedDealIndices.forEach((idx) => {
-          const deal = deals[idx];
+        const invoiceConfigs = [
+          { dealIdx: 0, isPaid: true, daysAgo: 5, dueDaysAgo: -2 }, // paid invoice
+          { dealIdx: 7, isPaid: false, daysAgo: 5, dueDaysAgo: 10 }, // overdue invoice (10 days past due)
+          { dealIdx: 8, isPaid: false, daysAgo: 3, dueDaysAgo: 25 }, // overdue invoice (25 days past due)
+        ];
+        invoiceConfigs.forEach((config) => {
+          const deal = deals[config.dealIdx];
           if (!deal) return;
           const contact = contacts.find(c => c.id === deal.contactId);
           if (!contact) return;
-          const isPaid = idx === 0;
           const taxRate = 0.13; // Ontario HST
           const subtotal = deal.value;
           const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
@@ -633,14 +639,14 @@ export const useStore = create<GrowthOSStore>()(
             taxRate,
             taxAmount,
             total,
-            amountPaid: isPaid ? total : 0,
-            status: isPaid ? 'paid' : 'sent',
+            amountPaid: config.isPaid ? total : 0,
+            status: config.isPaid ? 'paid' : 'sent',
             notes: '',
-            dueDate: Date.now() + 30 * 86400000,
+            dueDate: Date.now() - config.dueDaysAgo * 86400000,
             province: 'ON',
             taxType: 'HST',
-            sentAt: Date.now() - 5 * 86400000,
-            paidAt: isPaid ? Date.now() - 2 * 86400000 : undefined,
+            sentAt: Date.now() - config.daysAgo * 86400000,
+            paidAt: config.isPaid ? Date.now() - 2 * 86400000 : undefined,
           });
         });
       },

@@ -39,6 +39,7 @@ import {
   Plus,
   Minus,
   Send,
+  Check,
 } from "lucide-react";
 
 // ─── Animated Counter ─────────────────────────────────────────
@@ -313,6 +314,12 @@ function Hero() {
               {t('landing.seeItInAction')}
               <ChevronRight className="w-5 h-5" />
             </Link>
+          </div>
+
+          {/* Social Proof - New Line */}
+          <div className="hero-reveal hero-reveal-delay-4 mt-6 flex items-center justify-center gap-2 text-sm text-gray-500">
+            <Check className="w-4 h-4 text-emerald-500" />
+            <span>{t('hero.socialProof')}</span>
           </div>
 
           {/* Canada-first trust bar */}
@@ -1744,6 +1751,9 @@ function Pricing() {
           <p className="mt-4 text-lg text-gray-500">
             {t('pricing.noCredit')}
           </p>
+          <p className="mt-6 text-center text-sm text-gray-600">
+            {t('pricing.riskReversal')}
+          </p>
         </div>
 
         <div className="stagger-children scroll-fade-up grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -1793,6 +1803,9 @@ function FAQ() {
     { q: t('faq.techniciansMobile'), a: t('faq.techniciansMobileAnswer') },
     { q: t('faq.soloOperator'), a: t('faq.soloOperatorAnswer') },
     { q: t('faq.contract'), a: t('faq.contractAnswer') },
+    { q: t('faq.techSavvy'), a: t('faq.techSavvyAnswer') },
+    { q: t('faq.afterTrial'), a: t('faq.afterTrialAnswer') },
+    { q: t('faq.specificTrade'), a: t('faq.specificTradeAnswer') },
   ];
 
   return (

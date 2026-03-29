@@ -248,6 +248,48 @@ export default function ContactDetailPage() {
           </div>
         </div>
 
+        {/* Service History */}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('contactDetail.serviceHistory')}</h2>
+          {deals.length > 0 ? (
+            <div className="space-y-3">
+              {deals.map((deal, index) => (
+                <div key={deal.id} className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold text-sm">
+                      {index + 1}
+                    </div>
+                    {index < deals.length - 1 && <div className="w-0.5 h-8 bg-slate-200 mt-2" />}
+                  </div>
+                  <div className="flex-1 pb-2">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="font-semibold text-slate-900">{deal.title}</p>
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
+                          <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded capitalize">
+                            {deal.stage.replace(/_/g, ' ')}
+                          </span>
+                          <span className="text-xs font-medium text-slate-600">
+                            {deal.assignedTo}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-slate-900">${deal.value.toLocaleString()}</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-2">
+                      {new Date(deal.updatedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-slate-600 text-center py-8">{t('contactDetail.noServiceHistory')}</p>
+          )}
+        </div>
+
         {/* Associated Deals */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
           <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('contactDetail.associatedDeals')} ({deals.length})</h2>

@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface KPICardProps {
@@ -10,7 +11,7 @@ interface KPICardProps {
   suffix?: string;
 }
 
-export function KPICard({
+function KPICardComponent({
   label,
   value,
   trend,
@@ -51,3 +52,5 @@ export function KPICard({
     </div>
   );
 }
+
+export const KPICard = memo(KPICardComponent);

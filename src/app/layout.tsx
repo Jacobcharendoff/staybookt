@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/components/LanguageProvider";
@@ -35,8 +36,41 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Growth OS",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    description: "Bilingual CRM built for Canadian home service businesses. Pipeline management, automations, invoicing with provincial tax compliance.",
+    url: "https://growth-os-three-pied.vercel.app",
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "CAD",
+      lowPrice: "79",
+      highPrice: "299",
+      offerCount: "3",
+    },
+    creator: {
+      "@type": "Organization",
+      name: "Growth OS",
+      url: "https://growth-os-three-pied.vercel.app",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "CA",
+      },
+    },
+  };
+
   return (
     <html lang="en" className="h-full antialiased">
+      <head>
+        <Script
+          id="jsonld-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full">
         <ThemeProvider>
           <LanguageProvider>

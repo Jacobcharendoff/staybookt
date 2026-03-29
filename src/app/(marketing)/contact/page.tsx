@@ -210,9 +210,9 @@ export default function ContactPage() {
                   <h3 className="text-xl font-bold text-gray-900">{t('contactPage.bookDemo')}</h3>
                 </div>
                 <p className="text-gray-700 mb-6">
-                  {t('contactPage.demoDesc')}
+                  Prefer to talk? Book a 15-minute demo with our team.
                 </p>
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                   {t('contactPage.scheduleCall')}
                 </button>
               </div>

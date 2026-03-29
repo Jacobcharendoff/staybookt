@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
+import { Invoice } from '@/types';
 import {
   BarChart,
   Bar,
@@ -58,7 +59,7 @@ const RING_COLORS = {
 
 export default function Dashboard() {
   const { t } = useLanguage();
-  const { contacts, deals, activities, initializeSeedData, getActivities } = useStore();
+  const { contacts, deals, activities, invoices, initializeSeedData, getActivities } = useStore();
   const [isAddDealOpen, setIsAddDealOpen] = useState(false);
   const [isFABExpanded, setIsFABExpanded] = useState(false);
   const [dateRange, setDateRange] = useState<'today' | 'week' | 'month' | 'quarter'>(
@@ -81,6 +82,12 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  // Calculate overdue invoices
+  const overdueInvoices = invoices.filter(
+    (inv: Invoice) => inv.dueDate < Date.now() && inv.status !== 'paid'
+  );
+  const totalOverdueAmount = overdueInvoices.reduce((sum: number, inv: Invoice) => sum + (inv.total - inv.amountPaid), 0);
 
   // Calculate KPIs
   const totalLeads = contacts.filter((c) => c.type === 'lead').length;
@@ -277,6 +284,33 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Overdue Invoices Alert */}
+      {overdueInvoices.length > 0 && (
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-6 mb-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-red-100/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4" />
+          <div className="relative flex items-center justify-between gap-6 flex-wrap">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                <AlertCircle className="w-6 h-6 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-red-900">{t('dashboard.overdueInvoices')}</h3>
+                <p className="text-red-700 text-sm">
+                  {overdueInvoices.length} invoice{overdueInvoices.length !== 1 ? 's' : ''} — ${totalOverdueAmount.toLocaleString()} {t('dashboard.overdueAmount')}
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/invoices"
+              className="flex items-center gap-2 px-5 py-2.5 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all shrink-0 text-sm"
+            >
+              View
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* KPI Cards Row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8">

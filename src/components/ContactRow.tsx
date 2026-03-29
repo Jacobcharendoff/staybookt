@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { Contact } from '@/types';
 import { LeadSourceBadge } from './LeadSourceBadge';
 import { Mail, Phone } from 'lucide-react';
@@ -10,7 +11,7 @@ interface ContactRowProps {
   onClick?: () => void;
 }
 
-export function ContactRow({
+function ContactRowComponent({
   contact,
   dealCount = 0,
   onClick,
@@ -65,3 +66,5 @@ export function ContactRow({
     </tr>
   );
 }
+
+export const ContactRow = memo(ContactRowComponent);

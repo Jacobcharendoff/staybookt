@@ -51,6 +51,7 @@ export interface Deal {
   notes: string;
   createdAt: number;
   updatedAt: number;
+  scheduledDate?: number;
 }
 
 export interface Activity {

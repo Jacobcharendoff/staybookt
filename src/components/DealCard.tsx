@@ -1,8 +1,10 @@
 'use client';
 
+import { memo } from 'react';
 import { Deal, Contact, PipelineStage } from '@/types';
 import { LeadSourceBadge } from './LeadSourceBadge';
-import { Clock, DollarSign } from 'lucide-react';
+import { Clock, DollarSign, Calendar } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
 
 interface DealCardProps {
   deal: Deal;
@@ -11,15 +13,35 @@ interface DealCardProps {
   isDragging?: boolean;
 }
 
-export function DealCard({
+function DealCardComponent({
   deal,
   contact,
   onClick,
   isDragging,
 }: DealCardProps) {
+  const { locale, t } = useLanguage();
+
   const daysInStage = Math.floor(
     (Date.now() - deal.updatedAt) / (1000 * 60 * 60 * 24)
   );
+
+  const formatScheduledDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    if (locale === 'fr') {
+      return new Intl.DateTimeFormat('fr-CA', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(date);
+    }
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+  };
 
   return (
     <div
@@ -56,6 +78,15 @@ export function DealCard({
           </span>
         </div>
 
+        {deal.scheduledDate && (
+          <div className="flex items-center gap-1 text-blue-600">
+            <Calendar className="w-3.5 h-3.5" />
+            <span className="text-xs font-medium">
+              {t('pipeline.scheduledFor')} {formatScheduledDate(deal.scheduledDate)}
+            </span>
+          </div>
+        )}
+
         <div className="flex items-center gap-1 text-slate-500">
           <Clock className="w-3.5 h-3.5" />
           <span className="text-xs">
@@ -66,3 +97,5 @@ export function DealCard({
     </div>
   );
 }
+
+export const DealCard = memo(DealCardComponent);

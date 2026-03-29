@@ -56,7 +56,8 @@ export const translations = {
     'hero.cleaners': 'cleaners',
     'hero.freeForFourteen': 'Free for 14 days — no credit card needed',
     'hero.startFreeNoCard': 'Start Free — No Card Required',
-    'hero.neverMissLead': 'Never miss a lead. Never lose a deal.',
+    'hero.neverMissLead': 'Respond to every missed call in 60 seconds. Book 40% more jobs. Get paid faster.',
+    'hero.socialProof': 'Trusted by 500+ Canadian service businesses',
 
     // How It Works
     'howItWorks.title': 'How It Works',
@@ -87,6 +88,8 @@ export const translations = {
     'dashboard.logActivity': 'Log Activity',
     'dashboard.finishSetup': 'Finish setting up Growth OS',
     'dashboard.continueSetup': 'Continue Setup',
+    'dashboard.overdueInvoices': 'Overdue Invoices',
+    'dashboard.overdueAmount': 'outstanding',
 
     // Pipeline
     'pipeline.title': 'Pipeline',
@@ -114,6 +117,7 @@ export const translations = {
     'pipeline.1kTo5k': '$1K - $5K',
     'pipeline.5kTo10k': '$5K - $10K',
     'pipeline.over10k': 'Over $10K',
+    'pipeline.scheduledFor': 'Scheduled for',
 
     // Contacts
     'contacts.title': 'Contacts',
@@ -585,6 +589,7 @@ export const translations = {
     'pricing.title': 'One price. Everything included.',
     'pricing.included': 'included.',
     'pricing.description': '14-day free trial. No credit card. Month-to-month — cancel anytime. Most people stick around because it works.',
+    'pricing.riskReversal': 'Free 14-day trial. Cancel anytime. No credit card required. 100% risk-free.',
     'pricing.starter': 'Starter',
     'pricing.starterDesc': 'You. One dashboard. Never miss a lead.',
     'pricing.growth': 'Growth',
@@ -631,6 +636,12 @@ export const translations = {
     'faq.soloOperatorAnswer': 'Not at all. The Starter plan ($79/mo) is built for one-person shops. You get a pipeline view, auto-responses to missed calls, payment reminders, and review requests. It saves you 12+ hours a week.',
     'faq.contract': 'Is there a contract?',
     'faq.contractAnswer': 'No. Month-to-month billing. Cancel anytime. No cancellation fees. No awkward phone calls.',
+    'faq.techSavvy': 'What if I\'m not tech-savvy?',
+    'faq.techSavvyAnswer': 'Growth OS was designed for busy tradespeople, not tech experts. Most owners are set up in under 15 minutes, and our support team is here if you need a hand.',
+    'faq.afterTrial': 'What happens after my free trial?',
+    'faq.afterTrialAnswer': 'You choose the plan that fits. No surprise charges. If you decide it\'s not for you, just cancel — no questions asked, no penalty.',
+    'faq.specificTrade': 'Does it work for my specific trade?',
+    'faq.specificTradeAnswer': 'Growth OS is built for all home service trades — plumbing, HVAC, electrical, landscaping, roofing, cleaning, and more. The workflows adapt to how your business actually runs.',
 
     // Industry Pages - Plumbing
     'plumbingPage.heroTitle': 'Stop losing plumbing leads to your competitor\'s voicemail',
@@ -1294,6 +1305,8 @@ export const translations = {
     'contactDetail.loading': 'Loading...',
     'contactDetail.notFound': 'Contact not found',
     'contactDetail.returnToContacts': 'Return to contacts',
+    'contactDetail.serviceHistory': 'Service History',
+    'contactDetail.noServiceHistory': 'No service history yet',
 
     // Estimate Detail Page
     'estimateDetail.backToEstimates': 'Back to Estimates',
@@ -1471,7 +1484,8 @@ export const translations = {
     'hero.cleaners': 'les nettoyeurs',
     'hero.freeForFourteen': 'Gratuit pendant 14 jours — aucune carte de crédit requise',
     'hero.startFreeNoCard': 'Commencer gratuitement — Aucune carte requise',
-    'hero.neverMissLead': 'Ne manquez jamais un client potentiel. Ne perdez jamais une affaire.',
+    'hero.neverMissLead': 'Répondez à chaque appel manqué en 60 secondes. Réservez 40 % plus de travaux. Soyez payé plus vite.',
+    'hero.socialProof': 'La confiance de plus de 500 entreprises de services canadiennes',
 
     // How It Works
     'howItWorks.title': 'Comment ça fonctionne',
@@ -1502,6 +1516,8 @@ export const translations = {
     'dashboard.logActivity': 'Enregistrer une activité',
     'dashboard.finishSetup': 'Terminer la configuration de Growth OS',
     'dashboard.continueSetup': 'Continuer la configuration',
+    'dashboard.overdueInvoices': 'Factures en retard',
+    'dashboard.overdueAmount': 'en souffrance',
 
     // Pipeline
     'pipeline.title': 'Pipeline',
@@ -1529,6 +1545,7 @@ export const translations = {
     'pipeline.1kTo5k': '1 000 $ à 5 000 $',
     'pipeline.5kTo10k': '5 000 $ à 10 000 $',
     'pipeline.over10k': 'Plus de 10 000 $',
+    'pipeline.scheduledFor': 'Prévu pour',
 
     // Contacts
     'contacts.title': 'Contacts',
@@ -2000,6 +2017,7 @@ export const translations = {
     'pricing.title': 'Un prix. Tout inclus.',
     'pricing.included': 'Tout inclus.',
     'pricing.description': 'Essai gratuit de 14 jours. Pas de carte de crédit. Mois par mois — annulez à tout moment. La plupart des gens restent parce que cela fonctionne.',
+    'pricing.riskReversal': 'Essai gratuit de 14 jours. Annulez en tout temps. Aucune carte de crédit requise. 100 % sans risque.',
     'pricing.starter': 'Débutant',
     'pricing.starterDesc': 'Vous. Un tableau de bord. Ne manquez jamais un client potentiel.',
     'pricing.growth': 'Croissance',
@@ -2046,6 +2064,12 @@ export const translations = {
     'faq.soloOperatorAnswer': 'Pas du tout. Le plan Débutant (79 $/mois) est construit pour les magasins d\'une seule personne. Vous obtenez une vue du pipeline, des réponses automatiques aux appels manqués, des rappels de paiement et des demandes d\'avis. Cela vous économise plus de 12 heures par semaine.',
     'faq.contract': 'Y a-t-il un contrat?',
     'faq.contractAnswer': 'Non. Facturation mensuelle. Annulez à tout moment. Pas de frais d\'annulation. Pas d\'appels gênants.',
+    'faq.techSavvy': 'Et si je ne suis pas à l\'aise avec la technologie?',
+    'faq.techSavvyAnswer': 'Growth OS a été conçu pour les gens de métier occupés, pas les experts en technologie. La plupart des propriétaires sont configurés en moins de 15 minutes, et notre équipe de soutien est là si vous avez besoin d\'aide.',
+    'faq.afterTrial': 'Que se passe-t-il après mon essai gratuit?',
+    'faq.afterTrialAnswer': 'Vous choisissez le forfait qui vous convient. Aucuns frais surprise. Si vous décidez que ce n\'est pas pour vous, annulez simplement — sans questions, sans pénalité.',
+    'faq.specificTrade': 'Est-ce que ça fonctionne pour mon métier spécifique?',
+    'faq.specificTradeAnswer': 'Growth OS est conçu pour tous les métiers de services résidentiels — plomberie, CVAC, électricité, paysagement, toiture, nettoyage et plus. Les flux de travail s\'adaptent à la façon dont votre entreprise fonctionne réellement.',
 
     // Industry Pages - Plumbing
     'plumbingPage.heroTitle': 'Arrêtez de perdre des clients potentiels en plomberie vers le répondeur automatique de vos concurrents',
@@ -2709,6 +2733,8 @@ export const translations = {
     'contactDetail.loading': 'Chargement...',
     'contactDetail.notFound': 'Contact introuvable',
     'contactDetail.returnToContacts': 'Retour aux contacts',
+    'contactDetail.serviceHistory': 'Historique des services',
+    'contactDetail.noServiceHistory': 'Aucun historique de service',
 
     // Estimate Detail Page FR
     'estimateDetail.backToEstimates': 'Retour aux Devis',
