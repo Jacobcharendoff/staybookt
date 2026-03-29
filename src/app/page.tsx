@@ -448,12 +448,12 @@ function Hero() {
   );
 }
 
-// ─── Problem Agitation ───────────────────────────────────────
+// ─── Problem Agitation + Stats ───────────────────────────────
 function ProblemSection() {
   const { t } = useLanguage();
   return (
     <section className="py-16 lg:py-20 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
-      <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
         <h2 className="scroll-fade-up text-2xl sm:text-3xl font-bold text-white mb-8">{t('problem.soundFamiliar')}</h2>
         <div className="stagger-children scroll-fade-up grid gap-4 text-left max-w-2xl mx-auto">
           {[
@@ -471,6 +471,23 @@ function ProblemSection() {
         <p className="scroll-fade-up mt-8 text-lg text-blue-300 font-medium">
           {t('problem.fixesAvailable')}
         </p>
+
+        {/* Stats counters — inside dark section for contrast */}
+        <div className="mt-12 pt-10 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {[
+            { value: 40, suffix: "%", label: t('stats.moreJobsBooked') },
+            { value: 60, suffix: "sec", label: t('stats.leadResponseTime') },
+            { value: 12, suffix: "hrs", label: t('stats.savedPerWeek') },
+            { value: 8500, suffix: "", prefix: "$", label: t('stats.extraRevenue') },
+          ].map((stat) => (
+            <div key={stat.label} className="scroll-fade-up">
+              <div className="text-3xl lg:text-4xl font-bold text-white">
+                <AnimatedCounter end={stat.value} suffix={stat.suffix} prefix={stat.prefix || ""} />
+              </div>
+              <p className="mt-2 text-xs lg:text-sm text-slate-400 font-medium">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -481,12 +498,17 @@ function InteractiveExplorer() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<string>('dashboard');
 
+  const tabColors: Record<string, string> = {
+    dashboard: 'from-blue-500 to-blue-600',
+    pipeline: 'from-purple-500 to-violet-600',
+    estimates: 'from-emerald-500 to-teal-600',
+    invoicing: 'from-amber-500 to-orange-600',
+  };
+
   const tabs = [
     { id: 'dashboard', icon: <BarChart3 className="w-5 h-5" />, label: t('explorer.dashboard'), description: t('explorer.dashboardDesc'), url: 'app.growthos.com/dashboard' },
     { id: 'pipeline', icon: <Layers className="w-5 h-5" />, label: t('explorer.pipeline'), description: t('explorer.pipelineDesc'), url: 'app.growthos.com/pipeline' },
     { id: 'estimates', icon: <FileText className="w-5 h-5" />, label: t('explorer.estimates'), description: t('explorer.estimatesDesc'), url: 'app.growthos.com/estimates' },
-    { id: 'advisor', icon: <Bot className="w-5 h-5" />, label: t('explorer.growthAdvisor'), description: t('explorer.growthAdvisorDesc'), url: 'app.growthos.com/advisor' },
-    { id: 'autopilot', icon: <Zap className="w-5 h-5" />, label: t('explorer.autopilot'), description: t('explorer.autopilotDesc'), url: 'app.growthos.com/automations' },
     { id: 'invoicing', icon: <Receipt className="w-5 h-5" />, label: t('explorer.invoicing'), description: t('explorer.invoicingDesc'), url: 'app.growthos.com/invoices' },
   ];
 
@@ -758,8 +780,6 @@ function InteractiveExplorer() {
       case 'dashboard': return <DashboardMockup />;
       case 'pipeline': return <PipelineMockup />;
       case 'estimates': return <EstimatesMockup />;
-      case 'advisor': return <AdvisorMockup />;
-      case 'autopilot': return <AutopilotMockup />;
       case 'invoicing': return <InvoicingMockup />;
       default: return <DashboardMockup />;
     }
@@ -798,7 +818,7 @@ function InteractiveExplorer() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
                     activeTab === tab.id
-                      ? 'bg-white text-slate-900 shadow-lg'
+                      ? `bg-gradient-to-r ${tabColors[tab.id]} text-white shadow-lg shadow-${tab.id === 'dashboard' ? 'blue' : tab.id === 'pipeline' ? 'purple' : tab.id === 'estimates' ? 'emerald' : 'amber'}-500/25`
                       : 'text-slate-400 hover:text-white bg-white/5 hover:bg-white/10'
                   }`}
                 >
@@ -806,6 +826,9 @@ function InteractiveExplorer() {
                   {tab.label}
                 </button>
               ))}
+              <Link href="/dashboard" className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-blue-400 bg-white/5 hover:bg-white/10 transition-all whitespace-nowrap border border-blue-500/30">
+                See all features <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
 
             {/* Desktop: vertical tabs with descriptions */}
@@ -816,23 +839,28 @@ function InteractiveExplorer() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`text-left w-full px-4 py-4 rounded-xl transition-all duration-200 ${
                     activeTab === tab.id
-                      ? 'bg-white/10 border border-white/20'
+                      ? `bg-gradient-to-r ${tabColors[tab.id]} border border-white/20 shadow-lg`
                       : 'hover:bg-white/5 border border-transparent'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`${activeTab === tab.id ? 'text-blue-400' : 'text-slate-500'} transition-colors`}>
+                    <div className={`${activeTab === tab.id ? 'text-white' : 'text-slate-500'} transition-colors`}>
                       {tab.icon}
                     </div>
                     <span className={`font-semibold text-sm ${activeTab === tab.id ? 'text-white' : 'text-slate-400'} transition-colors`}>
                       {tab.label}
                     </span>
                   </div>
-                  <p className={`mt-1.5 text-xs leading-relaxed pl-8 ${activeTab === tab.id ? 'text-slate-300' : 'text-slate-600'} transition-colors`}>
+                  <p className={`mt-1.5 text-xs leading-relaxed pl-8 ${activeTab === tab.id ? 'text-white/70' : 'text-slate-600'} transition-colors`}>
                     {tab.description}
                   </p>
                 </button>
               ))}
+              {/* CTA link at bottom of tabs */}
+              <Link href="/dashboard" className="flex items-center gap-2 px-4 py-3 mt-2 rounded-xl text-sm font-medium text-blue-400 hover:text-blue-300 hover:bg-white/5 transition-all border border-blue-500/20">
+                <ArrowRight className="w-4 h-4" />
+                Explore all features
+              </Link>
             </div>
           </div>
 
@@ -853,8 +881,8 @@ function InteractiveExplorer() {
                 </div>
               </div>
 
-              {/* Mockup content */}
-              <div className="bg-slate-900 min-h-[400px] sm:min-h-[480px]">
+              {/* Mockup content — fixed height for consistency */}
+              <div className="bg-slate-900 h-[420px] sm:h-[480px] overflow-hidden">
                 {renderMockup()}
               </div>
             </div>
@@ -1220,23 +1248,6 @@ function SocialProof() {
   return (
     <section data-section="proof" className="py-16 lg:py-20 bg-gradient-to-b from-white to-slate-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Stats as compact row */}
-        <div className="mb-16 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 text-center">
-          {[
-            { value: 40, suffix: "%", label: t('stats.moreJobsBooked') },
-            { value: 60, suffix: "sec", label: t('stats.leadResponseTime') },
-            { value: 12, suffix: "hrs", label: t('stats.savedPerWeek') },
-            { value: 8500, suffix: "", prefix: "$", label: t('stats.extraRevenue') },
-          ].map((stat) => (
-            <div key={stat.label} className="scroll-fade-up">
-              <div className="text-2xl lg:text-3xl font-bold text-gray-900">
-                <AnimatedCounter end={stat.value} suffix={stat.suffix} prefix={stat.prefix || ""} />
-              </div>
-              <p className="mt-2 text-xs lg:text-sm text-gray-600 font-medium">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-
         {/* Testimonials section header */}
         <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
@@ -1436,7 +1447,7 @@ export default function LandingPage() {
       <InteractiveExplorer />
       <SocialProof />
       <AutopilotSection />
-      <PricingTeaser />
+      <Pricing />
       <CTASection />
       <Footer />
     </div>
