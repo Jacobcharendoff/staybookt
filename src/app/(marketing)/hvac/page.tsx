@@ -2,325 +2,613 @@
 
 import { MarketingLayout } from '@/components/MarketingLayout';
 import { useLanguage } from '@/components/LanguageProvider';
-import { Zap, Calendar, TrendingUp, DollarSign, CheckCircle, Users, BarChart3, Clock } from 'lucide-react';
+import {
+  Flame,
+  Thermometer,
+  Clock,
+  Zap,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
+  Wrench,
+  Users,
+  Star,
+  ChevronDown,
+} from 'lucide-react';
 import Link from 'next/link';
+import { useState, useRef, useEffect } from 'react';
 
-export default function HvacPage() {
+// Scroll reveal hook
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  return { ref, isVisible };
+}
+
+// Animated counter
+function AnimatedCounter({ end, suffix = '', prefix = '' }: { end: number; suffix?: string; prefix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const duration = 2000;
+          const steps = 60;
+          const increment = end / steps;
+          let current = 0;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= end) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(current));
+            }
+          }, duration / steps);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [end]);
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
+}
+
+// FAQ Item
+function FAQItem({ question, answer, isOpen, onToggle }: { question: string; answer: string; isOpen: boolean; onToggle: () => void }) {
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <button
+        onClick={onToggle}
+        className="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+      >
+        <span className="font-semibold text-gray-900 text-left">{question}</span>
+        <ChevronDown
+          className={`w-5 h-5 text-amber-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {isOpen && (
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+          <p className="text-gray-700 leading-relaxed">{answer}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function HVACPage() {
   const { t } = useLanguage();
+  const heroReveal = useScrollReveal();
+  const statsReveal = useScrollReveal();
+  const painReveal = useScrollReveal();
+  const solutionReveal = useScrollReveal();
+  const testimonialReveal = useScrollReveal();
+  const faqReveal = useScrollReveal();
+
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   return (
     <MarketingLayout>
-      {/* Hero Section */}
-      <section className="pt-24 pb-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            {t('hvacPage.heroTitle')}
+      {/* 1. HERO - Orange/Amber trade color */}
+      <section
+        ref={heroReveal.ref}
+        className={`pt-32 pb-20 bg-gradient-to-br from-amber-700 via-orange-700 to-slate-900 relative overflow-hidden transition-opacity duration-1000 ${
+          heroReveal.isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="absolute top-20 right-0 opacity-10 pointer-events-none">
+          <Flame className="w-96 h-96 text-orange-400" />
+        </div>
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-600/20 border border-orange-400/30 mb-8 text-orange-100 text-sm font-medium">
+            <Flame className="w-4 h-4" />
+            {t('hvacPage.heroBadge') }
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            {t('hvacPage.heroTitle') }
           </h1>
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            {t('hvacPage.heroDesc')}
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-full transition-colors"
-          >
-            {t('industryPage.getStartedFree')}
-            <Zap className="w-5 h-5" />
-          </Link>
-          <p className="text-sm text-gray-500 mt-4">{t('industryPage.noCardNeeded')}</p>
-        </div>
-      </section>
 
-      {/* Pain Points Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-16 text-center">
-            {t('industryPage.commonProblems')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Seasonal Swings */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-rose-500">
-              <div className="flex items-start gap-4">
-                <TrendingUp className="w-6 h-6 text-rose-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Seasonal demand whiplash</h3>
-                  <p className="text-gray-600">
-                    Summer AC calls are pouring in while your team is booked solid. Winter furnace emergencies mean 3am service calls and overtime costs. Managing peak seasons costs 40% more than off-season.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Estimate Follow-up */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-amber-500">
-              <div className="flex items-start gap-4">
-                <Clock className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Estimates fall through the cracks</h3>
-                  <p className="text-gray-600">
-                    1 in 4 estimates never gets a response. You forget to follow up, customers move on to competitors, and that's $800-1,500 per lost estimate on average.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Maintenance Scheduling */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-rose-500">
-              <div className="flex items-start gap-4">
-                <Calendar className="w-6 h-6 text-rose-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Maintenance contracts are invisible</h3>
-                  <p className="text-gray-600">
-                    You sell maintenance plans but forget to remind customers for their annual check-ups. They call someone else. Recurring revenue disappears.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Warranty Callbacks */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border-l-4 border-amber-500">
-              <div className="flex items-start gap-4">
-                <DollarSign className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Warranty callbacks eat your margins</h3>
-                  <p className="text-gray-600">
-                    Warranty callbacks eat your profitable hours. You can't tell which jobs are under warranty or who's calling you back. Track them separately so you know your real margins.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4 text-center">
-            How Growth OS handles peak season
-          </h2>
-          <p className="text-xl text-gray-600 text-center mb-16">
-            Automation for calls, estimates, scheduling, and follow-ups. Run the office from your phone.
+          <p className="text-lg sm:text-xl text-orange-100 mb-10 max-w-2xl leading-relaxed">
+            {t('hvacPage.heroDesc') }
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Smart Scheduling */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <Calendar className="w-8 h-8 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Smart scheduling</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                See your whole team's calendar in one place. Customers can book available time slots online. No more back-and-forth calls.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Real-time availability for customers
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Auto-confirmation text and email
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Automated no-show reminders
-                </li>
-              </ul>
-            </div>
-
-            {/* Automatic Follow-ups */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <Users className="w-8 h-8 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Automatic estimate follow-ups</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Stop losing estimates to silence. Growth OS follows up with customers automatically. Get answers without lifting a finger.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Follow up after 24 hours
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Customers approve and pay online
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Track estimate-to-booking rate
-                </li>
-              </ul>
-            </div>
-
-            {/* Maintenance Reminders */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <Zap className="w-8 h-8 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Maintenance plan automation</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Remind customers when their annual check-up is due. They book it. You don't have to chase them.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Auto-reminder 30 days before renewal
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Track maintenance revenue
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  One-click contract renewal
-                </li>
-              </ul>
-            </div>
-
-            {/* Seasonal Campaigns */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <BarChart3 className="w-8 h-8 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Pre-season outreach campaigns</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Build your fall furnace-check campaign in 5 minutes. Reach every past customer with one click and book maintenance jobs before the rush.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Pre-built seasonal templates
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Send to all past customers in bulk
-                </li>
-                <li className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  Track responses and bookings
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial Section */}
-      <section className="py-20 bg-blue-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white p-10 rounded-2xl shadow-sm">
-            <div className="flex gap-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-amber-400 text-2xl">★</span>
-              ))}
-            </div>
-            <p className="text-xl text-gray-900 mb-8 leading-relaxed font-medium">
-              "Last summer was the first July I didn't feel like I was drowning. The auto-follow-up on estimates is the big one — we used to send a quote and just hope. Now the system nudges them if they don't respond in 48 hours. We probably recovered 8-10 jobs we would have lost. The maintenance reminders are nice but honestly we're still figuring those out."
-            </p>
-            <div>
-              <p className="font-semibold text-gray-900">Julie Lavoie</p>
-              <p className="text-gray-600">Lavoie Climatisation, Montreal QC</p>
-              <p className="text-sm text-gray-500 mt-1">HVAC contractor, 2 trucks, 8 years in business</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            Take the chaos out of peak season
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Free trial starts today. No credit card needed. Setup takes 5 minutes.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-full transition-colors text-lg"
-          >
-            Start free trial
-            <Zap className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Simple pricing. No surprises.
-          </h2>
-          <p className="text-lg text-gray-500 mb-12 max-w-2xl mx-auto">
-            Month-to-month. Cancel anytime. No contracts, no setup fees.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-2xl border border-gray-200 p-6 text-left hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-900">Starter</h3>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-gray-900">$79</span>
-                <span className="text-sm text-gray-500">/mo CAD</span>
-              </div>
-              <p className="mt-2 text-sm text-gray-500">Solo operators. One dashboard, never miss a lead.</p>
-              <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors">
-                Try Free (14 Days)
-              </Link>
-            </div>
-            <div className="rounded-2xl border-2 border-blue-600 p-6 text-left shadow-lg relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">
-                Most Popular
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">Growth</h3>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-gray-900">$149</span>
-                <span className="text-sm text-gray-500">/mo CAD</span>
-              </div>
-              <p className="mt-2 text-sm text-gray-500">Your whole team. All automations. French + English.</p>
-              <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">
-                Try Free (14 Days)
-              </Link>
-            </div>
-            <div className="rounded-2xl border border-gray-200 p-6 text-left hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-900">Scale</h3>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-gray-900">$299</span>
-                <span className="text-sm text-gray-500">/mo CAD</span>
-              </div>
-              <p className="mt-2 text-sm text-gray-500">Multiple crews. Multiple locations. Dedicated support.</p>
-              <Link href="/setup" className="mt-6 block text-center px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors">
-                Try Free (14 Days)
-              </Link>
-            </div>
-          </div>
-          <p className="mt-8 text-sm text-gray-400">
-            All plans include a 14-day free trial. No credit card required.{" "}
-            <Link href="/#pricing" className="text-blue-600 hover:underline">See full plan comparison</Link>
-          </p>
-        </div>
-      </section>
-
-      {/* Book a Demo */}
-      <section className="py-16 sm:py-20" style={{ backgroundColor: '#F5F5F7' }}>
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-            Want to see it before you try it?
-          </h2>
-          <p className="text-lg text-gray-500 mb-8">
-            Book a free 15-minute walkthrough. We'll show you how Growth OS works for your specific business — no sales pitch, just a demo.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white text-base font-semibold rounded-full hover:bg-gray-800 transition-all hover:-translate-y-0.5"
-            >
-              Book a Demo
-            </Link>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
             <Link
               href="/setup"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 text-base font-semibold rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-amber-700 font-semibold rounded-full hover:bg-orange-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
-              Or start your free trial
+              {t('hvacPage.heroCta') }
+              <Zap className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-all border border-white/30"
+            >
+              {t('hvacPage.heroSecondaryCta') }
+              <span className="text-white">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. STATS */}
+      <section
+        ref={statsReveal.ref}
+        className={`py-16 bg-gradient-to-r from-slate-900 to-slate-800 text-white transition-opacity duration-1000 ${
+          statsReveal.isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-orange-400 mb-2">
+                <AnimatedCounter end={1100000} suffix=" CAD" />
+              </div>
+              <p className="text-sm sm:text-base text-slate-300">
+                {t('hvacPage.stat1Label') }
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-orange-400 mb-2">
+                <AnimatedCounter end={30} suffix="%" />
+              </div>
+              <p className="text-sm sm:text-base text-slate-300">
+                {t('hvacPage.stat2Label') }
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-orange-400 mb-2">
+                <AnimatedCounter end={250} suffix="K" />
+              </div>
+              <p className="text-sm sm:text-base text-slate-300">
+                {t('hvacPage.stat3Label') }
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-orange-400 mb-2">
+                <AnimatedCounter end={4} suffix=" months" />
+              </div>
+              <p className="text-sm sm:text-base text-slate-300">
+                {t('hvacPage.stat4Label') }
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. PAIN POINTS */}
+      <section
+        ref={painReveal.ref}
+        className={`py-20 bg-white transition-opacity duration-1000 ${painReveal.isVisible ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
+            {t('hvacPage.painTitle') }
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Pain 1 */}
+            <div className="p-8 bg-white rounded-2xl border-l-4 border-amber-600 shadow-sm hover:shadow-md transition-shadow animate-in fade-in duration-500">
+              <div className="flex items-start gap-4">
+                <Thermometer className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {t('hvacPage.pain1Title') }
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {t('hvacPage.pain1Desc')}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Pain 2 */}
+            <div className="p-8 bg-white rounded-2xl border-l-4 border-amber-600 shadow-sm hover:shadow-md transition-shadow animate-in fade-in duration-500 delay-100">
+              <div className="flex items-start gap-4">
+                <Wrench className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {t('hvacPage.pain2Title') }
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {t('hvacPage.pain2Desc')}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Pain 3 */}
+            <div className="p-8 bg-white rounded-2xl border-l-4 border-amber-600 shadow-sm hover:shadow-md transition-shadow animate-in fade-in duration-500 delay-200">
+              <div className="flex items-start gap-4">
+                <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {t('hvacPage.pain3Title') }
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {t('hvacPage.pain3Desc') }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Pain 4 */}
+            <div className="p-8 bg-white rounded-2xl border-l-4 border-amber-600 shadow-sm hover:shadow-md transition-shadow animate-in fade-in duration-500 delay-300">
+              <div className="flex items-start gap-4">
+                <Clock className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {t('hvacPage.pain4Title') }
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {t('hvacPage.pain4Desc') }
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. SOLUTION */}
+      <section
+        ref={solutionReveal.ref}
+        className={`py-20 bg-gradient-to-br from-slate-900 to-slate-800 transition-opacity duration-1000 ${
+          solutionReveal.isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-white mb-4">
+            {t('hvacPage.solutionTitle') }
+          </h2>
+          <p className="text-center text-slate-300 text-lg mb-16 max-w-2xl mx-auto">
+            Growth OS helps you break the seasonal cycle and build recurring revenue streams.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Feature 1 */}
+            <div className="p-8 bg-white/5 rounded-2xl border border-orange-500/20 hover:border-orange-500/50 hover:bg-white/10 transition-all group">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center mb-4 group-hover:shadow-lg group-hover:shadow-orange-600/50 transition-all">
+                <Thermometer className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">
+                {t('hvacPage.solution1Title') }
+              </h3>
+              <p className="text-slate-300 mb-4">
+                {t('hvacPage.solution1Desc')}
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution1Bullet1') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution1Bullet2') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution1Bullet3') }
+                </li>
+              </ul>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="p-8 bg-white/5 rounded-2xl border border-orange-500/20 hover:border-orange-500/50 hover:bg-white/10 transition-all group">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center mb-4 group-hover:shadow-lg group-hover:shadow-orange-600/50 transition-all">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">
+                {t('hvacPage.solution2Title') }
+              </h3>
+              <p className="text-slate-300 mb-4">
+                {t('hvacPage.solution2Desc') }
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution2Bullet1') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution2Bullet2') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution2Bullet3') }
+                </li>
+              </ul>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="p-8 bg-white/5 rounded-2xl border border-orange-500/20 hover:border-orange-500/50 hover:bg-white/10 transition-all group">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center mb-4 group-hover:shadow-lg group-hover:shadow-orange-600/50 transition-all">
+                <Wrench className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">
+                {t('hvacPage.solution3Title') }
+              </h3>
+              <p className="text-slate-300 mb-4">
+                {t('hvacPage.solution3Desc')}
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution3Bullet1') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution3Bullet2') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution3Bullet3') }
+                </li>
+              </ul>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="p-8 bg-white/5 rounded-2xl border border-orange-500/20 hover:border-orange-500/50 hover:bg-white/10 transition-all group">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center mb-4 group-hover:shadow-lg group-hover:shadow-orange-600/50 transition-all">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">
+                {t('hvacPage.solution4Title') }
+              </h3>
+              <p className="text-slate-300 mb-4">
+                {t('hvacPage.solution4Desc')}
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution4Bullet1') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution4Bullet2') }
+                </li>
+                <li className="flex items-center gap-3 text-slate-200">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  {t('hvacPage.solution4Bullet3') }
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. TESTIMONIAL */}
+      <section
+        ref={testimonialReveal.ref}
+        className={`py-20 bg-white transition-opacity duration-1000 ${testimonialReveal.isVisible ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-10 bg-white rounded-2xl border-l-4 border-amber-600 shadow-lg">
+            <div className="flex gap-1 mb-6">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <p className="text-lg sm:text-xl text-gray-900 mb-8 leading-relaxed font-medium italic">
+              "{t('hvacPage.testimonialQuote')}"
+            </p>
+            <div>
+              <p className="font-semibold text-lg text-gray-900">
+                {t('hvacPage.testimonialName') }
+              </p>
+              <p className="text-gray-600">
+                {t('hvacPage.testimonialCompany') }
+              </p>
+              <p className="text-sm text-gray-500 mt-2">
+                {t('hvacPage.testimonialDetails') }
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. FAQ */}
+      <section
+        ref={faqReveal.ref}
+        className={`py-20 bg-gray-50 transition-opacity duration-1000 ${faqReveal.isVisible ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-center">
+            {t('hvacPage.faqTitle') }
+          </h2>
+
+          <div className="space-y-4">
+            <FAQItem
+              question={t('hvacPage.faq1Q') }
+              answer={t('hvacPage.faq1A')}
+              isOpen={openFAQ === 0}
+              onToggle={() => setOpenFAQ(openFAQ === 0 ? null : 0)}
+            />
+            <FAQItem
+              question={t('hvacPage.faq2Q') }
+              answer={t('hvacPage.faq2A') }
+              isOpen={openFAQ === 1}
+              onToggle={() => setOpenFAQ(openFAQ === 1 ? null : 1)}
+            />
+            <FAQItem
+              question={t('hvacPage.faq3Q') }
+              answer={t('hvacPage.faq3A')}
+              isOpen={openFAQ === 2}
+              onToggle={() => setOpenFAQ(openFAQ === 2 ? null : 2)}
+            />
+            <FAQItem
+              question={t('hvacPage.faq4Q') }
+              answer={t('hvacPage.faq4A')}
+              isOpen={openFAQ === 3}
+              onToggle={() => setOpenFAQ(openFAQ === 3 ? null : 3)}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* 7. PRICING */}
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            {t('hvacPage.pricingTitle') }
+          </h2>
+          <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+            {t('hvacPage.pricingDesc') }
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="rounded-2xl border border-gray-200 p-8 text-left hover:shadow-lg transition-shadow">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Starter</h3>
+              <div className="flex items-baseline gap-1 mb-4">
+                <span className="text-4xl font-bold text-gray-900">$79</span>
+                <span className="text-gray-600">/mo CAD</span>
+              </div>
+              <p className="text-sm text-gray-600 mb-6">For solo operators</p>
+              <Link
+                href="/setup"
+                className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6"
+              >
+                Start Free Trial
+              </Link>
+              <ul className="space-y-3 text-sm text-gray-700">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Call capture & voicemail
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Mobile estimates
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  1 user
+                </li>
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border-2 border-amber-600 p-8 text-left shadow-lg relative">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-amber-600 text-white text-xs font-bold rounded-full">
+                Most Popular
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Growth</h3>
+              <div className="flex items-baseline gap-1 mb-4">
+                <span className="text-4xl font-bold text-gray-900">$149</span>
+                <span className="text-gray-600">/mo CAD</span>
+              </div>
+              <p className="text-sm text-gray-600 mb-6">For growing HVAC teams</p>
+              <Link
+                href="/setup"
+                className="block w-full px-6 py-3 rounded-xl bg-amber-600 text-white text-sm font-semibold hover:bg-amber-700 transition-colors text-center mb-6"
+              >
+                Start Free Trial
+              </Link>
+              <ul className="space-y-3 text-sm text-gray-700">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Everything in Starter
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Maintenance scheduling
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Warranty tracking
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Up to 5 users
+                </li>
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-gray-200 p-8 text-left hover:shadow-lg transition-shadow">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Scale</h3>
+              <div className="flex items-baseline gap-1 mb-4">
+                <span className="text-4xl font-bold text-gray-900">$299</span>
+                <span className="text-gray-600">/mo CAD</span>
+              </div>
+              <p className="text-sm text-gray-600 mb-6">For multi-team operations</p>
+              <Link
+                href="/setup"
+                className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6"
+              >
+                Start Free Trial
+              </Link>
+              <ul className="space-y-3 text-sm text-gray-700">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Everything in Growth
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Unlimited users
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  Advanced forecasting
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  API access
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <p className="mt-12 text-sm text-gray-600">
+            All plans include a 14-day free trial. No credit card required. {' '}
+            <Link href="/#pricing" className="text-amber-600 hover:underline">
+              See full comparison
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* 8. FINAL CTA */}
+      <section className="py-20 bg-gradient-to-br from-amber-700 via-orange-700 to-slate-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+            {t('hvacPage.ctaTitle') }
+          </h2>
+          <p className="text-lg text-orange-100 mb-10">
+            {t('hvacPage.ctaDesc') }
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/setup"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-amber-700 font-semibold rounded-full hover:bg-orange-50 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
+            >
+              {t('hvacPage.ctaCta') }
+              <Zap className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-all border border-white/30"
+            >
+              {t('hvacPage.ctaDemo') }
             </Link>
           </div>
         </div>

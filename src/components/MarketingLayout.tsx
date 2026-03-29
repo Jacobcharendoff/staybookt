@@ -126,7 +126,7 @@ export function Navigation() {
             </Link>
 
             <Link href="/switch" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              {t('nav.switch')}
+              {t('nav.whyGrowthOS')}
             </Link>
           </div>
 
@@ -209,7 +209,7 @@ export function Navigation() {
                 className="text-sm font-medium text-gray-600"
                 onClick={() => setMobileOpen(false)}
               >
-                {t('nav.switch')}
+                {t('nav.whyGrowthOS')}
               </Link>
 
               <div className="border-t border-gray-100 pt-4 flex flex-col gap-3">
@@ -244,7 +244,7 @@ export function Footer() {
     { label: t('nav.product'), href: '/#product' },
     { label: t('nav.automations'), href: '/automations' },
     { label: t('marketing.pricing'), href: '/pricing' },
-    { label: t('nav.switch'), href: '/switch' },
+    { label: t('nav.whyGrowthOS'), href: '/switch' },
     { label: 'vs ServiceTitan', href: '/vs-servicetitan' },
     { label: 'vs Jobber', href: '/vs-jobber' },
     { label: 'vs Housecall Pro', href: '/vs-housecall-pro' },
