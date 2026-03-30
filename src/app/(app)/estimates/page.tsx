@@ -6,6 +6,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { Estimate, EstimateStatus, EstimateTier, Deal } from '@/types';
+import { getAllProvinces } from '@/lib/canadian-tax';
 import {
   Plus,
   Search,
@@ -1039,15 +1040,10 @@ export default function EstimatesPage() {
   );
 }
 
-const PROVINCES = [
-  { code: 'ON', name: 'Ontario', taxRate: 0.13, taxType: 'HST' },
-  { code: 'QC', name: 'Quebec', taxRate: 0.14975, taxType: 'GST+QST' },
-  { code: 'BC', name: 'British Columbia', taxRate: 0.12, taxType: 'GST+PST' },
-  { code: 'AB', name: 'Alberta', taxRate: 0.05, taxType: 'GST' },
-  { code: 'SK', name: 'Saskatchewan', taxRate: 0.05, taxType: 'GST' },
-  { code: 'MB', name: 'Manitoba', taxRate: 0.13, taxType: 'GST+PST' },
-  { code: 'NB', name: 'New Brunswick', taxRate: 0.15, taxType: 'HST' },
-  { code: 'NS', name: 'Nova Scotia', taxRate: 0.15, taxType: 'HST' },
-  { code: 'NL', name: 'Newfoundland & Labrador', taxRate: 0.15, taxType: 'HST' },
-  { code: 'PE', name: 'Prince Edward Island', taxRate: 0.15, taxType: 'HST' },
-];
+// Use the Canadian tax engine for all provinces
+const PROVINCES = getAllProvinces().map((pr) => ({
+  code: pr.provinceCode,
+  name: pr.province,
+  taxRate: pr.effectiveRate,
+  taxType: pr.taxType,
+}));

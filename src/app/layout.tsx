@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 
 export const metadata: Metadata = {
   title: "GrowthOS - The Operating System for Service Business Growth",
   description: "The all-in-one CRM and pipeline management platform built for service businesses. Manage leads, automate follow-ups, and grow revenue.",
   keywords: "CRM, field service software, plumbing software, HVAC software, electrical software, contractor management, pipeline management, Canadian CRM",
   robots: "index, follow",
+  manifest: "/manifest.json",
+  themeColor: "#27AE60",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "GrowthOS",
+  },
   openGraph: {
     title: "GrowthOS — The CRM Built for Canadian Service Businesses",
     description: "Bilingual CRM with pipeline management, automations, and Canadian tax compliance. Built for plumbers, HVAC techs, electricians, and more.",
@@ -63,6 +72,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <head>
+        <meta name="theme-color" content="#27AE60" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="apple-touch-icon" href="/icons/icon.svg" />
+        <link rel="manifest" href="/manifest.json" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -72,6 +86,8 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
         </LanguageProvider>
+        <ServiceWorkerRegistration />
+        <PWAInstallPrompt />
       </body>
     </html>
   );

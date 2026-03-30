@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline - GrowthOS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #0f172a 0%, #1a2942 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .offline-container {
+      max-width: 500px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 40px 30px;
+    }
+
+    .logo {
+      margin-bottom: 30px;
+    }
+
+    .logo-circle {
+      width: 80px;
+      height: 80px;
+      background: #27AE60;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
+
+    .offline-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    .message strong {
+      color: #27AE60;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .action {
+      margin-top: 30px;
+    }
+
+    button {
+      background: #27AE60;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+    }
+
+    button:hover {
+      background: #229954;
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .tips {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(39, 174, 96, 0.1);
+      border-left: 3px solid #27AE60;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    .tips h3 {
+      color: #27AE60;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .tips ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tips li {
+      margin: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .tips li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #27AE60;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="logo">
+      <div class="logo-circle">GO</div>
+    </div>
+
+    <div class="offline-icon">📡</div>
+
+    <h1>You're Offline</h1>
+
+    <div class="status">
+      <span class="status-indicator"></span>
+      <span>Waiting for connection...</span>
+    </div>
+
+    <div class="message">
+      <strong>GrowthOS</strong> needs an internet connection to sync your data. Your recent changes will sync when you're back online.
+    </div>
+
+    <div class="action">
+      <button onclick="location.reload()">Try Again</button>
+    </div>
+
+    <div class="tips">
+      <h3>While you wait:</h3>
+      <ul>
+        <li>Check your internet connection</li>
+        <li>Try moving closer to your WiFi router</li>
+        <li>Disable VPN if you're using one</li>
+        <li>Your data is safe and will sync automatically</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Check connection periodically
+    setInterval(() => {
+      fetch('/api/health', { method: 'HEAD', cache: 'no-store' })
+        .then(() => {
+          location.reload();
+        })
+        .catch(() => {
+          // Still offline
+        });
+    }, 5000);
+  </script>
+</body>
+</html>

@@ -23,7 +23,7 @@ export interface ApiErrorResponse {
 export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
 
 /**
- * Get current authenticated user and their org_id
+ * Get current authenticated user and their org_id and role
  */
 export async function getCurrentUser(supabase: SupabaseClient) {
   // Get auth user
@@ -36,10 +36,10 @@ export async function getCurrentUser(supabase: SupabaseClient) {
     throw new Error('Not authenticated');
   }
 
-  // Get org_id from users table
+  // Get org_id and role from users table
   const { data: userData, error: userError } = await supabase
     .from('users')
-    .select('org_id')
+    .select('org_id, role')
     .eq('id', user.id)
     .single();
 
@@ -51,6 +51,7 @@ export async function getCurrentUser(supabase: SupabaseClient) {
     userId: user.id,
     orgId: userData.org_id,
     email: user.email,
+    role: userData.role || 'viewer',
   };
 }
 

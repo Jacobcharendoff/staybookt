@@ -24,6 +24,7 @@ interface AppSettings {
   companyAddress: string;
   industry: string;
   timezone: string;
+  companyProvince: string; // Two-letter province code (ON, QC, BC, AB, etc.)
   teamMembers: TeamMember[];
   pipelineStages: PipelineStageSetting[];
 }
@@ -133,6 +134,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   companyAddress: '1234 Main St, Denver, CO 80202',
   industry: 'plumbing',
   timezone: 'America/Denver',
+  companyProvince: 'AB', // Default to Alberta, Calgary headquarters
   teamMembers: [
     { id: '1', name: 'Alex Johnson', role: 'owner', color: 'bg-blue-500' },
     { id: '2', name: 'Marcus Thompson', role: 'manager', color: 'bg-emerald-500' },

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useTheme } from '@/components/ThemeProvider';
 import { useStore } from '@/store';
 import { Estimate, Contact, Deal } from '@/types';
+import { useTax } from '@/hooks/useTax';
+import { TaxBreakdownInline } from '@/components/TaxBreakdown';
 import {
   ChevronLeft,
   Send,
@@ -455,9 +457,13 @@ export default function EstimateDetailPage() {
     ? estimate.tiers.find((t) => t.name === estimate.selectedTier)
     : null;
   const subtotal = selectedTierData?.price || 0;
-  const taxRate = 0.13; // HST
-  const taxAmount = Math.round(subtotal * taxRate * 100) / 100;
-  const total = subtotal + taxAmount;
+
+  // Use the company's province from settings (default to AB if not set)
+  const companyProvince = settings.companyProvince || 'AB';
+  const { calculateTax } = useTax(companyProvince);
+  const taxBreakdown = calculateTax(subtotal);
+  const total = taxBreakdown.total;
+
   const validUntilDate = new Date(estimate.createdAt + estimate.validDays * 86400000);
 
   return (
@@ -685,19 +691,8 @@ export default function EstimateDetailPage() {
           {/* Totals */}
           <div className="mb-12">
             <div className="flex justify-end">
-              <div className="w-full sm:w-80 space-y-3">
-                <div className="flex justify-between text-slate-600 border-b border-slate-200 pb-3">
-                  <span>Subtotal</span>
-                  <span className="font-medium">${subtotal.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-slate-600 border-b border-slate-200 pb-3">
-                  <span>Tax (HST)</span>
-                  <span className="font-medium">${taxAmount.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between text-lg font-bold text-slate-900 pt-3">
-                  <span>Total</span>
-                  <span>${total.toLocaleString()}</span>
-                </div>
+              <div className="w-full sm:w-80">
+                <TaxBreakdownInline breakdown={taxBreakdown} />
               </div>
             </div>
           </div>
