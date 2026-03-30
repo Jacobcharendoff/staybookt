@@ -7,6 +7,7 @@ import {
   apiSuccess,
   validateRequest,
 } from '@/lib/api-helpers';
+import { capturePaymentError, captureValidationError, captureDatabaseError } from '@/lib/error-handler';
 import { getStripe } from '@/lib/stripe';
 
 const createPaymentIntentSchema = z.object({
@@ -27,11 +28,13 @@ export async function POST(request: NextRequest) {
 
     const validation = await validateRequest(request, createPaymentIntentSchema);
     if (!validation.valid) {
+      captureValidationError(new Error(validation.error), { endpoint: 'POST /api/payments/create-intent' });
       return apiError(validation.error, 400);
     }
 
     const stripe = getStripe();
     if (!stripe) {
+      capturePaymentError(new Error('Stripe not configured'), { endpoint: 'POST /api/payments/create-intent', userId: user.userId });
       return apiError('Stripe is not configured', 503);
     }
 
@@ -46,6 +49,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (invoiceError || !invoice) {
+      captureDatabaseError(invoiceError, { endpoint: 'POST /api/payments/create-intent', invoiceId });
       return apiError('Invoice not found', 404);
     }
 
@@ -53,6 +57,7 @@ export async function POST(request: NextRequest) {
     const remainingBalance = parseFloat(invoice.total.toString()) - parseFloat(invoice.amount_paid.toString());
     if (Math.abs(amount - remainingBalance) > 0.01) {
       // Allow small floating point differences
+      capturePaymentError(new Error('Amount mismatch'), { endpoint: 'POST /api/payments/create-intent', invoiceId, amount, remainingBalance });
       return apiError('Payment amount does not match invoice balance', 400);
     }
 
@@ -73,6 +78,7 @@ export async function POST(request: NextRequest) {
 
     return apiSuccess(response, 200);
   } catch (error) {
+    capturePaymentError(error, { endpoint: 'POST /api/payments/create-intent' });
     const message = error instanceof Error ? error.message : 'Unknown error';
     return apiError(message, error instanceof Error && message === 'Not authenticated' ? 401 : 500);
   }

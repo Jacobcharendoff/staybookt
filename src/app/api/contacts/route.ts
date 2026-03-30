@@ -7,6 +7,7 @@ import {
   apiSuccess,
   validateRequest,
 } from '@/lib/api-helpers';
+import { captureDatabaseError, captureValidationError } from '@/lib/error-handler';
 import { ContactType, LeadSource } from '@/types';
 
 const createContactSchema = z.object({
@@ -63,6 +64,7 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1);
 
     if (error) {
+      captureDatabaseError(error, { endpoint: 'GET /api/contacts', query: { search, type, page, limit } });
       return apiError(error.message, 500);
     }
 
@@ -72,6 +74,7 @@ export async function GET(request: NextRequest) {
       limit,
     });
   } catch (error) {
+    captureDatabaseError(error, { endpoint: 'GET /api/contacts' });
     const message = error instanceof Error ? error.message : 'Unknown error';
     return apiError(message, error instanceof Error && message === 'Not authenticated' ? 401 : 500);
   }
@@ -84,6 +87,7 @@ export async function POST(request: NextRequest) {
 
     const validation = await validateRequest(request, createContactSchema);
     if (!validation.valid) {
+      captureValidationError(new Error(validation.error), { endpoint: 'POST /api/contacts' });
       return apiError(validation.error, 400);
     }
 
@@ -97,11 +101,13 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
+      captureDatabaseError(error, { endpoint: 'POST /api/contacts', userId: user.userId });
       return apiError(error.message, 500);
     }
 
     return apiSuccess(data, 201);
   } catch (error) {
+    captureDatabaseError(error, { endpoint: 'POST /api/contacts' });
     const message = error instanceof Error ? error.message : 'Unknown error';
     return apiError(message, error instanceof Error && message === 'Not authenticated' ? 401 : 500);
   }

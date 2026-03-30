@@ -7,6 +7,7 @@ import {
   apiSuccess,
   validateRequest,
 } from '@/lib/api-helpers';
+import { captureDatabaseError, captureValidationError } from '@/lib/error-handler';
 import { PipelineStage, LeadSource } from '@/types';
 
 const createDealSchema = z.object({
@@ -71,6 +72,7 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1);
 
     if (error) {
+      captureDatabaseError(error, { endpoint: 'GET /api/deals', query: { stage, contactId, page, limit } });
       return apiError(error.message, 500);
     }
 
@@ -80,6 +82,7 @@ export async function GET(request: NextRequest) {
       limit,
     });
   } catch (error) {
+    captureDatabaseError(error, { endpoint: 'GET /api/deals' });
     const message = error instanceof Error ? error.message : 'Unknown error';
     return apiError(message, error instanceof Error && message === 'Not authenticated' ? 401 : 500);
   }
@@ -92,6 +95,7 @@ export async function POST(request: NextRequest) {
 
     const validation = await validateRequest(request, createDealSchema);
     if (!validation.valid) {
+      captureValidationError(new Error(validation.error), { endpoint: 'POST /api/deals' });
       return apiError(validation.error, 400);
     }
 
@@ -105,11 +109,13 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
+      captureDatabaseError(error, { endpoint: 'POST /api/deals', userId: user.userId, contactId: validation.data.contact_id });
       return apiError(error.message, 500);
     }
 
     return apiSuccess(data, 201);
   } catch (error) {
+    captureDatabaseError(error, { endpoint: 'POST /api/deals' });
     const message = error instanceof Error ? error.message : 'Unknown error';
     return apiError(message, error instanceof Error && message === 'Not authenticated' ? 401 : 500);
   }
