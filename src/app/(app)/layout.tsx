@@ -7,6 +7,7 @@ import { AuthProvider } from '@/components/AuthProvider';
 import { ToastProvider } from '@/components/ToastProvider';
 import AppHeader from '@/components/AppHeader';
 import { QuickAdd } from '@/components/QuickAdd';
+import { KeyboardShortcuts } from '@/components/KeyboardShortcuts';
 import { Menu, Zap } from 'lucide-react';
 
 function AppContent({ children }: { children: React.ReactNode }) {
@@ -57,6 +58,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
 
       {/* Quick Add Modal */}
       <QuickAdd />
+
+      {/* Keyboard Shortcuts Modal */}
+      <KeyboardShortcuts />
     </div>
   );
 }
