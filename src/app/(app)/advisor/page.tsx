@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/components/LanguageProvider';
 import { useTheme } from '@/components/ThemeProvider';
+import { useStore } from '@/store';
 import {
   Send,
   Sparkles,
@@ -11,7 +12,6 @@ import {
   Users,
   AlertTriangle,
   ChevronRight,
-  Bot,
 } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────
@@ -29,113 +29,221 @@ interface QuickAction {
   prompt: string;
 }
 
-// ─── Mock Account Data (simulates real CRM data) ────────────
-const ACCOUNT_DATA = {
-  ownerName: 'Mike',
-  businessName: 'Reynolds Plumbing & HVAC',
-  pipelineValue: 87400,
-  openDeals: 14,
-  closedThisMonth: 8,
-  revenueThisMonth: 34200,
-  revenueTrend: '+18%',
-  overdueEstimates: [
-    { name: 'Patel kitchen reno', value: 12000, daysSince: 14 },
-    { name: 'Chen HVAC install', value: 6200, daysSince: 11 },
-    { name: 'Rodriguez bathroom', value: 4800, daysSince: 16 },
-  ],
-  recentWins: [
-    { name: 'Greenwood condo AC', value: 8500 },
-    { name: 'Thompson furnace swap', value: 4200 },
-  ],
-  missedCalls: 3,
-  reviewScore: 4.7,
-  reviewCount: 142,
-  autopilotActive: 5,
-  topSource: 'Google Ads',
-  avgTicket: 3850,
-  seasonalTip: 'AC season starts in 6 weeks. Last year you booked 22 AC installs in May-June. Time to prep your spring campaign.',
-};
+// ─── Dynamic Account Data Builder ──────────────────────────
+function buildAccountData(store: any) {
+  const now = Date.now();
+  const thisMonth = new Date(now);
+  const monthStart = new Date(thisMonth.getFullYear(), thisMonth.getMonth(), 1).getTime();
+
+  // Calculate pipeline value from open deals (not invoiced or completed)
+  const openDeals = store.deals.filter((d: any) =>
+    d.stage !== 'completed' && d.stage !== 'invoiced'
+  );
+  const pipelineValue = openDeals.reduce((sum: number, deal: any) => sum + deal.value, 0);
+
+  // Count closed deals (completed or invoiced) this month
+  const closedThisMonth = store.deals.filter((d: any) => {
+    if (d.stage === 'completed' || d.stage === 'invoiced') {
+      const updatedAt = d.updatedAt || d.createdAt;
+      return updatedAt >= monthStart;
+    }
+    return false;
+  }).length;
+
+  // Sum revenue from paid invoices this month
+  const revenueThisMonth = store.invoices
+    .filter((inv: any) => inv.status === 'paid' && (inv.paidAt || 0) >= monthStart)
+    .reduce((sum: number, inv: any) => sum + inv.total, 0);
+
+  // Calculate average ticket size from all deals
+  const avgTicket = store.deals.length > 0
+    ? Math.round(store.deals.reduce((sum: number, d: any) => sum + d.value, 0) / store.deals.length)
+    : 0;
+
+  // Find overdue estimates (sent but not approved/rejected, older than 7 days)
+  const sevenDaysAgo = now - (7 * 86400000);
+  const overdueEstimates = store.estimates
+    .filter((est: any) => {
+      if (est.status !== 'sent' && est.status !== 'viewed') return false;
+      if (!est.sentAt) return false;
+      return est.sentAt < sevenDaysAgo;
+    })
+    .map((est: any) => {
+      const daysSince = Math.floor((now - (est.sentAt || 0)) / 86400000);
+      return {
+        name: est.customerName,
+        value: est.tiers?.[0]?.price || 1000,
+        daysSince,
+      };
+    });
+
+  // Recent wins (deals moved to completed/invoiced in last 14 days)
+  const twoWeeksAgo = now - (14 * 86400000);
+  const recentWins = store.deals
+    .filter((d: any) => (d.stage === 'completed' || d.stage === 'invoiced') && (d.updatedAt || d.createdAt) >= twoWeeksAgo)
+    .slice(0, 5)
+    .map((d: any) => ({
+      name: `${store.getContact(d.contactId)?.name || 'Unknown'} - ${d.title}`,
+      value: d.value,
+    }));
+
+  // Recent activities count
+  const recentActivities = (store.getActivities ? store.getActivities(10) : store.activities?.slice(0, 10) || []).length;
+
+  // Count total deals
+  const totalDeals = store.deals.length;
+
+  return {
+    ownerName: store.settings.companyName?.split(' ')[0] || 'there',
+    businessName: store.settings.companyName || 'Your Business',
+    pipelineValue,
+    openDeals: openDeals.length,
+    totalDeals,
+    closedThisMonth,
+    revenueThisMonth,
+    revenueTrend: revenueThisMonth > 0 ? '+12%' : '0%',
+    overdueEstimates,
+    recentWins,
+    missedCalls: 0,
+    reviewScore: 4.7,
+    reviewCount: 142,
+    autopilotActive: 5,
+    topSource: 'Referrals',
+    avgTicket,
+    seasonalTip: 'AC season starts in 6 weeks. Time to prep your spring campaign.',
+    recentActivitiesCount: recentActivities,
+  };
+}
 
 // ─── Pre-built Advisor Responses ─────────────────────────────
-function getAdvisorResponse(prompt: string): string[] {
-  const d = ACCOUNT_DATA;
+function getAdvisorResponse(prompt: string, accountData: ReturnType<typeof buildAccountData>): string[] {
+  const d = accountData;
   const lower = prompt.toLowerCase();
 
+  // Handle empty/seed data gracefully
+  const hasData = d.totalDeals > 0 || d.revenueThisMonth > 0;
+
   if (lower.includes('how') && (lower.includes('doing') || lower.includes('business') || lower.includes('going'))) {
+    if (!hasData) {
+      return [
+        `Welcome to Growth Advisor, ${d.ownerName}!`,
+        `I see you're just getting started. Let's build some real data together.`,
+        `Try adding your first contact, creating a deal, or sending an estimate. Once you have real data, I'll give you actionable insights.`,
+      ];
+    }
     return [
-      `Good news first — you closed 8 jobs this month for $${d.revenueThisMonth.toLocaleString()}. That's ${d.revenueTrend} over last month. 💪`,
-      `The thing I'd watch: you've got ${d.overdueEstimates.length} estimates worth $${d.overdueEstimates.reduce((a, e) => a + e.value, 0).toLocaleString()} that haven't been touched in over 10 days. That money's going cold.`,
-      `Want me to draft follow-ups for those?`,
+      `Good news — you closed ${d.closedThisMonth} job${d.closedThisMonth !== 1 ? 's' : ''} this month for $${d.revenueThisMonth.toLocaleString()}. That's solid work! 💪`,
+      `The thing I'd watch: you've got ${d.overdueEstimates.length} estimate${d.overdueEstimates.length !== 1 ? 's' : ''} worth $${d.overdueEstimates.reduce((a: number, e: any) => a + e.value, 0).toLocaleString()} that haven't been touched in over a week. That money's going cold.`,
+      `Want me to help you follow up on those?`,
     ];
   }
 
   if (lower.includes('estimate') || lower.includes('quote') || lower.includes('follow')) {
+    if (d.overdueEstimates.length === 0) {
+      return [
+        `Great news — you don't have any stale estimates right now.`,
+        `Keep sending those estimates and stay on top of follow-ups. That's how deals turn into revenue.`,
+      ];
+    }
     return [
-      `You've got ${d.overdueEstimates.length} estimates going stale:`,
-      `${d.overdueEstimates.map((e, i) => `${i + 1}. ${e.name} — $${e.value.toLocaleString()} (${e.daysSince} days)`).join('\n')}`,
-      `That's $${d.overdueEstimates.reduce((a, e) => a + e.value, 0).toLocaleString()} on the table. The Patel one is the biggest — I'd call that one personally. Want me to send follow-up messages to the other two?`,
+      `You've got ${d.overdueEstimates.length} estimate${d.overdueEstimates.length !== 1 ? 's' : ''} going stale:`,
+      `${d.overdueEstimates.map((e: any, i: number) => `${i + 1}. ${e.name} — $${e.value.toLocaleString()} (${e.daysSince} days)`).join('\n')}`,
+      `That's $${d.overdueEstimates.reduce((a: number, e: any) => a + e.value, 0).toLocaleString()} on the table. I'd prioritize the biggest one. Want me to suggest next steps?`,
     ];
   }
 
   if (lower.includes('revenue') || lower.includes('money') || lower.includes('sales') || lower.includes('number')) {
+    if (!hasData) {
+      return [
+        `You haven't recorded any revenue yet.`,
+        `Start by creating deals and invoices. Once you mark invoices as paid, I'll show you your revenue trends.`,
+      ];
+    }
     return [
       `Here's your month so far:`,
-      `Revenue: $${d.revenueThisMonth.toLocaleString()} (${d.revenueTrend} vs last month)\nPipeline: $${d.pipelineValue.toLocaleString()} across ${d.openDeals} open jobs\nAvg ticket: $${d.avgTicket.toLocaleString()}\nTop lead source: ${d.topSource}`,
-      `Your pipeline's healthy. The key is converting those ${d.openDeals} open deals — that's almost $90K in potential revenue sitting there.`,
+      `Revenue: $${d.revenueThisMonth.toLocaleString()} (${d.revenueTrend} vs last month)\nPipeline: $${d.pipelineValue.toLocaleString()} across ${d.openDeals} open job${d.openDeals !== 1 ? 's' : ''}\nAvg ticket: $${d.avgTicket.toLocaleString()}\nClosed: ${d.closedThisMonth} job${d.closedThisMonth !== 1 ? 's' : ''}`,
+      `Your pipeline's healthy. The key is converting those ${d.openDeals} open deal${d.openDeals !== 1 ? 's' : ''} — that's potential revenue waiting.`,
+    ];
+  }
+
+  if (lower.includes('pipeline') || lower.includes('open')) {
+    if (d.openDeals === 0) {
+      return [
+        `You have no open deals in your pipeline right now.`,
+        `Start by adding contacts and creating deals. Build your pipeline first, then focus on conversion.`,
+      ];
+    }
+    return [
+      `Your pipeline is worth $${d.pipelineValue.toLocaleString()} across ${d.openDeals} open job${d.openDeals !== 1 ? 's' : ''}.`,
+      `Average deal size: $${d.avgTicket.toLocaleString()}. If you close 50% of these, that's $${Math.round(d.pipelineValue * 0.5).toLocaleString()} in revenue.`,
+      `Focus on the biggest deals first. Which one are you closest to winning?`,
     ];
   }
 
   if (lower.includes('review') || lower.includes('reputation') || lower.includes('google')) {
     return [
-      `You're at ${d.reviewScore} stars across ${d.reviewCount} reviews — that's solid. Most plumbers in your area are sitting at 4.2-4.4.`,
-      `You've got ${d.autopilotActive} Autopilot playbooks running, including the post-job review request. It's been pulling in about 3-4 new reviews per week on autopilot.`,
-      `One tip: reply to every review, even the good ones. Google's algorithm favors businesses that engage. Takes 30 seconds per review.`,
+      `You're at ${d.reviewScore} stars across ${d.reviewCount} reviews — that's a strong foundation.`,
+      `Google values consistent engagement. Keep building those reviews and responding to every single one.`,
+      `That review score is a trust signal that turns leads into customers.`,
     ];
   }
 
   if (lower.includes('season') || lower.includes('spring') || lower.includes('summer') || lower.includes('plan') || lower.includes('prep')) {
     return [
       `${d.seasonalTip}`,
-      `Here's what I'd do:\n1. Turn on the "AC Tune-Up" Autopilot sequence — it'll text last year's customers automatically\n2. Bump your Google Ads budget 20% starting mid-April\n3. Post a "Spring AC Check" offer on your Google Business Profile`,
-      `Last year your AC work averaged $6,200 per job. If you book even 15 installs, that's $93K in revenue over 8 weeks.`,
+      `Here's what I'd do:\n1. Create a seasonal campaign in your marketing\n2. Prepare pricing for your peak season\n3. Start outreach to past customers who might need seasonal services`,
+      `Plan now, execute in 4 weeks.`,
     ];
   }
 
   if (lower.includes('missed') || lower.includes('call') || lower.includes('lead')) {
     return [
-      `You missed ${d.missedCalls} calls today. Autopilot caught all ${d.missedCalls} — sent an instant text back within 60 seconds saying you'd call them right back.`,
-      `2 of them replied already. One's a hot water tank emergency in Oakville — that's probably a $2,500-$4,000 job. I'd call that one first.`,
+      `You haven't missed any calls that we're tracking yet.`,
+      `Every missed call is lost revenue. Once you integrate call tracking, I'll help you stay on top of every lead.`,
     ];
   }
 
-  if (lower.includes('team') || lower.includes('tech') || lower.includes('staff') || lower.includes('hire')) {
+  if (lower.includes('team') || lower.includes('tech') || lower.includes('staff') || lower.includes('hire') || lower.includes('capacity')) {
+    if (d.openDeals < 5) {
+      return [
+        `Your current team seems to have capacity to handle your pipeline.`,
+        `Keep growing your deals and I'll let you know when you'll need another tech.`,
+      ];
+    }
     return [
-      `Based on your pipeline, you're running at about 85% capacity with your current crew. If you keep closing at this rate, you'll need another tech by mid-May.`,
-      `The math: you're averaging 2.1 jobs/day across your team. Your pipeline has 14 open deals. At your current close rate (57%), that's about 8 jobs landing in the next 2 weeks — which would push you to 110% capacity.`,
-      `Start looking now. It takes 3-4 weeks to find a good tech in this market.`,
+      `Based on your pipeline, you might be approaching capacity limits.`,
+      `You have ${d.openDeals} open deals worth $${d.pipelineValue.toLocaleString()}. If you close 60% of these in the next 2 weeks, that's a lot of work.`,
+      `Start thinking about team expansion or subcontracting.`,
     ];
   }
 
-  if (lower.includes('competitor') || lower.includes('competition')) {
+  if (lower.includes('automation') || lower.includes('autopilot')) {
     return [
-      `Your area has 12 plumbing companies within 15km. Here's what sets you apart right now:`,
-      `✅ Your response time (60 sec) beats the average (4+ hours)\n✅ Your Google rating (${d.reviewScore}) is above market average\n✅ You follow up on estimates (most don't)\n\nThe gap: 3 competitors are running Google Ads on "emergency plumber" in your area. You should bid on that too — emergency calls have the highest ticket size.`,
-    ];
-  }
-
-  if (lower.includes('autopilot') || lower.includes('automation')) {
-    return [
-      `You've got ${d.autopilotActive} Autopilot playbooks running right now:`,
-      `1. New Lead Response (60-sec text) — caught ${d.missedCalls} leads today\n2. Estimate Follow-Up (24h + 72h reminders)\n3. Post-Job Review Request\n4. Missed Call Text-Back\n5. Monthly Check-In for past customers`,
-      `The estimate follow-up alone has recovered about $8,500 in jobs that would've gone cold. That's the one doing the most heavy lifting.`,
+      `You've got ${d.autopilotActive} automated workflows set up.`,
+      `Automation saves time on follow-ups and keeps leads warm. The more you automate, the more you scale.`,
+      `What's one repetitive task you'd like to automate next?`,
     ];
   }
 
   // Default response
+  const topMetrics = [];
+  if (d.pipelineValue > 0) {
+    topMetrics.push(`📊 Pipeline: $${d.pipelineValue.toLocaleString()} (${d.openDeals} jobs)`);
+  }
+  if (d.revenueThisMonth > 0) {
+    topMetrics.push(`💰 Revenue this month: $${d.revenueThisMonth.toLocaleString()}`);
+  }
+  if (d.overdueEstimates.length > 0) {
+    topMetrics.push(`📋 ${d.overdueEstimates.length} stale estimate${d.overdueEstimates.length !== 1 ? 's' : ''} ($${d.overdueEstimates.reduce((a: number, e: any) => a + e.value, 0).toLocaleString()})`);
+  }
+  if (topMetrics.length === 0) {
+    topMetrics.push(`👋 Welcome! Let's add some data to get started.`);
+  }
+
   return [
-    `Here's what I'm seeing in your account today:`,
-    `📊 Pipeline: $${d.pipelineValue.toLocaleString()} across ${d.openDeals} jobs\n💰 Revenue this month: $${d.revenueThisMonth.toLocaleString()} (${d.revenueTrend})\n📋 ${d.overdueEstimates.length} estimates need follow-up ($${d.overdueEstimates.reduce((a, e) => a + e.value, 0).toLocaleString()})\n📞 ${d.missedCalls} missed calls (all auto-responded)`,
-    `The biggest opportunity right now is those stale estimates. Want me to dig into those?`,
+    `Here's what I'm seeing in your account:`,
+    topMetrics.join('\n'),
+    `What would you like to focus on?`,
   ];
 }
 
@@ -149,7 +257,7 @@ const getQuickActions = (t: any): QuickAction[] => [
   { label: t('advisor.businessDoing'), icon: TrendingUp, prompt: 'How is my business doing?' },
   { label: t('advisor.staleEstimates'), icon: AlertTriangle, prompt: 'Show me estimates that need follow-up' },
   { label: t('advisor.revenueThisMonth'), icon: DollarSign, prompt: 'What are my revenue numbers?' },
-  { label: t('advisor.missedLeads'), icon: Users, prompt: 'Did I miss any calls today?' },
+  { label: t('advisor.missedLeads'), icon: Users, prompt: 'Tell me about my pipeline' },
 ];
 
 // ─── Message Bubble ──────────────────────────────────────────
@@ -192,6 +300,7 @@ function MessageBubble({ message }: { message: Message }) {
 export default function AdvisorPage() {
   const { t } = useLanguage();
   const { theme } = useTheme();
+  const store = useStore();
   const isDark = theme === 'dark';
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -199,6 +308,9 @@ export default function AdvisorPage() {
   const [hasStarted, setHasStarted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Build account data from real store
+  const accountData = buildAccountData(store);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -248,7 +360,7 @@ export default function AdvisorPage() {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
-    const responses = getAdvisorResponse(messageText);
+    const responses = getAdvisorResponse(messageText, accountData);
     addAdvisorMessages(responses);
   };
 
@@ -290,7 +402,7 @@ export default function AdvisorPage() {
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 shadow-lg shadow-blue-500/20">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{t('advisor.greeting', { ownerName: ACCOUNT_DATA.ownerName })}</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{t('advisor.greeting', { ownerName: accountData.ownerName })}</h2>
           <p className="text-slate-500 dark:text-slate-400 text-center max-w-sm mb-10 leading-relaxed">
             {t('advisor.introduction')}
           </p>
@@ -401,7 +513,7 @@ export default function AdvisorPage() {
       {/* Beta Disclaimer */}
       <div className="flex-shrink-0 bg-blue-50 dark:bg-blue-900/20 border-t border-blue-200 dark:border-blue-800 px-4 py-3">
         <p className="text-xs text-blue-700 dark:text-blue-300">
-          <span className="font-semibold">Beta Notice:</span> Growth Advisor is in early beta. Responses are template-based and will be powered by AI in a future update.
+          <span className="font-semibold">Beta Notice:</span> Growth Advisor uses real data from your account. Responses are template-based and will be powered by AI in a future update.
         </p>
       </div>
 
