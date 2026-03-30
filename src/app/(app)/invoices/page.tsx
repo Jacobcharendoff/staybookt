@@ -319,6 +319,43 @@ export default function InvoicesPage() {
     setDueDate(futureDate.toISOString().split('T')[0]);
   };
 
+  const generateInvoiceCSV = (data: typeof filteredInvoices) => {
+    const headers = ['Invoice Number', 'Customer', 'Status', 'Subtotal', 'Tax', 'Total', 'Amount Paid', 'Balance Due', 'Issue Date', 'Due Date'];
+
+    const rows = data.map((invoice) => {
+      const balanceDue = invoice.total - invoice.amountPaid;
+      return [
+        `"${invoice.number.replace(/"/g, '""')}"`,
+        `"${invoice.customerName.replace(/"/g, '""')}"`,
+        invoice.status,
+        invoice.subtotal.toFixed(2),
+        invoice.taxAmount.toFixed(2),
+        invoice.total.toFixed(2),
+        invoice.amountPaid.toFixed(2),
+        balanceDue.toFixed(2),
+        new Date(invoice.createdAt).toLocaleDateString(),
+        new Date(invoice.dueDate).toLocaleDateString(),
+      ];
+    });
+
+    const csvContent = [headers, ...rows.map((row) => row.join(','))].join('\n');
+    return csvContent;
+  };
+
+  const handleExportInvoicesCSV = () => {
+    const csvContent = generateInvoiceCSV(filteredInvoices);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const now = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `growthOS-invoices-${now}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className={`p-4 sm:p-8 ${isDark ? 'bg-slate-950' : 'bg-slate-50'} min-h-screen`}>
       {/* Header */}
@@ -431,16 +468,29 @@ export default function InvoicesPage() {
             />
           </div>
 
-          <button
-            onClick={() => {
-              resetForm();
-              setModal({ type: 'create' });
-            }}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap"
-          >
-            <Plus className="w-4 h-4" />
-            {t('invoices.createInvoice')}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportInvoicesCSV}
+              className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition whitespace-nowrap border ${
+                isDark
+                  ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
+                  : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+              }`}
+            >
+              <Download className="w-4 h-4" />
+              Export CSV
+            </button>
+            <button
+              onClick={() => {
+                resetForm();
+                setModal({ type: 'create' });
+              }}
+              className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition whitespace-nowrap"
+            >
+              <Plus className="w-4 h-4" />
+              {t('invoices.createInvoice')}
+            </button>
+          </div>
         </div>
 
         {/* Status Tabs */}

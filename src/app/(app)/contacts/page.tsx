@@ -7,7 +7,7 @@ import { useStore } from '@/store';
 import { Contact, LeadSource, ContactType } from '@/types';
 import { Modal } from '@/components/Modal';
 import { LeadSourceBadge } from '@/components/LeadSourceBadge';
-import { Plus, Search, Edit2, Trash2, X, ChevronDown, FileText, DollarSign, Clock, User } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, ChevronDown, FileText, DollarSign, Clock, User, Download } from 'lucide-react';
 import { FormEvent } from 'react';
 
 const LEAD_SOURCES: { value: LeadSource; label: string }[] = [
@@ -181,6 +181,37 @@ export default function ContactsPage() {
     return LEAD_SOURCES.find((s) => s.value === source)?.label || source;
   };
 
+  const generateCSV = (data: Contact[]) => {
+    const headers = ['Name', 'Email', 'Phone', 'Type', 'Source', 'Address', 'Created Date'];
+
+    const rows = data.map((contact) => [
+      `"${contact.name.replace(/"/g, '""')}"`,
+      `"${contact.email.replace(/"/g, '""')}"`,
+      `"${contact.phone.replace(/"/g, '""')}"`,
+      contact.type,
+      getSourceLabel(contact.source),
+      `"${contact.address.replace(/"/g, '""')}"`,
+      new Date(contact.createdAt).toLocaleDateString(),
+    ]);
+
+    const csvContent = [headers, ...rows.map((row) => row.join(','))].join('\n');
+    return csvContent;
+  };
+
+  const handleExportCSV = () => {
+    const csvContent = generateCSV(filteredContacts);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const now = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `growthOS-contacts-${now}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className={`h-full flex flex-col ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
       {/* Header */}
@@ -194,17 +225,30 @@ export default function ContactsPage() {
               {contacts.length} {t('contacts.totalContacts')}
             </p>
           </div>
-          <button
-            onClick={() => {
-              setSelectedContact(null);
-              setEditFormData(null);
-              setIsAddContactOpen(true);
-            }}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            {t('contacts.addContact')}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border ${
+                isDark
+                  ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
+                  : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+              }`}
+            >
+              <Download className="w-5 h-5" />
+              Export CSV
+            </button>
+            <button
+              onClick={() => {
+                setSelectedContact(null);
+                setEditFormData(null);
+                setIsAddContactOpen(true);
+              }}
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              {t('contacts.addContact')}
+            </button>
+          </div>
         </div>
 
         {/* Search and Filters */}
