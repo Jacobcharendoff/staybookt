@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { ThemeProvider, useTheme } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/components/AuthProvider';
 import AppHeader from '@/components/AppHeader';
+import { QuickAdd } from '@/components/QuickAdd';
 import { Menu, Zap } from 'lucide-react';
 
 function AppContent({ children }: { children: React.ReactNode }) {
@@ -52,6 +53,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
 
         <main className="flex-1 overflow-auto">{children}</main>
       </div>
+
+      {/* Quick Add Modal */}
+      <QuickAdd />
     </div>
   );
 }

@@ -120,6 +120,11 @@ function AppHeader() {
     window.dispatchEvent(new CustomEvent('open-command-bar'));
   };
 
+  // Open quick add modal
+  const handleQuickAdd = () => {
+    window.dispatchEvent(new CustomEvent('open-quick-add'));
+  };
+
   // Handle sign out
   const handleSignOut = async () => {
     if (authContext?.signOut) {
@@ -169,6 +174,7 @@ function AppHeader() {
       <div className="flex items-center gap-3 lg:gap-4">
         {/* Quick Add Button */}
         <button
+          onClick={handleQuickAdd}
           className={`flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 hover:shadow-md ${
             isDark
               ? 'bg-[#27AE60] hover:bg-emerald-500 text-white'
