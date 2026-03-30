@@ -143,8 +143,277 @@ export default function EstimateDetailPage() {
     router.push('/estimates');
   };
 
-  const handleDownloadPDF = () => {
-    alert('PDF download simulated - in production this would generate and download an actual PDF');
+  const handlePrint = () => {
+    if (!estimate) return;
+    const element = document.getElementById('estimate-document');
+    if (element) {
+      const printWindow = window.open('', '', 'width=900,height=1200');
+      if (printWindow) {
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>${estimate.number}</title>
+            <style>
+              @media print {
+                * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+                }
+                body {
+                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+                  background: white;
+                  color: #1f2937;
+                  line-height: 1.6;
+                }
+                .print-container {
+                  max-width: 8.5in;
+                  width: 100%;
+                  height: 11in;
+                  margin: 0 auto;
+                  padding: 0.5in;
+                  background: white;
+                }
+              }
+              body {
+                margin: 0;
+                padding: 20px;
+                background: #f5f5f5;
+              }
+              .print-container {
+                max-width: 8.5in;
+                margin: 0 auto;
+                background: white;
+                padding: 0.75in;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+              }
+              .company-header {
+                margin-bottom: 2rem;
+                padding-bottom: 1.5rem;
+                border-bottom: 1px solid #e5e7eb;
+              }
+              .company-name {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #111827;
+                margin-bottom: 0.5rem;
+              }
+              .company-info {
+                font-size: 0.875rem;
+                color: #4b5563;
+                line-height: 1.5;
+              }
+              .estimate-title {
+                font-size: 2.25rem;
+                font-weight: bold;
+                color: #111827;
+                margin-bottom: 1rem;
+                margin-top: 1.5rem;
+              }
+              .estimate-details {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+                margin-bottom: 2rem;
+              }
+              .detail-group {
+                font-size: 0.875rem;
+              }
+              .detail-label {
+                font-weight: 600;
+                color: #4b5563;
+                margin-bottom: 0.25rem;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+              }
+              .detail-value {
+                font-weight: 600;
+                color: #111827;
+                font-size: 1rem;
+              }
+              .section-divider {
+                border-top: 1px solid #e5e7eb;
+                margin: 2rem 0;
+                padding-top: 1.5rem;
+              }
+              .section-label {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: #4b5563;
+                text-transform: uppercase;
+                margin-bottom: 0.75rem;
+              }
+              .customer-section {
+                margin-bottom: 2rem;
+              }
+              .customer-name {
+                font-size: 1.125rem;
+                font-weight: bold;
+                color: #111827;
+              }
+              .customer-info {
+                font-size: 0.875rem;
+                color: #4b5563;
+                margin-top: 0.5rem;
+              }
+              .scope-section {
+                margin-bottom: 2rem;
+              }
+              .service-title {
+                font-weight: 600;
+                color: #111827;
+                margin-bottom: 0.5rem;
+              }
+              .service-desc {
+                font-size: 0.875rem;
+                color: #4b5563;
+              }
+              .tiers-section {
+                margin-bottom: 2rem;
+              }
+              .tier {
+                border: 2px solid #e5e7eb;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                page-break-inside: avoid;
+              }
+              .tier-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 0.75rem;
+              }
+              .tier-name {
+                font-weight: 600;
+                color: #111827;
+              }
+              .tier-description {
+                font-size: 0.875rem;
+                color: #4b5563;
+              }
+              .tier-price {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #059669;
+              }
+              .tier-features {
+                list-style: none;
+                font-size: 0.875rem;
+                color: #4b5563;
+                margin-top: 0.5rem;
+              }
+              .tier-features li {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 0.25rem;
+              }
+              .tier-features li::before {
+                content: "•";
+                color: #059669;
+                font-weight: bold;
+              }
+              .totals {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 2rem;
+                margin-top: 2rem;
+              }
+              .totals-box {
+                width: 100%;
+                max-width: 320px;
+              }
+              .total-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid #e5e7eb;
+                font-size: 0.875rem;
+                color: #4b5563;
+              }
+              .total-row.final {
+                border-bottom: none;
+                padding-top: 1rem;
+                font-weight: bold;
+                color: #111827;
+                font-size: 1rem;
+              }
+              .terms-section {
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+                border-top: 1px solid #e5e7eb;
+              }
+              .terms-label {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: #4b5563;
+                text-transform: uppercase;
+                margin-bottom: 0.75rem;
+              }
+              .terms-text {
+                font-size: 0.875rem;
+                color: #4b5563;
+                white-space: pre-wrap;
+              }
+              .valid-until {
+                margin-top: 1.5rem;
+                padding: 1rem;
+                background-color: #fffbeb;
+                border: 1px solid #fcd34d;
+                border-radius: 0.5rem;
+              }
+              .valid-until-text {
+                font-size: 0.875rem;
+                color: #78350f;
+              }
+              .valid-until-text strong {
+                font-weight: 600;
+              }
+              .signature-line {
+                margin-top: 3rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e5e7eb;
+              }
+              .signature-label {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: #4b5563;
+                text-transform: uppercase;
+                margin-bottom: 3rem;
+              }
+              @media print {
+                body {
+                  background: white;
+                  padding: 0;
+                  margin: 0;
+                }
+                .print-container {
+                  max-width: 100%;
+                  box-shadow: none;
+                  padding: 0.5in;
+                  margin: 0;
+                }
+                .no-print {
+                  display: none;
+                }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="print-container">
+              ${element.innerHTML}
+            </div>
+          </body>
+          </html>
+        `);
+        printWindow.document.close();
+        setTimeout(() => {
+          printWindow.print();
+        }, 250);
+      }
+    }
   };
 
   if (!mounted) {
@@ -261,13 +530,13 @@ export default function EstimateDetailPage() {
             )}
 
             <button
-              onClick={handleDownloadPDF}
+              onClick={handlePrint}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-colors whitespace-nowrap text-sm ${
                 isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' : 'bg-slate-200 hover:bg-slate-300 text-slate-900'
               }`}
             >
               <Download className="w-4 h-4" />
-              PDF
+              Print / PDF
             </button>
 
             <div className="relative">
@@ -326,9 +595,9 @@ export default function EstimateDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 overflow-y-auto px-4 sm:px-8 py-6 grid gap-6 lg:grid-cols-4`}>
+      <div className={`flex-1 overflow-y-auto px-4 sm:px-8 py-6 grid gap-6 lg:grid-cols-4 print:grid-cols-1 print:gap-0 print:px-0 print:py-0`}>
         {/* Document Preview */}
-        <div className={`lg:col-span-3 ${isDark ? 'bg-white text-slate-900' : 'bg-white'} rounded-xl shadow-sm p-8 sm:p-12`}>
+        <div id="estimate-document" className={`lg:col-span-3 print:col-span-1 print:shadow-none print:rounded-none print:p-0 ${isDark ? 'bg-white text-slate-900' : 'bg-white'} rounded-xl shadow-sm p-8 sm:p-12`}>
           {/* Company Header */}
           <div className="mb-12 pb-8 border-b border-slate-200">
             <h2 className="text-2xl font-bold text-slate-900 mb-4">{settings.companyName}</h2>
@@ -442,15 +711,33 @@ export default function EstimateDetailPage() {
           )}
 
           {/* Valid Until */}
-          <div className="mt-8 p-4 bg-amber-50 rounded-lg border border-amber-200">
+          <div className="mt-8 p-4 bg-amber-50 rounded-lg border border-amber-200 print:bg-amber-50 print:border-amber-200">
             <p className="text-sm text-amber-900">
               This estimate is valid until <span className="font-bold">{validUntilDate.toLocaleDateString()}</span>
             </p>
           </div>
+
+          {/* Signature Line (Print Only) */}
+          <div className="mt-12 pt-8 border-t border-slate-200 print:block hidden sm:print:block">
+            <div className="grid grid-cols-2 gap-8 max-w-lg">
+              <div>
+                <p className="text-sm font-semibold text-slate-600 mb-8">Authorized By</p>
+                <div className="border-t border-slate-300 pt-2">
+                  <p className="text-sm text-slate-600">{settings.companyName}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-600 mb-8">Client Signature</p>
+                <div className="border-t border-slate-300 pt-2">
+                  <p className="text-sm text-slate-600">Date: _________________</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Right Sidebar */}
-        <div className="lg:col-span-1 space-y-6 h-fit">
+        <div className="lg:col-span-1 print:hidden space-y-6 h-fit">
           {/* Timeline */}
           <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
             <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>Activity</h3>

@@ -7,6 +7,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import {
   ArrowLeft,
   Download,
+  Printer,
   Send,
   DollarSign,
   AlertCircle,
@@ -109,14 +110,390 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  const handleDownloadPDF = () => {
+  const handlePrintInvoice = () => {
     const element = document.getElementById('invoice-document');
     if (element) {
       const printWindow = window.open('', '', 'width=900,height=600');
       if (printWindow) {
-        printWindow.document.write(element.innerHTML);
+        const html = `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invoice ${invoice.number}</title>
+            <style>
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+              }
+
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                line-height: 1.5;
+                color: #1f2937;
+                background: white;
+              }
+
+              .invoice-container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 40px;
+                background: white;
+              }
+
+              .company-header {
+                margin-bottom: 32px;
+              }
+
+              .company-header h1 {
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 8px;
+                color: #111827;
+              }
+
+              .company-header p {
+                font-size: 13px;
+                color: #6b7280;
+              }
+
+              .invoice-title-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 32px;
+                padding-bottom: 32px;
+                border-bottom: 2px solid #e5e7eb;
+              }
+
+              .invoice-title-section h2 {
+                font-size: 28px;
+                font-weight: bold;
+                color: #111827;
+              }
+
+              .invoice-details {
+                text-align: right;
+                font-size: 13px;
+                color: #6b7280;
+              }
+
+              .invoice-details p {
+                margin-bottom: 4px;
+              }
+
+              .invoice-details strong {
+                font-weight: 600;
+              }
+
+              .bill-to {
+                margin-bottom: 32px;
+              }
+
+              .bill-to-label {
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #6b7280;
+                margin-bottom: 8px;
+              }
+
+              .bill-to-content {
+                font-size: 13px;
+                color: #374151;
+              }
+
+              .bill-to-content p:first-child {
+                font-weight: 600;
+                margin-bottom: 4px;
+              }
+
+              .bill-to-content p {
+                margin-bottom: 2px;
+              }
+
+              table {
+                width: 100%;
+                margin-bottom: 32px;
+                border-collapse: collapse;
+              }
+
+              thead tr {
+                border-bottom: 2px solid #d1d5db;
+              }
+
+              th {
+                padding: 12px 8px;
+                font-weight: 600;
+                font-size: 13px;
+                color: #374151;
+                text-align: left;
+              }
+
+              th:nth-child(2),
+              th:nth-child(3),
+              th:nth-child(4) {
+                text-align: right;
+              }
+
+              td {
+                padding: 12px 8px;
+                font-size: 13px;
+                border-bottom: 1px solid #f3f4f6;
+                color: #374151;
+              }
+
+              td:nth-child(2),
+              td:nth-child(3),
+              td:nth-child(4) {
+                text-align: right;
+              }
+
+              .totals-section {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 32px;
+              }
+
+              .totals {
+                width: 280px;
+              }
+
+              .total-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                font-size: 13px;
+                color: #374151;
+              }
+
+              .total-row.tax {
+                color: #374151;
+              }
+
+              .total-row.grand-total {
+                background: #f3f4f6;
+                padding: 12px;
+                margin-top: 8px;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 14px;
+                color: #111827;
+              }
+
+              .amount-paid-section {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 32px;
+              }
+
+              .amount-paid {
+                width: 280px;
+              }
+
+              .paid-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                font-size: 13px;
+                color: #374151;
+              }
+
+              .balance-due-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 12px;
+                margin-top: 8px;
+                border-radius: 4px;
+                font-weight: 600;
+                font-size: 14px;
+                color: #fff;
+                background: #10b981;
+              }
+
+              .balance-due-row.has-balance {
+                background: #ef4444;
+              }
+
+              .notes-section {
+                padding-top: 24px;
+                border-top: 1px solid #e5e7eb;
+              }
+
+              .notes-label {
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #6b7280;
+                margin-bottom: 8px;
+              }
+
+              .notes-content {
+                font-size: 13px;
+                color: #374151;
+              }
+
+              .footer {
+                text-align: center;
+                margin-top: 48px;
+                padding-top: 24px;
+                border-top: 1px solid #e5e7eb;
+                font-size: 13px;
+                color: #6b7280;
+              }
+
+              @media print {
+                body {
+                  margin: 0;
+                  padding: 0;
+                  background: white;
+                }
+                .invoice-container {
+                  padding: 20px;
+                  margin: 0;
+                }
+                .no-print {
+                  display: none !important;
+                }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="invoice-container">
+              <!-- Company Header -->
+              <div class="company-header">
+                <h1>${settings.companyName}</h1>
+                <p>${settings.companyAddress}</p>
+                <p>${settings.companyPhone} • ${settings.companyEmail}</p>
+              </div>
+
+              <!-- Invoice Title & Details -->
+              <div class="invoice-title-section">
+                <h2>INVOICE</h2>
+                <div class="invoice-details">
+                  <p><strong>Number:</strong> ${invoice.number}</p>
+                  <p><strong>Date:</strong> ${new Date(invoice.createdAt).toLocaleDateString('en-CA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}</p>
+                  <p><strong>Due:</strong> ${new Date(invoice.dueDate).toLocaleDateString('en-CA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}</p>
+                </div>
+              </div>
+
+              <!-- Bill To -->
+              <div class="bill-to">
+                <div class="bill-to-label">Bill To</div>
+                <div class="bill-to-content">
+                  <p>${invoice.customerName}</p>
+                  <p>${invoice.customerEmail}</p>
+                  <p>${invoice.customerAddress}</p>
+                </div>
+              </div>
+
+              <!-- Line Items Table -->
+              <table>
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th style="width: 80px;">Qty</th>
+                    <th style="width: 112px;">Unit Price</th>
+                    <th style="width: 112px;">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${invoice.lineItems.map((item) => `
+                    <tr>
+                      <td>${item.description}</td>
+                      <td>${item.quantity}</td>
+                      <td>${new Intl.NumberFormat('en-CA', {
+                        style: 'currency',
+                        currency: 'CAD',
+                      }).format(item.unitPrice)}</td>
+                      <td>${new Intl.NumberFormat('en-CA', {
+                        style: 'currency',
+                        currency: 'CAD',
+                      }).format(item.quantity * item.unitPrice)}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+
+              <!-- Totals -->
+              <div class="totals-section">
+                <div class="totals">
+                  <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span>${new Intl.NumberFormat('en-CA', {
+                      style: 'currency',
+                      currency: 'CAD',
+                    }).format(invoice.subtotal)}</span>
+                  </div>
+                  <div class="total-row tax">
+                    <span>${invoice.taxType} (${(invoice.taxRate * 100).toFixed(1)}%):</span>
+                    <span>${new Intl.NumberFormat('en-CA', {
+                      style: 'currency',
+                      currency: 'CAD',
+                    }).format(invoice.taxAmount)}</span>
+                  </div>
+                  <div class="total-row grand-total">
+                    <span>Total:</span>
+                    <span>${new Intl.NumberFormat('en-CA', {
+                      style: 'currency',
+                      currency: 'CAD',
+                    }).format(invoice.total)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Amount Paid & Balance -->
+              <div class="amount-paid-section">
+                <div class="amount-paid">
+                  <div class="paid-row">
+                    <span>Amount Paid:</span>
+                    <span>${new Intl.NumberFormat('en-CA', {
+                      style: 'currency',
+                      currency: 'CAD',
+                    }).format(invoice.amountPaid)}</span>
+                  </div>
+                  <div class="balance-due-row ${balanceDue > 0 ? 'has-balance' : ''}">
+                    <span>Balance Due:</span>
+                    <span>${new Intl.NumberFormat('en-CA', {
+                      style: 'currency',
+                      currency: 'CAD',
+                    }).format(balanceDue)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notes -->
+              ${invoice.notes ? `
+                <div class="notes-section">
+                  <div class="notes-label">Notes</div>
+                  <div class="notes-content">${invoice.notes}</div>
+                </div>
+              ` : ''}
+
+              <!-- Footer -->
+              <div class="footer">
+                <p>Thank you for your business!</p>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+        printWindow.document.write(html);
         printWindow.document.close();
-        printWindow.print();
+        // Wait for content to load before printing
+        printWindow.onload = () => {
+          printWindow.print();
+        };
       }
     }
   };
@@ -192,8 +569,16 @@ export default function InvoiceDetailPage() {
             </button>
           )}
           <button
-            onClick={handleDownloadPDF}
+            onClick={handlePrintInvoice}
             className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded font-medium text-sm transition"
+          >
+            <Printer size={16} className="inline mr-2" />
+            Print
+          </button>
+          <button
+            onClick={handlePrintInvoice}
+            className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded font-medium text-sm transition"
+            title="Use your browser's Save as PDF option when the print dialog opens"
           >
             <Download size={16} className="inline mr-2" />
             PDF

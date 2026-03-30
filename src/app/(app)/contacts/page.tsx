@@ -7,7 +7,7 @@ import { useStore } from '@/store';
 import { Contact, LeadSource, ContactType } from '@/types';
 import { Modal } from '@/components/Modal';
 import { LeadSourceBadge } from '@/components/LeadSourceBadge';
-import { Plus, Search, Edit2, Trash2, X, ChevronDown, FileText, DollarSign, Clock, User, Download } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, ChevronDown, FileText, DollarSign, Clock, User, Download, Check } from 'lucide-react';
 import { FormEvent } from 'react';
 
 const LEAD_SOURCES: { value: LeadSource; label: string }[] = [
@@ -61,6 +61,8 @@ export default function ContactsPage() {
   const [mounted, setMounted] = useState(false);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [editFormData, setEditFormData] = useState<ContactFormData | null>(null);
+  const [selectedContactIds, setSelectedContactIds] = useState<Set<string>>(new Set());
+  const [isBulkDeleteConfirmOpen, setIsBulkDeleteConfirmOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -98,6 +100,83 @@ export default function ContactsPage() {
 
   const getDealCount = (contactId: string) =>
     deals.filter((d) => d.contactId === contactId).length;
+
+  const toggleContactSelection = (contactId: string) => {
+    const newSelected = new Set(selectedContactIds);
+    if (newSelected.has(contactId)) {
+      newSelected.delete(contactId);
+    } else {
+      newSelected.add(contactId);
+    }
+    setSelectedContactIds(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedContactIds.size === filteredContacts.length) {
+      setSelectedContactIds(new Set());
+    } else {
+      setSelectedContactIds(new Set(filteredContacts.map((c) => c.id)));
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedContactIds(new Set());
+  };
+
+  const handleBulkDelete = () => {
+    if (selectedContactIds.size === 0) return;
+
+    const selectedList = filteredContacts.filter((c) =>
+      selectedContactIds.has(c.id)
+    );
+
+    const contactsWithDeals = selectedList.filter((c) => {
+      const linkedDeals = getDealsByContact(c.id);
+      return linkedDeals.length > 0;
+    });
+
+    if (contactsWithDeals.length > 0) {
+      alert(
+        `Cannot delete ${contactsWithDeals.length} contact(s) because they have linked deals. Please delete or reassign those deals first.`
+      );
+      return;
+    }
+
+    setIsBulkDeleteConfirmOpen(true);
+  };
+
+  const confirmBulkDelete = () => {
+    selectedContactIds.forEach((id) => {
+      const contact = contacts.find((c) => c.id === id);
+      if (contact) {
+        deleteContact(id);
+        addActivity({
+          type: 'note',
+          description: `Deleted contact: ${contact.name}`,
+        });
+      }
+    });
+    setSelectedContactIds(new Set());
+    setIsBulkDeleteConfirmOpen(false);
+  };
+
+  const handleBulkExportCSV = () => {
+    if (selectedContactIds.size === 0) return;
+    const selectedContacts = filteredContacts.filter((c) =>
+      selectedContactIds.has(c.id)
+    );
+    const csvContent = generateCSV(selectedContacts);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const now = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `growthOS-contacts-selected-${now}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const handleAddContact = (formData: ContactFormData) => {
     addContact(formData);
@@ -213,7 +292,7 @@ export default function ContactsPage() {
   };
 
   return (
-    <div className={`h-full flex flex-col ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
+    <div className={`h-full flex flex-col ${isDark ? 'bg-slate-900' : 'bg-white'} relative`}>
       {/* Header */}
       <div className={`px-4 sm:px-8 py-4 sm:py-6 border-b ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
         <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -334,6 +413,15 @@ export default function ContactsPage() {
         <table className="w-full">
           <thead className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'} border-b sticky top-0`}>
             <tr>
+              <th className={`px-3 sm:px-4 py-3 sm:py-4 text-center text-sm font-semibold w-12 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                <input
+                  type="checkbox"
+                  checked={selectedContactIds.size > 0 && selectedContactIds.size === filteredContacts.length}
+                  onChange={toggleSelectAll}
+                  className="w-4 h-4 rounded cursor-pointer"
+                  aria-label="Select all contacts"
+                />
+              </th>
               <th className={`px-3 sm:px-6 py-3 sm:py-4 text-left text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                 {t('contacts.nameAddress')}
               </th>
@@ -359,8 +447,25 @@ export default function ContactsPage() {
               filteredContacts.map((contact) => (
                 <tr
                   key={contact.id}
-                  className={`border-b ${isDark ? 'border-slate-700 hover:bg-slate-800' : 'border-slate-200 hover:bg-slate-50'} transition-colors`}
+                  className={`border-b transition-colors ${
+                    selectedContactIds.has(contact.id)
+                      ? isDark
+                        ? 'bg-emerald-900/20 hover:bg-emerald-900/30'
+                        : 'bg-emerald-50/60 hover:bg-emerald-100/60'
+                      : isDark
+                        ? 'border-slate-700 hover:bg-slate-800'
+                        : 'border-slate-200 hover:bg-slate-50'
+                  }`}
                 >
+                  <td className={`px-3 sm:px-4 py-4 text-center`}>
+                    <input
+                      type="checkbox"
+                      checked={selectedContactIds.has(contact.id)}
+                      onChange={() => toggleContactSelection(contact.id)}
+                      className="w-4 h-4 rounded cursor-pointer"
+                      aria-label={`Select ${contact.name}`}
+                    />
+                  </td>
                   <td
                     className={`px-3 sm:px-6 py-4 cursor-pointer`}
                     onClick={() => openDetailView(contact)}
@@ -426,7 +531,7 @@ export default function ContactsPage() {
               ))
             ) : (
               <tr>
-                <td colSpan={6} className={`px-6 py-8 text-center`}>
+                <td colSpan={7} className={`px-6 py-8 text-center`}>
                   <p className={isDark ? 'text-slate-400' : 'text-slate-500'}>
                     {searchQuery || filterType !== 'all' || filterSource !== 'all'
                       ? t('contacts.notFound')
@@ -438,6 +543,56 @@ export default function ContactsPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Bulk Actions Bar */}
+      {selectedContactIds.size > 0 && (
+        <div
+          className={`fixed bottom-0 left-0 right-0 z-40 border-t transition-all duration-300 ease-out ${
+            isDark
+              ? 'bg-slate-800 border-slate-700'
+              : 'bg-white border-slate-200'
+          } shadow-lg`}
+        >
+          <div className="px-4 sm:px-8 py-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <span className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                {selectedContactIds.size} {selectedContactIds.size === 1 ? 'contact' : 'contacts'} selected
+              </span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={handleBulkExportCSV}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border text-sm ${
+                  isDark
+                    ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
+                    : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                <Download className="w-4 h-4" />
+                Export
+              </button>
+              <button
+                onClick={handleBulkDelete}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium text-sm bg-red-600 text-white hover:bg-red-700"
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete
+              </button>
+              <button
+                onClick={clearSelection}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium text-sm ${
+                  isDark
+                    ? 'bg-slate-700 text-slate-100 hover:bg-slate-600'
+                    : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
+                }`}
+              >
+                <X className="w-4 h-4" />
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Add Contact Modal */}
       <AddContactModal
@@ -492,6 +647,20 @@ export default function ContactsPage() {
           isDark={isDark}
         />
       )}
+
+      {/* Bulk Delete Confirmation Dialog */}
+      {isBulkDeleteConfirmOpen && (
+        <BulkDeleteConfirmDialog
+          isOpen={isBulkDeleteConfirmOpen}
+          onClose={() => setIsBulkDeleteConfirmOpen(false)}
+          onConfirm={confirmBulkDelete}
+          count={selectedContactIds.size}
+          isDark={isDark}
+        />
+      )}
+
+      {/* Spacing for bulk actions bar */}
+      {selectedContactIds.size > 0 && <div className="h-24" />}
     </div>
   );
 }
@@ -1005,6 +1174,76 @@ interface ContactDetailViewProps {
   estimates: any[];
   invoices: any[];
   isDark: boolean;
+}
+
+interface BulkDeleteConfirmDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  count: number;
+  isDark: boolean;
+}
+
+function BulkDeleteConfirmDialog({
+  isOpen,
+  onClose,
+  onConfirm,
+  count,
+  isDark,
+}: BulkDeleteConfirmDialogProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      role="presentation"
+      onClick={onClose}
+    >
+      <div
+        className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-2xl shadow-xl max-w-md w-full mx-4`}
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className={`flex items-center justify-between px-6 py-4 border-b ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+          <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            Delete Contacts
+          </h2>
+          <button
+            onClick={onClose}
+            className={`transition-colors ${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600'}`}
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="px-6 py-6">
+          <p className={`mb-4 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            Are you sure you want to delete <strong>{count} {count === 1 ? 'contact' : 'contacts'}</strong>? This action cannot be undone.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={onConfirm}
+              className="flex-1 bg-red-600 text-white font-medium py-2 rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Delete
+            </button>
+            <button
+              onClick={onClose}
+              className={`flex-1 font-medium py-2 rounded-lg transition-colors ${
+                isDark
+                  ? 'bg-slate-700 text-slate-100 hover:bg-slate-600'
+                  : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
+              }`}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function ContactDetailView({
