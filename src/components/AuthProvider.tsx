@@ -32,18 +32,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [supabaseAvailable, setSupabaseAvailable] = useState(true);
 
   useEffect(() => {
     // Check initial session
     const checkSession = async () => {
       try {
+        const supabase = getSupabase();
         const {
           data: { session: initialSession },
-        } = await getSupabase().auth.getSession();
+        } = await supabase.auth.getSession();
         setSession(initialSession);
         setUser(initialSession?.user ?? null);
       } catch (error) {
         console.error('Error checking session:', error);
+        setSupabaseAvailable(false);
       } finally {
         setLoading(false);
       }
@@ -52,22 +55,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkSession();
 
     // Subscribe to auth state changes
-    const {
-      data: { subscription },
-    } = getSupabase().auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-      setUser(newSession?.user ?? null);
-      setLoading(false);
-    });
+    try {
+      const supabase = getSupabase();
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, newSession) => {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        setLoading(false);
+      });
 
-    return () => {
-      subscription?.unsubscribe();
-    };
+      return () => {
+        subscription?.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Error subscribing to auth changes:', error);
+      setSupabaseAvailable(false);
+    }
   }, []);
 
   const signOut = async () => {
     try {
-      await getSupabase().auth.signOut();
+      if (supabaseAvailable) {
+        await getSupabase().auth.signOut();
+      }
       setUser(null);
       setSession(null);
       router.push('/login');

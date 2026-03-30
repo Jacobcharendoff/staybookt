@@ -20,6 +20,7 @@ import {
   Moon,
   Sun,
   Globe,
+  BarChart3,
 } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { useLanguage } from './LanguageProvider';
@@ -50,6 +51,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     { href: '/messages', label: t('nav.messages'), icon: MessageSquare },
     { href: '/notifications', label: t('nav.notifications'), icon: Bell, badge: unreadCount > 0 ? unreadCount : undefined },
     { href: '/activity', label: t('nav.activity'), icon: ActivitySquare },
+    { href: '/reports', label: 'Reports', icon: BarChart3 },
   ];
 
   const settingsItem = { href: '/settings', label: t('nav.settings'), icon: Settings };
