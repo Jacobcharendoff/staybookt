@@ -20,7 +20,7 @@ export default function PricingPage() {
       price: 0,
       annualPrice: 0,
       tag: 'Free',
-      description: 'For solo operators getting started',
+      description: 'For solo operators testing the waters',
       features: [
         { text: 'Up to 50 contacts', included: true },
         { text: '1 user', included: true },
@@ -36,11 +36,11 @@ export default function PricingPage() {
       highlighted: false,
     },
     {
-      name: 'Professional',
+      name: 'Growth',
       price: 49,
       annualPrice: 39,
       tag: 'Most Popular',
-      description: 'For growing service businesses',
+      description: 'For growing service businesses ready to scale',
       features: [
         { text: 'Unlimited contacts', included: true },
         { text: 'Up to 5 users', included: true },
@@ -51,16 +51,16 @@ export default function PricingPage() {
         { text: 'Priority support', included: true },
         { text: 'Remove GrowthOS branding', included: true },
       ],
-      cta: 'Start Free Trial',
+      cta: 'Start your free 14-day trial',
       href: '/setup',
       highlighted: true,
     },
     {
-      name: 'Enterprise',
+      name: 'Scale',
       price: 99,
       annualPrice: 79,
       tag: 'For Scale',
-      description: 'For multi-crew operations',
+      description: 'For multi-crew operations that need everything',
       features: [
         { text: 'Unlimited users', included: true },
         { text: 'Advanced reporting', included: true },
@@ -71,8 +71,8 @@ export default function PricingPage() {
         { text: 'White-label options', included: true },
         { text: 'Priority onboarding', included: true },
       ],
-      cta: 'Contact Sales',
-      href: '/contact',
+      cta: 'Start your free 14-day trial',
+      href: '/setup',
       highlighted: false,
     },
   ];
@@ -118,24 +118,24 @@ export default function PricingPage() {
 
   const faqs = [
     {
+      question: 'Is there really a free plan?',
+      answer:
+        'Yes, Starter is free forever. No credit card, no trial expiry. You can use it indefinitely to manage your contacts, estimates, and basic workflows.',
+    },
+    {
       question: 'Can I switch plans anytime?',
       answer:
-        'Yes, you can upgrade or downgrade your plan at any time. If you upgrade, we\'ll charge you the pro-rated difference. If you downgrade, you\'ll receive a credit toward your next billing cycle.',
+        'Yes, upgrade or downgrade anytime. No contracts. If you upgrade, we\'ll charge you the pro-rated difference. If you downgrade, you\'ll receive a credit toward your next billing cycle.',
     },
     {
-      question: 'Is there a contract?',
+      question: 'Do you support Quebec French?',
       answer:
-        'No contracts. We operate on month-to-month billing for all plans. You can cancel anytime, no questions asked. If you choose annual billing, you get a 20% discount.',
+        'Yes, full bilingual EN/FR support across the entire platform. All features, automations, templates, and support are available in both English and French.',
     },
     {
-      question: 'What payment methods do you accept?',
+      question: 'What makes GrowthOS different from Jobber?',
       answer:
-        'We accept all major credit cards (Visa, Mastercard, American Express). For Enterprise accounts, we can also arrange wire transfers or custom payment terms.',
-    },
-    {
-      question: 'Do you offer discounts for annual billing?',
-      answer:
-        'Yes! Annual plans come with a 20% discount compared to monthly pricing. For example, Professional is $39/month on an annual plan versus $49/month on monthly billing.',
+        'GrowthOS is built specifically for Canadian businesses with automatic provincial tax calculation, French language support, and growth-focused features like Autopilot automations. Jobber is great for scheduling, but scheduling doesn\'t grow your business.',
     },
     {
       question: 'Can I import my existing contacts?',
@@ -279,6 +279,44 @@ export default function PricingPage() {
               );
             })}
           </div>
+
+          {/* Trust Signals */}
+          <div className="text-center mt-12 sm:mt-16">
+            <p className="text-sm text-gray-600">
+              <span className="inline-flex items-center gap-1">
+                No credit card required <span className="text-gray-400">·</span> Cancel anytime <span className="text-gray-400">·</span> All prices in CAD
+              </span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Competitor Comparison Section */}
+      <section className="py-16 sm:py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#2C3E50] mb-4">Still comparing? Here's the honest truth.</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            {/* Competitor Cards */}
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">ServiceTitan</h3>
+              <p className="text-gray-700 text-sm">$300+/mo per tech, plus implementation fees</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">Jobber</h3>
+              <p className="text-gray-700 text-sm">$69+/mo — great for scheduling, but scheduling doesn't grow your business</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">Housecall Pro</h3>
+              <p className="text-gray-700 text-sm">$65+/mo — built for the US. Your Canadian taxes need manual fixes.</p>
+            </div>
+            <div className="bg-emerald-50 rounded-xl p-6 border-2 border-[#27AE60]">
+              <h3 className="font-bold text-lg text-[#27AE60] mb-2">GrowthOS</h3>
+              <p className="text-gray-700 text-sm">$49/mo for everything. Built for Canadian trades.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -332,8 +370,8 @@ export default function PricingPage() {
                 <tr className="border-b-2 border-gray-200">
                   <th className="text-left py-4 px-6 font-semibold text-[#2C3E50]">Feature</th>
                   <th className="text-center py-4 px-6 font-semibold text-gray-700">Starter</th>
-                  <th className="text-center py-4 px-6 font-semibold text-[#27AE60] bg-emerald-50">Professional</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-700">Enterprise</th>
+                  <th className="text-center py-4 px-6 font-semibold text-[#27AE60] bg-emerald-50">Growth</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-700">Scale</th>
                 </tr>
               </thead>
               <tbody>

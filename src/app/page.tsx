@@ -260,9 +260,7 @@ function Hero() {
 
           {/* Headline with rotating trade name */}
           <h1 className="hero-reveal hero-reveal-delay-2 text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1] mb-2">
-            Stop Losing Leads.
-            <br />
-            Start Growing Revenue.
+            Every missed call is money in your competitor's pocket.
           </h1>
 
           {/* Trade icon row — shows all trades */}
@@ -279,7 +277,7 @@ function Hero() {
 
           {/* Subheadline */}
           <p className="hero-reveal hero-reveal-delay-3 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Plumbers, HVAC techs, and electricians lose 30–40% of incoming leads. GrowthOS catches every one. Auto-assign leads, schedule instantly, and never miss a call again.
+            GrowthOS responds to new leads in 60 seconds, books jobs while you're on-site, and sends invoices with the right tax — automatically.
           </p>
 
           {/* Social Proof — moved above CTA */}
@@ -308,14 +306,14 @@ function Hero() {
               href="/setup"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-2xl transition-all shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5"
             >
-              Start Free Trial
+              Start your free 14-day trial
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              href="#demo"
+              href="/dashboard"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 text-base font-semibold rounded-2xl transition-all border border-gray-300 shadow-sm hover:shadow-md"
             >
-              Watch Demo
+              See GrowthOS in action
             </Link>
           </div>
 
@@ -328,20 +326,15 @@ function Hero() {
             <span className="text-gray-300">·</span>
             <span className="flex items-center gap-1.5">
               <svg className="w-4 h-4 text-[#27AE60]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
-              Free forever up to 5 users
+              Cancel anytime
             </span>
             <span className="text-gray-300">·</span>
             <span className="flex items-center gap-1.5">
               <svg className="w-4 h-4 text-[#27AE60]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
-              Setup in 2 minutes
+              Live in under 10 minutes
             </span>
           </div>
 
-          {/* Social Proof - New Line */}
-          <div className="hero-reveal hero-reveal-delay-4 mt-6 flex items-center justify-center gap-2 text-sm text-gray-600 font-medium">
-            <Check className="w-4 h-4 text-emerald-500" />
-            <span>Trusted by 500+ Canadian service businesses</span>
-          </div>
 
           {/* Canada-first trust bar */}
           <div className="hero-reveal hero-reveal-delay-4 mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
@@ -394,6 +387,7 @@ function ProblemSection() {
             t('problem.missedCall'),
             t('problem.estimateFollowUp'),
             t('problem.invoicedLate'),
+            "Your competitor got the job because they called back first.",
           ].map((pain) => (
             <div key={pain} className="scroll-fade-left flex items-start gap-3 p-4 rounded-lg bg-white/5 border border-white/10">
               <X className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
@@ -1219,25 +1213,25 @@ function SocialProof() {
 
   const testimonials = [
     {
-      quote: "We were losing calls every morning because the guys were already on jobs. GrowthOS auto-texts every missed call now. Month one: 12 extra jobs. That's $14,000 we would have lost.",
+      quote: "We went from missing half our calls to responding in under a minute. Booked 47% more jobs in the first quarter.",
       name: "Mike Reynolds",
-      role: "Owner, Reynolds Plumbing — Toronto, ON",
+      role: "Owner — Reynolds Plumbing, Toronto ON",
       initials: "MR",
       color: "bg-blue-500",
     },
     {
-      quote: "Jobber handled scheduling fine, but it never helped us grow. GrowthOS follows up on every estimate, asks for reviews, and the tax calculations actually work for Quebec. Switched in one day.",
-      name: "Jean-Pierre Lavoie",
-      role: "Propriétaire, Lavoie Climatisation — Montréal, QC",
+      quote: "Finally, a CRM that handles Quebec tax and works in French. My team was set up in 15 minutes.",
+      name: "Julie Lavoie",
+      role: "Manager — Lavoie Chauffage, Montreal QC",
       initials: "JL",
       color: "bg-red-500",
     },
     {
-      quote: "We turned on the review machine. 23 new Google reviews in 30 days. Calls went up. People said they found us because of the reviews. The platform paid for itself in week one.",
-      name: "Sarah Kim",
-      role: "GM, Comfort Zone HVAC — Vancouver, BC",
+      quote: "The autopilot feature alone paid for itself. New leads get a text before I even see the notification.",
+      name: "Steve Kim",
+      role: "Owner — Kim Electric, Vancouver BC",
       initials: "SK",
-      color: "bg-emerald-500",
+      color: "bg-amber-500",
     },
   ];
 
@@ -1319,6 +1313,79 @@ function AnimatedStars() {
 }
 
 // ─── Testimonials ─────────────────────────────────────────────
+function TestimonialsSection() {
+  const testimonials = [
+    {
+      quote: "We went from missing half our calls to responding in under a minute. Booked 47% more jobs in the first quarter.",
+      name: "Mike Reynolds",
+      role: "Owner",
+      company: "Reynolds Plumbing",
+      city: "Toronto ON",
+      initials: "MR",
+      color: "bg-blue-500",
+      stars: 5,
+    },
+    {
+      quote: "Finally, a CRM that handles Quebec tax and works in French. My team was set up in 15 minutes.",
+      name: "Julie Lavoie",
+      role: "Manager",
+      company: "Lavoie Chauffage",
+      city: "Montreal QC",
+      initials: "JL",
+      color: "bg-red-500",
+      stars: 5,
+    },
+    {
+      quote: "The autopilot feature alone paid for itself. New leads get a text before I even see the notification.",
+      name: "Steve Kim",
+      role: "Owner",
+      company: "Kim Electric",
+      city: "Vancouver BC",
+      initials: "SK",
+      color: "bg-amber-500",
+      stars: 5,
+    },
+  ];
+
+  return (
+    <section className="py-16 lg:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="scroll-fade-up text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
+            Don't take our word for it.
+          </h2>
+        </div>
+
+        <div className="stagger-children scroll-fade-up grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {testimonials.map((testimonial) => (
+            <div key={testimonial.name} className="scroll-fade-up p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-all">
+              {/* Stars */}
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(testimonial.stars)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p className="text-gray-600 leading-relaxed mb-6 text-sm">&ldquo;{testimonial.quote}&rdquo;</p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full ${testimonial.color} flex items-center justify-center text-white text-sm font-bold`}>
+                  {testimonial.initials}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{testimonial.name}</p>
+                  <p className="text-xs text-gray-500">{testimonial.role} — {testimonial.company}, {testimonial.city}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 // ─── Pricing ──────────────────────────────────────────────────
 function PricingTeaser() {
@@ -1454,6 +1521,7 @@ export default function LandingPage() {
       <InteractiveExplorer />
       <InteractiveProductTour />
       <SocialProof />
+      <TestimonialsSection />
       <LogoWall />
       <AutopilotSection />
       <ROICalculator />
