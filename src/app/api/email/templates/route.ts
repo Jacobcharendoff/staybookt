@@ -10,6 +10,8 @@ import {
 import { getResend } from '@/lib/resend';
 import { getEmailTemplate, renderTemplate } from '@/lib/email-templates';
 
+const fromDomain = process.env.EMAIL_FROM_DOMAIN || 'resend.dev';
+
 const sendTemplateSchema = z.object({
   templateId: z.string().min(1),
   contactId: z.string().min(1),
@@ -81,7 +83,7 @@ export async function POST(request: NextRequest) {
     if (resend) {
       try {
         resendResponse = await resend.emails.send({
-          from: `${companyName} <notifications@growthos.app>`,
+          from: `notifications@${fromDomain}`,
           to: contact.email,
           subject: renderedTemplate.subject,
           html: renderedTemplate.html,

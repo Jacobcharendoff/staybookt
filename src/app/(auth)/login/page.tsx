@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Zap } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
+import { useLanguage } from '@/components/LanguageProvider';
 
 type Tab = 'signin' | 'signup';
 type View = 'form' | 'forgotPassword';
@@ -29,6 +30,7 @@ export default function LoginPage() {
 }
 
 function LoginPageInner() {
+  const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/setup';
@@ -72,7 +74,7 @@ function LoginPageInner() {
       if (error) {
         setMessage({
           type: 'error',
-          text: error.message || 'Failed to sign in. Please check your credentials.',
+          text: error.message || t('auth.failedToSignIn'),
         });
         setLoading(false);
         return;
@@ -81,7 +83,7 @@ function LoginPageInner() {
       if (data.session) {
         setMessage({
           type: 'success',
-          text: 'Signed in successfully. Redirecting...',
+          text: t('auth.signedInSuccessfully'),
         });
         setTimeout(() => {
           router.push(redirectTo);
@@ -90,7 +92,7 @@ function LoginPageInner() {
     } catch (err) {
       setMessage({
         type: 'error',
-        text: 'An unexpected error occurred. Please try again.',
+        text: t('auth.unexpectedError'),
       });
       setLoading(false);
     }
@@ -104,7 +106,7 @@ function LoginPageInner() {
     if (!form.fullName.trim()) {
       setMessage({
         type: 'error',
-        text: 'Please enter your full name.',
+        text: t('auth.pleaseEnterFullName'),
       });
       return;
     }
@@ -112,7 +114,7 @@ function LoginPageInner() {
     if (form.password !== form.confirmPassword) {
       setMessage({
         type: 'error',
-        text: 'Passwords do not match.',
+        text: t('auth.passwordsDoNotMatch'),
       });
       return;
     }
@@ -120,7 +122,7 @@ function LoginPageInner() {
     if (form.password.length < 8) {
       setMessage({
         type: 'error',
-        text: 'Password must be at least 8 characters.',
+        text: t('auth.passwordMinLength'),
       });
       return;
     }
@@ -141,16 +143,28 @@ function LoginPageInner() {
       if (error) {
         setMessage({
           type: 'error',
-          text: error.message || 'Failed to create account. Please try again.',
+          text: error.message || t('auth.failedToCreateAccount'),
         });
         setLoading(false);
         return;
       }
 
       if (data.user) {
+        // After successful signup, set trial flags
+        const supabase = getSupabase();
+        if (supabase && data.user) {
+          const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
+          await supabase.from('users').update({
+            is_trial: true,
+            trial_started_at: new Date().toISOString(),
+            trial_ends_at: trialEndsAt,
+            first_name: form.fullName.split(' ')[0],
+          }).eq('id', data.user.id);
+        }
+
         setMessage({
           type: 'success',
-          text: 'Account created! Check your email to confirm your account.',
+          text: t('auth.accountCreatedCheckEmail'),
         });
         // Reset form
         setForm({
@@ -163,7 +177,7 @@ function LoginPageInner() {
     } catch (err) {
       setMessage({
         type: 'error',
-        text: 'An unexpected error occurred. Please try again.',
+        text: t('auth.unexpectedError'),
       });
     } finally {
       setLoading(false);
@@ -185,14 +199,14 @@ function LoginPageInner() {
       if (error) {
         setMessage({
           type: 'error',
-          text: error.message || 'Failed to sign in with Google. Please try again.',
+          text: error.message || t('auth.failedToSignInGoogle'),
         });
         setGoogleLoading(false);
       }
     } catch (err) {
       setMessage({
         type: 'error',
-        text: 'An unexpected error occurred. Please try again.',
+        text: t('auth.unexpectedError'),
       });
       setGoogleLoading(false);
     }
@@ -206,7 +220,7 @@ function LoginPageInner() {
     if (!resetEmail.trim()) {
       setMessage({
         type: 'error',
-        text: 'Please enter your email address.',
+        text: t('auth.pleaseEnterEmail'),
       });
       setLoading(false);
       return;
@@ -220,7 +234,7 @@ function LoginPageInner() {
       if (error) {
         setMessage({
           type: 'error',
-          text: error.message || 'Failed to send reset email. Please try again.',
+          text: error.message || t('auth.failedToSendReset'),
         });
         setLoading(false);
         return;
@@ -228,14 +242,14 @@ function LoginPageInner() {
 
       setMessage({
         type: 'success',
-        text: 'Check your email for a password reset link.',
+        text: t('auth.checkEmailForReset'),
       });
       setResetEmail('');
       setLoading(false);
     } catch (err) {
       setMessage({
         type: 'error',
-        text: 'An unexpected error occurred. Please try again.',
+        text: t('auth.unexpectedError'),
       });
       setLoading(false);
     }
@@ -282,7 +296,7 @@ function LoginPageInner() {
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Sign In
+                {t('auth.signIn')}
               </button>
               <button
                 onClick={() => {
@@ -295,7 +309,7 @@ function LoginPageInner() {
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Sign Up
+                {t('auth.signUp')}
               </button>
             </div>
 
@@ -327,7 +341,7 @@ function LoginPageInner() {
                       htmlFor="email-signin"
                       className="block text-sm font-medium text-slate-700 mb-1.5"
                     >
-                      Email address
+                      {t('auth.emailAddress')}
                     </label>
                     <input
                       id="email-signin"
@@ -338,7 +352,7 @@ function LoginPageInner() {
                       value={form.email}
                       onChange={handleInputChange}
                       className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                      placeholder="your@email.com"
+                      placeholder={t('auth.emailPlaceholder')}
                       disabled={loading}
                     />
                   </div>
@@ -348,7 +362,7 @@ function LoginPageInner() {
                       htmlFor="password-signin"
                       className="block text-sm font-medium text-slate-700 mb-1.5"
                     >
-                      Password
+                      {t('auth.password')}
                     </label>
                     <input
                       id="password-signin"
@@ -373,7 +387,7 @@ function LoginPageInner() {
                       }}
                       className="text-sm font-medium text-[#27AE60] hover:text-[#229954] transition-colors"
                     >
-                      Forgot password?
+                      {t('auth.forgotPassword')}
                     </button>
                   </div>
 
@@ -382,7 +396,7 @@ function LoginPageInner() {
                     disabled={loading}
                     className="w-full py-2.5 px-4 bg-[#27AE60] hover:bg-[#229954] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                   >
-                    {loading ? 'Signing in...' : 'Sign In'}
+                    {loading ? t('auth.signingIn') : t('auth.signIn')}
                   </button>
                 </form>
               ) : (
@@ -392,7 +406,7 @@ function LoginPageInner() {
                       htmlFor="fullname"
                       className="block text-sm font-medium text-slate-700 mb-1.5"
                     >
-                      Full name
+                      {t('auth.fullName')}
                     </label>
                     <input
                       id="fullname"
@@ -403,7 +417,7 @@ function LoginPageInner() {
                       value={form.fullName}
                       onChange={handleInputChange}
                       className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                      placeholder="John Doe"
+                      placeholder={t('auth.namePlaceholder')}
                       disabled={loading}
                     />
                   </div>
@@ -413,7 +427,7 @@ function LoginPageInner() {
                       htmlFor="email-signup"
                       className="block text-sm font-medium text-slate-700 mb-1.5"
                     >
-                      Email address
+                      {t('auth.emailAddress')}
                     </label>
                     <input
                       id="email-signup"
@@ -424,7 +438,7 @@ function LoginPageInner() {
                       value={form.email}
                       onChange={handleInputChange}
                       className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                      placeholder="your@email.com"
+                      placeholder={t('auth.emailPlaceholder')}
                       disabled={loading}
                     />
                   </div>
@@ -434,7 +448,7 @@ function LoginPageInner() {
                       htmlFor="password-signup"
                       className="block text-sm font-medium text-slate-700 mb-1.5"
                     >
-                      Password
+                      {t('auth.password')}
                     </label>
                     <input
                       id="password-signup"
@@ -449,7 +463,7 @@ function LoginPageInner() {
                       disabled={loading}
                     />
                     <p className="text-xs text-slate-500 mt-1">
-                      At least 8 characters
+                      {t('auth.atLeast8Characters')}
                     </p>
                   </div>
 
@@ -458,7 +472,7 @@ function LoginPageInner() {
                       htmlFor="confirm-password"
                       className="block text-sm font-medium text-slate-700 mb-1.5"
                     >
-                      Confirm password
+                      {t('auth.confirmPassword')}
                     </label>
                     <input
                       id="confirm-password"
@@ -479,7 +493,7 @@ function LoginPageInner() {
                     disabled={loading}
                     className="w-full py-2.5 px-4 bg-[#27AE60] hover:bg-[#229954] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                   >
-                    {loading ? 'Creating account...' : 'Create Account'}
+                    {loading ? t('auth.creatingAccount') : t('auth.createAccount')}
                   </button>
                 </form>
               )}
@@ -491,7 +505,7 @@ function LoginPageInner() {
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-white text-slate-600 font-medium">
-                    Or continue with
+                    {t('auth.orContinueWith')}
                   </span>
                 </div>
               </div>
@@ -525,26 +539,26 @@ function LoginPageInner() {
                     fill="#EA4335"
                   />
                 </svg>
-                {googleLoading ? 'Signing in...' : 'Google'}
+                {googleLoading ? t('auth.signingIn') : t('auth.continueWithGoogle')}
               </button>
             </div>
 
             {/* Footer */}
             <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
               <p className="text-xs text-center text-slate-600 leading-relaxed">
-                By {tab === 'signup' ? 'signing up' : 'signing in'} you agree to our{' '}
+                {t('auth.termsPrefix')} {tab === 'signup' ? t('auth.signingUpAgreement') : t('auth.signingInAgreement')} {t('auth.youAgree')}{' '}
                 <a
                   href="#"
                   className="font-medium text-[#27AE60] hover:text-[#229954] transition-colors"
                 >
-                  Terms of Service
+                  {t('auth.termsOfService')}
                 </a>{' '}
-                and{' '}
+                {t('auth.and')}{' '}
                 <a
                   href="#"
                   className="font-medium text-[#27AE60] hover:text-[#229954] transition-colors"
                 >
-                  Privacy Policy
+                  {t('auth.privacyPolicy')}
                 </a>
               </p>
             </div>
@@ -555,9 +569,9 @@ function LoginPageInner() {
           <>
             {/* Header */}
             <div className="px-6 pt-6 pb-4 border-b border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-900">Reset Password</h2>
+              <h2 className="text-lg font-semibold text-slate-900">{t('auth.resetPassword')}</h2>
               <p className="text-sm text-slate-600 mt-1">
-                Enter your email address and we'll send you a link to reset your password.
+                {t('auth.resetPasswordDesc')}
               </p>
             </div>
 
@@ -588,7 +602,7 @@ function LoginPageInner() {
                     htmlFor="reset-email"
                     className="block text-sm font-medium text-slate-700 mb-1.5"
                   >
-                    Email address
+                    {t('auth.emailAddress')}
                   </label>
                   <input
                     id="reset-email"
@@ -598,7 +612,7 @@ function LoginPageInner() {
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
                     className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                    placeholder="your@email.com"
+                    placeholder={t('auth.emailPlaceholder')}
                     disabled={loading}
                   />
                 </div>
@@ -608,7 +622,7 @@ function LoginPageInner() {
                   disabled={loading}
                   className="w-full py-2.5 px-4 bg-[#27AE60] hover:bg-[#229954] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                 >
-                  {loading ? 'Sending...' : 'Send Reset Link'}
+                  {loading ? t('auth.sending') : t('auth.sendResetLink')}
                 </button>
               </form>
 
@@ -617,7 +631,7 @@ function LoginPageInner() {
                 onClick={handleBackToSignIn}
                 className="w-full mt-4 py-2.5 px-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors font-medium text-slate-700"
               >
-                Back to Sign In
+                {t('auth.backToSignIn')}
               </button>
             </div>
           </>

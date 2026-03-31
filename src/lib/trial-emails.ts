@@ -3,6 +3,8 @@
  * 7 emails over 14 days designed to drive activation and conversion
  */
 
+const fromDomain = process.env.EMAIL_FROM_DOMAIN || 'resend.dev';
+
 export interface TrialEmail {
   day: number;
   subject: string;

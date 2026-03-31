@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import { MarketingLayout } from '@/components/MarketingLayout';
 import { Check, Minus, ChevronDown, Zap, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/components/LanguageProvider';
+import type { TranslationKey } from '@/i18n/translations';
 
 export default function PricingPage() {
+  const { t } = useLanguage();
   const [isAnnual, setIsAnnual] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
@@ -14,138 +17,145 @@ export default function PricingPage() {
     document.documentElement.classList.remove('dark');
   }, []);
 
-  const plans = [
+  const plans: Array<{
+    nameKey: TranslationKey;
+    price: number;
+    annualPrice: number;
+    tagKey: TranslationKey;
+    descriptionKey: TranslationKey;
+    features: Array<{ textKey: TranslationKey; included: boolean }>;
+    ctaKey: TranslationKey;
+    href: string;
+    highlighted: boolean;
+  }> = [
     {
-      name: 'Starter',
+      nameKey: 'pricing.starterPlanName',
       price: 0,
       annualPrice: 0,
-      tag: 'Free',
-      description: 'For solo operators testing the waters',
+      tagKey: 'pricing.starterTag',
+      descriptionKey: 'pricing.starterDescription',
       features: [
-        { text: 'Up to 50 contacts', included: true },
-        { text: '1 user', included: true },
-        { text: 'Basic pipeline (5 stages)', included: true },
-        { text: '5 estimates/month', included: true },
-        { text: 'Email support', included: true },
-        { text: 'GrowthOS branding on estimates', included: true },
-        { text: 'Advanced reporting', included: false },
-        { text: 'API access', included: false },
+        { textKey: 'pricing.feature.contacts50', included: true },
+        { textKey: 'pricing.feature.user1', included: true },
+        { textKey: 'pricing.feature.pipeline5', included: true },
+        { textKey: 'pricing.feature.estimates5', included: true },
+        { textKey: 'pricing.feature.emailSupport', included: true },
+        { textKey: 'pricing.feature.brandingGrowth', included: true },
+        { textKey: 'pricing.feature.reporting', included: false },
+        { textKey: 'pricing.feature.apiAccess', included: false },
       ],
-      cta: 'Get Started Free',
+      ctaKey: 'pricing.starterCta',
       href: '/setup',
       highlighted: false,
     },
     {
-      name: 'Growth',
+      nameKey: 'pricing.growthPlanName',
       price: 49,
       annualPrice: 39,
-      tag: 'Most Popular',
-      description: 'For growing service businesses ready to scale',
+      tagKey: 'pricing.growthTag',
+      descriptionKey: 'pricing.growthDescription',
       features: [
-        { text: 'Unlimited contacts', included: true },
-        { text: 'Up to 5 users', included: true },
-        { text: 'Full pipeline + automations', included: true },
-        { text: 'Unlimited estimates & invoices', included: true },
-        { text: 'Lead capture forms', included: true },
-        { text: 'Email templates', included: true },
-        { text: 'Priority support', included: true },
-        { text: 'Remove GrowthOS branding', included: true },
+        { textKey: 'pricing.feature.contactsUnlimited', included: true },
+        { textKey: 'pricing.feature.users5', included: true },
+        { textKey: 'pricing.feature.pipelineFull', included: true },
+        { textKey: 'pricing.feature.estimatesUnlimited', included: true },
+        { textKey: 'pricing.feature.leadCapture', included: true },
+        { textKey: 'pricing.feature.emailTemplates', included: true },
+        { textKey: 'pricing.feature.prioritySupport', included: true },
+        { textKey: 'pricing.feature.brandingRemove', included: true },
       ],
-      cta: 'Start your free 14-day trial',
+      ctaKey: 'pricing.growthCta',
       href: '/setup',
       highlighted: true,
     },
     {
-      name: 'Scale',
+      nameKey: 'pricing.scalePlanName',
       price: 99,
       annualPrice: 79,
-      tag: 'For Scale',
-      description: 'For multi-crew operations that need everything',
+      tagKey: 'pricing.scaleTag',
+      descriptionKey: 'pricing.scaleDescription',
       features: [
-        { text: 'Unlimited users', included: true },
-        { text: 'Advanced reporting', included: true },
-        { text: 'API access', included: true },
-        { text: 'Custom pipeline stages', included: true },
-        { text: 'Dedicated account manager', included: true },
-        { text: 'Phone support', included: true },
-        { text: 'White-label options', included: true },
-        { text: 'Priority onboarding', included: true },
+        { textKey: 'pricing.feature.usersUnlimited', included: true },
+        { textKey: 'pricing.feature.reporting', included: true },
+        { textKey: 'pricing.feature.apiAccess', included: true },
+        { textKey: 'pricing.feature.pipelineCustom', included: true },
+        { textKey: 'pricing.feature.accountManager', included: true },
+        { textKey: 'pricing.feature.phoneSupport', included: true },
+        { textKey: 'pricing.feature.whiteLabel', included: true },
+        { textKey: 'pricing.feature.onboarding', included: true },
       ],
-      cta: 'Start your free 14-day trial',
+      ctaKey: 'pricing.scaleCta',
       href: '/setup',
       highlighted: false,
     },
   ];
 
-  const comparisonCategories = [
+  const comparisonCategories: Array<{
+    nameKey: TranslationKey;
+    features: Array<{ textKey: TranslationKey; starter: boolean; pro: boolean; enterprise: boolean }>;
+  }> = [
     {
-      name: 'Core CRM',
+      nameKey: 'pricing.categoryCoreCrm',
       features: [
-        { text: 'Contacts management', starter: true, pro: true, enterprise: true },
-        { text: 'Pipeline visualization', starter: true, pro: true, enterprise: true },
-        { text: 'Custom pipeline stages', starter: false, pro: false, enterprise: true },
-        { text: 'Lead assignment rules', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.contactsMgmt', starter: true, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.pipelineViz', starter: true, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.pipelineCustom', starter: false, pro: false, enterprise: true },
+        { textKey: 'pricing.feature.assignmentRules', starter: false, pro: true, enterprise: true },
       ],
     },
     {
-      name: 'Estimates & Invoicing',
+      nameKey: 'pricing.categoryEstimatesInvoicing',
       features: [
-        { text: 'Create estimates', starter: true, pro: true, enterprise: true },
-        { text: 'Unlimited estimates', starter: false, pro: true, enterprise: true },
-        { text: 'Invoice generation', starter: false, pro: true, enterprise: true },
-        { text: 'Recurring invoices', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.estimatesCreate', starter: true, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.estimatesUnlimitedTable', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.invoiceGeneration', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.invoicesRecurring', starter: false, pro: true, enterprise: true },
       ],
     },
     {
-      name: 'Automation',
+      nameKey: 'pricing.categoryAutomation',
       features: [
-        { text: 'Basic automations', starter: false, pro: true, enterprise: true },
-        { text: 'Advanced workflows', starter: false, pro: true, enterprise: true },
-        { text: 'Email templates', starter: false, pro: true, enterprise: true },
-        { text: 'Lead capture forms', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.automationsBasic', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.workflowsAdvanced', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.emailTemplatesTable', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.leadCaptureForms', starter: false, pro: true, enterprise: true },
       ],
     },
     {
-      name: 'Support & Access',
+      nameKey: 'pricing.categorySupportAccess',
       features: [
-        { text: 'Email support', starter: true, pro: true, enterprise: true },
-        { text: 'Priority support', starter: false, pro: true, enterprise: true },
-        { text: 'Phone support', starter: false, pro: false, enterprise: true },
-        { text: 'Dedicated account manager', starter: false, pro: false, enterprise: true },
+        { textKey: 'pricing.feature.emailSupportTable', starter: true, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.prioritySupport', starter: false, pro: true, enterprise: true },
+        { textKey: 'pricing.feature.phoneSupport', starter: false, pro: false, enterprise: true },
+        { textKey: 'pricing.feature.accountManager', starter: false, pro: false, enterprise: true },
       ],
     },
   ];
 
-  const faqs = [
+  const faqs: Array<{ questionKey: TranslationKey; answerKey: TranslationKey }> = [
     {
-      question: 'Is there really a free plan?',
-      answer:
-        'Yes, Starter is free forever. No credit card, no trial expiry. You can use it indefinitely to manage your contacts, estimates, and basic workflows.',
+      questionKey: 'pricing.faq1Question',
+      answerKey: 'pricing.faq1Answer',
     },
     {
-      question: 'Can I switch plans anytime?',
-      answer:
-        'Yes, upgrade or downgrade anytime. No contracts. If you upgrade, we\'ll charge you the pro-rated difference. If you downgrade, you\'ll receive a credit toward your next billing cycle.',
+      questionKey: 'pricing.faq2Question',
+      answerKey: 'pricing.faq2Answer',
     },
     {
-      question: 'Do you support Quebec French?',
-      answer:
-        'Yes, full bilingual EN/FR support across the entire platform. All features, automations, templates, and support are available in both English and French.',
+      questionKey: 'pricing.faq3Question',
+      answerKey: 'pricing.faq3Answer',
     },
     {
-      question: 'What makes GrowthOS different from Jobber?',
-      answer:
-        'GrowthOS is built specifically for Canadian businesses with automatic provincial tax calculation, French language support, and growth-focused features like Autopilot automations. Jobber is great for scheduling, but scheduling doesn\'t grow your business.',
+      questionKey: 'pricing.faq4Question',
+      answerKey: 'pricing.faq4Answer',
     },
     {
-      question: 'Can I import my existing contacts?',
-      answer:
-        'Absolutely. We support bulk imports from CSV, Excel, and most other CRM systems. Our onboarding team can help you migrate your data — no data loss, no hassle.',
+      questionKey: 'pricing.faq5Question',
+      answerKey: 'pricing.faq5Answer',
     },
     {
-      question: 'Is my data secure?',
-      answer:
-        'Your data is protected with enterprise-grade encryption and GDPR compliance. We perform regular security audits and maintain automatic daily backups. You own your data and can export it anytime.',
+      questionKey: 'pricing.faq6Question',
+      answerKey: 'pricing.faq6Answer',
     },
   ];
 
@@ -164,10 +174,10 @@ export default function PricingPage() {
             <span className="text-xs font-semibold text-[#27AE60] uppercase tracking-wider">Pricing</span>
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-[#2C3E50] tracking-tight mb-6">
-            Simple, Transparent Pricing
+            {t('pricing.pageTitle')}
           </h1>
           <p className="text-xl sm:text-2xl text-gray-600 max-w-2xl mx-auto mb-8">
-            No contracts. No hidden fees. Cancel anytime.
+            {t('pricing.pageSubtitle')}
           </p>
 
           {/* Billing Toggle */}
@@ -180,7 +190,7 @@ export default function PricingPage() {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              Monthly
+              {t('pricing.monthly')}
             </button>
             <button
               onClick={() => setIsAnnual(true)}
@@ -190,11 +200,11 @@ export default function PricingPage() {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              Annual
+              {t('pricing.annual')}
             </button>
             {isAnnual && (
               <span className="ml-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold">
-                Save 20%
+                {t('pricing.save20')}
               </span>
             )}
           </div>
@@ -209,7 +219,7 @@ export default function PricingPage() {
               const displayPrice = currentPriceNum(plan.price, plan.annualPrice);
               return (
                 <div
-                  key={plan.name}
+                  key={t(plan.nameKey)}
                   className={`relative rounded-2xl transition-all duration-300 ${
                     plan.highlighted
                       ? 'bg-white border-2 border-[#27AE60] shadow-2xl shadow-[#27AE60]/15 md:scale-105'
@@ -218,15 +228,15 @@ export default function PricingPage() {
                 >
                   {plan.highlighted && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#27AE60] text-white text-xs font-bold rounded-full shadow-lg">
-                      {plan.tag}
+                      {t(plan.tagKey)}
                     </div>
                   )}
 
                   <div className="p-8 sm:p-10 flex flex-col h-full">
                     {/* Header */}
                     <div className="mb-8">
-                      <h3 className="text-2xl font-bold text-[#2C3E50] mb-2">{plan.name}</h3>
-                      <p className="text-gray-600 text-sm mb-6">{plan.description}</p>
+                      <h3 className="text-2xl font-bold text-[#2C3E50] mb-2">{t(plan.nameKey)}</h3>
+                      <p className="text-gray-600 text-sm mb-6">{t(plan.descriptionKey)}</p>
 
                       {/* Price */}
                       {plan.price === 0 ? (
@@ -255,7 +265,7 @@ export default function PricingPage() {
                           : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                       }`}
                     >
-                      {plan.cta}
+                      {t(plan.ctaKey)}
                       <ArrowRight className="w-4 h-4" />
                     </Link>
 
@@ -269,7 +279,7 @@ export default function PricingPage() {
                             <Minus className="w-5 h-5 text-gray-300 shrink-0 mt-0.5" />
                           )}
                           <span className={`text-sm ${feature.included ? 'text-gray-700' : 'text-gray-400'}`}>
-                            {feature.text}
+                            {t(feature.textKey)}
                           </span>
                         </li>
                       ))}
@@ -284,7 +294,7 @@ export default function PricingPage() {
           <div className="text-center mt-12 sm:mt-16">
             <p className="text-sm text-gray-600">
               <span className="inline-flex items-center gap-1">
-                No credit card required <span className="text-gray-400">·</span> Cancel anytime <span className="text-gray-400">·</span> All prices in CAD
+                {t('pricing.noCardRequired')} <span className="text-gray-400">·</span> {t('pricing.cancelAnytime')} <span className="text-gray-400">·</span> {t('pricing.pricesInCad')}
               </span>
             </p>
           </div>
@@ -295,26 +305,26 @@ export default function PricingPage() {
       <section className="py-16 sm:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2C3E50] mb-4">Still comparing? Here's the honest truth.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#2C3E50] mb-4">{t('pricing.comparisonHeading')}</h2>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             {/* Competitor Cards */}
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">ServiceTitan</h3>
-              <p className="text-gray-700 text-sm">$300+/mo per tech, plus implementation fees</p>
+              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">{t('pricing.serviceTitan')}</h3>
+              <p className="text-gray-700 text-sm">{t('pricing.serviceTitanPrice')}</p>
             </div>
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">Jobber</h3>
-              <p className="text-gray-700 text-sm">$69+/mo — great for scheduling, but scheduling doesn't grow your business</p>
+              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">{t('pricing.jobber')}</h3>
+              <p className="text-gray-700 text-sm">{t('pricing.jobberPrice')}</p>
             </div>
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">Housecall Pro</h3>
-              <p className="text-gray-700 text-sm">$65+/mo — built for the US. Your Canadian taxes need manual fixes.</p>
+              <h3 className="font-bold text-lg text-[#2C3E50] mb-2">{t('pricing.housecall')}</h3>
+              <p className="text-gray-700 text-sm">{t('pricing.housecallPrice')}</p>
             </div>
             <div className="bg-emerald-50 rounded-xl p-6 border-2 border-[#27AE60]">
-              <h3 className="font-bold text-lg text-[#27AE60] mb-2">GrowthOS</h3>
-              <p className="text-gray-700 text-sm">$49/mo for everything. Built for Canadian trades.</p>
+              <h3 className="font-bold text-lg text-[#27AE60] mb-2">{t('pricing.growthOS')}</h3>
+              <p className="text-gray-700 text-sm">{t('pricing.growthOSPrice')}</p>
             </div>
           </div>
         </div>
@@ -324,8 +334,8 @@ export default function PricingPage() {
       <section className="py-16 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-[#2C3E50] mb-4">Feature Comparison</h2>
-            <p className="text-lg text-gray-600">See exactly what's included in each plan</p>
+            <h2 className="text-4xl sm:text-5xl font-bold text-[#2C3E50] mb-4">{t('pricing.featureComparison')}</h2>
+            <p className="text-lg text-gray-600">{t('pricing.featureComparisonSubtitle')}</p>
           </div>
 
           {/* Mobile: Accordion */}
@@ -336,14 +346,14 @@ export default function PricingPage() {
                   onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
                   className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
                 >
-                  <h3 className="font-semibold text-[#2C3E50]">{category.name}</h3>
+                  <h3 className="font-semibold text-[#2C3E50]">{t(category.nameKey)}</h3>
                   <ChevronDown className={`w-5 h-5 text-gray-600 transition-transform ${expandedFaq === idx ? 'rotate-180' : ''}`} />
                 </button>
                 {expandedFaq === idx && (
                   <div className="px-6 py-4 border-t border-gray-200 space-y-3">
                     {category.features.map((f, fidx) => (
                       <div key={fidx} className="flex justify-between items-center text-sm">
-                        <span className="text-gray-700">{f.text}</span>
+                        <span className="text-gray-700">{t(f.textKey)}</span>
                         <div className="flex gap-4">
                           <span className="w-12 text-center text-[#27AE60] font-semibold">
                             {f.starter ? '✓' : '–'}
@@ -368,24 +378,24 @@ export default function PricingPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-4 px-6 font-semibold text-[#2C3E50]">Feature</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-700">Starter</th>
-                  <th className="text-center py-4 px-6 font-semibold text-[#27AE60] bg-emerald-50">Growth</th>
-                  <th className="text-center py-4 px-6 font-semibold text-gray-700">Scale</th>
+                  <th className="text-left py-4 px-6 font-semibold text-[#2C3E50]">{t('pricing.featureHeaderFeature')}</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-700">{t('pricing.featureHeaderStarter')}</th>
+                  <th className="text-center py-4 px-6 font-semibold text-[#27AE60] bg-emerald-50">{t('pricing.featureHeaderGrowth')}</th>
+                  <th className="text-center py-4 px-6 font-semibold text-gray-700">{t('pricing.featureHeaderScale')}</th>
                 </tr>
               </thead>
               <tbody>
                 {comparisonCategories.map((category, cidx) => (
                   <tr key={cidx} className="border-b border-gray-200 bg-gray-50">
                     <td colSpan={4} className="py-3 px-6 font-semibold text-[#2C3E50] text-sm">
-                      {category.name}
+                      {t(category.nameKey)}
                     </td>
                   </tr>
                 ))}
                 {comparisonCategories.map((category) =>
                   category.features.map((feature, fidx) => (
-                    <tr key={`${category.name}-${fidx}`} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-4 px-6 text-sm font-medium text-gray-700">{feature.text}</td>
+                    <tr key={`${t(category.nameKey)}-${fidx}`} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-4 px-6 text-sm font-medium text-gray-700">{t(feature.textKey)}</td>
                       <td className="py-4 px-6 text-center">
                         {feature.starter ? (
                           <Check className="w-5 h-5 text-[#27AE60] mx-auto" />
@@ -420,8 +430,8 @@ export default function PricingPage() {
       <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-slate-50">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-[#2C3E50] mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about GrowthOS pricing</p>
+            <h2 className="text-4xl sm:text-5xl font-bold text-[#2C3E50] mb-4">{t('pricing.faqTitle')}</h2>
+            <p className="text-lg text-gray-600">{t('pricing.faqSubtitle')}</p>
           </div>
 
           <div className="space-y-4">
@@ -434,14 +444,14 @@ export default function PricingPage() {
                   onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
                   className="w-full px-8 py-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
                 >
-                  <h3 className="text-lg font-semibold text-[#2C3E50] text-left">{faq.question}</h3>
+                  <h3 className="text-lg font-semibold text-[#2C3E50] text-left">{t(faq.questionKey)}</h3>
                   <ChevronDown
                     className={`w-6 h-6 text-[#27AE60] shrink-0 transition-transform ${expandedFaq === idx ? 'rotate-180' : ''}`}
                   />
                 </button>
                 {expandedFaq === idx && (
                   <div className="px-8 py-6 border-t border-gray-100 bg-gray-50">
-                    <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                    <p className="text-gray-700 leading-relaxed">{t(faq.answerKey)}</p>
                   </div>
                 )}
               </div>
@@ -454,18 +464,18 @@ export default function PricingPage() {
       <section className="py-16 sm:py-24 bg-gradient-to-r from-[#2C3E50] via-slate-700 to-[#2C3E50] relative overflow-hidden">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%)' }} />
         <div className="relative max-w-3xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Ready to grow your business?</h2>
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">{t('pricing.ctaHeading')}</h2>
           <p className="text-xl text-blue-100 mb-10 max-w-xl mx-auto">
-            Join 500+ Canadian service businesses already using GrowthOS. Start your free trial today — no credit card required.
+            {t('pricing.ctaDescription')}
           </p>
           <Link
             href="/login?tab=signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] text-white text-lg font-semibold rounded-full hover:bg-[#229954] transition-all shadow-xl shadow-green-600/30 hover:shadow-green-700/40 hover:-translate-y-0.5"
           >
-            Start Free Trial
+            {t('pricing.ctaButton')}
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <p className="mt-8 text-sm text-blue-200">No credit card required · Setup in 2 minutes · Cancel anytime</p>
+          <p className="mt-8 text-sm text-blue-200">{t('pricing.ctaFooter')}</p>
         </div>
       </section>
     </MarketingLayout>

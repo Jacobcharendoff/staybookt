@@ -255,25 +255,25 @@ export function Footer() {
     { label: t('nav.automations'), href: '/automations' },
     { label: t('marketing.pricing'), href: '/pricing' },
     { label: t('nav.whyGrowthOS'), href: '/switch' },
-    { label: 'vs ServiceTitan', href: '/vs-servicetitan' },
-    { label: 'vs Jobber', href: '/vs-jobber' },
-    { label: 'vs Housecall Pro', href: '/vs-housecall-pro' },
+    { label: t('footer.vsServiceTitan'), href: '/vs-servicetitan' },
+    { label: t('footer.vsJobber'), href: '/vs-jobber' },
+    { label: t('footer.vsHousecallPro'), href: '/vs-housecall-pro' },
   ];
 
   const industryLinks = [
-    { label: 'Plumbing', href: '/plumbing' },
-    { label: 'HVAC', href: '/hvac' },
-    { label: 'Electrical', href: '/electrical' },
-    { label: 'Landscaping', href: '/landscaping' },
-    { label: 'Roofing', href: '/roofing' },
-    { label: 'Cleaning', href: '/cleaning' },
+    { label: t('industry.plumbing'), href: '/plumbing' },
+    { label: t('industry.hvac'), href: '/hvac' },
+    { label: t('industry.electrical'), href: '/electrical' },
+    { label: t('industry.landscaping'), href: '/landscaping' },
+    { label: t('industry.roofing'), href: '/roofing' },
+    { label: t('industry.cleaning'), href: '/cleaning' },
   ];
 
   const companyLinks = [
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Terms of Service', href: '/terms' },
+    { label: t('footer.about'), href: '/about' },
+    { label: t('footer.contact'), href: '/contact' },
+    { label: t('footer.privacyPolicy'), href: '/privacy' },
+    { label: t('footer.termsOfService'), href: '/terms' },
   ];
 
   return (
@@ -295,7 +295,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-white mb-4">Product</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.product')}</h4>
             <ul className="space-y-2.5">
               {productLinks.map((link) => (
                 <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
@@ -304,7 +304,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-white mb-4">Built For</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.builtFor')}</h4>
             <ul className="space-y-2.5">
               {industryLinks.map((link) => (
                 <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
@@ -313,7 +313,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.company')}</h4>
             <ul className="space-y-2.5">
               {companyLinks.map((link) => (
                 <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
@@ -342,27 +342,27 @@ export function CTASection() {
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%)' }} />
       <div className="relative max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-          Ready to stop leaving money on the table?
+          {t('cta.mainHeading')}
         </h2>
         <p className="text-lg sm:text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-          Join 500+ Canadian service businesses already using GrowthOS. Start your free trial today — no credit card required.
+          {t('cta.description')}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/login?tab=signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-full transition-all shadow-xl shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5"
           >
-            Start Free Trial
+            {t('cta.startFreeTrial')}
             <ArrowRight className="w-5 h-5" />
           </Link>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white text-base font-semibold rounded-full hover:bg-white/20 transition-all border border-white/20"
           >
-            Schedule Demo
+            {t('cta.scheduleDemo')}
           </Link>
         </div>
-        <p className="mt-6 text-sm text-blue-200">No credit card required · Setup in 2 minutes · Cancel anytime</p>
+        <p className="mt-6 text-sm text-blue-200">{t('cta.footer')}</p>
       </div>
     </section>
   );

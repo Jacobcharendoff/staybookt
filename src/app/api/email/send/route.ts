@@ -9,6 +9,8 @@ import {
 } from '@/lib/api-helpers';
 import { getResend } from '@/lib/resend';
 
+const fromDomain = process.env.EMAIL_FROM_DOMAIN || 'resend.dev';
+
 const sendEmailSchema = z.object({
   to: z.string().email(),
   subject: z.string().min(1),
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     const companyName = orgSettings?.company_name || 'GrowthOS';
-    const fromAddress = from || `${companyName} <notifications@growthos.app>`;
+    const fromAddress = from || `notifications@${fromDomain}`;
 
     // Try to send via Resend
     const resend = getResend();

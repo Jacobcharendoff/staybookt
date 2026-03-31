@@ -1,3 +1,5 @@
+const fromDomain = process.env.EMAIL_FROM_DOMAIN || 'resend.dev';
+
 export interface EmailTemplate {
   subject: string;
   html: string;
