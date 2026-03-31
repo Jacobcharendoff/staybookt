@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Zap } from 'lucide-react';
+import { Zap, TrendingUp, Wrench, Flame, Plug, TreePine, Home, Sparkles, Star, Shield, CheckCircle2, MapPin } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
 import { useLanguage } from '@/components/LanguageProvider';
 
@@ -261,10 +261,115 @@ function LoginPageInner() {
     setResetEmail('');
   };
 
+  const personaCards = [
+    { initials: 'MR', name: 'Mike Reynolds', trade: 'Plumbing', city: 'Toronto, ON', stat: '+47% booked jobs', gradient: 'from-blue-500 to-blue-600' },
+    { initials: 'JL', name: 'Julie Lavoie', trade: 'HVAC', city: 'Montreal, QC', stat: '+$12K monthly revenue', gradient: 'from-orange-500 to-red-500' },
+    { initials: 'SK', name: 'Steve Kim', trade: 'Electrical', city: 'Vancouver, BC', stat: '2x faster estimates', gradient: 'from-amber-500 to-yellow-600' },
+    { initials: 'PP', name: 'Priya Patel', trade: 'Landscaping', city: 'Calgary, AB', stat: '340% ROI in 90 days', gradient: 'from-emerald-500 to-green-600' },
+    { initials: 'TD', name: 'Tom Devries', trade: 'Roofing', city: 'Ottawa, ON', stat: '0 missed leads', gradient: 'from-slate-500 to-slate-700' },
+    { initials: 'AR', name: 'Anna Ramos', trade: 'Cleaning', city: 'Winnipeg, MB', stat: '+89 five-star reviews', gradient: 'from-purple-500 to-violet-600' },
+  ];
+
+  const cardPositions = [
+    { top: '8%', left: '3%', rotate: '-6deg', delay: '0s' },
+    { top: '6%', right: '3%', rotate: '5deg', delay: '-1.5s' },
+    { top: '40%', left: '1%', rotate: '-3deg', delay: '-3s' },
+    { top: '38%', right: '1%', rotate: '4deg', delay: '-4.5s' },
+    { bottom: '12%', left: '4%', rotate: '-5deg', delay: '-2s' },
+    { bottom: '10%', right: '3%', rotate: '3deg', delay: '-3.5s' },
+  ];
+
   return (
     <div className="space-y-8">
+      {/* Floating background elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+        {/* Subtle grid */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+
+        {/* Gradient orbs */}
+        <div className="hidden sm:block absolute top-16 right-8 w-[400px] h-[400px] bg-blue-100/30 rounded-full blur-3xl" />
+        <div className="hidden sm:block absolute bottom-16 left-8 w-[350px] h-[350px] bg-emerald-100/25 rounded-full blur-3xl" />
+        <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-50/20 rounded-full blur-3xl" />
+
+        {/* Floating persona cards — desktop only */}
+        <div className="hidden xl:block">
+          {personaCards.map((card, i) => {
+            const pos = cardPositions[i];
+            const { rotate, delay, ...position } = pos;
+            return (
+              <div
+                key={card.initials}
+                className="absolute bg-white/80 backdrop-blur-sm rounded-2xl p-3.5 shadow-lg shadow-black/[0.04] border border-gray-100/80 w-52"
+                style={{
+                  ...position,
+                  transform: `rotate(${rotate})`,
+                  animation: `subtleFloat ${6 + i * 0.8}s ease-in-out infinite`,
+                  animationDelay: delay,
+                  opacity: 0.85,
+                }}
+              >
+                <div className="flex items-center gap-2.5 mb-2">
+                  <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white text-[10px] font-bold shadow-md`}>
+                    {card.initials}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-gray-900 leading-tight">{card.name}</p>
+                    <p className="text-[10px] text-gray-500">{card.trade} · {card.city}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-50 rounded-lg">
+                  <TrendingUp className="w-3 h-3 text-emerald-600" />
+                  <span className="text-[10px] font-semibold text-emerald-700">{card.stat}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Tablet: smaller floating cards, fewer of them */}
+        <div className="hidden md:block xl:hidden">
+          {personaCards.slice(0, 4).map((card, i) => {
+            const tabletPositions = [
+              { top: '10%', left: '2%', rotate: '-5deg', delay: '0s' },
+              { top: '8%', right: '2%', rotate: '4deg', delay: '-2s' },
+              { bottom: '14%', left: '3%', rotate: '-4deg', delay: '-1s' },
+              { bottom: '12%', right: '2%', rotate: '3deg', delay: '-3s' },
+            ];
+            const pos = tabletPositions[i];
+            const { rotate, delay, ...position } = pos;
+            return (
+              <div
+                key={card.initials}
+                className="absolute bg-white/70 backdrop-blur-sm rounded-xl p-2.5 shadow-md border border-gray-100/60 w-44"
+                style={{
+                  ...position,
+                  transform: `rotate(${rotate})`,
+                  animation: `subtleFloat ${7 + i}s ease-in-out infinite`,
+                  animationDelay: delay,
+                  opacity: 0.7,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white text-[9px] font-bold`}>
+                    {card.initials}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-gray-900">{card.name}</p>
+                    <p className="text-[9px] text-gray-500">{card.trade}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 rounded">
+                  <TrendingUp className="w-2.5 h-2.5 text-emerald-600" />
+                  <span className="text-[9px] font-semibold text-emerald-700">{card.stat}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Branding */}
-      <div className="text-center">
+      <div className="text-center relative" style={{ zIndex: 10 }}>
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="bg-[#2C3E50] p-2 rounded-lg">
             <Zap className="w-6 h-6 text-[#27AE60]" strokeWidth={3} />
@@ -277,10 +382,30 @@ function LoginPageInner() {
         <p className="text-sm text-slate-600 mt-2">
           The operating system for service business growth
         </p>
+
+        {/* Social proof badges */}
+        <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            ))}
+            <span className="text-xs text-slate-500 ml-1">4.9/5</span>
+          </div>
+          <span className="text-slate-300">·</span>
+          <div className="flex items-center gap-1.5 text-xs text-slate-500">
+            <Shield className="w-3.5 h-3.5 text-emerald-500" />
+            14-day free trial
+          </div>
+          <span className="text-slate-300 hidden sm:inline">·</span>
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500">
+            <MapPin className="w-3.5 h-3.5 text-red-400" />
+            Built in Canada
+          </div>
+        </div>
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+      <div className="relative bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden" style={{ zIndex: 10 }}>
         {view === 'form' && (
           <>
             {/* Tabs */}
@@ -636,6 +761,27 @@ function LoginPageInner() {
             </div>
           </>
         )}
+      </div>
+
+      {/* Mobile testimonial strip — horizontal scroll */}
+      <div className="md:hidden -mx-4 px-4 flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide" style={{ zIndex: 10 }}>
+        {personaCards.slice(0, 4).map((card) => (
+          <div key={card.initials} className="flex-shrink-0 bg-white/90 backdrop-blur-sm rounded-xl p-2.5 shadow-md border border-gray-100 w-44">
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${card.gradient} flex items-center justify-center text-white text-[9px] font-bold`}>
+                {card.initials}
+              </div>
+              <div>
+                <p className="text-[10px] font-semibold text-gray-900">{card.name}</p>
+                <p className="text-[9px] text-gray-500">{card.trade} · {card.city}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 rounded">
+              <TrendingUp className="w-2.5 h-2.5 text-emerald-600" />
+              <span className="text-[9px] font-semibold text-emerald-700">{card.stat}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
