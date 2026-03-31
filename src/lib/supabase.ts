@@ -1,24 +1,26 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-// Client-side Supabase client (lazy init to avoid build errors when env vars missing)
-let _supabase: SupabaseClient | null = null;
+// Browser-side Supabase client using @supabase/ssr — stores session in cookies
+// so the Next.js middleware can read it. Use this for all client-side auth operations.
+let _supabaseBrowser: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient {
-  if (!_supabase) {
+  if (!_supabaseBrowser) {
     if (!supabaseUrl || !supabaseAnonKey) {
       throw new Error('Supabase credentials not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.');
     }
-    _supabase = createClient(supabaseUrl, supabaseAnonKey);
+    _supabaseBrowser = createBrowserClient(supabaseUrl, supabaseAnonKey);
   }
-  return _supabase;
+  return _supabaseBrowser;
 }
 
 // Legacy export - creates client only when env vars are available
 export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createBrowserClient(supabaseUrl, supabaseAnonKey)
   : (null as unknown as SupabaseClient);
 
 // Server-side Supabase client with service role for admin operations
