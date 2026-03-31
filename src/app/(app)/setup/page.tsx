@@ -355,7 +355,7 @@ export default function SetupPage() {
                   Your Priorities
                 </h1>
                 <p className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  What should GrowthOS tackle first for your business?
+                  Pick what matters most right now. You can always change this later.
                 </p>
               </div>
 
@@ -469,10 +469,10 @@ export default function SetupPage() {
                       isDark ? 'text-white' : 'text-gray-900'
                     }`}
                   >
-                    You're All Set!
+                    You're all set.
                   </h1>
                   <p className={`text-2xl font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Welcome, {companyName}!
+                    Let's grow {companyName}.
                   </p>
                 </div>
 

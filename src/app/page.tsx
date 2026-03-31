@@ -277,7 +277,7 @@ function Hero() {
 
           {/* Subheadline */}
           <p className="hero-reveal hero-reveal-delay-3 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            GrowthOS responds to new leads in 60 seconds, books jobs while you're on-site, and sends invoices with the right tax — automatically.
+            GrowthOS texts your leads back in under a minute, books the job while you're still on-site, and handles the invoice with the right provincial tax. You just do the work.
           </p>
 
           {/* Social Proof — moved above CTA */}

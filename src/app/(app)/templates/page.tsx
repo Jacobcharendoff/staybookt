@@ -19,36 +19,31 @@ const emailTemplates: EmailTemplate[] = [
     id: '1',
     name: 'New Lead Welcome',
     category: 'Follow-Up',
-    description: 'Welcome email for newly captured leads',
+    description: 'First reply when a new lead comes in',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Welcome to {{companyName}} - We\'re Excited to Help',
+    subject: 'Got your request - {{companyName}}',
     body: `Hi {{firstName}},
 
-Thank you for reaching out to {{companyName}}! We're thrilled to have the opportunity to help with your {{serviceType}} needs. Your inquiry is important to us, and we're committed to providing you with top-quality service and honest, transparent communication.
+Thanks for reaching out. We got your request for {{serviceType}} and someone from our team will give you a call shortly to go over everything.
 
-One of our team members will review your request shortly and reach out within 24 business hours with more information and to discuss the best solution for your home or business. In the meantime, if you have any urgent questions, please don't hesitate to call us at {{companyPhone}}.
+If it's urgent, call us directly at {{companyPhone}}.
 
-We look forward to working with you!
-
-Best regards,
-{{companyName}} Team`,
+Talk soon,
+{{companyName}}`,
   },
   {
     id: '2',
     name: 'Estimate Follow-Up',
     category: 'Estimates',
-    description: 'Send estimate reminder and answer questions',
+    description: 'Check in after sending an estimate',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Your {{companyName}} Estimate - Let\'s Answer Your Questions',
+    subject: 'Checking in on your estimate',
     body: `Hi {{firstName}},
 
-I hope you had a chance to review the estimate we sent over for your {{serviceType}} project. We took great care to provide accurate pricing and timeline so you know exactly what to expect.
+Just wanted to check in on the estimate we sent for the {{serviceType}} work. Did you get a chance to look it over?
 
-I wanted to follow up and let you know we're here to answer any questions you might have about the estimate, the scope of work, or anything else. Many clients appreciate the opportunity to discuss details before moving forward, so please don't hesitate to reach out.
+If anything doesn't make sense or you want to talk through the pricing, give me a call at {{companyPhone}}. Happy to walk through it.
 
-Feel free to call me directly at {{companyPhone}} or reply to this email. I'm here to help!
-
-Looking forward to working with you,
 {{assignedTo}}
 {{companyName}}`,
   },
@@ -56,173 +51,141 @@ Looking forward to working with you,
     id: '3',
     name: 'Estimate Reminder',
     category: 'Estimates',
-    description: 'Gentle reminder about pending estimate',
+    description: 'Second follow-up on a pending estimate',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Quick Reminder: Your {{companyName}} Estimate',
+    subject: 'Still interested in the {{serviceType}} work?',
     body: `Hi {{firstName}},
 
-I wanted to reach out with a quick reminder about the estimate we sent you last week for your {{serviceType}} project. I know decisions like these can take time, and we wanted to make sure you had everything you need.
+Following up on the estimate from last week for your {{serviceType}} project. No pressure at all, just want to make sure it didn't get buried in your inbox.
 
-Our team is ready to get started whenever you're ready. We pride ourselves on reliability, quality workmanship, and competitive pricing. If you'd like to move forward or have any lingering questions, I'm just an email or phone call away.
+We can get you on the schedule pretty quick if you want to move forward. Call or text me at {{companyPhone}} whenever.
 
-Looking forward to serving you!
-
-Best regards,
 {{assignedTo}}
-{{companyName}}
-{{companyPhone}}`,
+{{companyName}}`,
   },
   {
     id: '4',
     name: 'Job Booked Confirmation',
     category: 'Follow-Up',
-    description: 'Confirm job is scheduled and set expectations',
+    description: 'Confirm a scheduled appointment',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Your {{serviceType}} Appointment is Confirmed - {{appointmentDate}}',
+    subject: 'You\'re booked - {{serviceType}} on {{appointmentDate}}',
     body: `Hi {{firstName}},
 
-Great news! Your appointment with {{companyName}} has been confirmed. We're excited to get started on your {{serviceType}} project.
+Your appointment is confirmed. Here are the details:
 
-Here are the details:
-Scheduled Date: {{appointmentDate}}
-Estimated Time Window: {{timeWindow}}
+Date: {{appointmentDate}}
+Time: {{timeWindow}}
 Service: {{serviceType}}
-Assigned Team: {{assignedTo}}
+Tech: {{assignedTo}}
 
-Please make sure someone is home or available to let our team inside. We'll arrive on time and in a professional manner, ready to complete the work efficiently. If you need to reschedule for any reason, just give us a call at {{companyPhone}} as soon as possible.
+Just make sure someone's available to let us in. If something comes up and you need to reschedule, call us at {{companyPhone}} as soon as you can so we can get someone else into that slot.
 
-We're looking forward to exceeding your expectations!
-
-Best regards,
-{{companyName}} Team`,
+See you then,
+{{companyName}}`,
   },
   {
     id: '5',
     name: 'Review Request',
     category: 'Reviews',
-    description: 'Request customer feedback after job completion',
+    description: 'Ask for a Google review after a completed job',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'How Did We Do? We\'d Love Your Feedback',
+    subject: 'Quick favour?',
     body: `Hi {{firstName}},
 
-Thank you for choosing {{companyName}} for your {{serviceType}} project! We truly appreciate your business and wanted to reach out to see how everything went.
+Hope the {{serviceType}} work is holding up well. Quick favour: if you were happy with how things went, would you mind leaving us a Google review? Takes about 30 seconds and it really helps other folks find us.
 
-Your feedback is incredibly important to us and helps us continue delivering excellent service to all our customers. If you have a few moments, we'd love to hear about your experience. You can leave a review on Google, Facebook, or your preferred platform.
+If anything isn't right, just call me at {{companyPhone}} and we'll sort it out.
 
-We're committed to building lasting relationships with our customers, and your honest feedback helps us improve every single day. If there's anything we can do better or if you have any concerns, please reach out directly so we can make it right.
-
-Thank you again for trusting us with your home!
-
-Warm regards,
-{{companyName}} Team`,
+Thanks,
+{{companyName}}`,
   },
   {
     id: '6',
     name: 'Invoice Sent',
     category: 'Follow-Up',
-    description: 'Invoice notification after work completion',
+    description: 'Send invoice after completing work',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Invoice for Your {{serviceType}} Service - #{{invoiceNumber}}',
+    subject: 'Invoice #{{invoiceNumber}} - {{serviceType}}',
     body: `Hi {{firstName}},
 
-Your {{serviceType}} service has been completed! We've attached an invoice for your records. Here's what you need to know:
+Work's done. Here's the invoice:
 
-Invoice Number: {{invoiceNumber}}
-Total Amount: {{invoiceAmount}}
-Due Date: {{dueDate}}
+Invoice: #{{invoiceNumber}}
+Amount: {{invoiceAmount}}
+Due: {{dueDate}}
 
-We accept payment via check, credit card, or direct transfer. Please let us know if you have any questions about the invoice or the work completed. We stand behind all our work with our satisfaction guarantee.
+We take cheque, credit card, or e-transfer. Let us know if you have any questions about the bill.
 
-Thank you for choosing {{companyName}}. We'd love to work with you again in the future!
-
-Best regards,
-{{companyName}} Team
+Thanks,
+{{companyName}}
 {{companyPhone}}`,
   },
   {
     id: '7',
     name: 'Payment Reminder',
     category: 'Follow-Up',
-    description: 'Friendly payment reminder',
+    description: 'Friendly nudge on an outstanding invoice',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Payment Reminder - Invoice #{{invoiceNumber}}',
+    subject: 'Reminder: Invoice #{{invoiceNumber}}',
     body: `Hi {{firstName}},
 
-This is a friendly reminder that payment for invoice #{{invoiceNumber}} is due on {{dueDate}}. We know life gets busy, so we wanted to make sure this didn't slip through the cracks!
+Just a heads up that invoice #{{invoiceNumber}} for {{invoiceAmount}} is coming due on {{dueDate}}. Wanted to make sure it didn't slip through.
 
-Outstanding Balance: {{invoiceAmount}}
+If you need to work out a different payment arrangement, give us a call at {{companyPhone}}.
 
-You can pay quickly and securely online, or feel free to call us at {{companyPhone}} if you need to arrange alternative payment terms. We appreciate your prompt attention to this.
-
-Thank you for your business!
-
-Best regards,
-{{companyName}} Team`,
+Thanks,
+{{companyName}}`,
   },
   {
     id: '8',
     name: 'Seasonal Maintenance',
     category: 'Reactivation',
-    description: 'Promote seasonal maintenance services',
+    description: 'Remind past customers about seasonal service',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Don\'t Miss Your {{season}} {{serviceType}} Maintenance',
+    subject: '{{season}} is coming - time for {{serviceType}} maintenance',
     body: `Hi {{firstName}},
 
-As we head into {{season}}, we wanted to reach out and remind you about the importance of seasonal {{serviceType}} maintenance. Many homeowners overlook this until an emergency happens – and we'd love to help you avoid that!
+{{season}} is around the corner. Good time to get your {{serviceType}} checked before the weather turns and everyone's calling at once.
 
-Regular maintenance helps:
-- Prevent costly emergency repairs
-- Extend the life of your systems
-- Improve energy efficiency
-- Keep your warranty valid
+Catching small issues now saves you from a bigger bill later, and keeps everything running right when you actually need it.
 
-We offer comprehensive maintenance packages tailored to your specific needs. Our team will perform a thorough inspection, identify any potential issues, and ensure everything is running smoothly for the season ahead.
+Want to get on the schedule? Call us at {{companyPhone}} or just reply here.
 
-Ready to schedule your maintenance? Give us a call at {{companyPhone}} or reply to this email. We'd be happy to discuss a maintenance plan that works for you.
-
-Best regards,
-{{companyName}} Team`,
+{{companyName}}`,
   },
   {
     id: '9',
     name: 'Referral Request',
     category: 'Reactivation',
-    description: 'Ask satisfied customers for referrals',
+    description: 'Ask happy customers to spread the word',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'Know Someone Who Needs {{serviceType}}? We\'ll Take Good Care of Them',
+    subject: 'Know anyone who needs {{serviceType}} work?',
     body: `Hi {{firstName}},
 
-We've truly enjoyed working with you and are grateful for the opportunity to serve you. It's customers like you that make {{companyName}} what it is today – a trusted name in the {{industry}} industry.
+Thanks again for letting us handle your {{serviceType}} work. If you know anyone who needs similar help, send them our way. We'll take good care of them.
 
-If you know anyone who could benefit from our services, we'd be honored if you'd refer them to us. Whether it's a friend, family member, or colleague, we promise to provide them with the same quality service and professional integrity you've experienced.
+And as a thank you, you'll get {{referralDiscount}} off your next service when they book with us.
 
-As a token of our appreciation, we'd like to offer you a {{referralDiscount}} discount on your next service when your referral becomes a paying customer. Everyone wins!
-
-Thank you for thinking of us, and for being an awesome customer.
-
-Best regards,
-{{companyName}} Team
+{{companyName}}
 {{companyPhone}}`,
   },
   {
     id: '10',
     name: 'Win-Back',
     category: 'Reactivation',
-    description: 'Re-engage past customers',
+    description: 'Reach out to customers who haven\'t called in a while',
     from: '{{companyName}} <{{companyEmail}}>',
-    subject: 'We Miss You, {{firstName}} – Special Offer Inside',
+    subject: 'Been a while - {{specialOffer}} off your next service',
     body: `Hi {{firstName}},
 
-It's been a while since we last worked together, and we wanted to reach out. We've made some great improvements to our services and would love the opportunity to help you again.
+It's been a while since we last did work for you. Just wanted to check in and let you know we're still here if you need anything.
 
-To show our appreciation for your past business, we're offering {{specialOffer}} off your next service when you book within the next 14 days. This is our way of saying thank you and inviting you back to the {{companyName}} family.
+If you book in the next couple weeks, we'll take {{specialOffer}} off the job. Doesn't matter if it's {{serviceType}} or something else.
 
-Whether you need {{serviceType}} maintenance, a repair, or something else entirely, we're here and ready to deliver the same quality service you remember. Give us a call at {{companyPhone}} or reply to this email to schedule your appointment.
+Call or text us at {{companyPhone}} whenever you're ready.
 
-We look forward to reconnecting with you soon!
-
-Best regards,
-{{companyName}} Team`,
+{{companyName}}`,
   },
 ];
 

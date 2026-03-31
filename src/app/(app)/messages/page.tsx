@@ -72,7 +72,7 @@ const MOCK_MESSAGES: Message[] = [
     type: 'SMS',
     status: 'Delivered',
     fullContent:
-      'Hi Mike, thank you for choosing us for your plumbing needs! We\'d love your feedback. Please leave a review on Google - it helps us serve you better.',
+      'Hi Mike, thank you for choosing us for your plumbing needs! Mind leaving us a quick review? Helps other folks find us.',
     recipient: '(555) 456-7890',
   },
   {
@@ -205,7 +205,7 @@ const TEMPLATES: Template[] = [
     title: 'Review Request',
     preview: 'Hi {name}, thank you for choosing us! Would you mind leaving a review?...',
     content:
-      'Hi {name}, thank you for choosing us! We\'d love your feedback. Please leave a review on Google - it helps us serve you better.',
+      'Hi {name}, thank you for choosing us! Mind leaving us a quick review? Helps other folks find us.',
   },
   {
     id: 'payment-reminder',

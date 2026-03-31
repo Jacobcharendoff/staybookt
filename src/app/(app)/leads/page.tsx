@@ -15,7 +15,7 @@ export default function LeadCapturePage() {
   const [buttonText, setButtonText] = useState('Get My Free Estimate');
   const [buttonColor, setButtonColor] = useState('#27AE60');
   const [successMessage, setSuccessMessage] = useState(
-    'Thank you! We\'ll be in touch within 24 hours.'
+    'Got it. We\'ll call you shortly.'
   );
   const [pipelineStage, setPipelineStage] = useState('New Lead');
   const [includeFields, setIncludeFields] = useState({
@@ -40,7 +40,7 @@ export default function LeadCapturePage() {
   const embedCode = `<!-- GrowthOS Lead Capture Form -->
 <div id="growthosForm" style="max-width: 500px; margin: 20px auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
   <h2 style="margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #2c3e50;">${formTitle}</h2>
-  <p style="margin: 0 0 24px; color: #666; font-size: 14px;">Enter your details and we'll be in touch shortly.</p>
+  <p style="margin: 0 0 24px; color: #666; font-size: 14px;">Quick form so we can reach you.</p>
 
   <form style="display: flex; flex-direction: column; gap: 16px;">
     <!-- Name (always included) -->
@@ -302,7 +302,7 @@ document.getElementById('growthosForm')?.querySelector('form')?.addEventListener
                       {formTitle}
                     </h3>
                     <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-                      Enter your details and we'll be in touch shortly.
+                      Quick form so we can reach you.
                     </p>
 
                     <div className="space-y-4">

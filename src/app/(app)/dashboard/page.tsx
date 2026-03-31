@@ -112,7 +112,7 @@ export default function Dashboard() {
     {
       id: 'company-info',
       title: 'Set up your company info',
-      description: 'Configure your business details',
+      description: 'Add your company info',
       href: '/setup',
       completed: !!settings.companyName && settings.companyName !== 'ProPlumbers Inc.',
       icon: Settings,
@@ -120,7 +120,7 @@ export default function Dashboard() {
     {
       id: 'pipeline-stages',
       title: 'Customize your pipeline stages',
-      description: 'Tailor pipeline to your workflow',
+      description: 'Set up your pipeline stages',
       href: '/settings',
       completed: false, // This would need customization check
       icon: Settings,
@@ -128,7 +128,7 @@ export default function Dashboard() {
     {
       id: 'import-contacts',
       title: 'Import contacts from CSV',
-      description: 'Bulk import your existing contacts',
+      description: 'Load all your contacts at once',
       href: '/contacts/import',
       completed: false,
       icon: Upload,
@@ -487,7 +487,7 @@ export default function Dashboard() {
             </div>
             <div>
               <h3 className="text-lg font-bold">{t('dashboard.finishSetup')}</h3>
-              <p className="text-white/70 text-sm">Complete your setup to unlock the full power of autopilot. Takes under 5 minutes.</p>
+              <p className="text-white/70 text-sm">Finish setup so autopilot can start working for you. Takes about 5 minutes.</p>
             </div>
           </div>
           <Link

@@ -135,7 +135,7 @@ const PLAYBOOKS: Playbook[] = [
   {
     id: 'review-machine',
     name: '5-Star Review Machine',
-    description: 'Automatically request Google reviews after every completed job. Builds your reputation on autopilot.',
+    description: 'Automatically request Google reviews after every completed job. Gets you more Google reviews without you lifting a finger.',
     category: 'retention',
     impact: '+12 reviews/mo',
     impactColor: 'text-amber-600 bg-amber-50',
@@ -179,7 +179,7 @@ const PLAYBOOKS: Playbook[] = [
     isPremium: false,
     isActive: false,
     stats: [
-      { label: 'Days Sales Outstanding', value: '-15 days' },
+      { label: 'Avg. Days to Get Paid', value: '-15 days' },
       { label: 'Collection rate', value: '94%' },
       { label: 'Cash flow impact', value: '+$8K/mo' },
     ],
@@ -225,7 +225,7 @@ const PLAYBOOKS: Playbook[] = [
     isActive: false,
     stats: [
       { label: 'No-show reduction', value: '60%' },
-      { label: 'Customer satisfaction', value: '+40%' },
+      { label: 'Fewer no-shows', value: '+40%' },
       { label: 'Time saved/week', value: '3.5 hrs' },
     ],
     steps: [
