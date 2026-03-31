@@ -303,7 +303,7 @@ function Hero() {
           {/* CTA Buttons */}
           <div className="hero-reveal hero-reveal-delay-4 mt-8 flex justify-center gap-4 flex-wrap">
             <Link
-              href="/setup"
+              href="/login?tab=signup"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-2xl transition-all shadow-lg shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5"
             >
               Start your free 14-day trial
@@ -1485,7 +1485,7 @@ function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Link href="/setup" className={`mt-8 block text-center px-6 py-3 rounded-xl font-semibold text-sm transition-all ${plan.highlighted ? "bg-white text-[#2C3E50] hover:bg-slate-50 shadow-lg" : "bg-gray-900 text-white hover:bg-gray-800"}`}>
+              <Link href="/login?tab=signup" className={`mt-8 block text-center px-6 py-3 rounded-xl font-semibold text-sm transition-all ${plan.highlighted ? "bg-white text-[#2C3E50] hover:bg-slate-50 shadow-lg" : "bg-gray-900 text-white hover:bg-gray-800"}`}>
                 {plan.cta}
               </Link>
             </div>

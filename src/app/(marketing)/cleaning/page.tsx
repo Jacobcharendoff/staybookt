@@ -86,7 +86,7 @@ export default function CleaningPage() {
             {t('cleaningPage.heroDesc') }
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Link href="/setup" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-cyan-700 font-semibold rounded-full hover:bg-cyan-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <Link href="/login?tab=signup" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-cyan-700 font-semibold rounded-full hover:bg-cyan-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               {t('cleaningPage.heroCta') }
               <Zap className="w-5 h-5" />
             </Link>
@@ -266,7 +266,7 @@ export default function CleaningPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Starter</h3>
               <div className="flex items-baseline gap-1 mb-4"><span className="text-4xl font-bold text-gray-900">$79</span><span className="text-gray-600">/mo CAD</span></div>
               <p className="text-sm text-gray-600 mb-6">For solo operators</p>
-              <Link href="/setup" className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6">Start Free Trial</Link>
+              <Link href="/login?tab=signup" className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6">Start Free Trial</Link>
               <ul className="space-y-3 text-sm text-gray-700">
                 <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-500" />Call & booking</li>
                 <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-500" />Basic scheduling</li>
@@ -279,7 +279,7 @@ export default function CleaningPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Growth</h3>
               <div className="flex items-baseline gap-1 mb-4"><span className="text-4xl font-bold text-gray-900">$149</span><span className="text-gray-600">/mo CAD</span></div>
               <p className="text-sm text-gray-600 mb-6">For growing teams</p>
-              <Link href="/setup" className="block w-full px-6 py-3 rounded-xl bg-cyan-600 text-white text-sm font-semibold hover:bg-cyan-700 transition-colors text-center mb-6">Start Free Trial</Link>
+              <Link href="/login?tab=signup" className="block w-full px-6 py-3 rounded-xl bg-cyan-600 text-white text-sm font-semibold hover:bg-cyan-700 transition-colors text-center mb-6">Start Free Trial</Link>
               <ul className="space-y-3 text-sm text-gray-700">
                 <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-500" />Everything in Starter</li>
                 <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-500" />Recurring billing</li>
@@ -292,7 +292,7 @@ export default function CleaningPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Scale</h3>
               <div className="flex items-baseline gap-1 mb-4"><span className="text-4xl font-bold text-gray-900">$299</span><span className="text-gray-600">/mo CAD</span></div>
               <p className="text-sm text-gray-600 mb-6">For multi-crew operations</p>
-              <Link href="/setup" className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6">Start Free Trial</Link>
+              <Link href="/login?tab=signup" className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6">Start Free Trial</Link>
               <ul className="space-y-3 text-sm text-gray-700">
                 <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-500" />Everything in Growth</li>
                 <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-500" />Unlimited users</li>

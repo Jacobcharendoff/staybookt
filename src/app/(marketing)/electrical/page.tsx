@@ -128,7 +128,7 @@ export default function ElectricalPage() {
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <Link
-              href="/setup"
+              href="/login?tab=signup"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-yellow-700 font-semibold rounded-full hover:bg-yellow-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               {t('electricalPage.heroCta') }
@@ -474,7 +474,7 @@ export default function ElectricalPage() {
               </div>
               <p className="text-sm text-gray-600 mb-6">For solo electricians</p>
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6"
               >
                 Start Free Trial
@@ -506,7 +506,7 @@ export default function ElectricalPage() {
               </div>
               <p className="text-sm text-gray-600 mb-6">For growing electrical teams</p>
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="block w-full px-6 py-3 rounded-xl bg-yellow-600 text-white text-sm font-semibold hover:bg-yellow-700 transition-colors text-center mb-6"
               >
                 Start Free Trial
@@ -539,7 +539,7 @@ export default function ElectricalPage() {
               </div>
               <p className="text-sm text-gray-600 mb-6">For large electrical operations</p>
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="block w-full px-6 py-3 rounded-xl bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition-colors text-center mb-6"
               >
                 Start Free Trial

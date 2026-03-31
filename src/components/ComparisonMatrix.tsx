@@ -344,7 +344,7 @@ export function ComparisonMatrix() {
               </h3>
             </div>
             <Link
-              href="/setup"
+              href="/login?tab=signup"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-full transition-all shadow-lg shadow-emerald-600/40 hover:shadow-emerald-700/50 hover:-translate-y-0.5 whitespace-nowrap"
             >
               {t('compare.switchCta')}

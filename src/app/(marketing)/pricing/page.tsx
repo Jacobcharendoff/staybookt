@@ -459,7 +459,7 @@ export default function PricingPage() {
             Join 500+ Canadian service businesses already using GrowthOS. Start your free trial today — no credit card required.
           </p>
           <Link
-            href="/setup"
+            href="/login?tab=signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] text-white text-lg font-semibold rounded-full hover:bg-[#229954] transition-all shadow-xl shadow-green-600/30 hover:shadow-green-700/40 hover:-translate-y-0.5"
           >
             Start Free Trial

@@ -330,7 +330,7 @@ export default function WhyGrowthOSPage() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] text-white text-base font-semibold rounded-full hover:bg-[#229954] transition-all shadow-lg shadow-[#27AE60]/40 hover:shadow-[#229954]/50 hover:-translate-y-0.5"
               >
                 {t('whyGrowthOS.heroCta')}

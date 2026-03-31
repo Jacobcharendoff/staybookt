@@ -138,11 +138,11 @@ export function Navigation() {
               <Globe className="w-4 h-4" />
               {locale === 'en' ? 'FR' : 'EN'}
             </button>
-            <Link href="/dashboard" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+            <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
               {t('marketing.logIn')}
             </Link>
             <Link
-              href="/setup"
+              href="/login?tab=signup"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#27AE60] text-white text-sm font-semibold rounded-full hover:bg-[#229954] transition-all shadow-lg shadow-green-600/25 hover:shadow-green-700/30 hover:-translate-y-0.5"
             >
               {t('marketing.tryFree')}
@@ -224,14 +224,14 @@ export function Navigation() {
 
               <div className="border-t border-gray-100 pt-4 flex flex-col gap-3">
                 <Link
-                  href="/dashboard"
+                  href="/login"
                   className="text-sm font-medium text-gray-600"
                   onClick={() => setMobileOpen(false)}
                 >
                   {t('marketing.logIn')}
                 </Link>
                 <Link
-                  href="/setup"
+                  href="/login?tab=signup"
                   className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-[#27AE60] text-white text-sm font-semibold rounded-full hover:bg-[#229954] transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
@@ -349,7 +349,7 @@ export function CTASection() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            href="/setup"
+            href="/login?tab=signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-full transition-all shadow-xl shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5"
           >
             Start Free Trial

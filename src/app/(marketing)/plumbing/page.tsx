@@ -137,7 +137,7 @@ export default function PlumbingPage() {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <Link
-              href="/setup"
+              href="/login?tab=signup"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] text-white font-semibold rounded-full hover:bg-[#229954] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               {t('plumbingPage.heroCta') }
@@ -496,7 +496,7 @@ export default function PlumbingPage() {
               </div>
               <p className="text-sm text-gray-600 mb-6">For solo operators and small teams</p>
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="block w-full px-6 py-3 rounded-xl bg-[#27AE60] text-white text-sm font-semibold hover:bg-[#229954] transition-colors text-center mb-6"
               >
                 Start Free Trial
@@ -529,7 +529,7 @@ export default function PlumbingPage() {
               </div>
               <p className="text-sm text-gray-600 mb-6">For growing service businesses</p>
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="block w-full px-6 py-3 rounded-xl bg-[#27AE60] text-white text-sm font-semibold hover:bg-[#229954] transition-colors text-center mb-6"
               >
                 Start Free Trial
@@ -563,7 +563,7 @@ export default function PlumbingPage() {
               </div>
               <p className="text-sm text-gray-600 mb-6">For multi-team operations</p>
               <Link
-                href="/setup"
+                href="/login?tab=signup"
                 className="block w-full px-6 py-3 rounded-xl bg-[#27AE60] text-white text-sm font-semibold hover:bg-[#229954] transition-colors text-center mb-6"
               >
                 Start Free Trial

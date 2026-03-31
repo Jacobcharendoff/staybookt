@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Zap } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
 
@@ -21,8 +21,19 @@ interface MessageState {
 }
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" /></div>}>
+      <LoginPageInner />
+    </Suspense>
+  );
+}
+
+function LoginPageInner() {
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>('signin');
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/setup';
+  const initialTab = searchParams.get('tab') === 'signup' ? 'signup' : 'signin';
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [view, setView] = useState<View>('form');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -73,7 +84,7 @@ export default function LoginPage() {
           text: 'Signed in successfully. Redirecting...',
         });
         setTimeout(() => {
-          router.push('/dashboard');
+          router.push(redirectTo);
         }, 500);
       }
     } catch (err) {
@@ -167,7 +178,7 @@ export default function LoginPage() {
       const { error } = await getSupabase().auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}${redirectTo}`,
         },
       });
 
