@@ -67,6 +67,10 @@ export default function EstimateDetailPage() {
 
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
+  // IMPORTANT: useTax must be called before any conditional returns (Rules of Hooks)
+  const companyProvince = settings.companyProvince || 'AB';
+  const { calculateTax } = useTax(companyProvince);
+
   useEffect(() => {
     setMounted(true);
     initializeSeedData();
@@ -458,9 +462,6 @@ export default function EstimateDetailPage() {
     : null;
   const subtotal = selectedTierData?.price || 0;
 
-  // Use the company's province from settings (default to AB if not set)
-  const companyProvince = settings.companyProvince || 'AB';
-  const { calculateTax } = useTax(companyProvince);
   const taxBreakdown = calculateTax(subtotal);
   const total = taxBreakdown.total;
 
