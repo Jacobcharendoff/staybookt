@@ -349,12 +349,12 @@ export default function SetupPage() {
               <div className="space-y-4">
                 <h1
                   className={`text-5xl font-bold tracking-tight ${
-                    isDark ? 'text-white' : 'text-gray-900'
+                    isDark ? 'text-gray-50' : 'text-gray-900'
                   }`}
                 >
                   Your Priorities
                 </h1>
-                <p className={`text-xl ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   Pick what matters most right now. You can always change this later.
                 </p>
               </div>
@@ -385,10 +385,10 @@ export default function SetupPage() {
                           </div>
                         )}
                       </div>
-                      <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      <h3 className={`font-bold text-lg ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                         {power.title}
                       </h3>
-                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                         {power.subtitle}
                       </p>
                     </button>

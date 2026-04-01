@@ -20,8 +20,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
+    // Always default to light mode — dark mode available via manual toggle only
     const saved = window.localStorage?.getItem('growth-os-theme') as Theme;
-    if (saved) setTheme(saved);
+    if (saved === 'dark') {
+      // Clear stale dark preference — we want light mode as the default experience
+      try { window.localStorage?.setItem('growth-os-theme', 'light'); } catch {}
+      setTheme('light');
+    } else if (saved) {
+      setTheme(saved);
+    }
   }, []);
 
   useEffect(() => {
