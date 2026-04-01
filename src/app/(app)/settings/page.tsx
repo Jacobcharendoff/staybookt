@@ -6,29 +6,24 @@ import { useStore } from '@/store';
 import {
   Settings,
   Users,
-  Zap,
   Package,
-  Bell,
-  CreditCard,
   Building2,
   Mail,
   Phone,
   MapPin,
   Upload,
-  GripHorizontal,
   Check,
   AlertCircle,
   ExternalLink,
-  ToggleLeft,
 } from 'lucide-react';
 
-type TabType = 'profile' | 'team' | 'pipeline' | 'integrations' | 'notifications' | 'billing';
+type TabType = 'profile' | 'team' | 'integrations';
 
 interface TeamMember {
   id: string;
   name: string;
   email: string;
-  role: 'owner' | 'admin' | 'manager' | 'technician';
+  role: 'owner' | 'technician';
   status: 'active' | 'inactive';
 }
 
@@ -75,7 +70,7 @@ const MOCK_TEAM: TeamMember[] = [
     id: '2',
     name: 'Marcus Thompson',
     email: 'marcus@company.com',
-    role: 'manager',
+    role: 'technician',
     status: 'active',
   },
   {
@@ -96,13 +91,10 @@ const MOCK_TEAM: TeamMember[] = [
 
 const MOCK_PIPELINE: PipelineStage[] = [
   { id: '1', name: 'New Lead', color: 'blue', order: 1 },
-  { id: '2', name: 'Contacted', color: 'slate', order: 2 },
-  { id: '3', name: 'Estimate Scheduled', color: 'purple', order: 3 },
-  { id: '4', name: 'Estimate Sent', color: 'indigo', order: 4 },
-  { id: '5', name: 'Booked', color: 'cyan', order: 5 },
-  { id: '6', name: 'In Progress', color: 'amber', order: 6 },
-  { id: '7', name: 'Completed', color: 'emerald', order: 7 },
-  { id: '8', name: 'Invoiced', color: 'green', order: 8 },
+  { id: '2', name: 'Estimate Sent', color: 'amber', order: 2 },
+  { id: '3', name: 'Booked', color: 'green', order: 3 },
+  { id: '4', name: 'In Progress', color: 'cyan', order: 4 },
+  { id: '5', name: 'Completed', color: 'emerald', order: 5 },
 ];
 
 const MOCK_INTEGRATIONS: Integration[] = [
@@ -174,14 +166,6 @@ export default function SettingsPage() {
     timezone: 'America/Denver',
   });
 
-  const [notificationSettings, setNotificationSettings] = useState({
-    emailEstimates: true,
-    emailInvoices: true,
-    emailReminders: true,
-    smsUpdates: false,
-    smsReminders: true,
-    pushNotifications: true,
-  });
 
   useEffect(() => {
     setMounted(true);
@@ -193,10 +177,7 @@ export default function SettingsPage() {
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
     { id: 'profile', label: t('settings.profile'), icon: <Building2 className="w-5 h-5" /> },
     { id: 'team', label: t('settings.team'), icon: <Users className="w-5 h-5" /> },
-    { id: 'pipeline', label: t('settings.pipeline'), icon: <Zap className="w-5 h-5" /> },
     { id: 'integrations', label: t('settings.integrations'), icon: <Package className="w-5 h-5" /> },
-    { id: 'notifications', label: t('settings.notifications'), icon: <Bell className="w-5 h-5" /> },
-    { id: 'billing', label: t('settings.billing'), icon: <CreditCard className="w-5 h-5" /> },
   ];
 
   return (
@@ -417,44 +398,6 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Pipeline Settings Tab */}
-          {activeTab === 'pipeline' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{t('settings.pipelineStages')}</h3>
-              <div className="space-y-3">
-                {pipelineStages.map((stage, index) => (
-                  <div
-                    key={stage.id}
-                    className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition group"
-                  >
-                    <button className="cursor-move opacity-0 group-hover:opacity-100 transition">
-                      <GripHorizontal className="w-5 h-5 text-slate-400 dark:text-slate-500" />
-                    </button>
-                    <div
-                      className={`w-4 h-4 rounded-full ${stageColorMap[stage.color] || 'bg-slate-500'}`}
-                    />
-                    <input
-                      type="text"
-                      value={stage.name}
-                      onChange={(e) => {
-                        const updated = [...pipelineStages];
-                        updated[index].name = e.target.value;
-                        setPipelineStages(updated);
-                      }}
-                      className="flex-1 bg-transparent font-medium text-slate-900 dark:text-white focus:outline-none border-b border-transparent hover:border-slate-300 dark:hover:border-slate-600 focus:border-blue-500 dark:focus:border-blue-400"
-                    />
-                    <button className="text-sm px-3 py-1 border border-slate-300 dark:border-slate-600 dark:text-slate-300 rounded hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-                      Edit
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <button className="w-full py-2 border-2 border-dashed border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400 rounded-lg font-medium hover:border-blue-500 hover:text-blue-600 dark:hover:border-blue-400 dark:hover:text-blue-400 transition">
-                + Add Stage
-              </button>
-            </div>
-          )}
-
           {/* Integrations Tab */}
           {activeTab === 'integrations' && (
             <div className="space-y-6">
@@ -495,209 +438,6 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Notifications Tab */}
-          {activeTab === 'notifications' && (
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  {t('settings.emailNotifications')}
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    {
-                      key: 'emailEstimates',
-                      label: 'Estimate notifications',
-                      description: 'Get notified when estimates are sent or viewed',
-                    },
-                    {
-                      key: 'emailInvoices',
-                      label: 'Invoice notifications',
-                      description: 'Get notified when invoices are sent or paid',
-                    },
-                    {
-                      key: 'emailReminders',
-                      label: 'Reminder notifications',
-                      description: 'Get daily reminders about pending tasks',
-                    },
-                  ].map(({ key, label, description }) => (
-                    <div key={key} className="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
-                      <div>
-                        <p className="font-medium text-slate-900 dark:text-white">{label}</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{description}</p>
-                      </div>
-                      <button
-                        onClick={() =>
-                          setNotificationSettings({
-                            ...notificationSettings,
-                            [key as keyof typeof notificationSettings]:
-                              !notificationSettings[key as keyof typeof notificationSettings],
-                          })
-                        }
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-                          notificationSettings[key as keyof typeof notificationSettings]
-                            ? 'bg-blue-600'
-                            : 'bg-slate-300 dark:bg-slate-600'
-                        }`}
-                        aria-label={`Toggle ${label}`}
-                        aria-pressed={notificationSettings[key as keyof typeof notificationSettings]}
-                      >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                            notificationSettings[key as keyof typeof notificationSettings]
-                              ? 'translate-x-6'
-                              : 'translate-x-1'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  {t('settings.smsNotifications')}
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    {
-                      key: 'smsUpdates',
-                      label: 'SMS updates',
-                      description: 'Receive job updates via SMS',
-                    },
-                    {
-                      key: 'smsReminders',
-                      label: 'SMS reminders',
-                      description: 'Get SMS reminders for upcoming appointments',
-                    },
-                    {
-                      key: 'pushNotifications',
-                      label: 'Push notifications',
-                      description: 'Receive browser push notifications',
-                    },
-                  ].map(({ key, label, description }) => (
-                    <div key={key} className="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
-                      <div>
-                        <p className="font-medium text-slate-900 dark:text-white">{label}</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{description}</p>
-                      </div>
-                      <button
-                        onClick={() =>
-                          setNotificationSettings({
-                            ...notificationSettings,
-                            [key as keyof typeof notificationSettings]:
-                              !notificationSettings[key as keyof typeof notificationSettings],
-                          })
-                        }
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-                          notificationSettings[key as keyof typeof notificationSettings]
-                            ? 'bg-blue-600'
-                            : 'bg-slate-300 dark:bg-slate-600'
-                        }`}
-                        aria-label={`Toggle ${label}`}
-                        aria-pressed={notificationSettings[key as keyof typeof notificationSettings]}
-                      >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
-                            notificationSettings[key as keyof typeof notificationSettings]
-                              ? 'translate-x-6'
-                              : 'translate-x-1'
-                          }`}
-                        />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Billing Tab */}
-          {activeTab === 'billing' && (
-            <div className="space-y-8">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4 sm:p-8 rounded-xl border border-blue-200 dark:border-blue-900/50">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{t('settings.billingPlan')}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">Your current plan</p>
-                  </div>
-                  <span className="text-4xl font-bold text-blue-600 dark:text-blue-400">$149</span>
-                </div>
-                <p className="text-slate-700 dark:text-slate-300 mb-6">/month, billed annually at $1,788</p>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                    <Check className="w-5 h-5 text-emerald-500" />
-                    Up to 5 users
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                    <Check className="w-5 h-5 text-emerald-500" />
-                    Unlimited estimates & invoices
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                    <Check className="w-5 h-5 text-emerald-500" />
-                    Advanced scheduling
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <button className="px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-white dark:hover:bg-slate-700 transition">
-                    Upgrade Plan
-                  </button>
-                  <button className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition">
-                    Change Payment Method
-                  </button>
-                </div>
-              </div>
-
-              <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
-                  {t('settings.usageThisMonth')}
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">Estimates Created</p>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">24<span className="text-sm text-slate-500 dark:text-slate-400">/∞</span></p>
-                  </div>
-                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">Invoices Created</p>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">18<span className="text-sm text-slate-500 dark:text-slate-400">/∞</span></p>
-                  </div>
-                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">Team Members</p>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">4<span className="text-sm text-slate-500 dark:text-slate-400">/5</span></p>
-                  </div>
-                  <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">API Calls</p>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">12.3k<span className="text-sm text-slate-500 dark:text-slate-400">/100k</span></p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-                  {t('settings.billingHistory')}
-                </h3>
-                <div className="space-y-2">
-                  {[
-                    { date: 'March 1, 2026', amount: '$149.00', status: 'Paid' },
-                    { date: 'February 1, 2026', amount: '$149.00', status: 'Paid' },
-                    { date: 'January 1, 2026', amount: '$149.00', status: 'Paid' },
-                  ].map((invoice, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition bg-white dark:bg-slate-800">
-                      <div>
-                        <p className="font-medium text-slate-900 dark:text-white">{invoice.date}</p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="font-semibold text-slate-900 dark:text-white">{invoice.amount}</span>
-                        <span className="px-2 py-1 text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full font-semibold">
-                          {invoice.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

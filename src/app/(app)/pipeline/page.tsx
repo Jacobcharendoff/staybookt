@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/components/LanguageProvider';
 import { useStore } from '@/store';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import { Deal, PipelineStage, Contact, LeadSource, getLeadSourceRing, getRingDisplayLabel } from '@/types';
+import { Deal, PipelineStage, Contact, LeadSource } from '@/types';
 import { Modal } from '@/components/Modal';
 import { AddDealForm } from '@/components/AddDealForm';
 import { Plus, Search, X, Eye, List, Edit, Phone, MessageSquare, Trash2 } from 'lucide-react';
@@ -21,13 +21,10 @@ function useDebounce<T>(value: T, delay: number): T {
 
 const PIPELINE_STAGES_CONFIG: { stage: PipelineStage; labelKey: string; color: string }[] = [
   { stage: 'new_lead', labelKey: 'pipeline.newLead', color: 'bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600' },
-  { stage: 'contacted', labelKey: 'pipeline.contacted', color: 'bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700' },
-  { stage: 'estimate_scheduled', labelKey: 'pipeline.estScheduled', color: 'bg-purple-100 dark:bg-purple-900 border-purple-300 dark:border-purple-700' },
   { stage: 'estimate_sent', labelKey: 'pipeline.estSent', color: 'bg-amber-100 dark:bg-amber-900 border-amber-300 dark:border-amber-700' },
   { stage: 'booked', labelKey: 'pipeline.booked', color: 'bg-green-100 dark:bg-green-900 border-green-300 dark:border-green-700' },
   { stage: 'in_progress', labelKey: 'pipeline.inProgress', color: 'bg-cyan-100 dark:bg-cyan-900 border-cyan-300 dark:border-cyan-700' },
   { stage: 'completed', labelKey: 'pipeline.completed', color: 'bg-emerald-100 dark:bg-emerald-900 border-emerald-300 dark:border-emerald-700' },
-  { stage: 'invoiced', labelKey: 'pipeline.invoiced', color: 'bg-indigo-100 dark:bg-indigo-900 border-indigo-300 dark:border-indigo-700' },
 ];
 
 const LEAD_SOURCES: { value: LeadSource; label: string }[] = [
@@ -44,13 +41,10 @@ const LEAD_SOURCES: { value: LeadSource; label: string }[] = [
 
 const PIPELINE_STAGES: { stage: PipelineStage; label: string }[] = [
   { stage: 'new_lead', label: 'New Lead' },
-  { stage: 'contacted', label: 'Contacted' },
-  { stage: 'estimate_scheduled', label: 'Estimate Scheduled' },
   { stage: 'estimate_sent', label: 'Estimate Sent' },
   { stage: 'booked', label: 'Booked' },
   { stage: 'in_progress', label: 'In Progress' },
   { stage: 'completed', label: 'Completed' },
-  { stage: 'invoiced', label: 'Invoiced' },
 ];
 
 interface EditFormData {
@@ -108,9 +102,7 @@ export default function PipelinePage() {
         deal.assignedTo === assignedToFilter ||
         (assignedToFilter === 'team' && deal.assignedTo === 'Team');
 
-      const sourceRing = getLeadSourceRing(deal.source);
-      const matchesSource =
-        sourceFilter === 'all' || sourceRing === sourceFilter;
+      const matchesSource = sourceFilter === 'all' || deal.source === sourceFilter;
 
       const matchesValue =
         valueFilter === 'all' ||
@@ -295,9 +287,12 @@ export default function PipelinePage() {
             className="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="all">{t('pipeline.allSources')}</option>
-            <option value="ring_1">{t('pipeline.ring1')}</option>
-            <option value="ring_2">{t('pipeline.ring2')}</option>
-            <option value="ring_3">{t('pipeline.ring3')}</option>
+            <option value="existing_customer">Existing Customer</option>
+            <option value="referral">Referral</option>
+            <option value="google_lsa">Google Ads</option>
+            <option value="seo">SEO / Website</option>
+            <option value="gbp">Google Business</option>
+            <option value="neighborhood">Neighborhood</option>
           </select>
 
           <select
@@ -397,7 +392,6 @@ export default function PipelinePage() {
                 getDealsByStage(mobileSelectedStage).map((deal) => {
                   const contact = getContact(deal.contactId);
                   const daysInStage = getDaysInStage(deal);
-                  const ring = getLeadSourceRing(deal.source);
                   return (
                     <Link
                       key={deal.id}
@@ -411,7 +405,6 @@ export default function PipelinePage() {
                       <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{contact?.name} &middot; {deal.assignedTo}</p>
                       <div className="flex justify-between items-center">
                         <span className="font-bold text-slate-900 dark:text-white">${deal.value.toLocaleString()}</span>
-                        <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded font-medium">{getRingDisplayLabel(ring)}</span>
                       </div>
                     </Link>
                   );
@@ -465,7 +458,6 @@ export default function PipelinePage() {
                           {stageDeals.map((deal, index) => {
                             const contact = getContact(deal.contactId);
                             const daysInStage = getDaysInStage(deal);
-                            const ring = getLeadSourceRing(deal.source);
                             const isHovered = hoveredCardId === deal.id;
 
                             return (
@@ -493,9 +485,6 @@ export default function PipelinePage() {
                                     <div className="flex justify-between items-end mb-2">
                                       <span className="font-bold text-lg text-slate-900 dark:text-white">
                                         ${deal.value.toLocaleString()}
-                                      </span>
-                                      <span className="text-xs font-medium bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded">
-                                        {getRingDisplayLabel(ring)}
                                       </span>
                                     </div>
                                     <div className="text-xs text-slate-500 dark:text-slate-400 mb-3">
@@ -565,7 +554,6 @@ export default function PipelinePage() {
                 <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.contact')}</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">Stage</th>
                 <th className="text-right px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.value')}</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('contacts.source')}</th>
                 <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.assignedTo')}</th>
                 <th className="text-right px-4 py-3 font-semibold text-slate-900 dark:text-white">Days</th>
               </tr>
@@ -574,7 +562,6 @@ export default function PipelinePage() {
               {filteredDeals.map((deal) => {
                 const contact = getContact(deal.contactId);
                 const daysInStage = getDaysInStage(deal);
-                const ring = getLeadSourceRing(deal.source);
                 const stageInfo = PIPELINE_STAGES_CONFIG.find((s) => s.stage === deal.stage);
 
                 return (
@@ -595,11 +582,6 @@ export default function PipelinePage() {
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-slate-900 dark:text-white">
                       ${deal.value.toLocaleString()}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded font-medium">
-                        {getRingDisplayLabel(ring)}
-                      </span>
                     </td>
                     <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{deal.assignedTo}</td>
                     <td className="px-4 py-3 text-right text-slate-600 dark:text-slate-400">{daysInStage}d</td>

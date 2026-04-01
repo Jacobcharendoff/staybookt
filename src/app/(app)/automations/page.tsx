@@ -35,7 +35,6 @@ interface Playbook {
   stats: { label: string; value: string }[];
   isActive: boolean;
   isPremium: boolean;
-  ring: 1 | 2 | 3;
   templates: TemplatePreview[];
 }
 
@@ -58,7 +57,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'lead_capture',
     impact: '+78% conversion',
     impactColor: 'text-emerald-600 bg-emerald-50',
-    ring: 1,
     isPremium: false,
     isActive: false,
     stats: [
@@ -95,7 +93,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'follow_up',
     impact: '+35% close rate',
     impactColor: 'text-blue-600 bg-blue-50',
-    ring: 1,
     isPremium: false,
     isActive: false,
     stats: [
@@ -139,7 +136,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'retention',
     impact: '+12 reviews/mo',
     impactColor: 'text-amber-600 bg-amber-50',
-    ring: 2,
     isPremium: false,
     isActive: false,
     stats: [
@@ -175,7 +171,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'revenue',
     impact: '-15 days DSO',
     impactColor: 'text-emerald-600 bg-emerald-50',
-    ring: 1,
     isPremium: false,
     isActive: false,
     stats: [
@@ -220,7 +215,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'follow_up',
     impact: '-60% no-shows',
     impactColor: 'text-blue-600 bg-blue-50',
-    ring: 1,
     isPremium: false,
     isActive: false,
     stats: [
@@ -262,7 +256,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'retention',
     impact: '+$6,800/mo revenue',
     impactColor: 'text-emerald-600 bg-emerald-50',
-    ring: 1,
     isPremium: false,
     isActive: false,
     stats: [
@@ -299,7 +292,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'retention',
     impact: '+3 referrals/mo',
     impactColor: 'text-purple-600 bg-purple-50',
-    ring: 2,
     isPremium: false,
     isActive: false,
     stats: [
@@ -334,7 +326,6 @@ const PLAYBOOKS: Playbook[] = [
     category: 'lead_capture',
     impact: '+22% seasonal bookings',
     impactColor: 'text-blue-600 bg-blue-50',
-    ring: 3,
     isPremium: true,
     isActive: false,
     stats: [
@@ -421,6 +412,7 @@ export default function AutomationsPage() {
   const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
   const [previewTemplate, setPreviewTemplate] = useState<TemplatePreview | null>(null);
   const [activityFilter, setActivityFilter] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -721,7 +713,7 @@ export default function AutomationsPage() {
 
       {/* Playbooks Grid */}
       <div className="space-y-4">
-        {filtered.map((playbook) => {
+        {(showAll ? filtered : filtered.slice(0, 3)).map((playbook) => {
           const isExpanded = expandedPlaybook === playbook.id;
           const isActive = store.activePlaybooks?.[playbook.id]?.isActive ?? false;
           return (
@@ -745,9 +737,6 @@ export default function AutomationsPage() {
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white">{playbook.name}</h3>
                       <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${playbook.impactColor}`}>
                         {playbook.impact}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400">
-                        Ring {playbook.ring}
                       </span>
                       {playbook.isPremium && (
                         <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-100 dark:from-amber-900 to-yellow-100 dark:to-yellow-900 text-amber-700 dark:text-amber-300">
@@ -860,6 +849,14 @@ export default function AutomationsPage() {
             </div>
           );
         })}
+        {!showAll && filtered.length > 3 && (
+          <button
+            onClick={() => setShowAll(true)}
+            className="w-full py-3 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+          >
+            Show all {filtered.length} automations
+          </button>
+        )}
       </div>
 
       {/* Automation Activity Log */}

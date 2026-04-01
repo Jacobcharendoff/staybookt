@@ -48,19 +48,16 @@ import { AddDealForm } from '@/components/AddDealForm';
 
 const PIPELINE_STAGE_COLORS: Record<string, string> = {
   new_lead: '#3B82F6',
-  contacted: '#8B5CF6',
-  estimate_scheduled: '#F59E0B',
-  estimate_sent: '#EF4444',
+  estimate_sent: '#F59E0B',
   booked: '#10B981',
   in_progress: '#06B6D4',
   completed: '#22C55E',
-  invoiced: '#6366F1',
 };
 
 const RING_COLORS = {
-  'Ring 1': '#10B981',
-  'Ring 2': '#3B82F6',
-  'Ring 3': '#F59E0B',
+  'Existing Customers': '#10B981',
+  'Referrals & Reviews': '#3B82F6',
+  'Ads & Search': '#F59E0B',
 };
 
 export default function Dashboard() {
@@ -106,32 +103,8 @@ export default function Dashboard() {
       title: 'Send an estimate',
       description: 'Create and send your first quote',
       href: '/estimates',
-      completed: false, // This would need estimates check from store
-      icon: FileText,
-    },
-    {
-      id: 'company-info',
-      title: 'Set up your company info',
-      description: 'Add your company info',
-      href: '/setup',
-      completed: !!settings.companyName && settings.companyName !== 'ProPlumbers Inc.',
-      icon: Settings,
-    },
-    {
-      id: 'pipeline-stages',
-      title: 'Customize your pipeline stages',
-      description: 'Set up your pipeline stages',
-      href: '/settings',
-      completed: false, // This would need customization check
-      icon: Settings,
-    },
-    {
-      id: 'import-contacts',
-      title: 'Import contacts from CSV',
-      description: 'Load all your contacts at once',
-      href: '/contacts/import',
       completed: false,
-      icon: Upload,
+      icon: FileText,
     },
   ];
 
@@ -196,20 +169,11 @@ export default function Dashboard() {
 
   // Pipeline funnel data for BarChart
   const pipelineData = [
-    { stage: 'New Lead', count: deals.filter((d) => d.stage === 'new_lead').length },
-    { stage: 'Contacted', count: deals.filter((d) => d.stage === 'contacted').length },
-    {
-      stage: 'Est. Scheduled',
-      count: deals.filter((d) => d.stage === 'estimate_scheduled').length,
-    },
-    { stage: 'Est. Sent', count: deals.filter((d) => d.stage === 'estimate_sent').length },
+    { stage: 'New Lead', count: deals.filter((d) => d.stage === 'new_lead' || d.stage === 'contacted').length },
+    { stage: 'Estimate Sent', count: deals.filter((d) => d.stage === 'estimate_scheduled' || d.stage === 'estimate_sent').length },
     { stage: 'Booked', count: deals.filter((d) => d.stage === 'booked').length },
-    {
-      stage: 'In Progress',
-      count: deals.filter((d) => d.stage === 'in_progress').length,
-    },
-    { stage: 'Completed', count: deals.filter((d) => d.stage === 'completed').length },
-    { stage: 'Invoiced', count: deals.filter((d) => d.stage === 'invoiced').length },
+    { stage: 'In Progress', count: deals.filter((d) => d.stage === 'in_progress').length },
+    { stage: 'Completed', count: deals.filter((d) => d.stage === 'completed' || d.stage === 'invoiced').length },
   ];
 
   // Revenue by lead source (Ring breakdown)
@@ -247,9 +211,9 @@ export default function Dashboard() {
     .reduce((sum, d) => sum + d.value, 0);
 
   const revenueBySourceData = [
-    { name: 'Ring 1 (Harvest)', value: ring1Total },
-    { name: 'Ring 2 (Amplify)', value: ring2Total },
-    { name: 'Ring 3 (Acquire)', value: ring3Total },
+    { name: 'Existing Customers', value: ring1Total },
+    { name: 'Referrals & Reviews', value: ring2Total },
+    { name: 'Ads & Search', value: ring3Total },
   ].filter((d) => d.value > 0);
 
   // Monthly revenue trend (mock 6-month data)
@@ -265,9 +229,7 @@ export default function Dashboard() {
   // Deal stage duration (days spent in each stage)
   const stageDurationData = [
     { stage: 'New Lead', days: 3 },
-    { stage: 'Contacted', days: 5 },
-    { stage: 'Est. Scheduled', days: 4 },
-    { stage: 'Est. Sent', days: 7 },
+    { stage: 'Estimate Sent', days: 7 },
     { stage: 'Booked', days: 6 },
     { stage: 'In Progress', days: 14 },
   ];
