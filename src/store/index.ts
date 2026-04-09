@@ -58,7 +58,7 @@ interface SimulatedAction {
   status: 'sent' | 'pending' | 'scheduled';
 }
 
-interface GrowthOSStore {
+interface StaybooktStore {
   contacts: Contact[];
   deals: Deal[];
   activities: Activity[];
@@ -474,7 +474,7 @@ const SEED_DATA = {
   ],
 };
 
-export const useStore = create<GrowthOSStore>()(
+export const useStore = create<StaybooktStore>()(
   persist(
     (set, get) => ({
       contacts: [],
@@ -923,7 +923,7 @@ export const useStore = create<GrowthOSStore>()(
         })),
     }),
     {
-      name: 'growth-os-storage',
+      name: 'staybookt-storage',
       version: 5,
       migrate: () => ({
         contacts: [],

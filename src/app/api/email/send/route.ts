@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       .eq('org_id', user.orgId)
       .single();
 
-    const companyName = orgSettings?.company_name || 'GrowthOS';
+    const companyName = orgSettings?.company_name || 'Staybookt';
     const fromAddress = from || `notifications@${fromDomain}`;
 
     // Try to send via Resend

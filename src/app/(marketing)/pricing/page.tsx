@@ -323,8 +323,8 @@ export default function PricingPage() {
               <p className="text-gray-700 text-sm">{t('pricing.housecallPrice')}</p>
             </div>
             <div className="bg-emerald-50 rounded-xl p-6 border-2 border-[#27AE60]">
-              <h3 className="font-bold text-lg text-[#27AE60] mb-2">{t('pricing.growthOS')}</h3>
-              <p className="text-gray-700 text-sm">{t('pricing.growthOSPrice')}</p>
+              <h3 className="font-bold text-lg text-[#27AE60] mb-2">{t('pricing.staybookt')}</h3>
+              <p className="text-gray-700 text-sm">{t('pricing.staybooktPrice')}</p>
             </div>
           </div>
         </div>

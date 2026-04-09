@@ -1,18 +1,18 @@
 ---
 platform: "Capterra"
-product_name: "GrowthOS"
+product_name: "Staybookt"
 category: "Field Service Management"
 ---
 
-# GrowthOS — Capterra Listing
+# Staybookt — Capterra Listing
 
 ## Product Overview
 
-GrowthOS is a field service CRM designed for Canadian contractors. We help trades manage the full job lifecycle: capturing leads, scheduling jobs, tracking progress, and getting paid. Everything runs on one platform—no more juggling email, spreadsheets, and phone calls.
+Staybookt is a field service CRM designed for Canadian contractors. We help trades manage the full job lifecycle: capturing leads, scheduling jobs, tracking progress, and getting paid. Everything runs on one platform—no more juggling email, spreadsheets, and phone calls.
 
 Stop leaving money on the table. Catch every lead. Respond first. Get the job. Get paid fast.
 
-Whether you're a plumber in Ontario, an HVAC company in Quebec, or an electrician in BC, GrowthOS handles your taxes automatically, supports your language, and works on your team's phones.
+Whether you're a plumber in Ontario, an HVAC company in Quebec, or an electrician in BC, Staybookt handles your taxes automatically, supports your language, and works on your team's phones.
 
 ## Key Features
 
@@ -62,7 +62,7 @@ Whether you're a plumber in Ontario, an HVAC company in Quebec, or an electricia
 
 ---
 
-## Why Contractors Choose GrowthOS
+## Why Contractors Choose Staybookt
 
 - **Built in Canada, for Canada.** Understands Canadian taxes, languages, and business practices.
 - **No tax headaches.** Automatic calculations for every province. Compliance built in.
@@ -71,4 +71,4 @@ Whether you're a plumber in Ontario, an HVAC company in Quebec, or an electricia
 - **Bilingual by default.** Serve English and French customers natively.
 - **Real support.** Talk to Canadians who understand your business.
 
-GrowthOS isn't a generic CRM adapted for trades. It's built from the ground up for how Canadian contractors actually work.
+Staybookt isn't a generic CRM adapted for trades. It's built from the ground up for how Canadian contractors actually work.

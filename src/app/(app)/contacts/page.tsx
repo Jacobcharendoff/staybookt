@@ -175,7 +175,7 @@ export default function ContactsPage() {
     const url = URL.createObjectURL(blob);
     const now = new Date().toISOString().split('T')[0];
     link.setAttribute('href', url);
-    link.setAttribute('download', `growthOS-contacts-selected-${now}.csv`);
+    link.setAttribute('download', `staybookt-contacts-selected-${now}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -288,7 +288,7 @@ export default function ContactsPage() {
     const url = URL.createObjectURL(blob);
     const now = new Date().toISOString().split('T')[0];
     link.setAttribute('href', url);
-    link.setAttribute('download', `growthOS-contacts-${now}.csv`);
+    link.setAttribute('download', `staybookt-contacts-${now}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();

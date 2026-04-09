@@ -37,8 +37,8 @@ export default function LeadCapturePage() {
     }));
   };
 
-  const embedCode = `<!-- GrowthOS Lead Capture Form -->
-<div id="growthosForm" style="max-width: 500px; margin: 20px auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+  const embedCode = `<!-- Staybookt Lead Capture Form -->
+<div id="staybooktForm" style="max-width: 500px; margin: 20px auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
   <h2 style="margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #2c3e50;">${formTitle}</h2>
   <p style="margin: 0 0 24px; color: #666; font-size: 14px;">Quick form so we can reach you.</p>
 
@@ -104,7 +104,7 @@ export default function LeadCapturePage() {
 </div>
 
 <script>
-document.getElementById('growthosForm')?.querySelector('form')?.addEventListener('submit', function(e) {
+document.getElementById('staybooktForm')?.querySelector('form')?.addEventListener('submit', function(e) {
   e.preventDefault();
   alert('${successMessage}');
 });
@@ -423,7 +423,7 @@ document.getElementById('growthosForm')?.querySelector('form')?.addEventListener
             </h2>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-            Copy this code and paste it into your website. This form will send submissions to your GrowthOS dashboard.
+            Copy this code and paste it into your website. This form will send submissions to your Staybookt dashboard.
           </p>
 
           <div className="relative">

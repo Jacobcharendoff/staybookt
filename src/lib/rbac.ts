@@ -1,5 +1,5 @@
 /**
- * Role-Based Access Control (RBAC) System for GrowthOS
+ * Role-Based Access Control (RBAC) System for Staybookt
  *
  * Defines roles, permissions, and permission checking logic.
  * Roles follow a hierarchy: owner > admin > manager > technician > viewer

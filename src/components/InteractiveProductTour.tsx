@@ -402,7 +402,7 @@ export function InteractiveProductTour() {
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#2C3E50] to-[#34495E] flex items-center justify-center">
                     <span className="text-xs font-bold text-white">GO</span>
                   </div>
-                  <span className="text-sm font-medium text-slate-300">GrowthOS</span>
+                  <span className="text-sm font-medium text-slate-300">Staybookt</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

@@ -127,13 +127,13 @@ export async function dispatchWebhooks(
 async function dispatchWebhook(webhook: WebhookConfig, payload: WebhookPayload): Promise<void> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'User-Agent': 'GrowthOS/1.0',
+    'User-Agent': 'Staybookt/1.0',
   };
 
   // Add HMAC signature if secret is provided
   if (webhook.secret) {
     const signature = generateSignature(payload, webhook.secret);
-    headers['X-GrowthOS-Signature'] = signature;
+    headers['X-Staybookt-Signature'] = signature;
   }
 
   try {

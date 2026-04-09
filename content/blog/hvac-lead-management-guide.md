@@ -4,7 +4,7 @@ slug: hvac-lead-management-guide
 description: "30-40% of HVAC leads go unanswered. Learn the 3-step system to capture, respond, and track leads faster than your competition."
 keywords: "HVAC lead management, HVAC lead software, lead management system, speed to lead, HVAC automation"
 publishedAt: 2026-03-30
-author: "GrowthOS Team"
+author: "Staybookt Team"
 ---
 
 # How to Stop Losing HVAC Leads (The Complete Guide for 2026)
@@ -150,9 +150,9 @@ And that's a conservative estimate. Many HVAC companies see a 40% boost in jobs 
 
 ---
 
-## How GrowthOS Automates Your Lead Response
+## How Staybookt Automates Your Lead Response
 
-GrowthOS is built for HVAC companies and other field service trades. Here's what it does:
+Staybookt is built for HVAC companies and other field service trades. Here's what it does:
 
 - **Lead capture:** Connects to Google Local Services, Facebook, your website form, and incoming calls. One inbox.
 - **Real-time alerts:** Your team gets notified immediately on their phones.
@@ -181,7 +181,7 @@ That's it. Three steps. Already, you'll see faster response times and more jobs 
 
 ## Try It Free
 
-**See how GrowthOS automates your lead response.** Get every lead, respond faster, book more jobs. 14-day free trial. No credit card required.
+**See how Staybookt automates your lead response.** Get every lead, respond faster, book more jobs. 14-day free trial. No credit card required.
 
 [Start Your Free Trial]
 

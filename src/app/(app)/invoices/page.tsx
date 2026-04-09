@@ -349,7 +349,7 @@ export default function InvoicesPage() {
     const url = URL.createObjectURL(blob);
     const now = new Date().toISOString().split('T')[0];
     link.setAttribute('href', url);
-    link.setAttribute('download', `growthOS-invoices-${now}.csv`);
+    link.setAttribute('download', `staybookt-invoices-${now}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();

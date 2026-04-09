@@ -260,7 +260,7 @@ export default function EstimatePage() {
               From
             </h3>
             <div className="mt-2 text-gray-900">
-              <p className="font-semibold">GrowthOS Service</p>
+              <p className="font-semibold">Staybookt Service</p>
               <p className="text-sm">Professional Service Provider</p>
             </div>
           </div>

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Data Service Layer for GrowthOS
+ * Data Service Layer for Staybookt
  *
  * This is the bridge between the frontend and the API. It provides the same
  * interface that the Zustand store used to provide, but fetches/writes to

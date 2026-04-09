@@ -4,7 +4,7 @@ slug: canadian-contractor-crm-comparison
 description: "Most CRMs are built for American contractors. Learn why that's a problem for Canadian trades, and what a CRM actually needs to serve Canada."
 keywords: "Canadian contractor CRM, CRM for Canadian trades, Canada-built software, contractor management software"
 publishedAt: 2026-03-30
-author: "GrowthOS Team"
+author: "Staybookt Team"
 ---
 
 # Why Canadian Contractors Need a CRM Built for Canada (Not the US)
@@ -86,7 +86,7 @@ Let's walk through what a typical Quebec HVAC company needs:
 7. New invoice has to be issued
 8. Time wasted. Customer frustrated. Professional credibility dented.
 
-**The GrowthOS approach:**
+**The Staybookt approach:**
 1. Contractor enters the job details and selects Quebec as the location
 2. The system knows the job is residential HVAC installation
 3. It applies QST automatically (5% + GST + special rules for contractor work)
@@ -138,7 +138,7 @@ A Canadian-built CRM costs $200-$300 per month. You pay for it in week one.
 
 Let's compare what it actually looks like to use each:
 
-| Scenario | US CRM | GrowthOS |
+| Scenario | US CRM | Staybookt |
 |----------|--------|----------|
 | **New job setup** | Manually select tax rate from a dropdown | Auto-detects province, applies correct rules |
 | **French communication** | Contractor must translate manually | Native bilingual interface |
@@ -152,9 +152,9 @@ Over a month with 30 jobs, the American CRM costs you 3–5 extra hours. That's 
 
 ---
 
-## How GrowthOS Was Built for Canadian Contractors
+## How Staybookt Was Built for Canadian Contractors
 
-GrowthOS was built by Canadians, for Canadian contractors. Here's what that means in practice:
+Staybookt was built by Canadians, for Canadian contractors. Here's what that means in practice:
 
 **Tax engine:** Understands GST, HST, PST, and QST natively. Knows which rules apply to which jobs in which provinces. No manual calculations.
 
@@ -184,6 +184,6 @@ No more tax recalculation. No more translation. No more compliance confusion. Ju
 
 ## Try It Free
 
-**Start your free trial of GrowthOS.** 14 days, no credit card. See what it feels like to use a CRM built for Canadian contractors.
+**Start your free trial of Staybookt.** 14 days, no credit card. See what it feels like to use a CRM built for Canadian contractors.
 
 [Start Your Free Trial]

@@ -127,10 +127,10 @@ export default function NotFound() {
           </Link>
         </div>
 
-        {/* GrowthOS Branding Footer */}
+        {/* Staybookt Branding Footer */}
         <div className="border-t border-slate-200 pt-12 flex flex-col items-center">
           <div className="flex items-center gap-3 mb-2">
-            {/* GrowthOS Logo SVG - Minimal mark */}
+            {/* Staybookt Logo SVG - Minimal mark */}
             <svg
               className="w-8 h-8"
               viewBox="0 0 32 32"
@@ -149,7 +149,7 @@ export default function NotFound() {
                 strokeLinecap="round"
               />
             </svg>
-            <span className="text-lg font-bold text-slate-900">GrowthOS</span>
+            <span className="text-lg font-bold text-slate-900">Staybookt</span>
           </div>
           <p className="text-sm text-slate-500">
             The Operating System for Service Business Growth

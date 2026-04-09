@@ -1,16 +1,16 @@
 ---
 platform: "GetApp"
-product_name: "GrowthOS"
+product_name: "Staybookt"
 category: "Field Service Software"
 ---
 
-# GrowthOS — GetApp Listing
+# Staybookt — GetApp Listing
 
 ## Product Overview
 
-GrowthOS is a CRM and field service management platform built for Canadian trades. We help contractors manage their entire operation: leads, jobs, scheduling, invoicing, and payments. One platform. Less chaos.
+Staybookt is a CRM and field service management platform built for Canadian trades. We help contractors manage their entire operation: leads, jobs, scheduling, invoicing, and payments. One platform. Less chaos.
 
-Stop losing leads to the company that responds first. Stop calculating taxes by hand. Stop wondering if you're leaving money on the table. GrowthOS plugs those leaks.
+Stop losing leads to the company that responds first. Stop calculating taxes by hand. Stop wondering if you're leaving money on the table. Staybookt plugs those leaks.
 
 Built in Canada for Canadian contractors. Full support for all provinces. Bilingual. Mobile app that works in the field. Tax calculations that are actually correct.
 
@@ -55,11 +55,11 @@ Built in Canada for Canadian contractors. Full support for all provinces. Biling
 
 ---
 
-## Quick Comparison: Why Choose GrowthOS?
+## Quick Comparison: Why Choose Staybookt?
 
 **vs. Spreadsheets:** Stop managing jobs and customer info in Excel. Real-time visibility. Everything in one place.
 
-**vs. US-Built CRMs:** Most CRMs don't handle Canadian taxes properly. You do the math. We don't. GrowthOS gets it right automatically.
+**vs. US-Built CRMs:** Most CRMs don't handle Canadian taxes properly. You do the math. We don't. Staybookt gets it right automatically.
 
 **vs. Per-User Pricing:** Other platforms charge per person. We don't. Add your whole team. Same price.
 
@@ -81,4 +81,4 @@ Most contractors are up and running in less than a day.
 
 ---
 
-**GrowthOS:** The CRM built in Canada. For Canada. By Canadians who understand how you actually work.
+**Staybookt:** The CRM built in Canada. For Canada. By Canadians who understand how you actually work.

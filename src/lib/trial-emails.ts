@@ -1,5 +1,5 @@
 /**
- * Trial Onboarding Email Sequence for GrowthOS
+ * Trial Onboarding Email Sequence for Staybookt
  * 7 emails over 14 days designed to drive activation and conversion
  */
 
@@ -49,10 +49,10 @@ export const trialEmails: Record<number, TrialEmail> = {
   0: {
     day: 0,
     subject: "You're in. Let's book your first job.",
-    previewText: "Welcome to GrowthOS — complete your setup in 2 minutes",
+    previewText: "Welcome to Staybookt — complete your setup in 2 minutes",
     html: `
       <div style="${baseStyles}">
-        <h1 style="color: #27ae60; margin-bottom: 24px; font-size: 28px;">Welcome to GrowthOS, {{firstName}}!</h1>
+        <h1 style="color: #27ae60; margin-bottom: 24px; font-size: 28px;">Welcome to Staybookt, {{firstName}}!</h1>
 
         <p style="font-size: 16px; margin-bottom: 24px;">
           You're in. Your 14-day trial is live, and your pipeline is ready for leads.
@@ -83,7 +83,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>
@@ -100,7 +100,7 @@ export const trialEmails: Record<number, TrialEmail> = {
   1: {
     day: 1,
     subject: 'Your first lead is 60 seconds away',
-    previewText: 'Adding your first contact to GrowthOS — dead simple',
+    previewText: 'Adding your first contact to Staybookt — dead simple',
     html: `
       <div style="${baseStyles}">
         <h1 style="color: #27ae60; margin-bottom: 24px; font-size: 24px;">Your pipeline is waiting.</h1>
@@ -124,7 +124,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </ol>
 
         <p style="margin-bottom: 24px;">
-          Start here. Add one contact and you'll see why GrowthOS beats spreadsheets by a mile.
+          Start here. Add one contact and you'll see why Staybookt beats spreadsheets by a mile.
         </p>
 
         <a href="{{ctaUrl}}" style="${buttonStyles}">
@@ -137,7 +137,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>
@@ -153,7 +153,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
   3: {
     day: 3,
-    subject: 'While you were working, GrowthOS was too',
+    subject: 'While you were working, Staybookt was too',
     previewText: 'Meet Autopilot — the feature that pays for itself',
     html: `
       <div style="${baseStyles}">
@@ -164,7 +164,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </p>
 
         <p style="margin-bottom: 16px;">
-          We built GrowthOS to do your follow-ups so you don't have to.
+          We built Staybookt to do your follow-ups so you don't have to.
         </p>
 
         <p style="margin-bottom: 16px;">
@@ -192,7 +192,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>
@@ -223,7 +223,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </p>
 
         <p style="margin-bottom: 16px;">
-          In GrowthOS, here's how fast you move:
+          In Staybookt, here's how fast you move:
         </p>
 
         <ul style="margin-bottom: 24px; padding-left: 20px;">
@@ -247,7 +247,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>
@@ -274,7 +274,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </p>
 
         <p style="margin-bottom: 24px;">
-          <strong>Mike Reynolds runs an HVAC company in Denver.</strong> When he switched to GrowthOS, he didn't change his marketing. Didn't change his service. Didn't change anything about how he operates.
+          <strong>Mike Reynolds runs an HVAC company in Denver.</strong> When he switched to Staybookt, he didn't change his marketing. Didn't change his service. Didn't change anything about how he operates.
         </p>
 
         <p style="margin-bottom: 24px;">
@@ -282,7 +282,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </p>
 
         <p style="margin-bottom: 16px;">
-          <em>"Before GrowthOS, we were losing leads in Slack messages and notepads. Now everything's in one place. We respond faster. The pipeline is clean. We see what's actually happening."</em>
+          <em>"Before Staybookt, we were losing leads in Slack messages and notepads. Now everything's in one place. We respond faster. The pipeline is clean. We see what's actually happening."</em>
         </p>
 
         <p style="margin-bottom: 16px;">
@@ -303,7 +303,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>
@@ -334,7 +334,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </p>
 
         <p style="margin-bottom: 16px;">
-          <strong>If you keep GrowthOS:</strong>
+          <strong>If you keep Staybookt:</strong>
         </p>
 
         <ul style="margin-bottom: 24px; padding-left: 20px;">
@@ -369,7 +369,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>
@@ -412,7 +412,7 @@ export const trialEmails: Record<number, TrialEmail> = {
         </p>
 
         <p style="margin-bottom: 24px;">
-          This is the moment. You know what works. You know what GrowthOS can do. The only question left is: do you want to keep it?
+          This is the moment. You know what works. You know what Staybookt can do. The only question left is: do you want to keep it?
         </p>
 
         <a href="{{ctaUrl}}" style="${buttonStyles}">
@@ -429,7 +429,7 @@ export const trialEmails: Record<number, TrialEmail> = {
 
         <div style="${footerStyles}">
           <p style="margin: 0; margin-bottom: 8px;">
-            GrowthOS — Pipeline Management for Field Service
+            Staybookt — Pipeline Management for Field Service
           </p>
           <p style="margin: 0;">
             <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: none;">Unsubscribe</a>

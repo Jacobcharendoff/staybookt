@@ -388,7 +388,7 @@ function LoginPageInner() {
           </div>
         </div>
         <p className="text-sm text-slate-600 mt-2">
-          The operating system for service business growth
+          Stay booked. Stay paid.
         </p>
 
         {/* Social proof badges */}

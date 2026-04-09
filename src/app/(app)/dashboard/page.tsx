@@ -76,7 +76,7 @@ export default function Dashboard() {
     setMounted(true);
     initializeSeedData();
     // Check if welcome widget was dismissed
-    const isDismissed = localStorage.getItem('growth-os-welcome-dismissed') === 'true';
+    const isDismissed = localStorage.getItem('staybookt-welcome-dismissed') === 'true';
     setWelcomeDismissed(isDismissed);
   }, []);
 
@@ -116,13 +116,13 @@ export default function Dashboard() {
   useEffect(() => {
     if (allStepsCompleted && !welcomeDismissed) {
       setWelcomeDismissed(true);
-      localStorage.setItem('growth-os-welcome-dismissed', 'true');
+      localStorage.setItem('staybookt-welcome-dismissed', 'true');
     }
   }, [allStepsCompleted, welcomeDismissed]);
 
   const handleDismissWelcome = () => {
     setWelcomeDismissed(true);
-    localStorage.setItem('growth-os-welcome-dismissed', 'true');
+    localStorage.setItem('staybookt-welcome-dismissed', 'true');
   };
 
   if (!mounted) {
@@ -283,7 +283,7 @@ export default function Dashboard() {
             <span className="text-amber-600 dark:text-amber-400 text-lg">&#9888;</span>
             <div>
               <p className="font-semibold text-amber-800 dark:text-amber-200 text-sm">You&apos;re viewing sample data</p>
-              <p className="text-amber-700 dark:text-amber-300 text-xs">This demo data helps you explore GrowthOS. Clear it when you&apos;re ready to add your own.</p>
+              <p className="text-amber-700 dark:text-amber-300 text-xs">This demo data helps you explore Staybookt. Clear it when you&apos;re ready to add your own.</p>
             </div>
           </div>
           <button
@@ -302,7 +302,7 @@ export default function Dashboard() {
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-2">{t('dashboard.title')}</h1>
         <p className="text-slate-600 dark:text-slate-400 mb-4">
-          {deals.length === 0 ? 'Welcome to GrowthOS' : t('dashboard.welcomeBack')}
+          {deals.length === 0 ? 'Welcome to Staybookt' : t('dashboard.welcomeBack')}
         </p>
 
         {/* Date Range Selector */}
@@ -337,7 +337,7 @@ export default function Dashboard() {
                   <Rocket className="w-5 h-5 text-[#27AE60]" />
                 </div>
                 <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-                  Welcome to GrowthOS!
+                  Welcome to Staybookt!
                 </h2>
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-400">

@@ -1,5 +1,5 @@
 /**
- * Canadian Tax Engine for GrowthOS
+ * Canadian Tax Engine for Staybookt
  * Handles all 13 provinces/territories with correct 2026 tax rates
  * Supports HST, GST+PST, GST+QST, and GST-only systems
  */

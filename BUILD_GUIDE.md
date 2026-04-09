@@ -1,4 +1,4 @@
-# Growth OS MVP - Build & Run Guide
+# Staybookt MVP - Build & Run Guide
 
 ## Quick Start
 

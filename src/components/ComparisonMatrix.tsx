@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 interface ComparisonRow {
   feature: string;
-  growthOS: string;
+  staybookt: string;
   serviceTitan: string;
   jobber: string;
   housecallPro: string;
@@ -23,7 +23,7 @@ export function ComparisonMatrix() {
     // Pricing & Setup
     {
       feature: t('compare.startingPrice'),
-      growthOS: '$49/mo',
+      staybookt: '$49/mo',
       serviceTitan: '$300+/mo',
       jobber: '$69/mo',
       housecallPro: '$79/mo',
@@ -31,7 +31,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.freeTrial'),
-      growthOS: t('compare.freeTrialGrowthOS'),
+      staybookt: t('compare.freeTrialStaybookt'),
       serviceTitan: t('compare.freeTrialNo'),
       jobber: t('compare.freeTrialStandard'),
       housecallPro: t('compare.freeTrialStandard'),
@@ -39,7 +39,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.setupTime'),
-      growthOS: t('compare.setupTimeGrowthOS'),
+      staybookt: t('compare.setupTimeStaybookt'),
       serviceTitan: t('compare.setupTimeLong'),
       jobber: t('compare.setupTimeModerate'),
       housecallPro: t('compare.setupTimeModerate'),
@@ -47,7 +47,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.contractRequired'),
-      growthOS: t('compare.contractNo'),
+      staybookt: t('compare.contractNo'),
       serviceTitan: t('compare.contractYes'),
       jobber: t('compare.contractNo'),
       housecallPro: t('compare.contractNo'),
@@ -57,7 +57,7 @@ export function ComparisonMatrix() {
     // Core Features
     {
       feature: t('compare.crm'),
-      growthOS: '✓',
+      staybookt: '✓',
       serviceTitan: '✓',
       jobber: '✓',
       housecallPro: '✓',
@@ -65,7 +65,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.estimatesInvoicing'),
-      growthOS: '✓',
+      staybookt: '✓',
       serviceTitan: '✓',
       jobber: '✓',
       housecallPro: '✓',
@@ -73,7 +73,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.schedulingDispatch'),
-      growthOS: '✓',
+      staybookt: '✓',
       serviceTitan: '✓',
       jobber: '✓',
       housecallPro: '✓',
@@ -81,7 +81,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.automations'),
-      growthOS: t('compare.automationsGrowthOS'),
+      staybookt: t('compare.automationsStaybookt'),
       serviceTitan: t('compare.automationsAdvanced'),
       jobber: t('compare.automationsBasic'),
       housecallPro: t('compare.automationsBasic'),
@@ -90,7 +90,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.aiGrowthAdvisor'),
-      growthOS: t('compare.aiGrowthAdvisorYes'),
+      staybookt: t('compare.aiGrowthAdvisorYes'),
       serviceTitan: '✗',
       jobber: '✗',
       housecallPro: '✗',
@@ -101,7 +101,7 @@ export function ComparisonMatrix() {
     // Canadian-Specific
     {
       feature: t('compare.bilingualEnFr'),
-      growthOS: t('compare.bilingualNative'),
+      staybookt: t('compare.bilingualNative'),
       serviceTitan: '✗',
       jobber: '✗',
       housecallPro: '✗',
@@ -110,7 +110,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.canadianTax'),
-      growthOS: t('compare.canadianTaxAuto'),
+      staybookt: t('compare.canadianTaxAuto'),
       serviceTitan: t('compare.canadianTaxPartial'),
       jobber: '✓',
       housecallPro: '✓',
@@ -118,7 +118,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.homeStarsIntegration'),
-      growthOS: '✓',
+      staybookt: '✓',
       serviceTitan: '✗',
       jobber: '✗',
       housecallPro: '✗',
@@ -126,7 +126,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.canadianDataHosting'),
-      growthOS: '✓',
+      staybookt: '✓',
       serviceTitan: '✗',
       jobber: '✗',
       housecallPro: '✗',
@@ -134,7 +134,7 @@ export function ComparisonMatrix() {
     },
     {
       feature: t('compare.cadPricing'),
-      growthOS: '✓',
+      staybookt: '✓',
       serviceTitan: t('compare.usdOnly'),
       jobber: t('compare.usdOnly'),
       housecallPro: t('compare.usdOnly'),
@@ -187,7 +187,7 @@ export function ComparisonMatrix() {
                 </th>
                 <th className="text-center px-6 py-4 bg-gradient-to-b from-blue-50 to-blue-100/50 border-b-2 border-blue-200 min-w-[140px]">
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <span className="font-black text-slate-900 text-lg">GrowthOS</span>
+                    <span className="font-black text-slate-900 text-lg">Staybookt</span>
                     <Crown className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="inline-block bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
@@ -219,7 +219,7 @@ export function ComparisonMatrix() {
                       {row.feature}
                     </td>
                     <td className="px-6 py-4 text-center bg-blue-50/50 min-w-[140px]">
-                      {renderValue(row.growthOS)}
+                      {renderValue(row.staybookt)}
                     </td>
                     <td className="px-6 py-4 text-center text-slate-700 min-w-[140px]">{renderValue(row.serviceTitan)}</td>
                     <td className="px-6 py-4 text-center text-slate-700 min-w-[120px]">{renderValue(row.jobber)}</td>
@@ -241,7 +241,7 @@ export function ComparisonMatrix() {
                 </th>
                 <th className="text-center px-4 py-3 bg-gradient-to-b from-blue-50 to-blue-100/50 border-b-2 border-blue-200 min-w-28">
                   <div className="flex flex-col items-center gap-1">
-                    <span className="font-bold text-sm text-slate-900">GrowthOS</span>
+                    <span className="font-bold text-sm text-slate-900">Staybookt</span>
                     <Crown className="w-4 h-4 text-blue-600" />
                   </div>
                 </th>
@@ -267,7 +267,7 @@ export function ComparisonMatrix() {
                   <td className="px-4 py-3 font-medium text-slate-900 bg-white sticky left-0 z-10 min-w-32 text-sm">
                     {row.feature}
                   </td>
-                  <td className="px-4 py-3 text-center bg-blue-50/50 min-w-28">{renderValue(row.growthOS)}</td>
+                  <td className="px-4 py-3 text-center bg-blue-50/50 min-w-28">{renderValue(row.staybookt)}</td>
                   <td className="px-4 py-3 text-center text-slate-700 min-w-24">
                     {renderValue(row.serviceTitan)}
                   </td>
@@ -305,8 +305,8 @@ export function ComparisonMatrix() {
                         <div className="font-medium text-slate-900 mb-3 text-sm">{row.feature}</div>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center justify-between">
-                            <span className="text-slate-600 font-medium">GrowthOS:</span>
-                            <span className="font-bold text-blue-600">{renderValue(row.growthOS)}</span>
+                            <span className="text-slate-600 font-medium">Staybookt:</span>
+                            <span className="font-bold text-blue-600">{renderValue(row.staybookt)}</span>
                           </div>
                           <div className="flex items-center justify-between">
                             <span className="text-slate-600 font-medium">ServiceTitan:</span>

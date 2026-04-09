@@ -32,9 +32,9 @@ export default function VsHousecallProPage() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {/* GrowthOS */}
+            {/* Staybookt */}
             <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-[#27AE60]">
-              <h3 className="text-2xl font-bold text-[#27AE60] mb-6">GrowthOS</h3>
+              <h3 className="text-2xl font-bold text-[#27AE60] mb-6">Staybookt</h3>
               <div className="text-4xl font-bold text-slate-900 mb-2">$149/mo</div>
               <p className="text-slate-600 mb-8">{t('vsHousecallPro.plus')}</p>
 
@@ -135,7 +135,7 @@ export default function VsHousecallProPage() {
               <thead>
                 <tr className="bg-slate-900 text-white">
                   <th className="px-6 py-4 text-left font-semibold">Feature</th>
-                  <th className="px-6 py-4 text-center font-semibold">GrowthOS</th>
+                  <th className="px-6 py-4 text-center font-semibold">Staybookt</th>
                   <th className="px-6 py-4 text-center font-semibold">Housecall Pro</th>
                 </tr>
               </thead>
@@ -350,7 +350,7 @@ export default function VsHousecallProPage() {
         </div>
       </section>
 
-      {/* Where GrowthOS Pulls Ahead */}
+      {/* Where Staybookt Pulls Ahead */}
       <section className="py-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">

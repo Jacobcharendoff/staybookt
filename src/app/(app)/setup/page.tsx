@@ -156,7 +156,7 @@ export default function SetupPage() {
       setSetupCompleted(true);
 
       // Mark as onboarded in localStorage
-      localStorage.setItem('growth-os-onboarded', 'true');
+      localStorage.setItem('staybookt-onboarded', 'true');
 
       // Redirect to dashboard
       router.push('/dashboard');
@@ -551,7 +551,7 @@ export default function SetupPage() {
                         : 'bg-emerald-600 hover:bg-emerald-700 text-white'
                     }`}
                   >
-                    {isLoading ? 'Launching...' : 'Launch GrowthOS'}
+                    {isLoading ? 'Launching...' : 'Launch Staybookt'}
                   </button>
                 </div>
 

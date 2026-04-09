@@ -92,7 +92,7 @@ export default function PWAInstallPrompt() {
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                 GO
               </div>
-              <span className="font-semibold text-white">GrowthOS</span>
+              <span className="font-semibold text-white">Staybookt</span>
             </div>
             <button
               onClick={handleDismiss}
@@ -105,7 +105,7 @@ export default function PWAInstallPrompt() {
 
           {/* Message */}
           <p className="text-sm text-slate-300 mb-4">
-            Install GrowthOS for quick access and offline support.
+            Install Staybookt for quick access and offline support.
           </p>
 
           {/* Actions */}

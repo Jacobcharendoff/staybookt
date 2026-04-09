@@ -102,7 +102,7 @@ describe('Portal Token System', () => {
     it('should use default base URL if not provided', () => {
       const url = generatePortalUrl(contactId, orgId);
 
-      expect(url).toContain('https://growth-os-three-pied.vercel.app/portal/');
+      expect(url).toContain('https://staybookt-pied.vercel.app/portal/');
     });
 
     it('should include proper token in URL', () => {

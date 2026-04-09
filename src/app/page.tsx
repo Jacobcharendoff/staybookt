@@ -277,7 +277,7 @@ function Hero() {
 
           {/* Subheadline */}
           <p className="hero-reveal hero-reveal-delay-3 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            GrowthOS texts your leads back in under a minute, books the job while you're still on-site, and handles the invoice with the right provincial tax. You just do the work.
+            Staybookt texts your leads back in under a minute, books the job while you're still on-site, and handles the invoice with the right provincial tax. You just do the work.
           </p>
 
           {/* Social Proof — moved above CTA */}
@@ -313,7 +313,7 @@ function Hero() {
               href="/dashboard"
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 text-base font-semibold rounded-2xl transition-all border border-gray-300 shadow-sm hover:shadow-md"
             >
-              See GrowthOS in action
+              See Staybookt in action
             </Link>
           </div>
 
@@ -435,11 +435,11 @@ function InteractiveExplorer() {
   };
 
   const tabs = [
-    { id: 'dashboard', icon: <BarChart3 className="w-5 h-5" />, label: t('explorer.dashboard'), description: t('explorer.dashboardDesc'), url: 'app.growthos.com/dashboard' },
-    { id: 'pipeline', icon: <Layers className="w-5 h-5" />, label: t('explorer.pipeline'), description: t('explorer.pipelineDesc'), url: 'app.growthos.com/pipeline' },
-    { id: 'schedule', icon: <Calendar className="w-5 h-5" />, label: t('explorer.schedule'), description: t('explorer.scheduleDesc'), url: 'app.growthos.com/schedule' },
-    { id: 'automations', icon: <Zap className="w-5 h-5" />, label: t('explorer.autopilot'), description: t('explorer.autopilotDesc'), url: 'app.growthos.com/automations' },
-    { id: 'advisor', icon: <Bot className="w-5 h-5" />, label: t('explorer.growthAdvisor'), description: t('explorer.growthAdvisorDesc'), url: 'app.growthos.com/advisor' },
+    { id: 'dashboard', icon: <BarChart3 className="w-5 h-5" />, label: t('explorer.dashboard'), description: t('explorer.dashboardDesc'), url: 'app.staybookt.com/dashboard' },
+    { id: 'pipeline', icon: <Layers className="w-5 h-5" />, label: t('explorer.pipeline'), description: t('explorer.pipelineDesc'), url: 'app.staybookt.com/pipeline' },
+    { id: 'schedule', icon: <Calendar className="w-5 h-5" />, label: t('explorer.schedule'), description: t('explorer.scheduleDesc'), url: 'app.staybookt.com/schedule' },
+    { id: 'automations', icon: <Zap className="w-5 h-5" />, label: t('explorer.autopilot'), description: t('explorer.autopilotDesc'), url: 'app.staybookt.com/automations' },
+    { id: 'advisor', icon: <Bot className="w-5 h-5" />, label: t('explorer.growthAdvisor'), description: t('explorer.growthAdvisorDesc'), url: 'app.staybookt.com/advisor' },
   ];
 
   // ─── Static mockup content for each tab (no animation, clean and final-state) ───
@@ -855,7 +855,7 @@ function InteractiveExplorer() {
                   <div className="w-6 h-6 rounded-lg bg-[#2C3E50] flex items-center justify-center">
                     <Zap className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <span className="text-xs font-medium text-slate-400">GrowthOS</span>
+                  <span className="text-xs font-medium text-slate-400">Staybookt</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
@@ -1525,7 +1525,7 @@ export default function LandingPage() {
     document.documentElement.classList.remove('dark');
     return () => {
       try {
-        const t = localStorage.getItem('growth-os-theme');
+        const t = localStorage.getItem('staybookt-theme');
         if (t === 'dark') document.documentElement.classList.add('dark');
       } catch {}
     };

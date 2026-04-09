@@ -40,7 +40,7 @@ const tradeLinks = [
   { key: 'cleaning', href: '/cleaning' },
 ];
 
-// ─── Shared Navigation ───────────────────────────────
+// ─── Shared Navigation ─────────────────────────────────────────
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -77,7 +77,7 @@ export function Navigation() {
               <Zap className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight">
-              <span className="text-gray-900">Stay</span><span className="text-[#27AE60]">bookt</span>
+              <span className="text-gray-900">Growth</span><span className="text-[#27AE60]">OS</span>
             </span>
           </Link>
 
@@ -247,7 +247,7 @@ export function Navigation() {
   );
 }
 
-// ─── Shared Footer ──────────────────────────────────
+// ─── Shared Footer ──────────────────────────────────────────────
 export function Footer() {
   const { t } = useLanguage();
   const productLinks = [
@@ -285,7 +285,7 @@ export function Footer() {
               <div className="w-9 h-9 rounded-xl bg-[#2C3E50] flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-white"><span className="text-white">Stay</span><span className="text-[#27AE60]">bookt</span></span>
+              <span className="text-lg font-bold text-white"><span className="text-white">Growth</span><span className="text-[#27AE60]">OS</span></span>
             </Link>
             <p className="text-sm leading-relaxed">Stay booked. Stay paid. Purpose-built for the trades.</p>
             <div className="mt-3 flex items-center gap-1.5">
@@ -334,7 +334,7 @@ export function Footer() {
   );
 }
 
-// ─── CTA Section ─────────────────────────────────────
+// ─── CTA Section ────────────────────────────────────────────────
 export function CTASection() {
   const { t } = useLanguage();
   return (
@@ -368,7 +368,7 @@ export function CTASection() {
   );
 }
 
-// ─── Marketing Page Layout Wrapper ──────────────────────
+// ─── Marketing Page Layout Wrapper ──────────────────────────────
 export function MarketingLayout({ children }: { children: React.ReactNode }) {
   // Marketing pages are always light — strip dark class that may linger from app pages
   useEffect(() => {

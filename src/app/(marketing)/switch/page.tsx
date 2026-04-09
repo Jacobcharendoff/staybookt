@@ -97,7 +97,7 @@ function AnimatedCounter({
   );
 }
 
-export default function WhyGrowthOSPage() {
+export default function WhyStaybooktPage() {
   const { t } = useLanguage();
 
   // Scroll reveal sections
@@ -300,18 +300,18 @@ export default function WhyGrowthOSPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-8 hover:bg-emerald-500/15 transition-colors">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
               <span className="text-sm font-semibold text-emerald-300">
-                {t('whyGrowthOS.heroBadge')}
+                {t('whyStaybookt.heroBadge')}
               </span>
             </div>
 
             {/* Hero Title */}
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
-              {t('whyGrowthOS.heroTitle')}
+              {t('whyStaybookt.heroTitle')}
             </h1>
 
             {/* Hero Subtitle */}
             <p className="text-xl sm:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-              {t('whyGrowthOS.heroSubtitle')}
+              {t('whyStaybookt.heroSubtitle')}
             </p>
 
             {/* Stats Grid */}
@@ -322,7 +322,7 @@ export default function WhyGrowthOSPage() {
                   <AnimatedCounter end={40} suffix="%" />
                 </div>
                 <p className="text-slate-400 text-sm font-medium">
-                  {t('whyGrowthOS.statMoreJobsLabel')}
+                  {t('whyStaybookt.statMoreJobsLabel')}
                 </p>
               </div>
 
@@ -332,7 +332,7 @@ export default function WhyGrowthOSPage() {
                   <AnimatedCounter end={60} suffix="sec" />
                 </div>
                 <p className="text-slate-400 text-sm font-medium">
-                  {t('whyGrowthOS.statResponseTimeLabel')}
+                  {t('whyStaybookt.statResponseTimeLabel')}
                 </p>
               </div>
 
@@ -342,7 +342,7 @@ export default function WhyGrowthOSPage() {
                   <AnimatedCounter end={12} suffix="hrs" />
                 </div>
                 <p className="text-slate-400 text-sm font-medium">
-                  {t('whyGrowthOS.statSavedPerWeekLabel')}
+                  {t('whyStaybookt.statSavedPerWeekLabel')}
                 </p>
               </div>
 
@@ -352,7 +352,7 @@ export default function WhyGrowthOSPage() {
                   $<AnimatedCounter end={8500} />
                 </div>
                 <p className="text-slate-400 text-sm font-medium">
-                  {t('whyGrowthOS.statExtraRevenueLabel')}
+                  {t('whyStaybookt.statExtraRevenueLabel')}
                 </p>
               </div>
             </div>
@@ -363,14 +363,14 @@ export default function WhyGrowthOSPage() {
                 href="/login?tab=signup"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] text-white text-base font-semibold rounded-full hover:bg-[#229954] transition-all shadow-lg shadow-[#27AE60]/40 hover:shadow-[#229954]/50 hover:-translate-y-0.5"
               >
-                {t('whyGrowthOS.heroCta')}
+                {t('whyStaybookt.heroCta')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 href="/dashboard"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800/50 border border-slate-700 text-white text-base font-semibold rounded-full hover:bg-slate-800 hover:border-slate-600 transition-all"
               >
-                {t('whyGrowthOS.heroSecondaryCta')}
+                {t('whyStaybookt.heroSecondaryCta')}
                 <Sparkles className="w-5 h-5" />
               </Link>
             </div>
@@ -388,10 +388,10 @@ export default function WhyGrowthOSPage() {
             {/* Section Heading */}
             <div className="text-center mb-16 sm:mb-20">
               <h2 className="text-4xl sm:text-5xl font-black text-slate-900 mb-6">
-                {t('whyGrowthOS.painTitle')}
+                {t('whyStaybookt.painTitle')}
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                These challenges disappear when you move to GrowthOS.
+                These challenges disappear when you move to Staybookt.
               </p>
             </div>
 
@@ -408,10 +408,10 @@ export default function WhyGrowthOSPage() {
                   <TrendingUp className="w-7 h-7 text-rose-600" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-4">
-                  {t('whyGrowthOS.pain1Title')}
+                  {t('whyStaybookt.pain1Title')}
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
-                  {t('whyGrowthOS.pain1Desc')}
+                  {t('whyStaybookt.pain1Desc')}
                 </p>
               </div>
 
@@ -426,10 +426,10 @@ export default function WhyGrowthOSPage() {
                   <Languages className="w-7 h-7 text-rose-600" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-4">
-                  {t('whyGrowthOS.pain2Title')}
+                  {t('whyStaybookt.pain2Title')}
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
-                  {t('whyGrowthOS.pain2Desc')}
+                  {t('whyStaybookt.pain2Desc')}
                 </p>
               </div>
 
@@ -444,10 +444,10 @@ export default function WhyGrowthOSPage() {
                   <DollarSign className="w-7 h-7 text-rose-600" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-4">
-                  {t('whyGrowthOS.pain3Title')}
+                  {t('whyStaybookt.pain3Title')}
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
-                  {t('whyGrowthOS.pain3Desc')}
+                  {t('whyStaybookt.pain3Desc')}
                 </p>
               </div>
             </div>
@@ -465,7 +465,7 @@ export default function WhyGrowthOSPage() {
             {/* Section Heading */}
             <div className="text-center mb-16 sm:mb-20">
               <h2 className="text-4xl sm:text-5xl font-black text-white mb-6">
-                {t('whyGrowthOS.gainTitle')}
+                {t('whyStaybookt.gainTitle')}
               </h2>
               <p className="text-lg text-slate-400 max-w-2xl mx-auto">
                 Everything is built with Canadian service businesses in mind.
@@ -485,10 +485,10 @@ export default function WhyGrowthOSPage() {
                   <Languages className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t('whyGrowthOS.gain1Title')}
+                  {t('whyStaybookt.gain1Title')}
                 </h3>
                 <p className="text-slate-400">
-                  {t('whyGrowthOS.gain1Desc')}
+                  {t('whyStaybookt.gain1Desc')}
                 </p>
               </div>
 
@@ -503,10 +503,10 @@ export default function WhyGrowthOSPage() {
                   <DollarSign className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t('whyGrowthOS.gain2Title')}
+                  {t('whyStaybookt.gain2Title')}
                 </h3>
                 <p className="text-slate-400">
-                  {t('whyGrowthOS.gain2Desc')}
+                  {t('whyStaybookt.gain2Desc')}
                 </p>
               </div>
 
@@ -521,10 +521,10 @@ export default function WhyGrowthOSPage() {
                   <Zap className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t('whyGrowthOS.gain3Title')}
+                  {t('whyStaybookt.gain3Title')}
                 </h3>
                 <p className="text-slate-400">
-                  {t('whyGrowthOS.gain3Desc')}
+                  {t('whyStaybookt.gain3Desc')}
                 </p>
               </div>
 
@@ -539,10 +539,10 @@ export default function WhyGrowthOSPage() {
                   <Shield className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t('whyGrowthOS.gain4Title')}
+                  {t('whyStaybookt.gain4Title')}
                 </h3>
                 <p className="text-slate-400">
-                  {t('whyGrowthOS.gain4Desc')}
+                  {t('whyStaybookt.gain4Desc')}
                 </p>
               </div>
 
@@ -557,10 +557,10 @@ export default function WhyGrowthOSPage() {
                   <Star className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t('whyGrowthOS.gain5Title')}
+                  {t('whyStaybookt.gain5Title')}
                 </h3>
                 <p className="text-slate-400">
-                  {t('whyGrowthOS.gain5Desc')}
+                  {t('whyStaybookt.gain5Desc')}
                 </p>
               </div>
 
@@ -575,10 +575,10 @@ export default function WhyGrowthOSPage() {
                   <Target className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t('whyGrowthOS.gain6Title')}
+                  {t('whyStaybookt.gain6Title')}
                 </h3>
                 <p className="text-slate-400">
-                  {t('whyGrowthOS.gain6Desc')}
+                  {t('whyStaybookt.gain6Desc')}
                 </p>
               </div>
             </div>
@@ -596,10 +596,10 @@ export default function WhyGrowthOSPage() {
             {/* Section Heading */}
             <div className="text-center mb-16 sm:mb-20">
               <h2 className="text-4xl sm:text-5xl font-black text-slate-900 mb-6">
-                {t('whyGrowthOS.switchTitle')}
+                {t('whyStaybookt.switchTitle')}
               </h2>
               <p className="text-lg text-slate-600">
-                {t('whyGrowthOS.switchSubtitle')}
+                {t('whyStaybookt.switchSubtitle')}
               </p>
             </div>
 
@@ -615,10 +615,10 @@ export default function WhyGrowthOSPage() {
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">
-                    {t('whyGrowthOS.step1Label')}
+                    {t('whyStaybookt.step1Label')}
                   </h3>
                   <p className="text-slate-600">
-                    {t('whyGrowthOS.step1Desc')}
+                    {t('whyStaybookt.step1Desc')}
                   </p>
                 </div>
 
@@ -628,10 +628,10 @@ export default function WhyGrowthOSPage() {
                     <ArrowRight className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">
-                    {t('whyGrowthOS.step2Label')}
+                    {t('whyStaybookt.step2Label')}
                   </h3>
                   <p className="text-slate-600">
-                    {t('whyGrowthOS.step2Desc')}
+                    {t('whyStaybookt.step2Desc')}
                   </p>
                 </div>
 
@@ -641,10 +641,10 @@ export default function WhyGrowthOSPage() {
                     <Zap className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">
-                    {t('whyGrowthOS.step3Label')}
+                    {t('whyStaybookt.step3Label')}
                   </h3>
                   <p className="text-slate-600">
-                    {t('whyGrowthOS.step3Desc')}
+                    {t('whyStaybookt.step3Desc')}
                   </p>
                 </div>
               </div>
@@ -663,7 +663,7 @@ export default function WhyGrowthOSPage() {
             {/* Section Heading */}
             <div className="text-center mb-16 sm:mb-20">
               <h2 className="text-4xl sm:text-5xl font-black text-white mb-6">
-                {t('whyGrowthOS.comingFromTitle')}
+                {t('whyStaybookt.comingFromTitle')}
               </h2>
               <p className="text-lg text-slate-400">
                 We make switching painless, regardless of where you're coming from.
@@ -675,16 +675,16 @@ export default function WhyGrowthOSPage() {
               {/* ServiceTitan */}
               <div className="p-8 bg-slate-900/50 border border-slate-800/50 rounded-2xl backdrop-blur-sm hover:border-emerald-500/50 transition-all group">
                 <h3 className="text-xl font-bold text-white mb-4 group-hover:text-emerald-300 transition-colors">
-                  {t('whyGrowthOS.fromST')}
+                  {t('whyStaybookt.fromST')}
                 </h3>
                 <p className="text-slate-400 mb-6 leading-relaxed">
-                  {t('whyGrowthOS.fromSTDesc')}
+                  {t('whyStaybookt.fromSTDesc')}
                 </p>
                 <Link
                   href="/vs-servicetitan"
                   className="inline-flex items-center gap-2 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors"
                 >
-                  {t('whyGrowthOS.fromSTLink')}
+                  {t('whyStaybookt.fromSTLink')}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -692,16 +692,16 @@ export default function WhyGrowthOSPage() {
               {/* Jobber */}
               <div className="p-8 bg-slate-900/50 border border-slate-800/50 rounded-2xl backdrop-blur-sm hover:border-emerald-500/50 transition-all group">
                 <h3 className="text-xl font-bold text-white mb-4 group-hover:text-emerald-300 transition-colors">
-                  {t('whyGrowthOS.fromJobber')}
+                  {t('whyStaybookt.fromJobber')}
                 </h3>
                 <p className="text-slate-400 mb-6 leading-relaxed">
-                  {t('whyGrowthOS.fromJobberDesc')}
+                  {t('whyStaybookt.fromJobberDesc')}
                 </p>
                 <Link
                   href="/vs-jobber"
                   className="inline-flex items-center gap-2 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors"
                 >
-                  {t('whyGrowthOS.fromJobberLink')}
+                  {t('whyStaybookt.fromJobberLink')}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -709,16 +709,16 @@ export default function WhyGrowthOSPage() {
               {/* Housecall Pro */}
               <div className="p-8 bg-slate-900/50 border border-slate-800/50 rounded-2xl backdrop-blur-sm hover:border-emerald-500/50 transition-all group">
                 <h3 className="text-xl font-bold text-white mb-4 group-hover:text-emerald-300 transition-colors">
-                  {t('whyGrowthOS.fromHCP')}
+                  {t('whyStaybookt.fromHCP')}
                 </h3>
                 <p className="text-slate-400 mb-6 leading-relaxed">
-                  {t('whyGrowthOS.fromHCPDesc')}
+                  {t('whyStaybookt.fromHCPDesc')}
                 </p>
                 <Link
                   href="/vs-housecall-pro"
                   className="inline-flex items-center gap-2 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors"
                 >
-                  {t('whyGrowthOS.fromHCPLink')}
+                  {t('whyStaybookt.fromHCPLink')}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -743,10 +743,10 @@ export default function WhyGrowthOSPage() {
             {/* Section Heading */}
             <div className="text-center mb-16 sm:mb-20">
               <h2 className="text-4xl sm:text-5xl font-black text-slate-900 mb-6">
-                {t('whyGrowthOS.socialTitle')}
+                {t('whyStaybookt.socialTitle')}
               </h2>
               <p className="text-lg text-slate-600">
-                Hear from service business owners using GrowthOS right now.
+                Hear from service business owners using Staybookt right now.
               </p>
             </div>
 
@@ -768,14 +768,14 @@ export default function WhyGrowthOSPage() {
                   ))}
                 </div>
                 <p className="text-slate-700 mb-6 italic leading-relaxed">
-                  "{t('whyGrowthOS.testimonial1Quote')}"
+                  "{t('whyStaybookt.testimonial1Quote')}"
                 </p>
                 <div className="border-l-4 border-emerald-600 pl-4">
                   <p className="font-bold text-slate-900">
-                    {t('whyGrowthOS.testimonial1Name')}
+                    {t('whyStaybookt.testimonial1Name')}
                   </p>
                   <p className="text-sm text-slate-600">
-                    {t('whyGrowthOS.testimonial1Company')}
+                    {t('whyStaybookt.testimonial1Company')}
                   </p>
                 </div>
               </div>
@@ -796,14 +796,14 @@ export default function WhyGrowthOSPage() {
                   ))}
                 </div>
                 <p className="text-slate-700 mb-6 italic leading-relaxed">
-                  "{t('whyGrowthOS.testimonial2Quote')}"
+                  "{t('whyStaybookt.testimonial2Quote')}"
                 </p>
                 <div className="border-l-4 border-emerald-600 pl-4">
                   <p className="font-bold text-slate-900">
-                    {t('whyGrowthOS.testimonial2Name')}
+                    {t('whyStaybookt.testimonial2Name')}
                   </p>
                   <p className="text-sm text-slate-600">
-                    {t('whyGrowthOS.testimonial2Company')}
+                    {t('whyStaybookt.testimonial2Company')}
                   </p>
                 </div>
               </div>
@@ -824,14 +824,14 @@ export default function WhyGrowthOSPage() {
                   ))}
                 </div>
                 <p className="text-slate-700 mb-6 italic leading-relaxed">
-                  "{t('whyGrowthOS.testimonial3Quote')}"
+                  "{t('whyStaybookt.testimonial3Quote')}"
                 </p>
                 <div className="border-l-4 border-emerald-600 pl-4">
                   <p className="font-bold text-slate-900">
-                    {t('whyGrowthOS.testimonial3Name')}
+                    {t('whyStaybookt.testimonial3Name')}
                   </p>
                   <p className="text-sm text-slate-600">
-                    {t('whyGrowthOS.testimonial3Company')}
+                    {t('whyStaybookt.testimonial3Company')}
                   </p>
                 </div>
               </div>

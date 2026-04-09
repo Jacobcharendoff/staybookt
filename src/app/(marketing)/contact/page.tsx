@@ -171,8 +171,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-600">{t('contactPage.email')}</p>
-                      <a href="mailto:hello@growthos.ca" className="font-semibold text-gray-900 hover:text-blue-600">
-                        hello@growthos.ca
+                      <a href="mailto:hello@staybookt.ca" className="font-semibold text-gray-900 hover:text-blue-600">
+                        hello@staybookt.ca
                       </a>
                     </div>
                   </div>

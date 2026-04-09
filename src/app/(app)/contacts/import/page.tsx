@@ -418,7 +418,7 @@ export default function ContactsImportPage() {
         {/* Field Mappings */}
         <div>
           <h3 className={`text-sm font-semibold mb-4 ${isDark ? 'text-slate-200' : 'text-slate-900'}`}>
-            Map to GrowthOS Fields
+            Map to Staybookt Fields
           </h3>
           <div className="space-y-3">
             {Object.keys(fieldMappings).map((column) => (

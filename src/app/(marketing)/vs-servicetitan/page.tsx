@@ -39,7 +39,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.monthlyPlan')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.monthlyGrowthOS')}
+                    {t('vsServicetitan.monthlyStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.monthlyServiceTitan')}
@@ -51,7 +51,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.setupFee')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.setupGrowthOS')}
+                    {t('vsServicetitan.setupStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.setupServiceTitan')}
@@ -63,7 +63,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.contractTerms')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.contractGrowthOS')}
+                    {t('vsServicetitan.contractStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.contractServiceTitan')}
@@ -75,7 +75,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.earlyExit')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.exitGrowthOS')}
+                    {t('vsServicetitan.exitStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.exitServiceTitan')}
@@ -87,7 +87,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.setupTime')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.timeGrowthOS')}
+                    {t('vsServicetitan.timeStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.timeServiceTitan')}
@@ -99,7 +99,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.canadianTaxes')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.taxesGrowthOS')}
+                    {t('vsServicetitan.taxesStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.taxesServiceTitan')}
@@ -111,7 +111,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.frenchSupport')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.frenchGrowthOS')}
+                    {t('vsServicetitan.frenchStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.frenchServiceTitan')}
@@ -123,7 +123,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.homeStars')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.homeStarsGrowthOS')}
+                    {t('vsServicetitan.homeStarsStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.homeStarsServiceTitan')}
@@ -135,7 +135,7 @@ export default function VsServiceTitanPage() {
                     {t('vsServicetitan.support')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-blue-600">
-                    {t('vsServicetitan.supportGrowthOS')}
+                    {t('vsServicetitan.supportStaybookt')}
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-red-600">
                     {t('vsServicetitan.supportServiceTitan')}
@@ -182,7 +182,7 @@ export default function VsServiceTitanPage() {
         </div>
       </section>
 
-      {/* Who GrowthOS is Built For */}
+      {/* Who Staybookt is Built For */}
       <section className="w-full bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -228,9 +228,9 @@ export default function VsServiceTitanPage() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {/* GrowthOS Pricing */}
+            {/* Staybookt Pricing */}
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">GrowthOS</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Staybookt</h3>
               <div className="space-y-4">
                 <div className="p-6 bg-blue-50 border border-blue-200 rounded-2xl">
                   <p className="text-sm font-semibold text-gray-600 mb-2">STARTER</p>
@@ -289,7 +289,7 @@ export default function VsServiceTitanPage() {
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               <div>
-                <p className="text-sm text-gray-200 mb-2">GrowthOS (Pro)</p>
+                <p className="text-sm text-gray-200 mb-2">Staybookt (Pro)</p>
                 <p className="text-2xl font-bold text-[#27AE60]">$1,788/year</p>
                 <p className="text-sm text-gray-200 mt-2">$149/month, no setup fee, cancel anytime.</p>
               </div>

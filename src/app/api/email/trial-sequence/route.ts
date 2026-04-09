@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data: emailData, error: emailError } = await resend.emails.send({
-      from: `${orgData?.name || 'GrowthOS'} <onboarding@resend.dev>`,
+      from: `${orgData?.name || 'Staybookt'} <onboarding@resend.dev>`,
       to: userData.email,
       subject: renderedEmail.subject,
       html: renderedEmail.html,
