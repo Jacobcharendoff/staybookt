@@ -27,6 +27,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://growth-os-three-pied.vercel.app/sitemap.xml',
+    sitemap: 'https://staybookt-pied.vercel.app/sitemap.xml',
   };
 }

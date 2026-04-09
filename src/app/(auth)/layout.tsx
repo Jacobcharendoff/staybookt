@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Login - GrowthOS",
-  description: "Sign in or create your GrowthOS account",
+  title: "Login - Staybookt",
+  description: "Sign in or create your Staybookt account",
 };
 
 export default function AuthLayout({

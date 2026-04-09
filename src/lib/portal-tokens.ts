@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-const PORTAL_SECRET = process.env.PORTAL_SECRET || 'growthos-portal-default';
+const PORTAL_SECRET = process.env.PORTAL_SECRET || 'staybookt-portal-default';
 
 /**
  * Generate a portal token for a customer
@@ -22,7 +22,7 @@ export function validatePortalToken(token: string, contactId: string, orgId: str
 /**
  * Generate a full portal URL
  */
-export function generatePortalUrl(contactId: string, orgId: string, baseUrl: string = 'https://growth-os-three-pied.vercel.app'): string {
+export function generatePortalUrl(contactId: string, orgId: string, baseUrl: string = 'https://staybookt-pied.vercel.app'): string {
   const token = generatePortalToken(contactId, orgId);
   return `${baseUrl}/portal/${token}`;
 }

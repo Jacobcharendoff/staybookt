@@ -1,7 +1,7 @@
 /**
  * Lead Scoring System - Main Export
  *
- * Complete lead qualification engine for GrowthOS
+ * Complete lead qualification engine for Staybookt
  * Exports all scoring functions and types
  */
 
