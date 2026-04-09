@@ -1,5 +1,5 @@
-// Service Worker for GrowthOS PWA
-const CACHE_VERSION = 'growthOS-v1';
+// Service Worker for Staybookt PWA
+const CACHE_VERSION = 'staybookt-v1';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const API_CACHE = `${CACHE_VERSION}-api`;
@@ -43,7 +43,7 @@ self.addEventListener('activate', (event) => {
       const cacheNames = await caches.keys();
       await Promise.all(
         cacheNames
-          .filter(name => name.startsWith('growthOS-') && !name.includes(CACHE_VERSION))
+          .filter(name => name.startsWith('staybookt-') && !name.includes(CACHE_VERSION))
           .map(name => caches.delete(name))
       );
       self.clients.claim();

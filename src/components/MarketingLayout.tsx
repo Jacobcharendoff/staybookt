@@ -40,7 +40,7 @@ const tradeLinks = [
   { key: 'cleaning', href: '/cleaning' },
 ];
 
-// ─── Shared Navigation ─────────────────────────────────────────
+// ─── Shared Navigation ───────────────────────────────
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -77,7 +77,7 @@ export function Navigation() {
               <Zap className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight">
-              <span className="text-gray-900">Growth</span><span className="text-[#27AE60]">OS</span>
+              <span className="text-gray-900">Stay</span><span className="text-[#27AE60]">bookt</span>
             </span>
           </Link>
 
@@ -126,7 +126,7 @@ export function Navigation() {
             </Link>
 
             <Link href="/switch" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              {t('nav.whyGrowthOS')}
+              {t('nav.whyStaybookt')}
             </Link>
           </div>
 
@@ -209,7 +209,7 @@ export function Navigation() {
                 className="text-sm font-medium text-gray-600 py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                {t('nav.whyGrowthOS')}
+                {t('nav.whyStaybookt')}
               </Link>
 
               {/* Mobile Language Toggle */}
@@ -247,14 +247,14 @@ export function Navigation() {
   );
 }
 
-// ─── Shared Footer ──────────────────────────────────────────────
+// ─── Shared Footer ──────────────────────────────────
 export function Footer() {
   const { t } = useLanguage();
   const productLinks = [
     { label: t('nav.product'), href: '/#product' },
     { label: t('nav.automations'), href: '/automations' },
     { label: t('marketing.pricing'), href: '/pricing' },
-    { label: t('nav.whyGrowthOS'), href: '/switch' },
+    { label: t('nav.whyStaybookt'), href: '/switch' },
     { label: t('footer.vsServiceTitan'), href: '/vs-servicetitan' },
     { label: t('footer.vsJobber'), href: '/vs-jobber' },
     { label: t('footer.vsHousecallPro'), href: '/vs-housecall-pro' },
@@ -285,9 +285,9 @@ export function Footer() {
               <div className="w-9 h-9 rounded-xl bg-[#2C3E50] flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-white"><span className="text-white">Growth</span><span className="text-[#27AE60]">OS</span></span>
+              <span className="text-lg font-bold text-white"><span className="text-white">Stay</span><span className="text-[#27AE60]">bookt</span></span>
             </Link>
-            <p className="text-sm leading-relaxed">The operating system for service business growth. Purpose-built for the trades.</p>
+            <p className="text-sm leading-relaxed">Stay booked. Stay paid. Purpose-built for the trades.</p>
             <div className="mt-3 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-red-400" />
               <span className="text-xs text-slate-500">{t('marketing.madeInCanada')}</span>
@@ -323,9 +323,9 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500" suppressHydrationWarning>&copy; {new Date().getFullYear()} GrowthOS. All rights reserved. {t('marketing.madeInCanada')}.</p>
+          <p className="text-xs text-slate-500" suppressHydrationWarning>&copy; {new Date().getFullYear()} Staybookt. All rights reserved. {t('marketing.madeInCanada')}.</p>
           <div className="flex items-center gap-4">
-            <a href="mailto:hello@growthos.ca" className="text-slate-500 hover:text-white transition-colors"><Mail className="w-5 h-5" /></a>
+            <a href="mailto:hello@staybookt.ca" className="text-slate-500 hover:text-white transition-colors"><Mail className="w-5 h-5" /></a>
             <a href="tel:+18005550199" className="text-slate-500 hover:text-white transition-colors"><Phone className="w-5 h-5" /></a>
           </div>
         </div>
@@ -334,7 +334,7 @@ export function Footer() {
   );
 }
 
-// ─── CTA Section ────────────────────────────────────────────────
+// ─── CTA Section ─────────────────────────────────────
 export function CTASection() {
   const { t } = useLanguage();
   return (
@@ -368,7 +368,7 @@ export function CTASection() {
   );
 }
 
-// ─── Marketing Page Layout Wrapper ──────────────────────────────
+// ─── Marketing Page Layout Wrapper ──────────────────────
 export function MarketingLayout({ children }: { children: React.ReactNode }) {
   // Marketing pages are always light — strip dark class that may linger from app pages
   useEffect(() => {
@@ -376,7 +376,7 @@ export function MarketingLayout({ children }: { children: React.ReactNode }) {
     return () => {
       // Restore dark class when navigating back to app if user preference is dark
       try {
-        const t = localStorage.getItem('growth-os-theme');
+        const t = localStorage.getItem('staybookt-theme');
         if (t === 'dark') document.documentElement.classList.add('dark');
       } catch {}
     };
