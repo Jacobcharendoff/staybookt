@@ -42,4 +42,5 @@ next-env.d.ts
 
 # development artifacts
 /docs/
-.claude/
+.claude/*
+!.claude/commands/
