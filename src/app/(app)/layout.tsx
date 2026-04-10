@@ -53,9 +53,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
             <span
               className={`font-bold text-sm ${isDark ? 'text-white' : 'text-slate-900'}`}
             >
-              Growth
+              Stay
               <span className={isDark ? 'text-emerald-400' : 'text-[#27AE60]'}>
-                OS
+                bookt
               </span>
             </span>
           </div>

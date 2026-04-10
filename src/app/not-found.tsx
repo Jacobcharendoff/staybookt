@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Zap } from 'lucide-react';
 
 export default function NotFound() {
   return (
@@ -130,26 +131,12 @@ export default function NotFound() {
         {/* Staybookt Branding Footer */}
         <div className="border-t border-slate-200 pt-12 flex flex-col items-center">
           <div className="flex items-center gap-3 mb-2">
-            {/* Staybookt Logo SVG - Minimal mark */}
-            <svg
-              className="w-8 h-8"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8 16C8 11.58 11.58 8 16 8C20.42 8 24 11.58 24 16C24 20.42 20.42 24 16 24C11.58 24 8 20.42 8 16Z"
-                stroke="#2C3E50"
-                strokeWidth="2"
-              />
-              <path
-                d="M16 12V20M12 16H20"
-                stroke="#27AE60"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="text-lg font-bold text-slate-900">Staybookt</span>
+            <div className="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center">
+              <Zap className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-bold text-slate-900">
+              Stay<span className="text-[#27AE60]">bookt</span>
+            </span>
           </div>
           <p className="text-sm text-slate-500">
             The Operating System for Service Business Growth

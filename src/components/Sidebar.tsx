@@ -78,7 +78,9 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
       {/* Brand */}
       <div className={`px-4 py-4 lg:px-6 lg:py-6 border-b ${sectionBorder} flex items-center justify-between`} role="banner">
         <Link href="/" className="flex items-center gap-2">
-          <Zap className={`w-7 h-7 ${brandAccent}`} />
+          <div className="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center">
+            <Zap className="w-5 h-5 text-white" />
+          </div>
           <div className="flex flex-col">
             <span className={`font-bold text-lg tracking-tight ${brandText}`}>
               Stay<span className={brandAccent}>bookt</span>
