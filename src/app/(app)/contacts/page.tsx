@@ -34,6 +34,11 @@ interface ContactFormData {
   type: ContactType;
   source: LeadSource;
   notes: string;
+  occupation?: string;
+  kids?: string;
+  pets?: string;
+  interests?: string;
+  personalNotes?: string;
 }
 
 export default function ContactsPage() {
@@ -247,6 +252,11 @@ export default function ContactsPage() {
       type: contact.type,
       source: contact.source,
       notes: contact.notes,
+      occupation: contact.occupation,
+      kids: contact.kids,
+      pets: contact.pets,
+      interests: contact.interests,
+      personalNotes: contact.personalNotes,
     });
     setIsEditContactOpen(true);
   };
@@ -571,6 +581,11 @@ function AddContactModal({ isOpen, onClose, onSubmit, isDark }: AddContactModalP
     type: 'lead',
     source: 'referral',
     notes: '',
+    occupation: '',
+    kids: '',
+    pets: '',
+    interests: '',
+    personalNotes: '',
   });
 
   const handleSubmit = (e: FormEvent) => {
@@ -588,6 +603,11 @@ function AddContactModal({ isOpen, onClose, onSubmit, isDark }: AddContactModalP
       type: 'lead',
       source: 'referral',
       notes: '',
+      occupation: '',
+      kids: '',
+      pets: '',
+      interests: '',
+      personalNotes: '',
     });
   };
 
@@ -755,6 +775,12 @@ function AddContactModal({ isOpen, onClose, onSubmit, isDark }: AddContactModalP
             />
           </div>
 
+          <PersonalDetailsSection
+            formData={formData}
+            setFormData={setFormData}
+            isDark={isDark}
+          />
+
           <div className="flex gap-3 pt-4">
             <button
               type="submit"
@@ -776,6 +802,128 @@ function AddContactModal({ isOpen, onClose, onSubmit, isDark }: AddContactModalP
           </div>
         </form>
       </div>
+    </div>
+  );
+}
+
+interface PersonalDetailsSectionProps {
+  formData: ContactFormData;
+  setFormData: (data: ContactFormData) => void;
+  isDark: boolean;
+}
+
+function PersonalDetailsSection({
+  formData,
+  setFormData,
+  isDark,
+}: PersonalDetailsSectionProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className={`border rounded-lg ${isDark ? 'border-slate-600' : 'border-slate-300'}`}>
+      <button
+        type="button"
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={`w-full px-4 py-3 flex items-center justify-between ${
+          isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-50'
+        } transition-colors`}
+      >
+        <span className={`font-medium text-sm ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+          Personal Details
+        </span>
+        <span className={`text-slate-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+          ▼
+        </span>
+      </button>
+
+      {isExpanded && (
+        <div className={`px-4 py-4 space-y-4 border-t ${isDark ? 'border-slate-600 bg-slate-700/50' : 'border-slate-300 bg-slate-50'}`}>
+          <div>
+            <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              Occupation
+            </label>
+            <input
+              type="text"
+              value={formData.occupation || ''}
+              onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+              placeholder="e.g., Architect, Engineer"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDark
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+                  : 'bg-white border-slate-300 text-slate-900'
+              }`}
+            />
+          </div>
+
+          <div>
+            <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              Kids
+            </label>
+            <input
+              type="text"
+              value={formData.kids || ''}
+              onChange={(e) => setFormData({ ...formData, kids: e.target.value })}
+              placeholder="e.g., 2 boys - Jake 8, Liam 5"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDark
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+                  : 'bg-white border-slate-300 text-slate-900'
+              }`}
+            />
+          </div>
+
+          <div>
+            <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              Pets
+            </label>
+            <input
+              type="text"
+              value={formData.pets || ''}
+              onChange={(e) => setFormData({ ...formData, pets: e.target.value })}
+              placeholder="e.g., Golden retriever named Max"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDark
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+                  : 'bg-white border-slate-300 text-slate-900'
+              }`}
+            />
+          </div>
+
+          <div>
+            <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              Interests
+            </label>
+            <input
+              type="text"
+              value={formData.interests || ''}
+              onChange={(e) => setFormData({ ...formData, interests: e.target.value })}
+              placeholder="e.g., Soccer, golf, wine collecting"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDark
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+                  : 'bg-white border-slate-300 text-slate-900'
+              }`}
+            />
+          </div>
+
+          <div>
+            <label className={`block text-sm font-medium mb-1 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              Personal Notes
+            </label>
+            <textarea
+              value={formData.personalNotes || ''}
+              onChange={(e) => setFormData({ ...formData, personalNotes: e.target.value })}
+              placeholder="Add personal context for building relationships..."
+              rows={2}
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                isDark
+                  ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
+                  : 'bg-white border-slate-300 text-slate-900'
+              }`}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -960,6 +1108,12 @@ function EditContactModal({
               }`}
             />
           </div>
+
+          <PersonalDetailsSection
+            formData={formData}
+            setFormData={setFormData}
+            isDark={isDark}
+          />
 
           <div className="flex gap-3 pt-4">
             <button

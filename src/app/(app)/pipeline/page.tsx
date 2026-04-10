@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 import { Deal, PipelineStage, Contact, LeadSource } from '@/types';
 import { Modal } from '@/components/Modal';
 import { AddDealForm } from '@/components/AddDealForm';
-import { Plus, Search, X, Eye, List, Edit, Phone, MessageSquare, Trash2 } from 'lucide-react';
+import { Plus, Search, X, Eye, List, Edit, Phone, MessageSquare, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -73,8 +73,9 @@ export default function PipelinePage() {
   const [sourceFilter, setSourceFilter] = useState<string>('all');
   const [valueFilter, setValueFilter] = useState<string>('all');
   const [filteredDeals, setFilteredDeals] = useState<Deal[]>([]);
-  const [sortColumn, setSortColumn] = useState<'title' | 'contact' | 'value' | 'days'>('title');
+  const [sortColumn, setSortColumn] = useState<'title' | 'contact' | 'stage' | 'value' | 'days'>('title');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [dateRangeFilter, setDateRangeFilter] = useState<'all' | '7days' | '30days' | '90days' | 'year'>('all');
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [mobileSelectedStage, setMobileSelectedStage] = useState<PipelineStage>('new_lead');
 
@@ -85,9 +86,16 @@ export default function PipelinePage() {
 
   useEffect(() => {
     applyFilters();
-  }, [deals, debouncedSearchQuery, assignedToFilter, sourceFilter, valueFilter]);
+  }, [deals, debouncedSearchQuery, assignedToFilter, sourceFilter, valueFilter, dateRangeFilter, sortColumn, sortDir]);
 
   const applyFilters = () => {
+    const now = Date.now();
+    const getDaysCutoff = (days: number) => now - days * 24 * 60 * 60 * 1000;
+    const getCurrentYearStart = () => {
+      const d = new Date();
+      return new Date(d.getFullYear(), 0, 1).getTime();
+    };
+
     let filtered = deals.filter((deal) => {
       const contact = getContact(deal.contactId);
       const contactName = contact?.name || '';
@@ -111,7 +119,48 @@ export default function PipelinePage() {
         (valueFilter === '5k_10k' && deal.value >= 5000 && deal.value < 10000) ||
         (valueFilter === 'over_10k' && deal.value >= 10000);
 
-      return matchesSearch && matchesAssigned && matchesSource && matchesValue;
+      const matchesDateRange =
+        dateRangeFilter === 'all' ||
+        (dateRangeFilter === '7days' && deal.createdAt >= getDaysCutoff(7)) ||
+        (dateRangeFilter === '30days' && deal.createdAt >= getDaysCutoff(30)) ||
+        (dateRangeFilter === '90days' && deal.createdAt >= getDaysCutoff(90)) ||
+        (dateRangeFilter === 'year' && deal.createdAt >= getCurrentYearStart());
+
+      return matchesSearch && matchesAssigned && matchesSource && matchesValue && matchesDateRange;
+    });
+
+    // Apply sorting
+    const stageOrder: Record<PipelineStage, number> = {
+      new_lead: 0,
+      contacted: 1,
+      estimate_scheduled: 2,
+      estimate_sent: 3,
+      booked: 4,
+      in_progress: 5,
+      completed: 6,
+      invoiced: 7,
+    };
+
+    filtered.sort((a, b) => {
+      let compareValue = 0;
+
+      if (sortColumn === 'title') {
+        compareValue = a.title.localeCompare(b.title);
+      } else if (sortColumn === 'contact') {
+        const contactA = getContact(a.contactId)?.name || '';
+        const contactB = getContact(b.contactId)?.name || '';
+        compareValue = contactA.localeCompare(contactB);
+      } else if (sortColumn === 'stage') {
+        compareValue = (stageOrder[a.stage] ?? 999) - (stageOrder[b.stage] ?? 999);
+      } else if (sortColumn === 'value') {
+        compareValue = a.value - b.value;
+      } else if (sortColumn === 'days') {
+        const daysA = Math.floor((Date.now() - a.updatedAt) / (1000 * 60 * 60 * 24));
+        const daysB = Math.floor((Date.now() - b.updatedAt) / (1000 * 60 * 60 * 24));
+        compareValue = daysA - daysB;
+      }
+
+      return sortDir === 'asc' ? compareValue : -compareValue;
     });
 
     setFilteredDeals(filtered);
@@ -217,10 +266,20 @@ export default function PipelinePage() {
     setAssignedToFilter('all');
     setSourceFilter('all');
     setValueFilter('all');
+    setDateRangeFilter('all');
+  };
+
+  const toggleSort = (column: 'title' | 'contact' | 'stage' | 'value' | 'days') => {
+    if (sortColumn === column) {
+      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDir('asc');
+    }
   };
 
   const hasActiveFilters =
-    debouncedSearchQuery || assignedToFilter !== 'all' || sourceFilter !== 'all' || valueFilter !== 'all';
+    debouncedSearchQuery || assignedToFilter !== 'all' || sourceFilter !== 'all' || valueFilter !== 'all' || dateRangeFilter !== 'all';
 
   if (!mounted) {
     return (
@@ -305,6 +364,18 @@ export default function PipelinePage() {
             <option value="1k_5k">{t('pipeline.1kTo5k')}</option>
             <option value="5k_10k">{t('pipeline.5kTo10k')}</option>
             <option value="over_10k">{t('pipeline.over10k')}</option>
+          </select>
+
+          <select
+            value={dateRangeFilter}
+            onChange={(e) => setDateRangeFilter(e.target.value as any)}
+            className="px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            <option value="all">{t('pipeline.allTime')}</option>
+            <option value="7days">{t('pipeline.last7Days')}</option>
+            <option value="30days">{t('pipeline.last30Days')}</option>
+            <option value="90days">{t('pipeline.last90Days')}</option>
+            <option value="year">{t('pipeline.thisYear')}</option>
           </select>
 
           {hasActiveFilters && (
@@ -542,52 +613,109 @@ export default function PipelinePage() {
 
       {/* List View */}
       {viewMode === 'list' && (
-        <div className="flex-1 overflow-auto p-3 sm:p-6">
-          <table className="w-full text-sm min-w-[600px]">
-            <thead className="bg-slate-100 dark:bg-slate-800 sticky top-0">
-              <tr>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700">
-                  Title
-                </th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.contact')}</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">Stage</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.value')}</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-900 dark:text-white">{t('form.assignedTo')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-slate-900 dark:text-white">Days</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDeals.map((deal) => {
-                const contact = getContact(deal.contactId);
-                const daysInStage = getDaysInStage(deal);
-                const stageInfo = PIPELINE_STAGES_CONFIG.find((s) => s.stage === deal.stage);
+        <div className="flex-1 overflow-auto p-3 sm:p-6 flex flex-col">
+          {/* Summary bar above table */}
+          <div className="mb-4 px-3 sm:px-4 py-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+              {t('pipeline.showing')} <span className="font-bold">{filteredDeals.length}</span> {t('pipeline.of')} <span className="font-bold">{deals.length}</span> {t('pipeline.deals')} • <span className="font-bold">${filteredDeals.reduce((sum, d) => sum + d.value, 0).toLocaleString()}</span> {t('pipeline.totalValue')}
+            </p>
+          </div>
 
-                return (
-                  <tr
-                    key={deal.id}
-                    className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    <td className="px-4 py-3">
-                      <Link href={`/pipeline/${deal.id}`} className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
-                        {deal.title}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{contact?.name}</td>
-                    <td className="px-4 py-3">
-                      <span className={`text-xs font-medium px-2 py-1 rounded ${stageInfo?.color}`}>
-                        {t((stageInfo as any)?.labelKey)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-right font-semibold text-slate-900 dark:text-white">
-                      ${deal.value.toLocaleString()}
-                    </td>
-                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{deal.assignedTo}</td>
-                    <td className="px-4 py-3 text-right text-slate-600 dark:text-slate-400">{daysInStage}d</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="flex-1 overflow-x-auto">
+            <table className="w-full text-sm min-w-[600px]">
+              <thead className="bg-slate-100 dark:bg-slate-800 sticky top-0">
+                <tr>
+                  <th className="text-left px-3 py-2 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <button
+                      onClick={() => toggleSort('title')}
+                      className="flex items-center gap-1 whitespace-nowrap"
+                    >
+                      {t('pipeline.columnTitle')}
+                      {sortColumn === 'title' && (
+                        sortDir === 'asc' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />
+                      )}
+                    </button>
+                  </th>
+                  <th className="text-left px-3 py-2 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <button
+                      onClick={() => toggleSort('contact')}
+                      className="flex items-center gap-1 whitespace-nowrap"
+                    >
+                      {t('form.contact')}
+                      {sortColumn === 'contact' && (
+                        sortDir === 'asc' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />
+                      )}
+                    </button>
+                  </th>
+                  <th className="text-left px-3 py-2 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <button
+                      onClick={() => toggleSort('stage')}
+                      className="flex items-center gap-1 whitespace-nowrap"
+                    >
+                      {t('pipeline.stage')}
+                      {sortColumn === 'stage' && (
+                        sortDir === 'asc' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />
+                      )}
+                    </button>
+                  </th>
+                  <th className="text-right px-3 py-2 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <button
+                      onClick={() => toggleSort('value')}
+                      className="flex items-center justify-end gap-1 whitespace-nowrap ml-auto"
+                    >
+                      {t('form.value')}
+                      {sortColumn === 'value' && (
+                        sortDir === 'asc' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />
+                      )}
+                    </button>
+                  </th>
+                  <th className="text-left px-3 py-2 font-semibold text-slate-900 dark:text-white">{t('form.assignedTo')}</th>
+                  <th className="text-right px-3 py-2 font-semibold text-slate-900 dark:text-white cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <button
+                      onClick={() => toggleSort('days')}
+                      className="flex items-center justify-end gap-1 whitespace-nowrap ml-auto"
+                    >
+                      {t('pipeline.days')}
+                      {sortColumn === 'days' && (
+                        sortDir === 'asc' ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />
+                      )}
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDeals.map((deal) => {
+                  const contact = getContact(deal.contactId);
+                  const daysInStage = getDaysInStage(deal);
+                  const stageInfo = PIPELINE_STAGES_CONFIG.find((s) => s.stage === deal.stage);
+
+                  return (
+                    <tr
+                      key={deal.id}
+                      className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <td className="px-3 py-2">
+                        <Link href={`/pipeline/${deal.id}`} className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+                          {deal.title}
+                        </Link>
+                      </td>
+                      <td className="px-3 py-2 text-slate-600 dark:text-slate-400">{contact?.name}</td>
+                      <td className="px-3 py-2">
+                        <span className={`text-xs font-medium px-2 py-1 rounded ${stageInfo?.color}`}>
+                          {t((stageInfo as any)?.labelKey)}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-right font-semibold text-slate-900 dark:text-white">
+                        ${deal.value.toLocaleString()}
+                      </td>
+                      <td className="px-3 py-2 text-slate-600 dark:text-slate-400">{deal.assignedTo}</td>
+                      <td className="px-3 py-2 text-right text-slate-600 dark:text-slate-400">{daysInStage}d</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

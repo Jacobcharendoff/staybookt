@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store';
 import { useTheme } from '@/components/ThemeProvider';
-import { BarChart3, Download, Calendar } from 'lucide-react';
+import { BarChart3, Download, Calendar, MapPin } from 'lucide-react';
 import { Deal, Invoice, Estimate, Contact } from '@/types';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 type DateRange = 'week' | 'month' | 'quarter' | 'year' | 'all';
 
@@ -50,6 +51,15 @@ interface OutstandingInvoice {
   customerName: string;
   amount: number;
   daysOverdue: number;
+}
+
+interface CityCluster {
+  city: string;
+  customerCount: number;
+  totalDealValue: number;
+  averageDealValue: number;
+  topService: string;
+  topSource: string;
 }
 
 export default function ReportsPage() {
@@ -224,6 +234,67 @@ export default function ReportsPage() {
   };
 
   const topServices = getTopServices();
+
+  // City Clusters (Geographic Analysis)
+  const getCityClusters = (): CityCluster[] => {
+    const cityMap: Record<string, { contacts: Contact[]; deals: Deal[] }> = {};
+
+    // Group contacts by city
+    contacts.forEach(contact => {
+      const city = contact.city || 'Unknown';
+      if (!cityMap[city]) {
+        cityMap[city] = { contacts: [], deals: [] };
+      }
+      cityMap[city].contacts.push(contact);
+    });
+
+    // Group deals by contact city
+    filteredDeals.forEach(deal => {
+      const contact = contacts.find(c => c.id === deal.contactId);
+      if (contact) {
+        const city = contact.city || 'Unknown';
+        if (cityMap[city]) {
+          cityMap[city].deals.push(deal);
+        }
+      }
+    });
+
+    // Calculate cluster metrics
+    const clusters = Object.entries(cityMap)
+      .filter(([_, data]) => data.contacts.length > 0)
+      .map(([city, data]) => {
+        const totalDealValue = data.deals.reduce((sum, d) => sum + d.value, 0);
+        const averageDealValue = data.deals.length > 0 ? Math.round(totalDealValue / data.deals.length) : 0;
+
+        // Find top service (most common deal title)
+        const serviceMap: Record<string, number> = {};
+        data.deals.forEach(d => {
+          serviceMap[d.title] = (serviceMap[d.title] || 0) + 1;
+        });
+        const topService = Object.entries(serviceMap).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
+
+        // Find top source (most common contact source)
+        const sourceMap: Record<string, number> = {};
+        data.contacts.forEach(c => {
+          sourceMap[c.source] = (sourceMap[c.source] || 0) + 1;
+        });
+        const topSource = Object.entries(sourceMap).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
+
+        return {
+          city,
+          customerCount: data.contacts.length,
+          totalDealValue,
+          averageDealValue,
+          topService,
+          topSource,
+        };
+      })
+      .sort((a, b) => b.customerCount - a.customerCount);
+
+    return clusters;
+  };
+
+  const cityClusters = getCityClusters();
 
   // Aging Estimates
   const getAgingEstimates = (): AgingEstimate[] => {
@@ -626,6 +697,124 @@ export default function ReportsPage() {
               </table>
             </div>
           </div>
+        </div>
+
+        {/* Customer Map - Geographic Cluster Analysis */}
+        <div className={`${cardBg} border rounded-xl p-6 mb-8`}>
+          <div className="flex items-center gap-3 mb-6">
+            <MapPin className="w-6 h-6" style={{ color: '#27AE60' }} />
+            <div>
+              <h2 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Customer Map</h2>
+              <p className={`text-sm ${cardText}`}>Geographic cluster analysis</p>
+            </div>
+          </div>
+
+          {cityClusters.length > 0 ? (
+            <>
+              {/* Scatter Chart Visualization */}
+              <div className="mb-8 bg-opacity-30 rounded-lg p-4" style={{ backgroundColor: isDark ? '#1e293b' : '#f8fafc' }}>
+                <div className="mb-2">
+                  <p className={`text-xs ${cardText} mb-4`}>Bubble size represents customer count</p>
+                </div>
+                <ResponsiveContainer width="100%" height={350}>
+                  <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} />
+                    <XAxis
+                      dataKey="customerCount"
+                      name="Number of Customers"
+                      type="number"
+                      stroke={isDark ? '#94a3b8' : '#64748b'}
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Number of Customers', position: 'insideBottomRight', offset: -10, fill: isDark ? '#94a3b8' : '#64748b' }}
+                    />
+                    <YAxis
+                      dataKey="totalDealValue"
+                      name="Total Deal Value"
+                      type="number"
+                      stroke={isDark ? '#94a3b8' : '#64748b'}
+                      tick={{ fontSize: 12 }}
+                      label={{ value: 'Total Deal Value ($)', angle: -90, position: 'insideLeft', offset: 10, fill: isDark ? '#94a3b8' : '#64748b' }}
+                    />
+                    <Tooltip
+                      cursor={{ strokeDasharray: '3 3' }}
+                      contentStyle={{
+                        backgroundColor: isDark ? '#1e293b' : '#ffffff',
+                        border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`,
+                        borderRadius: '8px',
+                        color: isDark ? '#e2e8f0' : '#1e293b',
+                      }}
+                      formatter={(value, name) => {
+                        if (name === 'Total Deal Value') {
+                          return [`$${Number(value).toLocaleString('en-US', { maximumFractionDigits: 0 })}`, name];
+                        }
+                        return [value, name];
+                      }}
+                      labelFormatter={(label) => `Customers: ${label}`}
+                    />
+                    <Scatter
+                      name="Cities"
+                      data={cityClusters.map(c => ({
+                        customerCount: c.customerCount,
+                        totalDealValue: c.totalDealValue,
+                        city: c.city,
+                        name: c.city,
+                      }))}
+                      fill="#27AE60"
+                      shape={(props: any) => {
+                        const { cx, cy, payload } = props;
+                        if (!payload) return null;
+                        const radius = Math.sqrt(payload.customerCount) * 2.5;
+                        return (
+                          <circle cx={cx} cy={cy} r={radius} fill="#27AE60" opacity={0.7} />
+                        );
+                      }}
+                    />
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Customer Summary Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className={`${isDark ? 'bg-slate-700 text-slate-200' : 'bg-slate-100 text-slate-700'}`}>
+                    <tr>
+                      <th className="px-4 py-3 text-left font-semibold">City</th>
+                      <th className="px-4 py-3 text-center font-semibold">Customers</th>
+                      <th className="px-4 py-3 text-right font-semibold">Total Value</th>
+                      <th className="px-4 py-3 text-right font-semibold">Avg Value</th>
+                      <th className="px-4 py-3 text-left font-semibold">Top Service</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cityClusters.map((cluster, idx) => (
+                      <tr key={idx} className={`border-t ${tableRow}`}>
+                        <td className={`px-4 py-3 ${tableText} font-medium`}>{cluster.city}</td>
+                        <td className={`px-4 py-3 ${tableText} text-center`}>
+                          <span className="inline-block px-2.5 py-1 rounded-full bg-[#27AE60] bg-opacity-20 text-[#27AE60] text-xs font-semibold">
+                            {cluster.customerCount}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right text-[#27AE60] font-semibold">
+                          ${cluster.totalDealValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                        </td>
+                        <td className="px-4 py-3 text-right text-slate-500">
+                          ${cluster.averageDealValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                        </td>
+                        <td className={`px-4 py-3 ${tableText}`}>
+                          <div className="truncate text-xs">{cluster.topService}</div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div className={`text-center py-12 ${cardText}`}>
+              <MapPin className="w-10 h-10 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">No customer data available for this date range</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -34,9 +34,17 @@ export interface Contact {
   email: string;
   phone: string;
   address: string;
+  city?: string;
+  state?: string;
+  zip?: string;
   type: ContactType;
   source: LeadSource;
   notes: string;
+  occupation?: string;
+  kids?: string;
+  pets?: string;
+  interests?: string;
+  personalNotes?: string;
   createdAt: number;
 }
 

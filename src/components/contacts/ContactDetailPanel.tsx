@@ -2,7 +2,7 @@
 
 import { Contact } from '@/types';
 import { LeadSourceBadge } from '@/components/LeadSourceBadge';
-import { X, DollarSign, FileText } from 'lucide-react';
+import { X, DollarSign, FileText, Briefcase, Baby, PawPrint, Heart, StickyNote } from 'lucide-react';
 
 interface ContactDetailPanelProps {
   isOpen: boolean;
@@ -108,6 +108,72 @@ export function ContactDetailPanel({
             )}
           </div>
         </div>
+
+        {/* Personal Details */}
+        {(contact.occupation || contact.kids || contact.pets || contact.interests || contact.personalNotes) && (
+          <div className={`px-6 py-4 border-b ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+            <h3 className={`text-sm font-semibold mb-3 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+              Personal Details
+            </h3>
+            <div className="space-y-3">
+              {contact.occupation && (
+                <div className="flex gap-3">
+                  <Briefcase className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                  <div>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Occupation</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
+                      {contact.occupation}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {contact.kids && (
+                <div className="flex gap-3">
+                  <Baby className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
+                  <div>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Kids</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
+                      {contact.kids}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {contact.pets && (
+                <div className="flex gap-3">
+                  <PawPrint className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isDark ? 'text-amber-400' : 'text-amber-600'}`} />
+                  <div>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Pets</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
+                      {contact.pets}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {contact.interests && (
+                <div className="flex gap-3">
+                  <Heart className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                  <div>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Interests</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
+                      {contact.interests}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {contact.personalNotes && (
+                <div className="flex gap-3">
+                  <StickyNote className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
+                  <div>
+                    <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Personal Notes</p>
+                    <p className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
+                      {contact.personalNotes}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* KPI Cards */}
         <div className={`px-6 py-4 border-b ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
