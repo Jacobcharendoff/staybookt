@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Zap, TrendingUp, Wrench, Flame, Plug, TreePine, Home, Sparkles, Star, Shield, CheckCircle2, MapPin } from 'lucide-react';
+import { Zap, TrendingUp, Wrench, Flame, Plug, TreePine, Home, Sparkles, Star, Shield, CheckCircle2, MapPin, Eye, EyeOff } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
 import { useLanguage } from '@/components/LanguageProvider';
 
@@ -47,6 +47,8 @@ function LoginPageInner() {
     confirmPassword: '',
   });
   const [resetEmail, setResetEmail] = useState('');
+  const [showPassword, setShowPassword] = useState<Record<string, boolean>>({});
+  const [signupComplete, setSignupComplete] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -170,10 +172,7 @@ function LoginPageInner() {
           }).eq('id', data.user.id);
         }
 
-        setMessage({
-          type: 'success',
-          text: t('auth.accountCreatedCheckEmail'),
-        });
+        setSignupComplete(true);
         // Reset form
         setForm({
           fullName: '',
@@ -414,7 +413,29 @@ function LoginPageInner() {
 
       {/* Card */}
       <div className="relative bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden" style={{ zIndex: 10 }}>
-        {view === 'form' && (
+        {signupComplete ? (
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="w-8 h-8 text-[#27AE60]" />
+            </div>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">
+              {t('auth.accountCreated') || 'Account created!'}
+            </h2>
+            <p className="text-slate-600 mb-6 max-w-sm mx-auto">
+              {t('auth.checkEmailConfirmation') || 'We sent a confirmation link to your email. Open it to activate your account, then come back here to sign in.'}
+            </p>
+            <button
+              onClick={() => {
+                setSignupComplete(false);
+                setTab('signin');
+                clearMessage();
+              }}
+              className="w-full py-2.5 px-4 bg-[#27AE60] hover:bg-[#229954] text-white font-medium rounded-lg transition-colors"
+            >
+              {t('auth.backToSignIn') || 'Back to sign in'}
+            </button>
+          </div>
+        ) : view === 'form' && (
           <>
             {/* Tabs */}
             <div className="flex border-b border-slate-200">
@@ -497,18 +518,28 @@ function LoginPageInner() {
                     >
                       {t('auth.password')}
                     </label>
-                    <input
-                      id="password-signin"
-                      name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      value={form.password}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                      placeholder="••••••••"
-                      disabled={loading}
-                    />
+                    <div className="relative">
+                      <input
+                        id="password-signin"
+                        name="password"
+                        type={showPassword['signin'] ? 'text' : 'password'}
+                        autoComplete="current-password"
+                        required
+                        value={form.password}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-2.5 pr-11 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
+                        placeholder="••••••••"
+                        disabled={loading}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(prev => ({ ...prev, signin: !prev.signin }))}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                        tabIndex={-1}
+                      >
+                        {showPassword['signin'] ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-2">
@@ -583,18 +614,28 @@ function LoginPageInner() {
                     >
                       {t('auth.password')}
                     </label>
-                    <input
-                      id="password-signup"
-                      name="password"
-                      type="password"
-                      autoComplete="new-password"
-                      required
-                      value={form.password}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                      placeholder="••••••••"
-                      disabled={loading}
-                    />
+                    <div className="relative">
+                      <input
+                        id="password-signup"
+                        name="password"
+                        type={showPassword['signup'] ? 'text' : 'password'}
+                        autoComplete="new-password"
+                        required
+                        value={form.password}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-2.5 pr-11 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
+                        placeholder="••••••••"
+                        disabled={loading}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(prev => ({ ...prev, signup: !prev.signup }))}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                        tabIndex={-1}
+                      >
+                        {showPassword['signup'] ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
                     <p className="text-xs text-slate-500 mt-1">
                       {t('auth.atLeast8Characters')}
                     </p>
@@ -607,18 +648,28 @@ function LoginPageInner() {
                     >
                       {t('auth.confirmPassword')}
                     </label>
-                    <input
-                      id="confirm-password"
-                      name="confirmPassword"
-                      type="password"
-                      autoComplete="new-password"
-                      required
-                      value={form.confirmPassword}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                      placeholder="••••••••"
-                      disabled={loading}
-                    />
+                    <div className="relative">
+                      <input
+                        id="confirm-password"
+                        name="confirmPassword"
+                        type={showPassword['confirm'] ? 'text' : 'password'}
+                        autoComplete="new-password"
+                        required
+                        value={form.confirmPassword}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-2.5 pr-11 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
+                        placeholder="••••••••"
+                        disabled={loading}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(prev => ({ ...prev, confirm: !prev.confirm }))}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                        tabIndex={-1}
+                      >
+                        {showPassword['confirm'] ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
                   </div>
 
                   <button

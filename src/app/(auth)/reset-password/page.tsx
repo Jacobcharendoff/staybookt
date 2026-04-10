@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Zap } from 'lucide-react';
+import { Zap, Eye, EyeOff } from 'lucide-react';
 import { getSupabase } from '@/lib/supabase';
 
 interface MessageState {
@@ -17,6 +17,7 @@ export default function ResetPasswordPage() {
   const [message, setMessage] = useState<MessageState>({ type: null, text: '' });
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState<Record<string, boolean>>({});
   const [hasToken, setHasToken] = useState(false);
 
   useEffect(() => {
@@ -175,17 +176,27 @@ export default function ResetPasswordPage() {
                 >
                   New Password
                 </label>
-                <input
-                  id="new-password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                  placeholder="••••••••"
-                  disabled={loading || redirecting}
-                />
+                <div className="relative">
+                  <input
+                    id="new-password"
+                    type={showPassword['new'] ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 pr-11 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
+                    placeholder="••••••••"
+                    disabled={loading || redirecting}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => ({ ...prev, new: !prev.new }))}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword['new'] ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
                 <p className="text-xs text-slate-500 mt-1">
                   At least 8 characters
                 </p>
@@ -198,17 +209,27 @@ export default function ResetPasswordPage() {
                 >
                   Confirm Password
                 </label>
-                <input
-                  id="confirm-new-password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
-                  placeholder="••••••••"
-                  disabled={loading || redirecting}
-                />
+                <div className="relative">
+                  <input
+                    id="confirm-new-password"
+                    type={showPassword['confirmNew'] ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full px-4 py-2.5 pr-11 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#27AE60] focus:border-transparent transition-all"
+                    placeholder="••••••••"
+                    disabled={loading || redirecting}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => ({ ...prev, confirmNew: !prev.confirmNew }))}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword['confirmNew'] ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
 
               <button
