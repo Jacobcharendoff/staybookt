@@ -393,7 +393,7 @@ export default function ContactsImportPage() {
   // Render Step 2: Map Fields
   const renderMapStep = () => (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
         {/* CSV Columns */}
         <div>
           <h3 className={`text-sm font-semibold mb-4 ${isDark ? 'text-slate-200' : 'text-slate-900'}`}>

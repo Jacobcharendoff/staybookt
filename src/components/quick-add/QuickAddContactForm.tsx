@@ -32,7 +32,7 @@ export function QuickAddContactForm({
   isDark,
 }: QuickAddContactFormProps) {
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-3 sm:space-y-4">
       <div>
         <label
           className={`block text-sm font-medium mb-2 ${

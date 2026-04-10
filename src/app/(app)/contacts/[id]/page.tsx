@@ -265,7 +265,7 @@ export default function ContactDetailPage() {
 
       {/* Main Content - Two Column Layout */}
       <div
-        className={`flex-1 overflow-y-auto px-4 sm:px-8 py-4 sm:py-6 grid gap-6 lg:grid-cols-3 xl:grid-cols-4`}
+        className={`flex-1 overflow-y-auto px-4 sm:px-8 py-4 sm:py-6 grid gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4`}
       >
         {/* Left Column - Contact Info Card */}
         <div

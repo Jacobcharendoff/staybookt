@@ -602,9 +602,9 @@ export default function EstimateDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className={`flex-1 overflow-y-auto px-4 sm:px-8 py-6 grid gap-6 lg:grid-cols-4 print:grid-cols-1 print:gap-0 print:px-0 print:py-0`}>
+      <div className={`flex-1 overflow-y-auto px-4 sm:px-8 py-6 grid gap-3 sm:gap-4 sm:p-6 lg:grid-cols-4 print:grid-cols-1 print:gap-0 print:px-0 print:py-0`}>
         {/* Document Preview */}
-        <div id="estimate-document" className={`lg:col-span-3 print:col-span-1 print:shadow-none print:rounded-none print:p-0 ${isDark ? 'bg-white text-slate-900' : 'bg-white'} rounded-xl shadow-sm p-8 sm:p-12`}>
+        <div id="estimate-document" className={`lg:col-span-3 print:col-span-1 print:shadow-none print:rounded-none print:p-0 ${isDark ? 'bg-white text-slate-900' : 'bg-white'} rounded-xl shadow-sm p-4 sm:p-6 md:p-8 lg:p-12`}>
           {/* Company Header */}
           <div className="mb-12 pb-8 border-b border-slate-200">
             <h2 className="text-2xl font-bold text-slate-900 mb-4">{settings.companyName}</h2>
@@ -735,7 +735,7 @@ export default function EstimateDetailPage() {
         {/* Right Sidebar */}
         <div className="lg:col-span-1 print:hidden space-y-6 h-fit">
           {/* Timeline */}
-          <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+          <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-4 sm:p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
             <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>Activity</h3>
             <div className="space-y-4 text-sm">
               <div className="flex gap-3">
@@ -785,7 +785,7 @@ export default function EstimateDetailPage() {
 
           {/* Related Deal */}
           {deal && (
-            <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+            <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-4 sm:p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
               <h3 className={`font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>Related Deal</h3>
               <Link
                 href={`/pipeline/${deal.id}`}
@@ -800,7 +800,7 @@ export default function EstimateDetailPage() {
           )}
 
           {/* Customer Card */}
-          <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+          <div className={`${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-4 sm:p-6 shadow-sm border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
             <h3 className={`font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>Customer</h3>
             <div className="space-y-3">
               <div>

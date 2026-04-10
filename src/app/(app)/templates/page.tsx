@@ -247,7 +247,7 @@ export default function TemplatesPage() {
         </div>
 
         {/* Templates Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-4 sm:p-6">
           {filteredTemplates.map((template) => (
             <div
               key={template.id}
@@ -258,7 +258,7 @@ export default function TemplatesPage() {
               } transition-all duration-200 hover:shadow-lg overflow-hidden`}
             >
               {/* Card Header */}
-              <div className={`p-6 ${isDark ? 'border-slate-800' : 'border-slate-200'} border-b`}>
+              <div className={`p-4 sm:p-6 ${isDark ? 'border-slate-800' : 'border-slate-200'} border-b`}>
                 <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   {template.name}
                 </h3>
@@ -343,7 +343,7 @@ export default function TemplatesPage() {
                 </div>
 
                 {/* Email Body */}
-                <div className={`p-6 ${isDark ? 'text-slate-300' : 'text-slate-700'} whitespace-pre-wrap text-sm leading-relaxed`}>
+                <div className={`p-4 sm:p-6 ${isDark ? 'text-slate-300' : 'text-slate-700'} whitespace-pre-wrap text-sm leading-relaxed`}>
                   {previewTemplate.body}
                 </div>
               </div>

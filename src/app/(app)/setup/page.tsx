@@ -199,7 +199,7 @@ export default function SetupPage() {
         </div>
       </div>
 
-      <div className="relative min-h-screen flex items-center justify-center px-4 pt-20 pb-8">
+      <div className="relative min-h-screen flex items-center justify-center px-4 pt-16 sm:pt-20 pb-8">
         <div className="w-full max-w-2xl">
           {/* Step 1: Your Business */}
           {currentStep === 'business' && (

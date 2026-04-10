@@ -25,9 +25,9 @@ function KPICardComponent({
       <div className="flex items-start justify-between mb-4">
         <div>
           <p className="text-sm font-medium text-slate-600 mb-2">{label}</p>
-          <h3 className="text-3xl font-bold text-slate-900">
+          <h3 className="text-xl sm:text-3xl font-bold text-slate-900">
             {value}
-            {suffix && <span className="text-lg text-slate-500">{suffix}</span>}
+            {suffix && <span className="text-sm sm:text-lg text-slate-500">{suffix}</span>}
           </h3>
         </div>
         {icon && <div className="text-slate-400">{icon}</div>}

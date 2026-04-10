@@ -318,9 +318,9 @@ export default function ActivityPage() {
                           )}
 
                           {/* Activity Card */}
-                          <div className="flex gap-4 sm:gap-6 group">
+                          <div className="flex gap-3 sm:gap-4 md:gap-4 sm:p-6 group">
                             {/* Icon Circle */}
-                            <div className="relative z-10 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 border border-slate-200 dark:border-slate-600 flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+                            <div className="relative z-10 flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-700 dark:to-slate-800 border border-slate-200 dark:border-slate-600 flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
                               {ACTIVITY_ICONS[activity.type] || (
                                 <FileText className="w-5 h-5" />
                               )}

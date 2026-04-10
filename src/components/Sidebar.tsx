@@ -76,7 +76,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const sidebarContent = (
     <>
       {/* Brand */}
-      <div className={`px-6 py-6 border-b ${sectionBorder} flex items-center justify-between`} role="banner">
+      <div className={`px-4 py-4 lg:px-6 lg:py-6 border-b ${sectionBorder} flex items-center justify-between`} role="banner">
         <Link href="/" className="flex items-center gap-2">
           <Zap className={`w-7 h-7 ${brandAccent}`} />
           <div className="flex flex-col">
@@ -253,7 +253,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
       </div>
 
       {/* Footer */}
-      <div className={`px-6 py-4 border-t ${sectionBorder} text-center`}>
+      <div className={`px-4 py-3 lg:px-6 lg:py-4 border-t ${sectionBorder} text-center`}>
         <p className={`text-xs ${footerText}`}>v2.3.0 Beta</p>
       </div>
     </>

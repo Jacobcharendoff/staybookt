@@ -367,7 +367,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3 sm:gap-4 sm:p-6 mb-6 sm:mb-8">
         <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6`}>
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <p className={`text-xs sm:text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} font-medium`}>
@@ -420,7 +420,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Payment Collection Progress */}
-      <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6 mb-8`}>
+      <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6 mb-8`}>
         <div className="flex items-center justify-between mb-4">
           <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Payment Collection</h3>
           <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{collectionPercent}%</span>
@@ -451,7 +451,7 @@ export default function InvoicesPage() {
       </div>
 
       {/* Controls */}
-      <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6 mb-8`}>
+      <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6 mb-8`}>
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-6">
           <div className="relative flex-1 max-w-md">
             <Search className={`absolute left-3 top-3 w-5 h-5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
@@ -715,7 +715,7 @@ export default function InvoicesPage() {
       {(modal.type === 'create' || modal.type === 'edit') && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto`}>
-            <div className={`sticky top-0 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-6 flex items-center justify-between`}>
+            <div className={`sticky top-0 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-4 sm:p-6 flex items-center justify-between`}>
               <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {modal.type === 'create' ? 'Create Invoice' : 'Edit Invoice'}
               </h2>
@@ -731,7 +731,7 @@ export default function InvoicesPage() {
             </div>
 
             {!showSuccessMessage ? (
-              <div className="p-6 space-y-6">
+              <div className="p-4 sm:p-6 space-y-6">
                 {/* Contact Selector */}
                 {modal.type === 'create' && (
                   <div>
@@ -980,7 +980,7 @@ export default function InvoicesPage() {
       {modal.type === 'payment' && currentInvoice && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl shadow-lg max-w-md w-full`}>
-            <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-6 flex items-center justify-between`}>
+            <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-4 sm:p-6 flex items-center justify-between`}>
               <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Record Payment</h2>
               <button
                 onClick={() => setModal({ type: null })}
@@ -990,7 +990,7 @@ export default function InvoicesPage() {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-4">
               <div>
                 <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} mb-1`}>Invoice</p>
                 <p className={`text-lg font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{currentInvoice.number}</p>

@@ -615,7 +615,7 @@ export default function AutomationsPage() {
     <div className="p-4 sm:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen">
       {/* Autopilot Status Bar */}
       {activeCount > 0 && (
-        <div className="mb-8 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 flex items-start gap-4">
+        <div className="mb-8 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 sm:p-6 flex items-start gap-4">
           <div className="shrink-0 mt-1">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           </div>
@@ -647,7 +647,7 @@ export default function AutomationsPage() {
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-4 sm:p-8 mb-6 sm:mb-8 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         <div className="relative">
-          <div className="flex items-center justify-between flex-wrap gap-6">
+          <div className="flex items-center justify-between flex-wrap gap-3 sm:gap-4 sm:p-6">
             <div>
               <p className="text-slate-400 text-sm font-medium mb-1">{t('automations.status')}</p>
               <div className="flex items-center gap-4">
@@ -681,7 +681,7 @@ export default function AutomationsPage() {
       </div>
 
       {/* How It Works */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6 mb-8">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 sm:p-6 mb-8">
         <div className="flex items-start gap-3">
           <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
           <div>
@@ -730,7 +730,7 @@ export default function AutomationsPage() {
               )}
 
               {/* Playbook Header */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
@@ -752,7 +752,7 @@ export default function AutomationsPage() {
                     <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{playbook.description}</p>
 
                     {/* Stats Row */}
-                    <div className="flex gap-6 mt-4">
+                    <div className="flex gap-3 sm:gap-4 sm:p-6 mt-4">
                       {playbook.stats.map((stat) => (
                         <div key={stat.label}>
                           <div className="text-xs text-slate-500 dark:text-slate-400">{stat.label}</div>
@@ -863,7 +863,7 @@ export default function AutomationsPage() {
       <div className="mt-12 mb-12">
         <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
           {/* Header */}
-          <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+          <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Automation Activity Log</h3>

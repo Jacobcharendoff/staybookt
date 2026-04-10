@@ -275,7 +275,7 @@ export default function Dashboard() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-3 sm:p-4 md:p-8">
       {/* Sample Data Banner */}
       {!setupCompleted && contacts.length > 0 && (
         <div className="mb-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl flex items-center justify-between gap-4">
@@ -328,7 +328,7 @@ export default function Dashboard() {
 
       {/* Getting Started Welcome Widget */}
       {!welcomeDismissed && !allStepsCompleted && (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 mb-8 border border-slate-100 dark:border-slate-700 transition-all">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 mb-8 border border-slate-100 dark:border-slate-700 transition-all">
           {/* Header */}
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex-1">
@@ -440,9 +440,9 @@ export default function Dashboard() {
       )}
 
       {/* Onboarding Banner */}
-      <div className="bg-[#2C3E50] rounded-2xl p-6 mb-8 text-white relative overflow-hidden">
+      <div className="bg-[#2C3E50] rounded-2xl p-4 sm:p-6 mb-8 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4" />
-        <div className="relative flex items-center justify-between gap-6 flex-wrap">
+        <div className="relative flex items-center justify-between gap-4 sm:p-6 flex-wrap">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
               <Rocket className="w-6 h-6" />
@@ -464,9 +464,9 @@ export default function Dashboard() {
 
       {/* Overdue Invoices Alert */}
       {overdueInvoices.length > 0 && (
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border border-red-200 dark:border-red-800 rounded-2xl p-6 mb-8 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border border-red-200 dark:border-red-800 rounded-2xl p-4 sm:p-6 mb-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 h-48 bg-red-100/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4" />
-          <div className="relative flex items-center justify-between gap-6 flex-wrap">
+          <div className="relative flex items-center justify-between gap-4 sm:p-6 flex-wrap">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-xl flex items-center justify-center">
                 <AlertCircle className="w-6 h-6 text-red-600" />
@@ -601,7 +601,7 @@ export default function Dashboard() {
 
       {/* Charts Row 1: Pipeline Funnel & Revenue by Source */}
       {deals.length === 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6 mb-8">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-slate-200 dark:border-slate-700">
             <p className="text-slate-500 dark:text-slate-400">Charts will appear once you add your first job</p>
           </div>
@@ -610,9 +610,9 @@ export default function Dashboard() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6 mb-8">
           {/* Pipeline Funnel Chart */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.pipelineFunnel')}</h2>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart
@@ -633,7 +633,7 @@ export default function Dashboard() {
           </div>
 
           {/* {t('dashboard.revenueBySource')} Pie Chart */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
               Revenue by Lead Source
             </h2>
@@ -665,7 +665,7 @@ export default function Dashboard() {
 
       {/* Charts Row 2: Monthly Trend & Stage Duration */}
       {deals.length === 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6 mb-8">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-slate-200 dark:border-slate-700">
             <p className="text-slate-500 dark:text-slate-400">Charts will appear once you add your first job</p>
           </div>
@@ -674,9 +674,9 @@ export default function Dashboard() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6 mb-8">
           {/* {t('dashboard.monthlyRevenue')} */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
               Monthly Revenue Trend
             </h2>
@@ -704,7 +704,7 @@ export default function Dashboard() {
           </div>
 
           {/* Job Stage Duration */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
               {t('dashboard.stageDuration')}
             </h2>
@@ -722,9 +722,9 @@ export default function Dashboard() {
       )}
 
       {/* Bottom Section: Recent Activity & Top Jobs */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6 mb-20">
         {/* Recent Activity */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.recentActivity')}</h2>
           <div className="space-y-4">
             {recentActivities.length > 0 ? (
@@ -751,7 +751,7 @@ export default function Dashboard() {
         </div>
 
         {/* Top Jobs */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-100 dark:border-slate-700">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-4 sm:p-6 border border-slate-100 dark:border-slate-700">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">{t('dashboard.topDeals')}</h2>
           <div className="space-y-4">
             {topDeals.length > 0 ? (
@@ -790,7 +790,7 @@ export default function Dashboard() {
       </div>
 
       {/* Floating Action Button with Menu */}
-      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-50">
         {isFABExpanded && (
           <div className="absolute bottom-20 right-0 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
             <button

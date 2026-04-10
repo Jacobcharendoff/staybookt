@@ -81,7 +81,7 @@ export function PipelineBoard({ deals: initialDeals, contacts }: PipelineBoardPr
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="overflow-x-auto pb-4">
-        <div className="flex gap-6 min-w-max px-6">
+        <div className="flex gap-4 sm:gap-6 min-w-max px-4 sm:px-6">
           {STAGES.map(({ stage, label, color }) => {
             const stageDealIds = deals.filter((d) => d.stage === stage);
 
@@ -106,7 +106,7 @@ export function PipelineBoard({ deals: initialDeals, contacts }: PipelineBoardPr
                     <div
                       {...provided.droppableProps}
                       ref={provided.innerRef}
-                      className={`flex-1 p-4 space-y-3 min-h-[500px] ${
+                      className={`flex-1 p-4 space-y-3 min-h-[300px] sm:min-h-[500px] ${
                         snapshot.isDraggingOver ? 'bg-slate-100' : ''
                       }`}
                     >

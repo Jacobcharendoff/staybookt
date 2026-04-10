@@ -46,7 +46,7 @@ export function AddContactForm({ onClose }: AddContactFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1">
           Name *
@@ -107,7 +107,7 @@ export function AddContactForm({ onClose }: AddContactFormProps) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
             Type

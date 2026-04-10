@@ -53,7 +53,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-slate-700">
           <h2 id={titleId} className="text-lg font-semibold text-slate-900">
             {title}
           </h2>
@@ -67,7 +67,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
         </div>
 
         {/* Content */}
-        <div className="px-6 py-6">{children}</div>
+        <div className="px-4 sm:px-6 py-4 sm:py-6">{children}</div>
       </div>
     </div>
   );

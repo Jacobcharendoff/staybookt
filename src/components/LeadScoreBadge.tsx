@@ -76,7 +76,7 @@ export function LeadScoreBadge({
           className={`
             absolute top-full left-0 mt-2 z-50
             bg-white rounded-lg shadow-lg border border-gray-200
-            p-3 min-w-max
+            p-3 max-w-[calc(100vw-32px)] sm:min-w-max
           `}
         >
           {/* Header */}

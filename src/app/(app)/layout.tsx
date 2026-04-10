@@ -59,7 +59,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
               </span>
             </span>
           </div>
-          <div className="w-9" />
+          <div className="w-9 hidden sm:block" />
         </header>
 
         {/* Desktop header */}

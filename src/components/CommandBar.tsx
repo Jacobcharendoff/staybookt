@@ -271,7 +271,7 @@ export function CommandBar() {
               </div>
 
               {/* Results */}
-              <div className={`max-h-96 overflow-y-auto ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
+              <div className={`max-h-64 sm:max-h-96 overflow-y-auto ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
                 {results.length === 0 && query ? (
                   <div
                     className={`p-8 text-center ${

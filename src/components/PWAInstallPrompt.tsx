@@ -83,7 +83,7 @@ export default function PWAInstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 animate-in fade-in slide-in-from-bottom-4">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 max-w-sm md:max-w-sm z-50 animate-in fade-in slide-in-from-bottom-4">
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 border border-green-500/20 rounded-lg shadow-lg overflow-hidden">
         <div className="p-4">
           {/* Header */}

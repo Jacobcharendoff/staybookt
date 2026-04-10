@@ -256,7 +256,7 @@ export default function DealDetailPage() {
             return (
               <div key={stage} className="flex items-center flex-1">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${bgColor} transition-all`}
+                  className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${bgColor} transition-all`}
                 >
                   {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
                 </div>
@@ -275,7 +275,7 @@ export default function DealDetailPage() {
       </div>
 
       {/* Main Content - Two Column Layout */}
-      <div className={`flex-1 overflow-y-auto px-4 sm:px-8 py-4 sm:py-6 grid gap-6 lg:grid-cols-3 xl:grid-cols-4`}>
+      <div className={`flex-1 overflow-y-auto px-4 sm:px-8 py-4 sm:py-6 grid gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4`}>
         {/* Left Column - Deal Info Card */}
         <div
           className={`lg:col-span-1 ${isDark ? 'bg-slate-900' : 'bg-white'} rounded-xl p-6 shadow-sm border ${

@@ -422,8 +422,8 @@ export default function EstimatesPage() {
       </div>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
-        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6`}>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3 sm:gap-4 sm:p-6 mb-6 sm:mb-8">
+        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6`}>
           <div className="flex items-center justify-between">
             <div>
               <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} font-medium mb-1`}>
@@ -435,7 +435,7 @@ export default function EstimatesPage() {
           </div>
         </div>
 
-        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6`}>
+        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6`}>
           <div className="flex items-center justify-between">
             <div>
               <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} font-medium mb-1`}>
@@ -447,7 +447,7 @@ export default function EstimatesPage() {
           </div>
         </div>
 
-        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6`}>
+        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6`}>
           <div className="flex items-center justify-between">
             <div>
               <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} font-medium mb-1`}>
@@ -459,7 +459,7 @@ export default function EstimatesPage() {
           </div>
         </div>
 
-        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6`}>
+        <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6`}>
           <div className="flex items-center justify-between">
             <div>
               <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} font-medium mb-1`}>
@@ -475,7 +475,7 @@ export default function EstimatesPage() {
       </div>
 
       {/* Controls */}
-      <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-6 mb-8`}>
+      <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} rounded-xl shadow-sm border p-4 sm:p-6 mb-8`}>
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-6">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
@@ -701,7 +701,7 @@ export default function EstimatesPage() {
       {(modal.type === 'create' || modal.type === 'edit') && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto`}>
-            <div className={`sticky top-0 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-6 flex items-center justify-between`}>
+            <div className={`sticky top-0 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-4 sm:p-6 flex items-center justify-between`}>
               <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {modal.type === 'create' ? 'Create Estimate' : 'Edit Estimate'}
               </h2>
@@ -717,7 +717,7 @@ export default function EstimatesPage() {
             </div>
 
             {!showSuccessMessage ? (
-              <div className="p-6 space-y-6">
+              <div className="p-4 sm:p-6 space-y-6">
                 {/* Contact Selector */}
                 <div>
                   <label className={`block text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'} mb-2`}>
@@ -830,7 +830,7 @@ export default function EstimatesPage() {
                   </p>
 
                   <div id="pricing-tiers-section" className="hidden mt-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 sm:p-6">
                       {formData.tiers.map((tier, tierIndex) => (
                         <div
                           key={tierIndex}
@@ -1007,7 +1007,7 @@ export default function EstimatesPage() {
       {modal.type === 'action' && modal.actionType === 'convert' && currentEstimate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl shadow-lg max-w-md w-full`}>
-            <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-6 flex items-center justify-between`}>
+            <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border-b p-4 sm:p-6 flex items-center justify-between`}>
               <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Convert to Invoice</h2>
               <button
                 onClick={() => setModal({ type: null })}
@@ -1017,7 +1017,7 @@ export default function EstimatesPage() {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-4">
               <div>
                 <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} mb-2`}>
                   Selected Tier: <span className="font-semibold">{currentEstimate.selectedTier || 'None'}</span>

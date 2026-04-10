@@ -21,13 +21,13 @@ function ContactRowComponent({
       className="border-b border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
       onClick={onClick}
     >
-      <td className="px-6 py-4">
+      <td className="px-3 sm:px-6 py-3 sm:py-4">
         <div>
           <p className="font-medium text-slate-900">{contact.name}</p>
           <p className="text-xs text-slate-500 mt-1">{contact.address}</p>
         </div>
       </td>
-      <td className="px-6 py-4">
+      <td className="px-3 sm:px-6 py-3 sm:py-4">
         <span
           className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
             contact.type === 'customer'
@@ -38,10 +38,10 @@ function ContactRowComponent({
           {contact.type === 'customer' ? 'Customer' : 'Lead'}
         </span>
       </td>
-      <td className="px-6 py-4">
+      <td className="px-3 sm:px-6 py-3 sm:py-4">
         <LeadSourceBadge source={contact.source} />
       </td>
-      <td className="px-6 py-4">
+      <td className="px-3 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center gap-3">
           <a
             href={`mailto:${contact.email}`}
@@ -60,7 +60,7 @@ function ContactRowComponent({
           <span className="text-sm text-slate-600">{contact.phone}</span>
         </div>
       </td>
-      <td className="px-6 py-4 text-right">
+      <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
         <span className="text-sm font-medium text-slate-900">{dealCount}</span>
       </td>
     </tr>

@@ -390,7 +390,7 @@ export default function ReportsPage() {
             <div className="flex items-center gap-3">
               <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 shrink-0" style={{ color: '#27AE60' }} />
               <div>
-                <h1 className={`text-2xl sm:text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Reports & Analytics</h1>
+                <h1 className={`text-xl sm:text-2xl md:text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Reports & Analytics</h1>
                 <p className={`text-sm ${cardText} hidden sm:block`}>Business performance metrics and insights</p>
               </div>
             </div>
@@ -433,30 +433,30 @@ export default function ReportsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* KPI Summary Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 sm:p-6 mb-8">
           {/* Total Revenue */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <p className={`text-sm font-medium ${cardText} mb-2`}>Total Revenue</p>
             <p className="text-3xl font-bold text-[#27AE60]">${totalRevenue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</p>
             <p className={`text-xs ${cardText} mt-2`}>Paid invoices</p>
           </div>
 
           {/* Pipeline Value */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <p className={`text-sm font-medium ${cardText} mb-2`}>Pipeline Value</p>
             <p className="text-3xl font-bold text-[#3B82F6]">${pipelineValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</p>
             <p className={`text-xs ${cardText} mt-2`}>{filteredDeals.filter(d => d.stage !== 'completed' && d.stage !== 'invoiced').length} active deals</p>
           </div>
 
           {/* Conversion Rate */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <p className={`text-sm font-medium ${cardText} mb-2`}>Conversion Rate</p>
             <p className="text-3xl font-bold text-[#F59E0B]">{conversionRate}%</p>
             <p className={`text-xs ${cardText} mt-2`}>{dealsWon} of {totalLeads} leads</p>
           </div>
 
           {/* Average Job Value */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <p className={`text-sm font-medium ${cardText} mb-2`}>Avg Job Value</p>
             <p className="text-3xl font-bold text-[#10B981]">${avgJobValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</p>
             <p className={`text-xs ${cardText} mt-2`}>Based on {filteredDeals.length} deals</p>
@@ -464,9 +464,9 @@ export default function ReportsPage() {
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-4 sm:p-6 mb-8">
           {/* Revenue Over Time */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'} mb-4`}>Revenue Over Time (6 months)</h2>
             <div className="flex items-end gap-2 h-64">
               {monthlyRevenue.map((item, idx) => {
@@ -487,7 +487,7 @@ export default function ReportsPage() {
           </div>
 
           {/* Pipeline by Stage */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'} mb-4`}>Pipeline by Stage</h2>
             <div className="space-y-3 h-64 overflow-y-auto">
               {stageData.map((item, idx) => {
@@ -512,10 +512,10 @@ export default function ReportsPage() {
           </div>
 
           {/* Lead Sources Pie Chart */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'} mb-4`}>Lead Sources Distribution</h2>
             <div className="flex flex-col sm:flex-row items-center justify-center h-64 gap-4">
-              <svg viewBox="0 0 200 200" className="w-32 h-32 sm:w-40 sm:h-40 shrink-0">
+              <svg viewBox="0 0 200 200" className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 shrink-0">
                 {leadSources.length > 0 ? (
                   (() => {
                     const colors = ['#27AE60', '#3B82F6', '#F59E0B', '#EF4444', '#10B981', '#06B6D4', '#22C55E', '#6366F1'];
@@ -569,7 +569,7 @@ export default function ReportsPage() {
           </div>
 
           {/* Estimate Conversion Funnel */}
-          <div className={`${cardBg} border rounded-xl p-6`}>
+          <div className={`${cardBg} border rounded-xl p-4 sm:p-6`}>
             <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'} mb-4`}>Estimate Conversion Funnel</h2>
             <div className="space-y-3 h-64 flex flex-col justify-center">
               {estimateConversion.map((item, idx) => (
@@ -591,7 +591,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Tables Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-4 sm:p-6">
           {/* Top Performing Services */}
           <div className={`${cardBg} border rounded-xl overflow-hidden`}>
             <div className="px-6 py-4 border-b border-inherit bg-opacity-50">
@@ -700,7 +700,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Customer Map - Geographic Cluster Analysis */}
-        <div className={`${cardBg} border rounded-xl p-6 mb-8`}>
+        <div className={`${cardBg} border rounded-xl p-4 sm:p-6 mb-8`}>
           <div className="flex items-center gap-3 mb-6">
             <MapPin className="w-6 h-6" style={{ color: '#27AE60' }} />
             <div>
@@ -716,7 +716,7 @@ export default function ReportsPage() {
                 <div className="mb-2">
                   <p className={`text-xs ${cardText} mb-4`}>Bubble size represents customer count</p>
                 </div>
-                <ResponsiveContainer width="100%" height={350}>
+                <ResponsiveContainer width="100%" height={250}>
                   <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} />
                     <XAxis

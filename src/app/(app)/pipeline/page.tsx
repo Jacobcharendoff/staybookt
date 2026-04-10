@@ -499,7 +499,7 @@ export default function PipelinePage() {
                       <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        className={`flex-shrink-0 w-64 sm:w-80 rounded-lg border-2 transition-all ${color} ${
+                        className={`flex-shrink-0 w-[75vw] sm:w-72 md:w-80 rounded-lg border-2 transition-all ${color} ${
                           snapshot.isDraggingOver ? 'shadow-xl ring-2 ring-blue-400' : 'shadow'
                         }`}
                         aria-label={`${label} column with ${metrics.count} ${metrics.count === 1 ? 'job' : 'jobs'}`}

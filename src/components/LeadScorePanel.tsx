@@ -63,7 +63,7 @@ export function LeadScorePanel({
         {/* Score Circle + Grade */}
         <div className="flex items-center gap-6">
           {/* Circular Progress */}
-          <div className="relative w-32 h-32 flex-shrink-0">
+          <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0">
             <svg
               className="w-full h-full transform -rotate-90"
               viewBox="0 0 120 120"

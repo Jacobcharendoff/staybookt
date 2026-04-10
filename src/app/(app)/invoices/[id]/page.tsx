@@ -42,7 +42,7 @@ export default function InvoiceDetailPage() {
 
   if (!invoice || !customer) {
     return (
-      <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-slate-50'} p-6`}>
+      <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-slate-50'} p-4 sm:p-6`}>
         <button
           onClick={() => router.back()}
           className={`flex items-center gap-2 mb-6 ${
@@ -526,7 +526,7 @@ export default function InvoiceDetailPage() {
   ];
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-slate-50'} p-6`}>
+    <div className={`min-h-screen ${isDark ? 'bg-slate-900' : 'bg-slate-50'} p-4 sm:p-6`}>
       <button
         onClick={() => router.back()}
         className={`flex items-center gap-2 mb-6 ${
@@ -586,7 +586,7 @@ export default function InvoiceDetailPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-3 sm:gap-4 sm:p-6">
         {/* Main Section - Invoice Document */}
         <div className="col-span-2">
           <div
@@ -627,7 +627,7 @@ export default function InvoiceDetailPage() {
             </div>
 
             {/* Bill To */}
-            <div className="grid grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mb-8">
               <div>
                 <p className={`text-xs font-semibold uppercase ${isDark ? 'text-slate-400' : 'text-slate-500'} mb-2`}>
                   Bill To

@@ -204,7 +204,7 @@ export default function NotificationsPage() {
           }
         `}
       >
-        <div className="flex gap-4">
+        <div className="flex gap-3 sm:gap-4">
           {/* Icon */}
           <div className={`${config.bgColor} rounded-lg p-3 flex-shrink-0 h-fit`}>
             <IconComponent className={`w-5 h-5 ${config.color}`} />
@@ -261,7 +261,7 @@ export default function NotificationsPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-4 sm:p-8">
       {/* Header Section */}
       <div className="mb-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
               {t('notifications.title') || 'Notifications'}
@@ -354,7 +354,7 @@ export default function NotificationsPage() {
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg max-w-sm w-full p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg max-w-sm w-full p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4">
               <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">

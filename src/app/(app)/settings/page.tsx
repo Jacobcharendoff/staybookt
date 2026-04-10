@@ -219,7 +219,7 @@ export default function SettingsPage() {
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
                   {t('settings.companyInformation')}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 sm:p-6">
                   <div>
                     <label htmlFor="businessName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       {t('settings.businessName')}
@@ -326,8 +326,8 @@ export default function SettingsPage() {
 
               <div className="border-t border-slate-200 dark:border-slate-700 pt-8">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Logo</h3>
-                <div className="flex items-center gap-6">
-                  <div className="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600">
+                <div className="flex items-center gap-3 sm:gap-4 sm:p-6">
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-600">
                     <Building2 className="w-8 h-8 text-slate-400 dark:text-slate-500" />
                   </div>
                   <button className="flex items-center gap-2 px-6 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">
@@ -402,11 +402,11 @@ export default function SettingsPage() {
           {activeTab === 'integrations' && (
             <div className="space-y-6">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{t('settings.connectedApps')}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 sm:p-6">
                 {integrations.map((integration) => (
                   <div
                     key={integration.id}
-                    className="p-6 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md dark:hover:shadow-lg transition bg-white dark:bg-slate-800"
+                    className="p-4 sm:p-6 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md dark:hover:shadow-lg transition bg-white dark:bg-slate-800"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <span className="text-4xl">{integration.icon}</span>
