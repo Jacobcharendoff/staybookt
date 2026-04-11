@@ -1,9 +1,9 @@
 export interface LeadScore {
-  score: number; // 0-100
+  score: number;
   grade: "A" | "B" | "C" | "D" | "F";
-  label: string; // "Hot Lead", "Warm Lead", "Cold Lead", etc.
-  factors: ScoreFactor[]; // What contributed to the score
-  recommendations: string[]; // What to do next
+  label: string;
+  factors: ScoreFactor[];
+  recommendations: string[];
   priority: "urgent" | "high" | "medium" | "low";
 }
 
@@ -44,10 +44,6 @@ export interface LeadQualificationInput {
   source?: "referral" | "existing_customer" | "google_lsa" | "seo" | "gbp" | "neighborhood" | "other";
 }
 
-/**
- * Calculate response speed score (0-20)
- * Measures how quickly the lead was contacted after creation
- */
 function calculateResponseSpeed(contact: Contact, activities: Activity[]): ScoreFactor {
   const contactActivities = activities.filter((a) => a.contactId === contact.id);
 
@@ -93,10 +89,6 @@ function calculateResponseSpeed(contact: Contact, activities: Activity[]): Score
   };
 }
 
-/**
- * Calculate engagement score (0-20)
- * Measures number of activities (calls, emails, meetings)
- */
 function calculateEngagement(contact: Contact, activities: Activity[]): ScoreFactor {
   const contactActivities = activities.filter((a) => a.contactId === contact.id).length;
 
@@ -125,10 +117,6 @@ function calculateEngagement(contact: Contact, activities: Activity[]): ScoreFac
   };
 }
 
-/**
- * Calculate deal value score (0-15)
- * Higher value deals score higher
- */
 function calculateDealValue(contact: Contact, deals: Deal[]): ScoreFactor {
   const contactDeal = deals.find((d) => d.contactId === contact.id);
 
@@ -169,10 +157,6 @@ function calculateDealValue(contact: Contact, deals: Deal[]): ScoreFactor {
   };
 }
 
-/**
- * Calculate source quality score (0-15)
- * Different acquisition sources have different quality scores
- */
 function calculateSourceQuality(source: string | undefined): ScoreFactor {
   const sourceMap: Record<string, { points: number; description: string }> = {
     referral: { points: 15, description: "Referral" },
@@ -195,10 +179,6 @@ function calculateSourceQuality(source: string | undefined): ScoreFactor {
   };
 }
 
-/**
- * Calculate recency score (0-10)
- * How recent was the last activity
- */
 function calculateRecency(contact: Contact, activities: Activity[]): ScoreFactor {
   const contactActivities = activities.filter((a) => a.contactId === contact.id);
 
@@ -247,10 +227,6 @@ function calculateRecency(contact: Contact, activities: Activity[]): ScoreFactor
   };
 }
 
-/**
- * Calculate completeness score (0-10)
- * Measures if contact has phone, email, and/or address
- */
 function calculateCompleteness(contact: Contact): ScoreFactor {
   const hasEmail = !!contact.email;
   const hasPhone = !!contact.phone;
@@ -283,10 +259,6 @@ function calculateCompleteness(contact: Contact): ScoreFactor {
   };
 }
 
-/**
- * Calculate pipeline stage score (0-10)
- * Where the deal is in the pipeline
- */
 function calculatePipelineStage(contact: Contact, deals: Deal[]): ScoreFactor {
   const contactDeal = deals.find((d) => d.contactId === contact.id);
 
@@ -317,51 +289,41 @@ function calculatePipelineStage(contact: Contact, deals: Deal[]): ScoreFactor {
   };
 }
 
-/**
- * Generate recommendations based on score and factors
- */
 function generateRecommendations(score: number, factors: ScoreFactor[], deals: Deal[], contact: Contact): string[] {
   const recommendations: string[] = [];
 
-  // Find specific factors
   const responseSpeed = factors.find((f) => f.name === "Response Speed");
   const engagement = factors.find((f) => f.name === "Engagement");
   const dealValue = factors.find((f) => f.name === "Deal Value");
   const recency = factors.find((f) => f.name === "Recency");
   const pipelineStage = factors.find((f) => f.name === "Pipeline Stage");
 
-  // Response speed checks
   if (responseSpeed && responseSpeed.points === 0) {
     recommendations.push("Reach out to this lead immediately — no contact yet");
   } else if (responseSpeed && responseSpeed.points < 10) {
     recommendations.push("Follow up quickly to establish initial contact");
   }
 
-  // Engagement checks
   if (engagement && engagement.points === 0) {
     recommendations.push("Schedule a follow-up call to keep this lead warm");
   } else if (engagement && engagement.points < 15 && dealValue && dealValue.points > 8) {
     recommendations.push("High-value lead with low engagement — increase outreach frequency");
   }
 
-  // Recency checks
   if (recency && recency.points === 0) {
     recommendations.push("Lead is going cold — prioritize immediate follow-up");
   } else if (recency && recency.points < 7) {
     recommendations.push("Schedule a check-in call this week");
   }
 
-  // Deal value with engagement
   if (dealValue && dealValue.points >= 12 && engagement && engagement.points < 10) {
     recommendations.push("High-value opportunity at risk — increase contact frequency");
   }
 
-  // Pipeline progression
   if (pipelineStage && pipelineStage.points <= 5) {
     recommendations.push("Move this lead through the pipeline — prepare estimate or proposal");
   }
 
-  // General recommendations based on score
   if (score >= 80) {
     recommendations.push("This is a hot lead — prioritize immediately");
   } else if (score >= 60 && score < 80) {
@@ -373,25 +335,19 @@ function generateRecommendations(score: number, factors: ScoreFactor[], deals: D
   return recommendations;
 }
 
-/**
- * Determine priority level based on score and factors
- */
 function determinePriority(score: number, factors: ScoreFactor[]): "urgent" | "high" | "medium" | "low" {
   const dealValue = factors.find((f) => f.name === "Deal Value");
   const recency = factors.find((f) => f.name === "Recency");
   const responseSpeed = factors.find((f) => f.name === "Response Speed");
 
-  // Urgent: high value + no contact or cold
   if (dealValue && dealValue.points > 10 && responseSpeed && responseSpeed.points === 0) {
     return "urgent";
   }
 
-  // High: high value or recent activity
   if ((dealValue && dealValue.points > 10) || (recency && recency.points >= 10)) {
     return "high";
   }
 
-  // Medium: moderate score
   if (score >= 50) {
     return "medium";
   }
@@ -399,13 +355,9 @@ function determinePriority(score: number, factors: ScoreFactor[]): "urgent" | "h
   return "low";
 }
 
-/**
- * Main lead qualification function
- */
 export function qualifyLead(input: LeadQualificationInput): LeadScore {
   const { contact, deals = [], activities = [], source } = input;
 
-  // Calculate all factors
   const factors: ScoreFactor[] = [
     calculateResponseSpeed(contact, activities),
     calculateEngagement(contact, activities),
@@ -416,10 +368,8 @@ export function qualifyLead(input: LeadQualificationInput): LeadScore {
     calculatePipelineStage(contact, deals),
   ];
 
-  // Sum the score
   const score = factors.reduce((sum, factor) => sum + factor.points, 0);
 
-  // Determine grade
   let grade: "A" | "B" | "C" | "D" | "F";
   let label: string;
 
@@ -453,9 +403,6 @@ export function qualifyLead(input: LeadQualificationInput): LeadScore {
   };
 }
 
-/**
- * Batch qualify multiple leads
- */
 export function qualifyLeads(
   contacts: Contact[],
   deals: Deal[],
@@ -465,7 +412,7 @@ export function qualifyLeads(
   const results = new Map<string, LeadScore>();
 
   for (const contact of contacts) {
-    const source = sources.get(contact.id) as any;
+    const source = sources.get(contact.id) as "referral" | "existing_customer" | "google_lsa" | "seo" | "gbp" | "neighborhood" | "other" | undefined;
     const leadScore = qualifyLead({
       contact,
       deals,

@@ -20,8 +20,8 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useLanguage } from './LanguageProvider';
+import type { TranslationKey } from '@/i18n/translations';
 
-// Trade icons mapping
 const tradeIcons: { [key: string]: React.ReactNode } = {
   plumbing: <Wrench className="w-4 h-4" />,
   hvac: <Flame className="w-4 h-4" />,
@@ -40,7 +40,6 @@ const tradeLinks = [
   { key: 'cleaning', href: '/cleaning' },
 ];
 
-// ─── Shared Navigation ─────────────────────────────────────────
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -81,13 +80,11 @@ export function Navigation() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             <Link href="/#product" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              {t('nav.product')}
+              {t('nav.product' as TranslationKey)}
             </Link>
 
-            {/* For Your Trade Dropdown */}
             <div className="relative">
               <button
                 onClick={(e) => {
@@ -97,7 +94,7 @@ export function Navigation() {
                 onMouseEnter={() => setDesktopDropdownOpen(true)}
                 className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
               >
-                {t('nav.forYourTrade')}
+                {t('nav.forYourTrade' as TranslationKey)}
                 <ChevronDown className={`w-4 h-4 transition-transform ${desktopDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -114,7 +111,7 @@ export function Navigation() {
                       className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-[#27AE60] hover:bg-emerald-50 transition-colors"
                     >
                       <span className="text-gray-400">{tradeIcons[trade.key]}</span>
-                      {t(`industry.${trade.key}` as any)}
+                      {t(`industry.${trade.key}` as TranslationKey)}
                     </Link>
                   ))}
                 </div>
@@ -122,11 +119,11 @@ export function Navigation() {
             </div>
 
             <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              {t('marketing.pricing')}
+              {t('marketing.pricing' as TranslationKey)}
             </Link>
 
             <Link href="/switch" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              {t('nav.whyStaybookt')}
+              {t('nav.whyStaybookt' as TranslationKey)}
             </Link>
           </div>
 
@@ -139,13 +136,13 @@ export function Navigation() {
               {locale === 'en' ? 'FR' : 'EN'}
             </button>
             <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
-              {t('marketing.logIn')}
+              {t('marketing.logIn' as TranslationKey)}
             </Link>
             <Link
               href="/login?tab=signup"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#27AE60] text-white text-sm font-semibold rounded-full hover:bg-[#229954] transition-all shadow-lg shadow-green-600/25 hover:shadow-green-700/30 hover:-translate-y-0.5"
             >
-              {t('marketing.tryFree')}
+              {t('marketing.tryFree' as TranslationKey)}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -155,7 +152,6 @@ export function Navigation() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileOpen && (
           <div className="lg:hidden pb-6 pt-2 border-t border-gray-100">
             <div className="flex flex-col gap-1">
@@ -164,16 +160,15 @@ export function Navigation() {
                 className="text-sm font-medium text-gray-600 py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                {t('nav.product')}
+                {t('nav.product' as TranslationKey)}
               </Link>
 
-              {/* Mobile For Your Trade Collapsible */}
               <div>
                 <button
                   onClick={() => setMobileTradeOpen(!mobileTradeOpen)}
                   className="flex items-center gap-2 text-sm font-medium text-gray-600 w-full py-2"
                 >
-                  {t('nav.forYourTrade')}
+                  {t('nav.forYourTrade' as TranslationKey)}
                   <ChevronDown className={`w-4 h-4 transition-transform ${mobileTradeOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {mobileTradeOpen && (
@@ -189,7 +184,7 @@ export function Navigation() {
                         }}
                       >
                         <span className="text-gray-400">{tradeIcons[trade.key]}</span>
-                        {t(`industry.${trade.key}` as any)}
+                        {t(`industry.${trade.key}` as TranslationKey)}
                       </Link>
                     ))}
                   </div>
@@ -201,7 +196,7 @@ export function Navigation() {
                 className="text-sm font-medium text-gray-600 py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                {t('marketing.pricing')}
+                {t('marketing.pricing' as TranslationKey)}
               </Link>
 
               <Link
@@ -209,10 +204,9 @@ export function Navigation() {
                 className="text-sm font-medium text-gray-600 py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                {t('nav.whyStaybookt')}
+                {t('nav.whyStaybookt' as TranslationKey)}
               </Link>
 
-              {/* Mobile Language Toggle */}
               <button
                 onClick={() => setLocale(locale === 'en' ? 'fr' : 'en')}
                 className="flex items-center gap-2 text-sm font-medium text-gray-600"
@@ -228,14 +222,14 @@ export function Navigation() {
                   className="text-sm font-medium text-gray-600"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {t('marketing.logIn')}
+                  {t('marketing.logIn' as TranslationKey)}
                 </Link>
                 <Link
                   href="/login?tab=signup"
                   className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 bg-[#27AE60] text-white text-sm font-semibold rounded-full hover:bg-[#229954] transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {t('marketing.tryFree')}
+                  {t('marketing.tryFree' as TranslationKey)}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -247,33 +241,32 @@ export function Navigation() {
   );
 }
 
-// ─── Shared Footer ──────────────────────────────────────────────
 export function Footer() {
   const { t } = useLanguage();
   const productLinks = [
-    { label: t('nav.product'), href: '/#product' },
-    { label: t('nav.automations'), href: '/automations' },
-    { label: t('marketing.pricing'), href: '/pricing' },
-    { label: t('nav.whyStaybookt'), href: '/switch' },
-    { label: t('footer.vsServiceTitan'), href: '/vs-servicetitan' },
-    { label: t('footer.vsJobber'), href: '/vs-jobber' },
-    { label: t('footer.vsHousecallPro'), href: '/vs-housecall-pro' },
+    { label: t('nav.product' as TranslationKey), href: '/#product' },
+    { label: t('nav.automations' as TranslationKey), href: '/automations' },
+    { label: t('marketing.pricing' as TranslationKey), href: '/pricing' },
+    { label: t('nav.whyStaybookt' as TranslationKey), href: '/switch' },
+    { label: t('footer.vsServiceTitan' as TranslationKey), href: '/vs-servicetitan' },
+    { label: t('footer.vsJobber' as TranslationKey), href: '/vs-jobber' },
+    { label: t('footer.vsHousecallPro' as TranslationKey), href: '/vs-housecall-pro' },
   ];
 
   const industryLinks = [
-    { label: t('industry.plumbing'), href: '/plumbing' },
-    { label: t('industry.hvac'), href: '/hvac' },
-    { label: t('industry.electrical'), href: '/electrical' },
-    { label: t('industry.landscaping'), href: '/landscaping' },
-    { label: t('industry.roofing'), href: '/roofing' },
-    { label: t('industry.cleaning'), href: '/cleaning' },
+    { label: t('industry.plumbing' as TranslationKey), href: '/plumbing' },
+    { label: t('industry.hvac' as TranslationKey), href: '/hvac' },
+    { label: t('industry.electrical' as TranslationKey), href: '/electrical' },
+    { label: t('industry.landscaping' as TranslationKey), href: '/landscaping' },
+    { label: t('industry.roofing' as TranslationKey), href: '/roofing' },
+    { label: t('industry.cleaning' as TranslationKey), href: '/cleaning' },
   ];
 
   const companyLinks = [
-    { label: t('footer.about'), href: '/about' },
-    { label: t('footer.contact'), href: '/contact' },
-    { label: t('footer.privacyPolicy'), href: '/privacy' },
-    { label: t('footer.termsOfService'), href: '/terms' },
+    { label: t('footer.about' as TranslationKey), href: '/about' },
+    { label: t('footer.contact' as TranslationKey), href: '/contact' },
+    { label: t('footer.privacyPolicy' as TranslationKey), href: '/privacy' },
+    { label: t('footer.termsOfService' as TranslationKey), href: '/terms' },
   ];
 
   return (
@@ -290,12 +283,12 @@ export function Footer() {
             <p className="text-sm leading-relaxed">Stay booked. Stay paid. Purpose-built for the trades.</p>
             <div className="mt-3 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-red-400" />
-              <span className="text-xs text-slate-500">{t('marketing.madeInCanada')}</span>
+              <span className="text-xs text-slate-500">{t('marketing.madeInCanada' as TranslationKey)}</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.product')}</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.product' as TranslationKey)}</h4>
             <ul className="space-y-2.5">
               {productLinks.map((link) => (
                 <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
@@ -304,7 +297,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.builtFor')}</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.builtFor' as TranslationKey)}</h4>
             <ul className="space-y-2.5">
               {industryLinks.map((link) => (
                 <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
@@ -313,7 +306,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.company')}</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">{t('footer.company' as TranslationKey)}</h4>
             <ul className="space-y-2.5">
               {companyLinks.map((link) => (
                 <li key={link.label}><Link href={link.href} className="text-sm hover:text-white transition-colors">{link.label}</Link></li>
@@ -323,7 +316,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500" suppressHydrationWarning>&copy; {new Date().getFullYear()} Staybookt. All rights reserved. {t('marketing.madeInCanada')}.</p>
+          <p className="text-xs text-slate-500" suppressHydrationWarning>&copy; {new Date().getFullYear()} Staybookt. All rights reserved. {t('marketing.madeInCanada' as TranslationKey)}.</p>
           <div className="flex items-center gap-4">
             <a href="mailto:hello@staybookt.ca" className="text-slate-500 hover:text-white transition-colors"><Mail className="w-5 h-5" /></a>
             <a href="tel:+18005550199" className="text-slate-500 hover:text-white transition-colors"><Phone className="w-5 h-5" /></a>
@@ -334,7 +327,6 @@ export function Footer() {
   );
 }
 
-// ─── CTA Section ────────────────────────────────────────────────
 export function CTASection() {
   const { t } = useLanguage();
   return (
@@ -342,39 +334,36 @@ export function CTASection() {
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%)' }} />
       <div className="relative max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-          {t('cta.mainHeading')}
+          {t('cta.mainHeading' as TranslationKey)}
         </h2>
         <p className="text-lg sm:text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-          {t('cta.description')}
+          {t('cta.description' as TranslationKey)}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/login?tab=signup"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#27AE60] hover:bg-[#229954] text-white text-base font-semibold rounded-full transition-all shadow-xl shadow-emerald-600/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5"
           >
-            {t('cta.startFreeTrial')}
+            {t('cta.startFreeTrial' as TranslationKey)}
             <ArrowRight className="w-5 h-5" />
           </Link>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white text-base font-semibold rounded-full hover:bg-white/20 transition-all border border-white/20"
           >
-            {t('cta.scheduleDemo')}
+            {t('cta.scheduleDemo' as TranslationKey)}
           </Link>
         </div>
-        <p className="mt-6 text-sm text-blue-200">{t('cta.footer')}</p>
+        <p className="mt-6 text-sm text-blue-200">{t('cta.footer' as TranslationKey)}</p>
       </div>
     </section>
   );
 }
 
-// ─── Marketing Page Layout Wrapper ──────────────────────────────
 export function MarketingLayout({ children }: { children: React.ReactNode }) {
-  // Marketing pages are always light — strip dark class that may linger from app pages
   useEffect(() => {
     document.documentElement.classList.remove('dark');
     return () => {
-      // Restore dark class when navigating back to app if user preference is dark
       try {
         const t = localStorage.getItem('staybookt-theme');
         if (t === 'dark') document.documentElement.classList.add('dark');
