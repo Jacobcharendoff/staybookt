@@ -36,13 +36,14 @@ function AppContent({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile header */}
         <header
-          className={`lg:hidden flex items-center justify-between px-4 py-3 border-b sticky top-0 z-30 transition-colors duration-200 ${
+          className={`lg:hidden flex items-center justify-between px-4 py-3 border-b sticky top-0 z-30 transition-colors duration-200 pt-[env(safe-area-inset-top)] ${
             isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'
           }`}
         >
           <button
             onClick={() => setSidebarOpen(true)}
-            className={`p-2 -ml-2 rounded-lg ${isDark ? 'text-slate-300 hover:text-white hover:bg-slate-700' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+            className={`p-2 -ml-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${isDark ? 'text-slate-300 hover:text-white hover:bg-slate-700' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+            aria-label="Open navigation menu"
           >
             <Menu className="w-5 h-5" />
           </button>

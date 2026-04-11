@@ -966,3 +966,11 @@ select:focus-visible {
 .dark tbody tr:hover {
   background-color: #0f172a;
 }
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-left { padding-left: env(safe-area-inset-left); }
+  .safe-right { padding-right: env(safe-area-inset-right); }
+}

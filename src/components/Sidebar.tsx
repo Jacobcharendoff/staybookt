@@ -88,7 +88,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           </div>
         </Link>
         {onClose && (
-          <button onClick={onClose} className={`lg:hidden p-2 -mr-1 ${mobileCloseBtn}`}>
+          <button onClick={onClose} className={`lg:hidden p-2 -mr-1 min-h-[44px] min-w-[44px] flex items-center justify-center ${mobileCloseBtn}`} aria-label="Close navigation menu">
             <X className="w-5 h-5" />
           </button>
         )}
@@ -151,7 +151,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 relative ${
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 relative min-h-[44px] ${
                 isActive
                   ? 'bg-[#27AE60] text-white shadow-lg shadow-emerald-600/20'
                   : `${navText} ${navHover}`
@@ -182,7 +182,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           </div>
           <button
             onClick={() => setLocale(locale === 'en' ? 'fr' : 'en')}
-            className={`relative inline-flex items-center h-8 rounded-full px-1 transition-colors ${
+            className={`relative inline-flex items-center h-8 rounded-full px-1 transition-colors min-h-[44px] min-w-[44px] ${
               isDark ? 'bg-slate-700' : 'bg-slate-200'
             }`}
             aria-label="Toggle language"
@@ -218,7 +218,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           </div>
           <button
             onClick={toggleTheme}
-            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
+            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors min-h-[44px] min-w-[44px] ${
               isDark ? 'bg-[#27AE60]' : 'bg-slate-300'
             }`}
             aria-label="Toggle dark mode"
@@ -240,7 +240,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             <Link
               href={settingsItem.href}
               onClick={onClose}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 ${
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 min-h-[44px] ${
                 isActive
                   ? 'bg-[#27AE60] text-white shadow-lg shadow-emerald-600/20'
                   : `${navText} ${navHover}`
@@ -275,7 +275,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             className="lg:hidden fixed inset-0 bg-black/50 z-40"
             onClick={onClose}
           />
-          <aside className={`lg:hidden fixed inset-y-0 left-0 z-50 w-[85vw] max-w-72 ${sidebarBg} border-r ${sidebarBorder} flex flex-col animate-[slideIn_0.2s_ease-out] transition-colors duration-200`} role="navigation" aria-label="Mobile sidebar navigation">
+          <aside className={`lg:hidden fixed inset-y-0 left-0 z-50 w-[85vw] max-w-72 ${sidebarBg} border-r ${sidebarBorder} flex flex-col animate-[slideIn_0.2s_ease-out] transition-colors duration-200 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]`} role="navigation" aria-label="Mobile sidebar navigation">
             {sidebarContent}
           </aside>
         </>

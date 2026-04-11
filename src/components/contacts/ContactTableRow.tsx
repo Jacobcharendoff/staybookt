@@ -38,13 +38,15 @@ export function ContactTableRow({
       }`}
     >
       <td className={`px-3 sm:px-4 py-4 text-center`}>
-        <input
-          type="checkbox"
-          checked={isSelected}
-          onChange={() => onToggleSelect(contact.id)}
-          className="w-4 h-4 rounded cursor-pointer"
-          aria-label={`Select ${contact.name}`}
-        />
+        <label className="flex items-center justify-center min-w-[44px] min-h-[44px]">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onToggleSelect(contact.id)}
+            className="w-5 h-5 rounded cursor-pointer"
+            aria-label={`Select ${contact.name}`}
+          />
+        </label>
       </td>
       <td
         className={`px-3 sm:px-6 py-4 cursor-pointer`}
@@ -85,23 +87,25 @@ export function ContactTableRow({
         <div className="flex items-center justify-end gap-2">
           <button
             onClick={() => onOpenEditModal(contact)}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`p-2.5 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
               isDark
                 ? 'hover:bg-slate-700 text-slate-400 hover:text-slate-200'
                 : 'hover:bg-slate-100 text-slate-600 hover:text-slate-900'
             }`}
             title="Edit"
+            aria-label="Edit contact"
           >
             <Edit2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => onOpenDeleteConfirm(contact)}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`p-2.5 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
               isDark
                 ? 'hover:bg-red-900 text-red-400 hover:text-red-200'
                 : 'hover:bg-red-100 text-red-600 hover:text-red-900'
             }`}
             title="Delete"
+            aria-label="Delete contact"
           >
             <Trash2 className="w-4 h-4" />
           </button>

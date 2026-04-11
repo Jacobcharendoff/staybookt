@@ -46,21 +46,21 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     >
       <div
         ref={modalRef}
-        className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl max-w-md w-full mx-4"
+        className="w-full h-full sm:h-auto sm:max-w-md sm:rounded-2xl sm:mx-4 bg-white dark:bg-slate-800 shadow-xl overflow-y-auto"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 id={titleId} className="text-lg font-semibold text-slate-900">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-slate-700 sticky top-0 bg-white dark:bg-slate-800">
+          <h2 id={titleId} className="text-lg font-semibold text-slate-900 dark:text-white">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
-            aria-label="Close"
+            className="p-1.5 -mr-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>

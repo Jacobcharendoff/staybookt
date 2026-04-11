@@ -1,8 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   title: "Staybookt - The Operating System for Service Business Growth",

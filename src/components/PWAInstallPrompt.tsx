@@ -83,7 +83,7 @@ export default function PWAInstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 max-w-sm md:max-w-sm z-50 animate-in fade-in slide-in-from-bottom-4">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 max-w-sm md:max-w-sm z-50 animate-in fade-in slide-in-from-bottom-4 pb-[env(safe-area-inset-bottom)]">
       <div className="bg-gradient-to-r from-slate-900 to-slate-800 border border-green-500/20 rounded-lg shadow-lg overflow-hidden">
         <div className="p-4">
           {/* Header */}
@@ -96,7 +96,7 @@ export default function PWAInstallPrompt() {
             </div>
             <button
               onClick={handleDismiss}
-              className="p-1 hover:bg-slate-700 rounded transition-colors"
+              className="p-1 hover:bg-slate-700 rounded transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Dismiss install prompt"
             >
               <X size={18} className="text-slate-400 hover:text-white" />
@@ -112,14 +112,16 @@ export default function PWAInstallPrompt() {
           <div className="flex gap-2">
             <button
               onClick={handleInstall}
-              className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded min-h-[44px] transition-colors"
+              aria-label="Install Staybookt app"
             >
               <Download size={16} />
               Install
             </button>
             <button
               onClick={handleDismiss}
-              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium py-2 px-4 rounded transition-colors"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium py-2 px-4 rounded min-h-[44px] transition-colors"
+              aria-label="Dismiss install prompt"
             >
               Not now
             </button>
