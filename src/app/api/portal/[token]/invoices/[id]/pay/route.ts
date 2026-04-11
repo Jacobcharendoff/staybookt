@@ -62,25 +62,10 @@ export async function POST(
     }
 
     // In production, would integrate with Stripe here
-    // For now, return payment intent info
+    // For now, return appropriate status for payment method
     if (validation.data.paymentMethod === 'stripe') {
-      // TODO: Create Stripe payment intent
-      // const stripe = getStripeInstance();
-      // const paymentIntent = await stripe.paymentIntents.create({...});
-      return apiSuccess(
-        {
-          paymentMethod: 'stripe',
-          status: 'pending',
-          message: 'Stripe integration coming soon. Please contact the business for payment.',
-          invoice: {
-            id: invoice.id,
-            number: invoice.number,
-            amountDue: balanceDue,
-            requestedAmount: validation.data.amount,
-          },
-        },
-        200
-      );
+      // Stripe integration is not yet configured - return 501 Not Implemented
+      return apiError('Stripe payment processing is not yet configured. Please contact the business directly.', 501);
     }
 
     // Bank transfer

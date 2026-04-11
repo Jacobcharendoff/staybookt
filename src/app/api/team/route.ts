@@ -8,6 +8,7 @@ import {
   validateRequest,
 } from '@/lib/api-helpers';
 import { hasPermission, canManageRole, Role } from '@/lib/rbac';
+import { getResend } from '@/lib/resend';
 
 const inviteTeamMemberSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -116,14 +117,46 @@ export async function POST(request: NextRequest) {
       return apiError(error.message, 500);
     }
 
-    // TODO: Send invite email via Resend with sign-up link
-    // const emailSent = await sendTeamInviteEmail({
-    //   to: email,
-    //   name,
-    //   orgName: org.name,
-    //   invitedBy: user.email,
-    //   signupUrl: `${process.env.NEXT_PUBLIC_APP_URL}/invite/${newUser.id}`,
-    // });
+    // Send invite email via Resend with sign-up link
+    const resend = getResend();
+    if (resend) {
+      try {
+        // Get organization details for email context
+        const { data: orgData } = await supabase
+          .from('organizations')
+          .select('name')
+          .eq('id', user.orgId)
+          .single();
+
+        const signupUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/invite/${newUser.id}`;
+        const orgName = orgData?.name || 'Staybookt';
+
+        await resend.emails.send({
+          from: `${orgName} <onboarding@resend.dev>`,
+          to: email,
+          subject: `You've been invited to join ${orgName}`,
+          html: `
+            <html>
+              <body style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+                <h2>Welcome to ${orgName}!</h2>
+                <p>Hi ${name},</p>
+                <p>${user.email} has invited you to join their team on Staybookt.</p>
+                <p>
+                  <a href="${signupUrl}" style="background-color:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block;">Accept Invitation</a>
+                </p>
+                <p>Or copy this link: ${signupUrl}</p>
+                <p>Best regards,<br>The Staybookt Team</p>
+              </body>
+            </html>
+          `,
+        });
+      } catch (emailError) {
+        console.warn('Failed to send team invite email:', emailError);
+        // Don't fail the invite creation if email sending fails
+      }
+    } else {
+      console.warn('Resend API key not configured, skipping invite email');
+    }
 
     return apiSuccess(newUser, 201);
   } catch (error) {

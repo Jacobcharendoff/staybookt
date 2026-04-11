@@ -58,8 +58,11 @@ export async function POST(request: NextRequest) {
     // Check if user has permission to send emails for this user
     // (either sending to themselves or they're an org admin)
     if (userId !== user.userId) {
-      // TODO: Check if current user has admin permissions to send emails for org
-      return apiError('You do not have permission to send emails for this user', 403);
+      // Check if current user has admin permissions to send emails for org
+      const userRole = user.role;
+      if (userRole !== 'owner' && userRole !== 'admin') {
+        return apiError('You do not have permission to send emails for this user', 403);
+      }
     }
 
     // Get the trial email template for this day
@@ -197,8 +200,11 @@ export async function GET(request: NextRequest) {
 
     // Check if user has permission to view history for this user
     if (userId !== user.userId) {
-      // TODO: Check if current user has admin permissions
-      return apiError('You do not have permission to view this user\'s email history', 403);
+      // Check if current user has admin permissions
+      const userRole = user.role;
+      if (userRole !== 'owner' && userRole !== 'admin') {
+        return apiError('You do not have permission to view this user\'s email history', 403);
+      }
     }
 
     // Get user trial start date
